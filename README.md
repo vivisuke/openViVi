@@ -9,7 +9,8 @@ open source version of ViVi text editor, which supports Standard text editors an
 - スポンサーが多いほど開発に時間をかけます
 - ViVi 1.x 相当をまず実装予定（期間：1～2年？）
   - 優先順位：
-    1. テキストエディタ基本機能
+    1. エディットバッファ（非GUI）
+    1. テキストエディタ基本機能（GUI）
     1. 基本 vi コマンド
     1. 文字列変換など基本以外の機能
     1. 基本以外の vi コマンド
