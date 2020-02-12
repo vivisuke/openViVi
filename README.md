@@ -8,16 +8,18 @@ open source version of ViVi text editor, which supports Standard text editors an
 - 2020年4月より開発開始予定
 - スポンサーが多いほど開発に時間をかけます
 - ViVi 1.x 相当をまず実装予定（期間：1～2年？）
-  - 優先順位：
+  - （暫定）優先順位：
     1. エディットバッファ（非GUI）
     1. テキストエディタ基本機能（GUI）
     1. 基本 vi コマンド
     1. 文字列変換など基本以外の機能
     1. 基本以外の vi コマンド
+    1. 文書比較
+    1. スクリプト
 
 ## 開発環境
 - Windows 10, Visual Studio 2019, C++
-- GUI は Qt5 を使用？
+- GUI は Qt5 を使用？または今更 MFC ？
   - Qt であれば Mac, Linux でもビルド可能になるはず
 
 ## スポンサー
