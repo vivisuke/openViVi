@@ -9,6 +9,9 @@ open source version of ViVi text editor, which supports Standard text editors an
 - スポンサーが多いほど開発に時間をかけます
 - ViVi 1.x 相当をまず実装予定（期間：1～2年？）
 
+## 開発環境
+- Visual Studio 2019 C++
+- GUI は Qt を使用？
 
 ## スポンサー
 本プロジェクトは下記スポンサー様のご支援を受けています。ありがとうございます。
