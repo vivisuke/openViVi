@@ -1,5 +1,7 @@
 # openViVi
-open source version of ViVi text editor
+open source version of ViVi text editor, which supports Standard text editors and vi commands.
+オープンソース版ViViテキストエディタ、
+標準的なテキストエディタとviコマンドをサポートします。
 
 ## スケジュール
 - 2020年4月より開発開始予定
