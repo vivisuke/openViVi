@@ -12,7 +12,7 @@ open source version of ViVi text editor, which supports Standard text editors an
 ## 開発環境
 - Windows 10
 - Visual Studio 2019 C++
-- GUI は Qt を使用？
+- GUI は Qt5 を使用？
   - Qt であれば Mac, Linux でもビルド可能になるはず
 
 ## スポンサー
