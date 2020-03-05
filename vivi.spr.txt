@@ -1,0 +1,9 @@
+﻿vivi.spr.txt
+
+◎ C 03/06 03/06 0.001 ToDo Qt プロジェクト作成
+◎ C 03/06 03/06 0.001 ToDO testBuffer サブプロジェクト作成
+● C 03/06             ToDO 階層データ構造のバッファ定義（１ページは１メガバイトまで）
+● C 03/06             ToDO openViVi プロジェクトは削除
+● C 03/06             ToDO 
+● C 03/06             ToDO 
+● C 03/06             ToDO 
