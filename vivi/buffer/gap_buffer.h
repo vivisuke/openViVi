@@ -348,6 +348,14 @@ public:
 		m_size += sz;
 		return true;
 	}
+	void pop_back()
+	{
+		if( !isEmpty() ) {
+			move_gap(m_size);
+			++m_gapSize;
+			--m_size;
+		}
+	}
 	void erase(pos_t ix)
 	{
 		if( ix < 0 || ix >= size() ) return;

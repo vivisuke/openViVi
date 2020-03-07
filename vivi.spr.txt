@@ -27,7 +27,7 @@
 ◎ C 03/07 03/08 0.001 ToDo HireBuffer::push_back()：ページサイズがリミットを超えた場合は、ページ追加
 ● C 03/08             ToDo HireBuffer::pop_back()
 ◎ C 03/08 03/08 0.001 ToDo HireBuffer：m_buffer は gap_buffer へのポインタを保持に変更
-● C 03/08             ToDo 
+◎ C 03/08 03/08 0.001 ToDo gap_buffer::pop_back()
 ● C 03/08             ToDo 
 ● C 03/08             ToDo 
 ● C 03/08             ToDo 
