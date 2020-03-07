@@ -15,6 +15,7 @@
 //#include <QtCore>
 #include <memory>
 #include <vector>
+#include <iostream>
 
 //#ifndef		Q_OS_WIN32
 //#define		Q_OS_WIN32		1
@@ -25,6 +26,8 @@
 #ifdef OS_WIN32
 #include <windows.h>
 #endif
+
+using namespace std;
 
 typedef const char cchar;
 //typedef unsigned int uint;
@@ -252,19 +255,22 @@ public:
 	}
 	bool reserve(size_type sz)
 	{
-		ssize_t cp = capacity();
+		size_t cp = capacity();
 		if( sz <= cp ) return true;
 		const ssize_t cp0 = cp;		//	以前のキャパシティ
 		if( !cp ) cp = DEFAULT_BUFFER_SIZE;
 		while( sz > cp )
 			cp += cp;
+		//cout << "cp = " << cp << "\n";
 #ifdef	OS_WIN32
 		pointer data = (pointer)VirtualAlloc(0, cp*sizeof(Type), MEM_COMMIT, PAGE_READWRITE);
 #else
 		pointer data = new value_type[cp];
 #endif
-		if( !data )
-			return false;
+		if( !data ) {
+			throw (cchar*)"gap_buffer: length error";
+			//return false;
+		}
 		if( !m_data ) {		//	バッファが空だった場合
 			m_data = data;
 			m_size = m_gapIndex = 0;

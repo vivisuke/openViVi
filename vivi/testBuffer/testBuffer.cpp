@@ -35,15 +35,26 @@ void test_gap_buffer()
 	assert( buf.size() == 0 );
 	//
 	try {
-		buf[100];
+		buf[100];		//	operator[] は範囲チェックを行わない
 	} catch(cchar* ptr) {
 		assert(0);
 	}
 	try {
-		buf.at(100);
+		buf.at(100);		//	at() は範囲外の場合は例外をスロー
 		assert(0);
 	} catch(cchar* ptr) {
 		cout << ptr << "\n";
+	}
+	try {
+		buf.reserve(0x7fffffff);
+		assert(0);
+	} catch(cchar* ptr) {
+		cout << ptr << "\n";
+	}
+	try {
+		buf.reserve(0x40000000);
+	} catch(cchar* ptr) {
+		assert(0);
 	}
 }
 void test_HierBuffer()
