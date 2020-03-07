@@ -93,8 +93,16 @@ public:
 	pos_t gapIndex() const { return m_gapIndex; }
 	void setGapIndex(pos_t gapIndex) const { move_gap(gapIndex); }
 	ssize_t gapSize() const { return m_gapSize; }
-	value_type operator[](pos_t ix) const { return at(ix); }
-	value_type &operator[](pos_t ix) { return ref(ix); }
+	value_type operator[](pos_t ix) const {	//	operator[] は範囲チェックを行わない
+		if( ix >= m_gapIndex ) ix += m_gapSize;
+		return m_data[ix];
+		//return at(ix);
+	}
+	value_type &operator[](pos_t ix) {	//	operator[] は範囲チェックを行わない
+		if( ix >= m_gapIndex ) ix += m_gapSize;
+		return m_data[ix];
+		//return ref(ix);
+	}
 	value_type at(pos_t ix) const
 	{
 		if( ix < 0 || ix >= size() ) {
