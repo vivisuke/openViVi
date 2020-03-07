@@ -45,6 +45,7 @@ void test_gap_buffer()
 	} catch(cchar* ptr) {
 		cout << ptr << "\n";
 	}
+//#if sizeof(char*) == 8
 #ifdef		_WIN64
 	try {
 		buf.reserve(0xffffffff);
