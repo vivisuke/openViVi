@@ -37,11 +37,19 @@ public:
 		: m_size(0)
 		, m_curPage(0)
 	{
+		m_buffer.push_back(gap_buffer<Type>());
 	}
 public:
 	bool isEmpty() const { return !m_size; }
 	bool empty() const { return !m_size; }
 	size_type size() const { return m_size; }
+public:
+	bool push_back(value_type v)
+	{
+		++m_size;
+		m_buffer.back().push_back(v);
+		return true;
+	}
 private:
 	gap_buffer<gap_buffer<Type>>	m_buffer;
 	size_type	m_size;		//	データトータルサイズ

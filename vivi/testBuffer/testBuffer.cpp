@@ -14,24 +14,30 @@ int main()
 }
 void test_gap_buffer()
 {
-	gap_buffer<char> gb;
-	assert( gb.isEmpty() );
-	assert( gb.empty() );
-	assert( gb.size() == 0 );
+	gap_buffer<char> buf;
+	assert( buf.isEmpty() );
+	assert( buf.empty() );
+	assert( buf.size() == 0 );
 	//
-	gb.insert(0, 'a');
-	assert( !gb.isEmpty() );
-	assert( gb.size() == 1 );
-	assert( gb[0] == 'a' );
-	gb.insert(0, 'x');
-	assert( gb.size() == 2 );
-	assert( gb[0] == 'x' );
-	assert( gb[1] == 'a' );
+	buf.insert(0, 'a');
+	assert( !buf.isEmpty() );
+	assert( buf.size() == 1 );
+	assert( buf[0] == 'a' );
+	buf.insert(0, 'x');
+	assert( buf.size() == 2 );
+	assert( buf[0] == 'x' );
+	assert( buf[1] == 'a' );
 }
 void test_HierBuffer()
 {
-	HierBuffer<char> gb;
-	assert( gb.isEmpty() );
-	assert( gb.empty() );
-	assert( gb.size() == 0 );
+	HierBuffer<char> buf;
+	assert( buf.isEmpty() );
+	assert( buf.empty() );
+	assert( buf.size() == 0 );
+	//
+	buf.push_back('a');
+	assert( !buf.isEmpty() );
+	assert( !buf.empty() );
+	assert( buf.size() == 1 );
+	
 }

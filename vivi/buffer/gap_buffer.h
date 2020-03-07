@@ -195,6 +195,10 @@ public:
 		m_gapSize = size();
 		m_gapIndex = m_size = 0;
 	}
+	value_type& back()
+	{
+		return m_data[m_size - 1];
+	}
 	value_type &ref(pos_t ix)
 	{
 		//if( ix < 0 || ix >= size() )
