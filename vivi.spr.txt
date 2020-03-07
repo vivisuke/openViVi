@@ -15,7 +15,7 @@
 ◎ C 03/06 03/07 0.001 ToDO HireBuffer::operator[](int)
 ◎ C 03/06 03/07 0.001 ToDO gap_buffer::at() 値ではなく参照を返す
 ◎ C 03/06 03/07 0.001 ToDO gap_buffer::operator[](int)：範囲チェックを行わないように
-● C 03/06             ToDO 
+◎ C 03/06 03/07 0.001 ToDO gap_buffer::at(int)：範囲外の場合は "out of range" 例外をスロー
 ● C 03/06             ToDO 
 ● C 03/06             ToDO 
 ● C 03/06             ToDO 

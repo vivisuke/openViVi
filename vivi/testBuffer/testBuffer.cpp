@@ -3,6 +3,8 @@
 #include "../buffer/gap_buffer.h"
 #include "../buffer/HierBuffer.h"
 
+using namespace std;
+
 void test_gap_buffer();
 void test_HierBuffer();
 
@@ -27,6 +29,22 @@ void test_gap_buffer()
 	assert( buf.size() == 2 );
 	assert( buf[0] == 'x' );
 	assert( buf[1] == 'a' );
+	buf.clear();
+	assert( buf.isEmpty() );
+	assert( buf.empty() );
+	assert( buf.size() == 0 );
+	//
+	try {
+		buf[100];
+	} catch(cchar* ptr) {
+		assert(0);
+	}
+	try {
+		buf.at(100);
+		assert(0);
+	} catch(cchar* ptr) {
+		cout << ptr << "\n";
+	}
 }
 void test_HierBuffer()
 {

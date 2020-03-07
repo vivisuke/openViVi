@@ -26,6 +26,7 @@
 #include <windows.h>
 #endif
 
+typedef const char cchar;
 //typedef unsigned int uint;
 //typedef size_t index_t;
 
@@ -106,8 +107,9 @@ public:
 	value_type at(pos_t ix) const
 	{
 		if( ix < 0 || ix >= size() ) {
-			//	undone: out_of_range 例外スロー
-			return value_type();
+			//	done: out_of_range 例外スロー
+			throw (cchar*)"gap_buffer: out of range";
+			//return value_type();
 		}
 		if( ix >= m_gapIndex ) ix += m_gapSize;
 		return m_data[ix];
@@ -115,9 +117,10 @@ public:
 	value_type& at(pos_t ix)
 	{
 		if( ix < 0 || ix >= size() ) {
-			//	undone: out_of_range 例外スロー
-			static value_type t;
-			return t;
+			//	done: out_of_range 例外スロー
+			throw (cchar*)"gap_buffer: out of range";
+			//static value_type t;
+			//return t;
 		}
 		if( ix >= m_gapIndex ) ix += m_gapSize;
 		return m_data[ix];
