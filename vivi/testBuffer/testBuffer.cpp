@@ -76,6 +76,11 @@ void test_gap_buffer()
 	} catch(cchar* ptr) {
 		assert(0);
 	}
+	//
+	gap_buffer<char> buf2;
+	buf2.reserve(123);
+	assert( buf2.capacity() >= 123 );
+	assert( buf2.isEmpty() );
 }
 void test_HierBuffer()
 {
@@ -120,5 +125,10 @@ void test_HierBuffer()
 	assert( buf.pageSize() == 1 );
 	buf.push_back('Z');
 	assert( buf.pageSize() == 2 );
+	//
+	HierBuffer<char> buf2;
+	buf2.reserve(123);
+	assert( buf2.capacity() >= 123 );
+	assert( buf2.isEmpty() );
 	//
 }

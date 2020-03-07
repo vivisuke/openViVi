@@ -56,6 +56,14 @@ public:
 	bool empty() const { return !m_size; }
 	size_type size() const { return m_size; }
 	size_type pageSize() const { return m_buffer.size(); }
+	size_type capacity() const
+	{
+		size_type c = 0;
+		for (int i = 0; i != m_buffer.size(); ++i) {
+			c += m_buffer[i]->capacity();
+		}
+		return c;
+	}
 public:
 	value_type& front()
 	{
@@ -75,6 +83,15 @@ public:
 		//for(auto& page: m_buffer) page.clear();
 		for (int i = 0; i != m_buffer.size(); ++i)
 			m_buffer[i]->clear();
+	}
+	void reserve(size_type sz)
+	{
+		if( sz <= PAGE_MAX_SZ ) {
+			m_buffer[m_curPage]->reserve(sz);
+		} else {
+			//	undone: 未実装
+			assert(0);
+		}
 	}
 	void push_back(value_type v)
 	{
