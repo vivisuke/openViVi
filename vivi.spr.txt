@@ -2,21 +2,21 @@
 
 ◎ C 03/06 03/06 0.001 ToDo Qt プロジェクト作成
 ◎ C 03/06 03/06 0.001 ToDO testBuffer サブプロジェクト作成
-● C 03/06             ToDO 階層データ構造のバッファ定義（１ページは１メガバイトまで？）
+● C 03/06             ToDO 階層データ構造のバッファ定義（１ページは１メガ？バイトまで）
 ● C 03/06             ToDO openViVi プロジェクトは削除
-◎ C 03/06 03/07 0.001 ToDO gap_buffer::front()
-◎ C 03/06 03/07 0.001 ToDO gap_buffer::back()
-◎ C 03/06 03/07 0.001 ToDO gap_buffer::push_back() の型は void に
-◎ C 03/06 03/07 0.001 ToDO HireBuffer::front()
-◎ C 03/06 03/07 0.001 ToDO HireBuffer::back()
-● C 03/06             ToDO HireBuffer：ページサイズが１メガ？を超えた場合は
-◎ C 03/06 03/07 0.001 ToDO HireBuffer::clear()
-◎ C 03/06 03/07 0.001 ToDO HireBuffer::at(int)
-◎ C 03/06 03/07 0.001 ToDO HireBuffer::operator[](int)
-◎ C 03/06 03/07 0.001 ToDO gap_buffer::at() 値ではなく参照を返す
-◎ C 03/06 03/07 0.001 ToDO gap_buffer::operator[](int)：範囲チェックを行わないように
-◎ C 03/06 03/07 0.001 ToDO gap_buffer::at(int)：範囲外の場合は "out of range" 例外をスロー
-◎ C 03/06 03/07 0.001 ToDO gap_buffer::reserve()：メモリ確保できない場合は "length error" 例外をスロー
-◎ C 03/06 03/07 0.001 ToDO gap_buffer::reserve(0x7fffffff) を実行すると無限ループになる？
-● C 03/06             ToDO 
-● C 03/06             ToDO 
+◎ C 03/07 03/07 0.001 ToDO gap_buffer::front()
+◎ C 03/07 03/07 0.001 ToDO gap_buffer::back()
+◎ C 03/07 03/07 0.001 ToDO gap_buffer::push_back() の型は void に
+◎ C 03/07 03/07 0.001 ToDO HireBuffer::front()
+◎ C 03/07 03/07 0.001 ToDO HireBuffer::back()
+● C 03/07             ToDO HireBuffer：ページサイズが１メガ？を超えた場合はページ分割
+◎ C 03/07 03/07 0.001 ToDO HireBuffer::clear()
+◎ C 03/07 03/07 0.001 ToDO HireBuffer::at(int)
+◎ C 03/07 03/07 0.001 ToDO HireBuffer::operator[](int)
+◎ C 03/07 03/07 0.001 ToDO gap_buffer::at() 値ではなく参照を返す
+◎ C 03/07 03/07 0.001 ToDO gap_buffer::operator[](int)：範囲チェックを行わないように
+◎ C 03/07 03/07 0.001 ToDO gap_buffer::at(int)：範囲外の場合は "out of range" 例外をスロー
+◎ C 03/07 03/07 0.001 ToDO gap_buffer::reserve()：メモリ確保できない場合は "length error" 例外をスロー
+◎ C 03/07 03/07 0.001 ToDO gap_buffer::reserve(0x7fffffff) を実行すると無限ループになる？
+● C 03/07             ToDO HireBuffer::operator[](int)：現ページ以外アクセス対応
+● C 03/07             ToDO 

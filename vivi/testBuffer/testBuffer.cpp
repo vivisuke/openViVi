@@ -45,12 +45,21 @@ void test_gap_buffer()
 	} catch(cchar* ptr) {
 		cout << ptr << "\n";
 	}
+#ifdef		_WIN64
+	try {
+		buf.reserve(0xffffffff);
+	} catch(cchar* ptr) {
+		cout << ptr << "\n";
+		assert(0);
+	}
+#else
 	try {
 		buf.reserve(0x7fffffff);
 		assert(0);
 	} catch(cchar* ptr) {
 		cout << ptr << "\n";
 	}
+#endif
 	try {
 		buf.reserve(0x40000000);
 	} catch(cchar* ptr) {
