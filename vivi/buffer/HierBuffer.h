@@ -43,7 +43,13 @@ public:
 		, m_curPage(0)
 		, m_curFront(0)
 	{
-		m_buffer.push_back(gap_buffer<Type>());
+		m_buffer.push_back(new gap_buffer<Type>());
+	}
+	~HierBuffer()
+	{
+		for (int i = 0; i != m_buffer.size(); ++i) {
+			delete m_buffer[i];
+		}
 	}
 public:
 	bool isEmpty() const { return !m_size; }
@@ -54,12 +60,12 @@ public:
 	value_type& front()
 	{
 		//	undone: データが無い場合対応
-		return m_buffer.front().front();
+		return m_buffer.front()->front();
 	}
 	value_type& back()
 	{
 		//	undone: データが無い場合対応
-		return m_buffer.back().back();
+		return m_buffer.back()->back();
 	}
 	void clear()
 	{
@@ -68,28 +74,28 @@ public:
 		m_curFront = 0;
 		//for(auto& page: m_buffer) page.clear();
 		for (int i = 0; i != m_buffer.size(); ++i)
-			m_buffer[i].clear();
+			m_buffer[i]->clear();
 	}
 	void push_back(value_type v)
 	{
 		++m_size;
-		if( m_buffer.back().size() == PAGE_MAX_SZ ) {
-			m_buffer.push_back(gap_buffer<Type>());
+		if( m_buffer.back()->size() == PAGE_MAX_SZ ) {
+			m_buffer.push_back(new gap_buffer<Type>());
 		}
-		m_buffer.back().push_back(v);
+		m_buffer.back()->push_back(v);
 		//return true;
 	}
 	value_type& at(pos_t ix)
 	{
-		if( ix >= m_curFront && ix < m_curFront + m_buffer[m_curPage].size() )
-			return m_buffer[m_curPage].at(ix - m_curFront);
+		if( ix >= m_curFront && ix < m_curFront + m_buffer[m_curPage]->size() )
+			return m_buffer[m_curPage]->at(ix - m_curFront);
 		assert(0);
 		return back();	//	暫定コード
 	}
 	value_type& operator[](pos_t ix)
 	{
-		if( ix >= m_curFront && ix < m_curFront + m_buffer[m_curPage].size() )
-			return m_buffer[m_curPage].at(ix - m_curFront);
+		if( ix >= m_curFront && ix < m_curFront + m_buffer[m_curPage]->size() )
+			return m_buffer[m_curPage]->at(ix - m_curFront);
 		assert(0);
 		return back();	//	暫定コード
 	}
@@ -98,7 +104,7 @@ public:
 		return true;
 	}
 private:
-	gap_buffer<gap_buffer<Type>>	m_buffer;
+	gap_buffer<gap_buffer<Type>*>	m_buffer;
 	size_type	m_size;				//	データトータルサイズ
 	int			m_curPage;		//	現ページ、ランダムアクセス時は現ページから優先して探索
 	ssize_t		m_curFront;		//	現ページ先頭インデックス
