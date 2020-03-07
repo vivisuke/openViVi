@@ -23,6 +23,9 @@ open source version of ViVi text editor, which supports standard text editor's a
   - Qt であれば Mac, Linux でもビルド可能なはず
 
 ## スポンサー
+スポンサー様は、本プロジェクトへのご意見・ご要望を作者に伝えることができます。
+※問題報告はどなたでも行うことができます。
+
 本プロジェクトは下記スポンサー様のご支援を受けています。ありがとうございます。
 - Y.K 様 （2020年2月 ￥1,000)
 
