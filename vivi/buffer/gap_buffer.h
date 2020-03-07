@@ -278,14 +278,17 @@ public:
 		if( ix >= m_gapIndex ) ix += m_gapSize;
 		m_data[ix] += v;
 	}
-	bool push_back(value_type v)
+	void push_back(value_type v)
 	{
-		if( !reserve(size() + 1) ) return false;
+		if (!reserve(size() + 1)) {
+			//	undone: 例外をスロー？
+			return;
+		}
 		move_gap(size());
 		m_data[m_gapIndex++] = v;
 		--m_gapSize;
 		++m_size;
-		return true;
+		//return true;
 	}
 	bool insert(pos_t ix, value_type v)
 	{

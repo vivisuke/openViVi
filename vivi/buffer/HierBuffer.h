@@ -44,11 +44,11 @@ public:
 	bool empty() const { return !m_size; }
 	size_type size() const { return m_size; }
 public:
-	bool push_back(value_type v)
+	void push_back(value_type v)
 	{
 		++m_size;
 		m_buffer.back().push_back(v);
-		return true;
+		//return true;
 	}
 private:
 	gap_buffer<gap_buffer<Type>>	m_buffer;
