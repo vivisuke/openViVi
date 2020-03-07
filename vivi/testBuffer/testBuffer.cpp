@@ -39,5 +39,7 @@ void test_HierBuffer()
 	assert( !buf.isEmpty() );
 	assert( !buf.empty() );
 	assert( buf.size() == 1 );
+	assert( buf.front() == 'a' );
+	assert( buf.back() == 'a' );
 	
 }

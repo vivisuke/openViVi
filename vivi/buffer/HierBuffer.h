@@ -44,6 +44,16 @@ public:
 	bool empty() const { return !m_size; }
 	size_type size() const { return m_size; }
 public:
+	value_type& front()
+	{
+		//	undone: データが無い場合対応
+		return m_buffer.front().front();
+	}
+	value_type& back()
+	{
+		//	undone: データが無い場合対応
+		return m_buffer.back().back();
+	}
 	void push_back(value_type v)
 	{
 		++m_size;

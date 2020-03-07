@@ -195,8 +195,14 @@ public:
 		m_gapSize = size();
 		m_gapIndex = m_size = 0;
 	}
+	value_type& front()
+	{
+		//	undone: データが無い場合対応
+		return m_data[0];
+	}
 	value_type& back()
 	{
+		//	undone: データが無い場合対応
 		return m_data[m_size - 1];
 	}
 	value_type &ref(pos_t ix)
