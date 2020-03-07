@@ -49,6 +49,8 @@ void test_HierBuffer()
 	assert( buf.back() == 'z' );
 	assert( buf.at(0) == 'a' );
 	assert( buf.at(1) == 'z' );
+	assert( buf[0] == 'a' );
+	assert( buf[1] == 'z' );
 	buf.clear();
 	assert( buf.isEmpty() );
 	assert( buf.empty() );

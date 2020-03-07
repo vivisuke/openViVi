@@ -78,6 +78,13 @@ public:
 		assert(0);
 		return back();	//	暫定コード
 	}
+	value_type& operator[](pos_t ix)
+	{
+		if( ix >= m_curFront && ix < m_curFront + m_buffer[m_curPage].size() )
+			return m_buffer[m_curPage].at(ix - m_curFront);
+		assert(0);
+		return back();	//	暫定コード
+	}
 private:
 	gap_buffer<gap_buffer<Type>>	m_buffer;
 	size_type	m_size;				//	データトータルサイズ
