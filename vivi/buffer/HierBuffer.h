@@ -85,6 +85,19 @@ public:
 		m_buffer.back()->push_back(v);
 		//return true;
 	}
+	void pop_back()
+	{
+		if( !isEmpty() ) {
+			int ix = m_buffer.size();
+			while( m_buffer[--ix]->isEmpty() ) { }		//	最後の空でないページを探す
+			m_buffer[ix]->pop_back();
+			--m_size;
+		}
+	}
+	bool insert(pos_t ix, value_type v)
+	{
+		return true;
+	}
 	value_type& at(pos_t ix)
 	{
 		if( ix >= m_curFront && ix < m_curFront + m_buffer[m_curPage]->size() )
@@ -98,10 +111,6 @@ public:
 			return m_buffer[m_curPage]->at(ix - m_curFront);
 		assert(0);
 		return back();	//	暫定コード
-	}
-	bool insert(pos_t ix, value_type v)
-	{
-		return true;
 	}
 private:
 	gap_buffer<gap_buffer<Type>*>	m_buffer;
