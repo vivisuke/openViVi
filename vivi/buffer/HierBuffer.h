@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <assert.h>
 #include "gap_buffer.h"
 
 template<typename Type>
@@ -36,6 +37,7 @@ public:
 	HierBuffer()
 		: m_size(0)
 		, m_curPage(0)
+		, m_curFront(0)
 	{
 		m_buffer.push_back(gap_buffer<Type>());
 	}
@@ -54,15 +56,32 @@ public:
 		//	undone: データが無い場合対応
 		return m_buffer.back().back();
 	}
+	void clear()
+	{
+		m_size = 0;
+		m_curPage = 0;
+		m_curFront = 0;
+		//for(auto& page: m_buffer) page.clear();
+		for (int i = 0; i != m_buffer.size(); ++i)
+			m_buffer[i].clear();
+	}
 	void push_back(value_type v)
 	{
 		++m_size;
 		m_buffer.back().push_back(v);
 		//return true;
 	}
+	value_type& at(pos_t ix)
+	{
+		if( ix >= m_curFront && ix < m_curFront + m_buffer[m_curPage].size() )
+			return m_buffer[m_curPage].at(ix - m_curFront);
+		assert(0);
+		return back();	//	暫定コード
+	}
 private:
 	gap_buffer<gap_buffer<Type>>	m_buffer;
-	size_type	m_size;		//	データトータルサイズ
-	int	m_curPage;		//	現ページ、ランダムアクセス時は現ページから優先して探索
+	size_type	m_size;				//	データトータルサイズ
+	int			m_curPage;		//	現ページ、ランダムアクセス時は現ページから優先して探索
+	ssize_t		m_curFront;		//	現ページ先頭インデックス
 	
 };

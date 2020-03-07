@@ -9,4 +9,9 @@
 ◎ C 03/06 03/07 0.001 ToDO gap_buffer::push_back() の型は void に
 ◎ C 03/06 03/07 0.001 ToDO HireBuffer::front()
 ◎ C 03/06 03/07 0.001 ToDO HireBuffer::back()
+● C 03/06             ToDO HireBuffer：ページサイズが１メガ？を超えた場合は
+◎ C 03/06 03/07 0.001 ToDO HireBuffer::clear()
+◎ C 03/06 03/07 0.001 ToDO HireBuffer::at(int)
+● C 03/06             ToDO HireBuffer::operator[](int)
+◎ C 03/06 03/07 0.001 ToDO gap_buffer::at() 値ではなく参照を返す
 ● C 03/06             ToDO 

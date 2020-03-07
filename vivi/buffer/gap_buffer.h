@@ -97,8 +97,20 @@ public:
 	value_type &operator[](pos_t ix) { return ref(ix); }
 	value_type at(pos_t ix) const
 	{
-		if( ix < 0 || ix >= size() )
+		if( ix < 0 || ix >= size() ) {
+			//	undone: out_of_range 例外スロー
 			return value_type();
+		}
+		if( ix >= m_gapIndex ) ix += m_gapSize;
+		return m_data[ix];
+	}
+	value_type& at(pos_t ix)
+	{
+		if( ix < 0 || ix >= size() ) {
+			//	undone: out_of_range 例外スロー
+			static value_type t;
+			return t;
+		}
 		if( ix >= m_gapIndex ) ix += m_gapSize;
 		return m_data[ix];
 	}
