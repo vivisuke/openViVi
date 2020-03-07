@@ -19,9 +19,10 @@
 ◎ C 03/07 03/07 0.001 ToDo gap_buffer::reserve()：メモリ確保できない場合は "length error" 例外をスロー
 ◎ C 03/07 03/07 0.001 ToDo gap_buffer::reserve(0x7fffffff) を実行すると無限ループになる？
 ● C 03/07             ToDo HireBuffer::operator[](int)：現ページ以外アクセス対応
+● C 03/07             ToDo HireBuffer::reserve(sz)
 ● C 03/07             ToDo HireBuffer::insert()
 ● C 03/07             ToDo HireBuffer::erase()
 ◎ C 03/07 03/07 0.001 ToDo vivi：とりあえずトップメニュー作成
-● C 03/07             ToDo 
+◎ C 03/07 03/08 0.001 ToDo HireBuffer::push_back()：ページサイズがリミットを超えた場合は、ページ追加
 ● C 03/07             ToDo 
 ● C 03/07             ToDo 

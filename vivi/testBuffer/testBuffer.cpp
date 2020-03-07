@@ -11,6 +11,7 @@ void test_HierBuffer();
 int main()
 {
 	test_gap_buffer();
+	test_HierBuffer();
 	//
     std::cout << "OK\n";
 }
@@ -95,4 +96,10 @@ void test_HierBuffer()
 	assert( buf.empty() );
 	assert( buf.size() == 0 );
 	//
+	for (int i = 0; i < HierBuffer<char>::PAGE_MAX_SZ; ++i) {
+		buf.push_back('a'+i%26);
+	}
+	assert( buf.pageSize() == 1 );
+	buf.push_back('Z');
+	assert( buf.pageSize() == 2 );
 }

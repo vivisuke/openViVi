@@ -15,6 +15,10 @@
 template<typename Type>
 class HierBuffer {
 public:
+	enum {
+		PAGE_MAX_SZ = 1024*1024,
+	};
+public:
 	typedef Type value_type;
 #ifdef		_WIN64
 	typedef __int64 size_type;
@@ -45,6 +49,7 @@ public:
 	bool isEmpty() const { return !m_size; }
 	bool empty() const { return !m_size; }
 	size_type size() const { return m_size; }
+	size_type pageSize() const { return m_buffer.size(); }
 public:
 	value_type& front()
 	{
@@ -68,6 +73,9 @@ public:
 	void push_back(value_type v)
 	{
 		++m_size;
+		if( m_buffer.back().size() == PAGE_MAX_SZ ) {
+			m_buffer.push_back(gap_buffer<Type>());
+		}
 		m_buffer.back().push_back(v);
 		//return true;
 	}
@@ -84,6 +92,10 @@ public:
 			return m_buffer[m_curPage].at(ix - m_curFront);
 		assert(0);
 		return back();	//	暫定コード
+	}
+	bool insert(pos_t ix, value_type v)
+	{
+		return true;
 	}
 private:
 	gap_buffer<gap_buffer<Type>>	m_buffer;
