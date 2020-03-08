@@ -28,7 +28,7 @@
 ◎ C 03/08 03/08 0.001 ToDo HireBuffer::pop_back()
 ◎ C 03/08 03/08 0.001 ToDo HireBuffer：m_buffer は gap_buffer へのポインタを保持に変更
 ◎ C 03/08 03/08 0.001 ToDo gap_buffer::pop_back()
-● C 03/08             ToDo 
+◎ C 03/08 03/08 0.001 ToDo HireBuffer::reserve(sz)：sz がページサイズを超える場合にも対応
 ● C 03/08             ToDo 
 ● C 03/08             ToDo 
 ● C 03/08             ToDo 

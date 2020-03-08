@@ -89,8 +89,27 @@ public:
 		if( sz <= PAGE_MAX_SZ ) {
 			m_buffer[m_curPage]->reserve(sz);
 		} else {
-			//	undone: 未実装
-			assert(0);
+			size_type d = sz - capacity();		//	増加サイズ
+			if( d > 0 ) {
+				if( m_buffer[m_curPage]->capacity() < PAGE_MAX_SZ ) {
+					d -= PAGE_MAX_SZ - m_buffer[m_curPage]->capacity();
+					m_buffer[m_curPage]->reserve(PAGE_MAX_SZ);
+				}
+				if( d > 0 ) {		//	まだ増加させる必要がある場合
+					for (int i = 0; i != m_buffer.size(); ++i) {
+						if( i != m_curPage && m_buffer[i]->capacity() < PAGE_MAX_SZ ) {
+							d -= PAGE_MAX_SZ - m_buffer[i]->capacity();
+							m_buffer[i]->reserve(PAGE_MAX_SZ);
+						}
+					}
+				}
+				while( d > 0 ) {		//	まだ増加させる必要がある場合
+					m_buffer.push_back(new gap_buffer<Type>());
+					m_buffer.back()->reserve(PAGE_MAX_SZ);
+					d -= PAGE_MAX_SZ;
+				}
+			}
+			//assert(0);
 		}
 	}
 	void push_back(value_type v)
