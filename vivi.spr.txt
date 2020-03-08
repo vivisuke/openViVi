@@ -32,7 +32,7 @@
 ● C 03/08             ToDo HireBuffer::insert(ix, ch)：現ページ以前への挿入対応
 ● C 03/08             ToDo HireBuffer::insert(ix, ch)：現ページ以降への挿入対応
 ◎ C 03/08 03/08 0.001 ToDo HireBuffer::push_back()：現ページを最後のページに設定
-● C 03/08             ToDo HireBuffer::pop_back()：現ページを最後のページに設定
+◎ C 03/08 03/08 0.001 ToDo HireBuffer::pop_back()：現ページを最後のページに設定
 ● C 03/08             ToDo 
 ● C 03/08             ToDo 
 ● C 03/08             ToDo 

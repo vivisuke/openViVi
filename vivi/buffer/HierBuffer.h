@@ -130,6 +130,8 @@ public:
 			while( m_buffer[--ix]->isEmpty() ) { }		//	最後の空でないページを探す
 			m_buffer[ix]->pop_back();
 			--m_size;
+			m_curPage = m_buffer.size() - 1;
+			m_curFront = m_size - m_buffer.back()->size();
 		}
 	}
 	bool insert(pos_t ix, value_type v)
