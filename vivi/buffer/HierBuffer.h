@@ -132,6 +132,17 @@ public:
 	}
 	bool insert(pos_t ix, value_type v)
 	{
+		reserve(size() + 1);
+		if( ix < m_curFront ) {
+			assert(0);
+		} else if( ix >= m_curFront + m_buffer[m_curPage]->size() && m_buffer[m_curPage]->size() >= PAGE_MAX_SZ ) {
+			assert(0);
+		}
+		if( m_buffer[m_curPage]->size() >= PAGE_MAX_SZ ) {
+			assert(0);
+		}
+		m_buffer[m_curPage]->insert(ix - m_curFront, v);
+		++m_size;
 		return true;
 	}
 	value_type& at(pos_t ix)

@@ -2,7 +2,7 @@
 
 ◎ C 03/06 03/06 0.001 ToDo Qt プロジェクト作成
 ◎ C 03/06 03/06 0.001 ToDo testBuffer サブプロジェクト作成
-● C 03/06             ToDo 階層データ構造のバッファ定義（１ページは１メガ？バイトまで）
+◎ C 03/06 03/08 0.001 ToDo 階層データ構造のバッファ定義（１ページは１メガ？バイトまで）
 ● C 03/06             ToDo openViVi プロジェクトは削除
 ◎ C 03/07 03/07 0.001 ToDo gap_buffer::front()
 ◎ C 03/07 03/07 0.001 ToDo gap_buffer::back()
@@ -21,7 +21,7 @@
 ● C 03/07             ToDo HireBuffer::operator[](int)：現ページ以外アクセス対応
 ◎ C 03/07 03/08 0.001 ToDo HireBuffer::capacity(sz)
 ◎ C 03/07 03/08 0.001 ToDo HireBuffer::reserve(sz)
-● C 03/07             ToDo HireBuffer::insert(ix, ch)
+◎ C 03/07 03/08 0.001 ToDo HireBuffer::insert(ix, ch)
 ● C 03/07             ToDo HireBuffer::erase(ix)
 ◎ C 03/07 03/07 0.001 ToDo vivi：とりあえずトップメニュー作成
 ◎ C 03/07 03/08 0.001 ToDo HireBuffer::push_back()：ページサイズがリミットを超えた場合は、ページ追加
