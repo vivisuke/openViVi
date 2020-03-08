@@ -133,6 +133,9 @@ void test_HierBuffer()
 	assert( buf.pageSize() == 1 );
 	buf.push_back('Z');
 	assert( buf.pageSize() == 2 );
+	assert( buf.m_curPage == 1 );
+	assert( buf.m_curFront == kPageMaxSize );
+	assert( buf.m_curFront == buf.m_buffer[0]->size() );
 	//
 	HierBuffer<char> buf2;
 	buf2.reserve(123);

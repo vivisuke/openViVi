@@ -114,11 +114,13 @@ public:
 	}
 	void push_back(value_type v)
 	{
-		++m_size;
 		if( m_buffer.back()->size() == PAGE_MAX_SZ ) {
 			m_buffer.push_back(new gap_buffer<Type>());
 		}
 		m_buffer.back()->push_back(v);
+		++m_size;
+		m_curPage = m_buffer.size() - 1;
+		m_curFront = m_size - m_buffer.back()->size();
 		//return true;
 	}
 	void pop_back()
@@ -165,4 +167,5 @@ private:
 	int			m_curPage;		//	現ページ、ランダムアクセス時は現ページから優先して探索
 	ssize_t		m_curFront;		//	現ページ先頭インデックス
 	
+friend void test_HierBuffer();
 };
