@@ -14,6 +14,8 @@ open source version of ViVi text editor, which supports standard text editor's a
     1. 基本 vi コマンド
     1. 文字列変換など基本以外の機能
     1. 基本以外の vi コマンド
+    1. アウトライン
+    1. 罫線モード
     1. 文書比較
     1. スクリプト
 
