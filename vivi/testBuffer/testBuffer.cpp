@@ -124,6 +124,9 @@ void test_HierBuffer()
 	assert( buf.size() == 2 );
 	assert( buf[0] == 'b' );
 	assert( buf[1] == 'a' );
+	buf.erase(0);
+	assert( buf.size() == 1 );
+	assert( buf[0] == 'a' );
 	//
 	buf.clear();
 	const int kPageMaxSize = HierBuffer<char>::PAGE_MAX_SZ;

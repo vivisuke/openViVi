@@ -138,16 +138,50 @@ public:
 	{
 		reserve(size() + 1);
 		if( ix < m_curFront ) {
-			assert(0);
+			//	挿入位置が現ページ以前の場合
+			if( ix >= m_curFront - m_buffer[m_curPage-1]->size() ) {		//	前ページ内
+#if	1
+				m_curFront -= m_buffer[--m_curPage]->size();
+#else
+				if( m_buffer[m_curPage-1]->size() < PAGE_MAX_SZ ) {
+					m_curFront -= m_buffer[--m_curPage]->size();
+				} else {
+					//	undone: ページ分割
+					assert(0);
+				}
+#endif
+			} else {
+				//	undone: 先頭から挿入すべきページを探す
+				assert(0);
+			}
 		} else if( ix >= m_curFront + m_buffer[m_curPage]->size() && m_buffer[m_curPage]->size() >= PAGE_MAX_SZ ) {
+			//	挿入位置が現ページ以降の場合
 			assert(0);
 		}
 		if( m_buffer[m_curPage]->size() >= PAGE_MAX_SZ ) {
+			//	undone: ページ分割
 			assert(0);
 		}
 		m_buffer[m_curPage]->insert(ix - m_curFront, v);
 		++m_size;
 		return true;
+	}
+	void erase(pos_t ix)
+	{
+		if( ix < 0 || ix >= size() ) return;
+		if( ix < m_curFront ) {
+			if( ix >= m_curFront - m_buffer[m_curPage-1]->size() ) {		//	前ページ内
+				m_curFront -= m_buffer[--m_curPage]->size();
+			} else {
+				//	undone: 先頭から挿入すべきページを探す
+				assert(0);
+			}
+		} else if( ix >= m_curFront + m_buffer[m_curPage]->size() ) {
+			//	挿入位置が現ページ以降の場合
+			assert(0);
+		}
+		m_buffer[m_curPage]->erase(ix - m_curFront);
+		--m_size;
 	}
 	value_type& at(pos_t ix)
 	{
