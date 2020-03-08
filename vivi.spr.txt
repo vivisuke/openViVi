@@ -3,7 +3,7 @@
 ◎ C 03/06 03/06 0.001 ToDo Qt プロジェクト作成
 ◎ C 03/06 03/06 0.001 ToDo testBuffer サブプロジェクト作成
 ◎ C 03/06 03/08 0.001 ToDo 階層データ構造のバッファ定義（１ページは１メガ？バイトまで）
-● C 03/06             ToDo openViVi プロジェクトは削除
+◎ C 03/06 03/08 0.001 ToDo openViVi プロジェクトは削除
 ◎ C 03/07 03/07 0.001 ToDo gap_buffer::front()
 ◎ C 03/07 03/07 0.001 ToDo gap_buffer::back()
 ◎ C 03/07 03/07 0.001 ToDo gap_buffer::push_back() の型は void に
@@ -29,8 +29,8 @@
 ◎ C 03/08 03/08 0.001 ToDo HireBuffer：m_buffer は gap_buffer へのポインタを保持に変更
 ◎ C 03/08 03/08 0.001 ToDo gap_buffer::pop_back()
 ◎ C 03/08 03/08 0.001 ToDo HireBuffer::reserve(sz)：sz がページサイズを超える場合にも対応
-● C 03/08             ToDo 
-● C 03/08             ToDo 
+● C 03/08             ToDo HireBuffer::insert(ix, ch)：現ページ以前への挿入対応
+● C 03/08             ToDo HireBuffer::insert(ix, ch)：現ページ以降への挿入対応
 ● C 03/08             ToDo 
 ● C 03/08             ToDo 
 ● C 03/08             ToDo 
