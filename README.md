@@ -14,16 +14,18 @@ open source version of ViVi text editor, which supports standard text editor's a
     1. 基本 vi コマンド
     1. 文字列変換など基本以外の機能
     1. 基本以外の vi コマンド
+    1. アウトライン
+    1. 罫線モード
     1. 文書比較
     1. スクリプト
 
 ## 開発環境
-- Windows 10, Visual Studio 2019, C++
+- Windows 10, Visual Studio 2019, C++, 当面は32bitモード only
 - GUI は Qt5（VS2019 VS tools） を使用   ~~？または今更 MFC ？~~
   - Qt であれば Mac, Linux でもビルド可能なはず
 
 ## スポンサー
-スポンサー様は、本プロジェクトへのご意見・ご要望を作者に伝えることができます。
+本プロジェクトへのご意見・ご要望は、スポンサー様からのみ受け付けます。
 ※問題報告はどなたでも行うことができます。
 
 本プロジェクトは下記スポンサー様のご支援を受けています。ありがとうございます。
