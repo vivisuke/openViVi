@@ -1,4 +1,5 @@
-﻿#include <iostream>
+//#include <QtCore/QCoreApplication>
+#include <iostream>
 #include <random>
 #include <assert.h>
 #include "../buffer/gap_buffer.h"
@@ -16,13 +17,16 @@ mt19937 g_mt(0);
 void test_gap_buffer();
 void test_HierBuffer();
 
-int main()
+int main(int argc, char *argv[])
 {
 	test_gap_buffer();
 	test_HierBuffer();
 	//
-    std::cout << "OK\n";
-    return 0;
+	//QCoreApplication a(argc, argv);
+	//return a.exec();
+	//
+	cout << "OK\n";
+	return 0;
 }
 void test_gap_buffer()
 {

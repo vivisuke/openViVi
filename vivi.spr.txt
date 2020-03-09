@@ -33,8 +33,13 @@
 ● C 03/08             ToDo HireBuffer::insert(ix, ch)：現ページ以降への挿入対応
 ◎ C 03/08 03/08 0.001 ToDo HireBuffer::push_back()：現ページを最後のページに設定
 ◎ C 03/08 03/08 0.001 ToDo HireBuffer::pop_back()：現ページを最後のページに設定
-● C 03/08             ToDo 
-● C 03/08             ToDo 
-● C 03/08             ToDo 
-● C 03/08             ToDo 
-● C 03/08             ToDo 
+● C 03/08             ToDo gap_buffer::push_back(), HireBuffer::push_back() 速度比較
+● C 03/08             ToDo x86, x64 判定：win, gcc 両方に対応
+● C 03/09             ToDo HireBuffer::insert(ix, ch)：現ページに空きが無い場合は、ページ分割
+◎ C 03/09 03/09 0.001 ToDo testBufferQt：Qt console アプリとして作成し直し
+● C 03/09             ToDo 
+● C 03/09             ToDo 
+● C 03/09             ToDo 
+● C 03/09             ToDo 
+● C 03/09             ToDo 
+● C 03/09             ToDo 

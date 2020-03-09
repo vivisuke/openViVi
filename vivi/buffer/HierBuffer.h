@@ -16,7 +16,8 @@ template<typename Type>
 class HierBuffer {
 public:
 	enum {
-		PAGE_MAX_SZ = 1024*1024,
+		PAGE_MAX_SZ = 1024,
+		//PAGE_MAX_SZ = 1024*1024,
 	};
 public:
 	typedef Type value_type;
@@ -192,10 +193,28 @@ public:
 	}
 	value_type& operator[](pos_t ix)
 	{
-		if( ix >= m_curFront && ix < m_curFront + m_buffer[m_curPage]->size() )
-			return m_buffer[m_curPage]->at(ix - m_curFront);
-		assert(0);
-		return back();	//	暫定コード
+		if( ix < m_curFront ) {
+			if( ix >= m_curFront - m_buffer[m_curPage-1]->size() ) {		//	前ページ内
+				m_curFront -= m_buffer[--m_curPage]->size();
+			} else {
+				m_curPage = 0;
+				m_curFront = 0;
+				while( ix >= m_curFront + m_buffer[m_curPage]->size() ) {
+					m_curFront += m_buffer[m_curPage++]->size();
+				}
+			}
+		} else if( ix >= m_curFront + m_buffer[m_curPage]->size() ) {
+			if( ix < m_curFront + m_buffer[m_curPage]->size() + m_buffer[m_curPage+1]->size() ) {
+				m_curFront += m_buffer[m_curPage++]->size();
+			} else {
+				m_curPage = m_buffer.size() - 1;
+				m_curFront = m_size - m_buffer[m_curPage]->size();;
+				while( ix < m_curFront ) {
+					m_curFront -= m_buffer[--m_curPage]->size();;
+				}
+			}
+		}
+		return m_buffer[m_curPage]->operator[](ix - m_curFront);
 	}
 private:
 	gap_buffer<gap_buffer<Type>*>	m_buffer;
