@@ -13,7 +13,6 @@
   - [ ] RecentFiles
   - [ ] FavoriteFiles
   - [ ] eXit
-  - [ ] Edit
 - [ ] Edit
   - [ ] Undo
   - [ ] Redo
