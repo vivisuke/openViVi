@@ -14,8 +14,31 @@
   - [ ] FavoriteFiles
   - [ ] eXit
   - [ ] Edit
+- [ ] Edit
+  - [ ] Undo
+  - [ ] Redo
+  - [ ] Cut
+  - [ ] Copy
+  - [ ] Paste
+  - [ ] ClipboardHist
+  - [ ] SelectAll
+  - [ ] Input
+  - [ ] Conversion
+  - [ ] ZenCoding
+  - [ ] DynamicCompletion
+  - [ ] KeywordCompletion
+- [ ] Search
 - [ ] View
+  - [ ] LineNumber
+  - [ ] Collapse
+  - [ ] CollapseAll
+  - [ ] Expand
+  - [ ] Output
+  - [ ] Outline
+  - [ ] FileSystem
 - [ ] Window
+  - [ ] SplitVertical
+  - [ ] SplitHorizontal
 - [ ] Tool
 - [ ] Settings
 - [ ] Other
