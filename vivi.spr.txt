@@ -37,7 +37,7 @@
 ● C 03/08             ToDo x86, x64 判定：win, gcc 両方に対応
 ● C 03/09             ToDo HireBuffer::insert(ix, ch)：現ページに空きが無い場合は、ページ分割
 ◎ C 03/09 03/09 0.001 ToDo testBufferQt：Qt console アプリとして作成し直し
-● C 03/09             ToDo 
+◎ C 03/09 03/09 0.001 ToDo testBuffe は削除
 ● C 03/09             ToDo 
 ● C 03/09             ToDo 
 ● C 03/09             ToDo 
