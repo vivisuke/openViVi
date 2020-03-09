@@ -1,8 +1,21 @@
 # メニュー
-## File
-## Edit
-## View
-## Window
-## Tool
-## Settings
-## Other
+- [ ] File  
+  - [ ] New  
+  - [ ] Open  
+  - [ ] Close
+  - [ ] CloseAll
+  - [ ] Save
+  - [ ] SaveAs
+  - [ ] SaveAll
+  - [ ] SaveCloseAll
+  - [ ] ReLoad
+  - [ ] .h/.cpp
+  - [ ] RecentFiles
+  - [ ] FavoriteFiles
+  - [ ] eXit
+  - [ ] Edit
+- [ ] View
+- [ ] Window
+- [ ] Tool
+- [ ] Settings
+- [ ] Other
