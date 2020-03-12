@@ -2,6 +2,7 @@
 #include <iostream>
 #include <random>
 #include <assert.h>
+#include <exception>
 #include "../buffer/gap_buffer.h"
 #include "../buffer/HierBuffer.h"
 
@@ -61,20 +62,27 @@ void test_gap_buffer()
 		buf[100];		//	operator[] は範囲チェックを行わない
 	} catch(cchar* ptr) {
 		assert(0);
+	} catch( out_of_range e ) {
+		cout << e.what() << "\n";
+		assert(0);
 	}
 	try {
 		buf.at(100);		//	at() は範囲外の場合は例外をスロー
 		assert(0);
 	} catch(cchar* ptr) {
 		cout << ptr << "\n";
+	} catch( out_of_range e ) {
+		cout << e.what() << "\n";
 	}
 //#if sizeof(char*) == 8
-#ifdef		_WIN64
+#if	0	//def		_WIN64
 	try {
 		buf.reserve(0xffffffff);
 	} catch(cchar* ptr) {
 		cout << ptr << "\n";
 		assert(0);
+	} catch( out_of_range e ) {
+		cout << e.what() << "\n";
 	}
 #else
 	try {
@@ -82,11 +90,16 @@ void test_gap_buffer()
 		assert(0);
 	} catch(cchar* ptr) {
 		cout << ptr << "\n";
+	} catch( out_of_range e ) {
+		cout << e.what() << "\n";
 	}
 #endif
 	try {
 		buf.reserve(0x40000000);
 	} catch(cchar* ptr) {
+		assert(0);
+	} catch( out_of_range e ) {
+		cout << e.what() << "\n";
 		assert(0);
 	}
 	//

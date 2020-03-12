@@ -161,7 +161,12 @@ public:
 		}
 		if( m_buffer[m_curPage]->size() >= PAGE_MAX_SZ ) {
 			//	undone: ページ分割
-			assert(0);
+			//assert(0);
+			size_type mvsz = m_buffer[m_curPage]->size() - (ix - m_curFront);
+			m_buffer.insert(m_curPage+1, new gap_buffer<Type>());
+			m_buffer[m_curPage+1]->resize(mvsz);
+			m_buffer[m_curPage]->get_data(ix - m_curFront, &(*m_buffer[m_curPage+1])[0], mvsz);
+			m_buffer[m_curPage]->erase(ix - m_curFront, mvsz);
 		}
 		m_buffer[m_curPage]->insert(ix - m_curFront, v);
 		++m_size;

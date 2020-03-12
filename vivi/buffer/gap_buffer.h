@@ -16,6 +16,8 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include <exception>
+#include <new>
 
 //#ifndef		Q_OS_WIN32
 //#define		Q_OS_WIN32		1
@@ -111,7 +113,8 @@ public:
 	{
 		if( ix < 0 || ix >= size() ) {
 			//	done: out_of_range 例外スロー
-			throw (cchar*)"gap_buffer: out of range";
+			throw out_of_range("gap_buffer: out of range");
+			//throw (cchar*)"gap_buffer: out of range";
 			//return value_type();
 		}
 		if( ix >= m_gapIndex ) ix += m_gapSize;
@@ -121,7 +124,8 @@ public:
 	{
 		if( ix < 0 || ix >= size() ) {
 			//	done: out_of_range 例外スロー
-			throw (cchar*)"gap_buffer: out of range";
+			throw out_of_range("gap_buffer: out of range");
+			//throw (cchar*)"gap_buffer: out of range";
 			//static value_type t;
 			//return t;
 		}
@@ -142,7 +146,7 @@ public:
 		else
 			return m_data + ix;
 	}
-	size_type get_data(pos_t ix, pointer buf, int bufSize) const
+	size_type get_data(pos_t ix, pointer buf, int bufSize) const		//	[ix, ix+bufSize) を buf にコピー
 	{
 		//Q_ASSERT( bufSize > 0 );
 		if( bufSize <= 0 ) return 0;
@@ -268,7 +272,8 @@ public:
 		pointer data = new value_type[cp];
 #endif
 		if( !data ) {
-			throw (cchar*)"gap_buffer: length error";
+			throw bad_alloc();
+			//throw (cchar*)"gap_buffer: length error";
 			//return false;
 		}
 		if( !m_data ) {		//	バッファが空だった場合

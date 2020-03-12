@@ -38,8 +38,9 @@
 ● C 03/09             ToDo HireBuffer::insert(ix, ch)：現ページに空きが無い場合は、ページ分割
 ◎ C 03/09 03/09 0.001 ToDo testBufferQt：Qt console アプリとして作成し直し
 ◎ C 03/09 03/09 0.001 ToDo testBuffe は削除
-● C 03/09             ToDo 
-● C 03/09             ToDo 
-● C 03/09             ToDo 
-● C 03/09             ToDo 
-● C 03/09             ToDo 
+◎ C 03/12 03/12 0.001 ToDo 例外は std::exception を使用するよう修正
+● C 03/12             ToDo 
+● C 03/12             ToDo 
+● C 03/12             ToDo 
+● C 03/12             ToDo 
+● C 03/12             ToDo 
