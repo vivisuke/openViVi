@@ -29,6 +29,7 @@ open source version of ViVi text editor, which supports standard text editor's a
 ※問題報告はどなたでも行うことができます。
 
 本プロジェクトは下記スポンサー様のご支援を受けています。ありがとうございます。
+- Y.T 様 （2020年3月 ￥2,000)
 - Y.K 様 （2020年2月 ￥1,000)
 
 スポンサーになってもよいという方は、本プロジェクト管理者（ntsuda@master.email.ne.jp または https://twitter.com/vivisuke ）までご連絡ください。
