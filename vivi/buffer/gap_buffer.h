@@ -366,6 +366,7 @@ public:
 	{
 		if( !isEmpty() ) {
 			move_gap(m_size);
+			--m_gapIndex;
 			++m_gapSize;
 			--m_size;
 		}
@@ -374,6 +375,7 @@ public:
 	{
 		if( ix < 0 || ix >= size() ) return;
 		move_gap(ix);
+		--m_gapIndex;
 		++m_gapSize;
 		--m_size;
 	}

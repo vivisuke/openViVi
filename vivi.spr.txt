@@ -39,7 +39,7 @@
 ◎ C 03/09 03/09 0.001 ToDo testBufferQt：Qt console アプリとして作成し直し
 ◎ C 03/09 03/09 0.001 ToDo testBuffe は削除
 ◎ C 03/12 03/12 0.001 ToDo 例外は std::exception を使用するよう修正
-● C 03/16             問題 gap_buffer::resize() 後に、pop_back() を繰り返すとクラッシュした
+◎ C 03/16 03/16 0.001 問題 gap_buffer::resize() 後に、pop_back() を繰り返すとクラッシュした
 ◎ C 03/16 03/16 0.001 問題 gap_buffer::resize() に時間がかかりすぎる
 ◎ C 03/16 03/16 0.001 問題 gap_buffer::resize()：第２引数に値を指定できない
 ● C 03/16             ToDo 
