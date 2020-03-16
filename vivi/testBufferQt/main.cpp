@@ -139,6 +139,9 @@ void test_gap_buffer()
 	}
 	buf.insert(0, 'x');		//	ギャップを先頭に移動
 	buf.resize(20, 'b');
+	//
+	gap_buffer<short> wbuf;
+	wbuf.resize(SZ);
 }
 void test_HierBuffer()
 {

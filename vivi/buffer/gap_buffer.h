@@ -255,15 +255,20 @@ public:
 			m_size = sz;
 		} else {
 			move_gap(s);		//	ƒMƒƒƒbƒv‚ğÅŒã‚ÉˆÚ“®
+			auto diff = sz - s;
 			if( sizeof(Type) == 1 ) {
-				memset((void*)(m_data + m_gapIndex), (char)t, sz - s);
-				m_gapIndex += sz - sz; 
-				m_gapSize -= sz - s;
-				m_size = sz;
+				memset((void*)(m_data + m_gapIndex), (char)t, diff);
 			} else {
-				while( ++s <= sz )
-					push_back(t);
+				pointer ptr = m_data + m_gapIndex;
+				while( ++s <= sz ) {
+					*ptr++ = t;
+				}
+				//while( ++s <= sz )
+				//	push_back(t);
 			}
+			m_gapIndex += diff; 
+			m_gapSize -= diff;
+			m_size = sz;
 		}
 	}
 	bool reserve(size_type sz)
@@ -339,6 +344,10 @@ public:
 		++m_size;
 		//return true;
 	}
+	void push_front(value_type v)
+	{
+		insert(0, v);
+	}
 	bool insert(pos_t ix, value_type v)
 	{
 		if( !reserve(size() + 1) ) return false;
@@ -370,6 +379,10 @@ public:
 			++m_gapSize;
 			--m_size;
 		}
+	}
+	void pop_front()
+	{
+		erase(0);
 	}
 	void erase(pos_t ix)
 	{
