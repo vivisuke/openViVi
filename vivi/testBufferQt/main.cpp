@@ -1,5 +1,6 @@
-//#include <QtCore/QCoreApplication>
+﻿//#include <QtCore/QCoreApplication>
 #include <iostream>
+#include <chrono>
 #include <random>
 #include <assert.h>
 #include <exception>
@@ -7,6 +8,9 @@
 #include "../buffer/HierBuffer.h"
 
 using namespace std;
+
+#define		SZ			(1024*1024*1024)
+#define		GAP		256
 
 random_device g_rd;
 #if	1
@@ -17,11 +21,14 @@ mt19937 g_mt(0);
 
 void test_gap_buffer();
 void test_HierBuffer();
+void time_gap_buffer();
 
 int main(int argc, char *argv[])
 {
 	test_gap_buffer();
 	test_HierBuffer();
+	//
+	time_gap_buffer();
 	//
 	//QCoreApplication a(argc, argv);
 	//return a.exec();
@@ -123,6 +130,15 @@ void test_gap_buffer()
 	for (int i = 0; i < SIZE; ++i) {
 		assert( vec3[i] == buf3[i] );
 	}
+	//
+	buf.clear();
+	buf.resize(10, 'a');
+	assert( buf.size() == 10 );
+	for (int i = 0; i != buf.size(); ++i) {
+		assert( buf[i] == 'a' );
+	}
+	buf.insert(0, 'x');		//	ギャップを先頭に移動
+	buf.resize(20, 'b');
 }
 void test_HierBuffer()
 {
@@ -206,4 +222,41 @@ void test_HierBuffer()
 		assert( vec3[i] == buf3[i] );
 	}
 	//
+}
+void time_gap_buffer()
+{
+	if( false ) {
+		cout << "push_back():\n";
+		gap_buffer<char> buf;
+		auto start = std::chrono::system_clock::now();
+		for (int i = 0; i < SZ; ++i)
+			buf.push_back((char)i);
+		auto end = std::chrono::system_clock::now();       // 計測終了時刻を保存
+		auto dur = end - start;        // 要した時間を計算
+		auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();	
+		cout << msec << "msec\n\n";
+	}
+	if( false ) {
+		cout << "push_front():\n";
+		gap_buffer<char> buf;
+		auto start = std::chrono::system_clock::now();
+		for (int i = 0; i < SZ; ++i)
+			buf.insert(0, (char)i);
+		auto end = std::chrono::system_clock::now();       // 計測終了時刻を保存
+		auto dur = end - start;        // 要した時間を計算
+		auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();	
+		cout << msec << "msec\n\n";
+	}
+	if( true ) {
+		cout << "pop_back() 1024 times:\n";
+		gap_buffer<char> buf;
+		buf.resize(SZ);
+		auto start = std::chrono::system_clock::now();
+		for (int i = 0; i < 1024; ++i)
+			buf.pop_back();
+		auto end = std::chrono::system_clock::now();       // 計測終了時刻を保存
+		auto dur = end - start;        // 要した時間を計算
+		auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();	
+		cout << msec << "msec\n\n";
+	}
 }

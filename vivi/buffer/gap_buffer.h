@@ -242,19 +242,28 @@ public:
 		if( ix >= m_gapIndex ) ix += m_gapSize;
 		return m_data[ix];
 	}
-	void resize(size_type sz)
+	void resize(size_type sz, Type t = Type())
 	{
 		if (!reserve(sz))
 			return;
 		size_type s = size();
-		if( sz <= s ) {
+		if( sz == s ) return;
+		if( sz < s ) {			//	現サイズが sz より小さい場合
 			move_gap(size());		//	ギャップを末尾に移動
 			m_gapIndex -= s - sz; 
 			m_gapSize += s - sz;
 			m_size = sz;
 		} else {
-			while( ++s <= sz )
-				push_back(Type());
+			move_gap(s);		//	ギャップを最後に移動
+			if( sizeof(Type) == 1 ) {
+				memset((void*)(m_data + m_gapIndex), (char)t, sz - s);
+				m_gapIndex += sz - sz; 
+				m_gapSize -= sz - s;
+				m_size = sz;
+			} else {
+				while( ++s <= sz )
+					push_back(t);
+			}
 		}
 	}
 	bool reserve(size_type sz)
