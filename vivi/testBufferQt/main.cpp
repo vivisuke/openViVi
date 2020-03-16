@@ -262,4 +262,18 @@ void time_gap_buffer()
 		auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();	
 		cout << msec << "msec\n\n";
 	}
+	if( true ) {
+		cout << "pop_back(), pop_front() 10 times:\n";
+		gap_buffer<char> buf;
+		buf.resize(SZ);
+		auto start = std::chrono::system_clock::now();
+		for (int i = 0; i < 10; ++i) {
+			buf.pop_back();
+			buf.pop_front();
+		}
+		auto end = std::chrono::system_clock::now();       // 計測終了時刻を保存
+		auto dur = end - start;        // 要した時間を計算
+		auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();	
+		cout << msec << "msec\n\n";
+	}
 }

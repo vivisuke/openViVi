@@ -388,7 +388,7 @@ public:
 	{
 		if( ix < 0 || ix >= size() ) return;
 		move_gap(ix);
-		--m_gapIndex;
+		//--m_gapIndex;
 		++m_gapSize;
 		--m_size;
 	}
