@@ -32,5 +32,8 @@
     <ClInclude Include="..\buffer\HierBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\buffer\gap_buffer_MT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <exception>
 #include "../buffer/gap_buffer.h"
+#include "../buffer/gap_buffer_MT.h"
 #include "../buffer/HierBuffer.h"
 
 using namespace std;
@@ -20,15 +21,17 @@ mt19937 g_mt(0);
 #endif
 
 void test_gap_buffer();
+void test_gap_buffer_MT();
 void test_HierBuffer();
 void time_gap_buffer();
 
 int main(int argc, char *argv[])
 {
 	test_gap_buffer();
+	test_gap_buffer_MT();
 	test_HierBuffer();
 	//
-	time_gap_buffer();
+	//time_gap_buffer();
 	//
 	//QCoreApplication a(argc, argv);
 	//return a.exec();
@@ -142,6 +145,35 @@ void test_gap_buffer()
 	//
 	gap_buffer<short> wbuf;
 	wbuf.resize(SZ);
+}
+void test_gap_buffer_MT()
+{
+	gap_buffer_MT<char> buf;
+	assert( buf.isEmpty() );
+	assert( buf.empty() );
+	assert( buf.size() == 0 );
+	//
+	buf.push_back('a');
+	assert(!buf.isEmpty());
+	assert(!buf.empty());
+	assert(buf.size() == 1);
+	assert(buf.front() == 'a');
+	assert(buf.back() == 'a');
+	buf.push_back('z');
+	assert(!buf.isEmpty());
+	assert(!buf.empty());
+	assert(buf.size() == 2);
+	assert(buf.front() == 'a');
+	assert(buf.back() == 'z');
+	assert(buf.at(0) == 'a');
+	assert(buf.at(1) == 'z');
+	assert(buf[0] == 'a');
+	assert(buf[1] == 'z');
+	buf.clear();
+	assert(buf.isEmpty());
+	assert(buf.empty());
+	assert(buf.size() == 0);
+	//
 }
 void test_HierBuffer()
 {

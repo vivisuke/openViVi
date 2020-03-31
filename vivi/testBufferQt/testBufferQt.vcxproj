@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\buffer\gap_buffer.h" />
+    <ClInclude Include="..\buffer\gap_buffer_MT.h" />
     <ClInclude Include="..\buffer\HierBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
