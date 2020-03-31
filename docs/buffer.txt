@@ -3,6 +3,48 @@
 ・途中にギャップを持つデータ構造
 ・編集箇所が局所的であれば挿入・削除処理時間が O(1) と高速
 ・データが多く（１G程度以上）、編集箇所が局所化されていない場合は処理時間が O(N) と低速
-・gap_buffer メンバ関数：
+・gap_buffer<value_type> public メンバ関数：
+	・状態参照
+		bool isEmpty() const
+		bool empty() const
+		size_type size() const
+		size_type capacity() const
+	・状態変更
+		void resize(size_type sz, Type t = Type())
+		bool reserve(size_type sz)
+	・参照
+		value_type& front()
+		value_type& back()
+		value_type operator[](pos_t ix) const	//	ix の範囲チェックなし
+		value_type &operator[](pos_t ix)
+		value_type at(pos_t ix) const			//	ix の範囲チェックあり
+		value_type& at(pos_t ix)
+		value_type &ref(pos_t ix) const
+		size_type get_data(pos_t ix, pointer buf, int bufSize) const		//	[ix, ix+bufSize) を buf にコピー
+		value_type &ref(pos_t ix)
+		value_type *data()
+	・挿入
+		void push_back(value_type v)
+		void push_front(value_type v)
+		bool insert(pos_t ix, value_type v)
+		bool insert(pos_t ix, const_pointer first, const_pointer last)
+		bool insert(pos_t ix, const_pointer first, ssize_t sz)
+	・置換
+		void setAt(pos_t ix, value_type v)
+	・削除
+		void clear()
+		void pop_back()
+		void pop_front()
+		void erase(pos_t ix)
+		void erase(size_t first, size_t sz)			//	erase [first, first + sz)
+		void eraseFL(size_t first, size_t last)		//	erase [first, last)
+	・検索
+		bool isMatch(pos_t ix, const value_type *pat, ssize_t sz) const
+		bool isMatchLC(pos_t ix, const value_type *pat, size_t sz) const
+		pos_t indexOf(const value_type *pat, size_t sz, pos_t ix = 0, bool ic = false) const
+	・その他
+		void swap(gap_buffer<value_type> &x)
+		bool operator==(const gap_buffer<value_type> &x) const
+		bool operator!=(const gap_buffer<value_type> &x) const
 
 
