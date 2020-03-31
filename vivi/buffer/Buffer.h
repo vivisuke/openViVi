@@ -27,10 +27,10 @@ typedef unsigned int uint;
 #include "gap_deque.h"
 #endif
 
-#if 1
-#ifndef	wchar_t
-//typedef unsigned short wchar_t;
-#endif
+#if 0
+//#ifndef	wchar_t
+typedef unsigned short wchar_t;
+//#endif
 #endif
 #ifdef	_WIN64
 	typedef __int64 ssize_t;
@@ -59,9 +59,9 @@ class UndoActionInsert;
 class UndoActionDelete;
 class SSSearch;
 
-class Buffer //: public QObject
+class Buffer : public QObject
 {
-	//Q_OBJECT
+	Q_OBJECT
 
 public:
 	typedef wchar_t char_t;
@@ -189,12 +189,10 @@ protected:
 	void	inserted(pos_t pos, ssize_t sz);		//	削除範囲修正
 	void	deleted(pos_t pos, ssize_t sz);
 
-#if	0
 signals:
 	void	onCleared();
 	void	onInserted(int dln, int d);
 	void	onDeleted(int dln, int d);			//	d should be > 0
-#endif
 
 private:
 

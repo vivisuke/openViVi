@@ -220,7 +220,7 @@ bool Buffer::basicInsertText(pos_t pos, cchar_t *first, ssize_t sz, line_t ln)
 	if( !atEOF )
 		m_lineMgr->textInserted(ln, sz);
 	m_markMgr->inserted(pos, sz);
-	//##Qt##	emit onInserted(ln0, m_lineMgr->lineCount() - lineCount0);
+	emit onInserted(ln0, m_lineMgr->lineCount() - lineCount0);
 	//if( m_lineMgr->lineCount() != lineCount0 ) {
 		//for(auto itr = m_viewLineMgrs.begin(); itr != m_viewLineMgrs.end(); ++itr)
 		//	(*itr)->inserted(ln0, m_lineMgr->lineCount() - lineCount0);
@@ -246,7 +246,7 @@ void Buffer::basicDeleteText(pos_t first, ssize_t sz, line_t line)
 		m_lineMgr->init();
 		m_buffer->clear();
 		m_lastModifiedPos = 0;
-		//##Qt##	emit  onDeleted(first, lineCount0);
+		emit  onDeleted(first, lineCount0);
 		return;
 	}
 	char_t prevChar = m_buffer->at(first-1);	//	範囲外は '\0' を返す仕様なので範囲チェック不要
@@ -275,7 +275,7 @@ void Buffer::basicDeleteText(pos_t first, ssize_t sz, line_t line)
 	m_lineMgr->textInserted(line, -sz);
 	m_buffer->eraseFL(first, last);
 	m_markMgr->deleted(first, sz);
-	//##t##	emit onDeleted(line0, lineCount0 - m_lineMgr->lineCount());
+	emit onDeleted(line0, lineCount0 - m_lineMgr->lineCount());
 	m_lastModifiedPos = first;
 	if( !m_emphasizedRanges.empty() )
 		deleted(first, sz);
