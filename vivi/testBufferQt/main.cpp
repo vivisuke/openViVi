@@ -1,4 +1,4 @@
-﻿//#include <QtCore/QCoreApplication>
+﻿#include <QtCore/QCoreApplication>
 #include <iostream>
 #include <chrono>
 #include <random>

@@ -12,7 +12,7 @@
 #ifndef		_HEADER_BUFFER_H
 #define		_HEADER_BUFFER_H
 
-//#include <QObject>
+#include <QObject>
 
 typedef unsigned char byte;
 typedef unsigned int uint;

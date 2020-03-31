@@ -45,10 +45,10 @@
 ◎ C 03/16 03/16 0.001 ToDo gap_buffer::resize() 高速化：char 以外の場合
 ◎ C 03/16 03/16 0.001 ToDo gap_buffer::push_front(), pop_front()
 ◎ C 03/16 03/16 0.001 問題 gap_buffer::pop_front(), pop_front() を繰り返しコールしたらクラッシュした
-● C 03/31             ToDo isMatch()：at() ではなく operator[] を使用
+● C 03/31             ToDo isMatch()：at() ではなく operator[] を使用？
 ● C 03/31             問題 gap_buffer::addAt() は意味不明
-● C 03/31             ToDo 
-● C 03/31             ToDo 
+● C 03/31             ToDo ものはついでなので、gap_buffer::begin(), end() などを実装しておく？
+◎ C 03/31 03/31 0.001 ToDo buffer/lineMgr.h 等を追加
 ● C 03/31             ToDo 
 ● C 03/31             ToDo 
 ● C 03/31             ToDo 

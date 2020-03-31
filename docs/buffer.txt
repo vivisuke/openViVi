@@ -1,8 +1,10 @@
 
 ■ gap_buffer
 ・途中にギャップを持つデータ構造
-・編集箇所が局所的であれば挿入・削除処理時間が O(1) と高速
-・データが多く（１G程度以上）、編集箇所が局所化されていない場合は処理時間が O(N) と低速
+	・編集箇所が局所的であれば挿入・削除処理時間が O(1) で高速
+	・データが多く（１G程度以上）、編集箇所が局所化されていない場合は処理時間が O(N) で低速
+・基本は標準ライブラリのコンテナクラス（vector等）と同じインタフェースを持つが、
+　高速化（単純化？）のために、挿入削除等の位置指定にイテレータではなくインデックスを用いる
 ・gap_buffer<value_type> public メンバ関数：
 	・状態参照
 		bool isEmpty() const
@@ -41,7 +43,7 @@
 	・検索
 		bool isMatch(pos_t ix, const value_type *pat, ssize_t sz) const
 		bool isMatchLC(pos_t ix, const value_type *pat, size_t sz) const
-		pos_t indexOf(const value_type *pat, size_t sz, pos_t ix = 0, bool ic = false) const
+		pos_t indexOf(const value_type *pat, size_t sz, pos_t ix = 0, bool ic = false) const	//	native text search
 	・その他
 		void swap(gap_buffer<value_type> &x)
 		bool operator==(const gap_buffer<value_type> &x) const

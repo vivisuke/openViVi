@@ -256,6 +256,12 @@ public:
 		} else {
 			move_gap(s);		//	ƒMƒƒƒbƒv‚ğÅŒã‚ÉˆÚ“®
 			auto diff = sz - s;
+#if	1
+				pointer ptr = m_data + m_gapIndex;
+				while( ++s <= sz ) {
+					*ptr++ = t;
+				}
+#else
 			if( sizeof(Type) == 1 ) {
 				memset((void*)(m_data + m_gapIndex), (char)t, diff);
 			} else {
@@ -266,6 +272,7 @@ public:
 				//while( ++s <= sz )
 				//	push_back(t);
 			}
+#endif
 			m_gapIndex += diff; 
 			m_gapSize -= diff;
 			m_size = sz;
