@@ -1,6 +1,70 @@
+■ Buffer
+・GUIから直接利用されるバッファクラス
+	・文字サイズは16ビット固定
+	・行管理有り、行フラグ、マーク機能、undo/redo機能あり
+・Buffer public メンバ関数：
+    ・状態参照
+        bool isEmpty() const
+        bool isModified() const
+        size_type size() const
+        size_type capacity() const
+        line_t lineCount() const        //  行数
+        line_t EOFLine() const          //  EOF行番号を返す
+        pos_t lineStartPosition(line_t line) const  //  指定行の先頭位置を返す
+        ssize_t lineSize(line_t line) const         //  指定行サイズを返す
+        line_t positionToLine(pos_t pos) const      //  指定位置を含む行の行番号を返す
+    ・状態変更
+    ・参照
+		char_t	operator[](pos_t pos) const
+		char_t	charAt(pos_t) const;
+		char_t	*getText(pos_t &) const;
+		const char_t	*raw_data(pos_t pos) const;
+		bool	getText(pos_t, char_t *buf, int length) const;
+		bool	getText(pos_t pos, ssize_t sz, std::vector<char_t> &) const;
+    ・挿入
+		bool	insertText(pos_t, cchar_t *, ssize_t, int = -1)		//	挿入、undo 対応
+		bool	basicInsertText(pos_t, cchar_t)		//	undo 非対応
+		bool	basicInsertText(pos_t, cchar_t *, cchar_t *, line_t ln = -1)		//	undo 非対応
+		bool	basicInsertText(pos_t, cchar_t *, ssize_t, line_t ln = -1)		//	undo 非対応
+    ・削除
+		bool	deleteText(pos_t, ssize_t, bool BS=false, int = -1)	//	削除、undo 対応
+		void	basicDeleteText(pos_t)
+		void	basicDeleteText(pos_t, ssize_t sz, line_t ln = -1)
+    ・置換
+		bool	replaceText(pos_t pos, ssize_t dsz, cchar_t *, int isz, int = -1,
+										bool = false)		//	編集箇所更新
+		int		replaceAll(cchar_t *before, ssize_t, cchar_t *after, ssize_t, uint opt = 0, byte = 0)
+		int		replaceAll(cchar_t *before, ssize_t, cchar_t *after, ssize_t, uint opt, byte, pos_t, pos_t &, pos_t &, bool = true)
+		void	basicReplaceText(pos_t, ssize_t dsz, cchar_t *, ssize_t isz, line_t ln = -1)
+    ・undo/redo
+        int     undo()
+        int     redo()
+        void    openUndoBlock()
+        void    closeUndoBlock()
+        void    closeAllUndoBlock()
+        void    clearUndoMgr()
+    ・検索
+		pos_t	strstr(cchar_t *pat, ssize_t sz, pos_t from = 0, pos_t last = -1, bool ic = false) const;
+		pos_t	strrstr(cchar_t *pat, ssize_t sz, pos_t from = -1, pos_t last = 0, bool ic = false) const;
+		pos_t	indexOf(SSSearch &, cchar_t *pat, ssize_t sz, pos_t from = 0, uint opt = 0, pos_t last = -1, byte = 0) const;
+		pos_t	rIndexOf(SSSearch &, cchar_t *pat, ssize_t sz, pos_t from = 0, uint opt = 0, pos_t last = -1, byte = 0) const;
+		bool	isMatched(cchar_t *pat, ssize_t sz, pos_t pos) const;
+		bool	isMatched(cchar_t *pat, pos_t pos) const;
+		bool	isMatchedIC(cchar_t *pat, ssize_t sz, pos_t pos) const;
+		bool	isMatchedIC(cchar_t *pat, pos_t pos) const;
+    ・行フラグ
+		void	setLineFlag(line_t, uint);
+		void	resetLineFlag(line_t, uint);
+	・マーク
+		void	setMark(pos_t pos, char ch = '\0');		//	ch = ['a', 'z'], pos < 0 for clear Mark
+		void	clearMark(char ch);
+		void	clearMark(pos_t pos);
+    ・その他
+
 
 ■ gap_buffer
 ・テキストデータを管理するための最下層クラス
+    ・テキストデータの参照・挿入・削除機能等を持つ
 ・途中にギャップを持つデータ構造
     ・編集箇所が局所的であれば挿入・削除処理時間が O(1) で高速
     ・データが多く（１G程度以上）、編集箇所が局所化されていない場合は処理時間が O(N) で低速
@@ -32,8 +96,6 @@
         bool insert(pos_t ix, value_type v)
         bool insert(pos_t ix, const_pointer first, const_pointer last)
         bool insert(pos_t ix, const_pointer first, ssize_t sz)
-    ・置換
-        void setAt(pos_t ix, value_type v)
     ・削除
         void clear()
         void pop_back()
@@ -41,6 +103,8 @@
         void erase(pos_t ix)
         void erase(size_t first, size_t sz)         //  erase [first, first + sz)
         void eraseFL(size_t first, size_t last)     //  erase [first, last)
+    ・置換
+        void setAt(pos_t ix, value_type v)
     ・検索
         bool isMatch(pos_t ix, const value_type *pat, ssize_t sz) const
         bool isMatchLC(pos_t ix, const value_type *pat, size_t sz) const

@@ -49,12 +49,15 @@
 ● C 03/31             問題 gap_buffer::addAt() は意味不明
 ● C 03/31             ToDo ものはついでなので、gap_buffer::begin(), end() などを実装しておく？
 ◎ C 03/31 03/31 0.001 ToDo buffer/lineMgr.h 等を追加
-● C 03/31             ToDo 
-● C 03/31             ToDo 
-● C 03/31             ToDo 
-● C 03/31             ToDo 
-● C 03/31             ToDo 
-● C 03/31             ToDo 
-● C 03/31             ToDo 
-● C 03/31             ToDo 
-● C 03/31             ToDo 
+● C 03/31             ToDo Buffer::operator[](pos) は範囲チェック無し、charAt(pos) は範囲チェック有りに
+● C 04/01             問題 Buffer::lineCount() の返す値が不正？
+◎ C 04/01 04/01 0.001 問題 デバッグモードで実行しても assert() が実行されない？→ Q_ASSERT() に変更
+◎ C 04/01 04/01 0.001 ToDo MainWindows：QtabWidget を配置
+● C 04/01             ToDo 
+● C 04/01             ToDo 
+● C 04/01             ToDo 
+● C 04/01             ToDo 
+● C 04/01             ToDo 
+● C 04/01             ToDo 
+● C 04/01             ToDo 
+● C 04/01             ToDo 
