@@ -65,8 +65,8 @@ class Buffer : public QObject
 	Q_OBJECT
 
 public:
-	typedef wchar_t char_t;
-	typedef const wchar_t cchar_t;
+	//typedef wchar_t wchar_t;
+	typedef const wchar_t cwchar_t;
 
 	enum {
 		CASE_SENSITIVE = 0,
@@ -101,30 +101,30 @@ public:
 	pos_t		lineStartPosition(line_t line) const;
 	ssize_t		lineSize(line_t line) const;
 	line_t		positionToLine(pos_t pos) const;
-	char_t	charAt(pos_t) const;
-	char_t	*getText(pos_t &) const;
-	const char_t	*raw_data(pos_t pos) const;
-	bool	getText(pos_t, char_t *buf, int length) const;
-	bool	getText(pos_t pos, ssize_t sz, std::vector<char_t> &) const;
-	bool	isEqual(pos_t pos, const char_t *ptr) const;
+	wchar_t	charAt(pos_t) const;
+	wchar_t	*getText(pos_t &) const;
+	const wchar_t	*raw_data(pos_t pos) const;
+	bool	getText(pos_t, wchar_t *buf, int length) const;
+	bool	getText(pos_t pos, ssize_t sz, std::vector<wchar_t> &) const;
+	bool	isEqual(pos_t pos, const wchar_t *ptr) const;
 	bool	canUndo() const;
 	bool	canRedo() const;
-	//bool	startsWith(pos_t pos, cchar_t *pat, ssize_t sz) const;
-	pos_t		strstr(cchar_t *pat, ssize_t sz, pos_t from = 0, pos_t last = -1, bool ic = false) const;
-	pos_t		strrstr(cchar_t *pat, ssize_t sz, pos_t from = -1, pos_t last = 0, bool ic = false) const;
-	//int		indexOf(char_t *pat, char_t *pend, int from = 0, bool ic = false) const;
-	//int		indexOf(cchar_t *pat, int from = 0, bool ic = false) const;
+	//bool	startsWith(pos_t pos, cwchar_t *pat, ssize_t sz) const;
+	pos_t		strstr(cwchar_t *pat, ssize_t sz, pos_t from = 0, pos_t last = -1, bool ic = false) const;
+	pos_t		strrstr(cwchar_t *pat, ssize_t sz, pos_t from = -1, pos_t last = 0, bool ic = false) const;
+	//int		indexOf(wchar_t *pat, wchar_t *pend, int from = 0, bool ic = false) const;
+	//int		indexOf(cwchar_t *pat, int from = 0, bool ic = false) const;
 	//	from:検索開始位置、last：検索終了位置
-	pos_t		indexOf(SSSearch &, cchar_t *pat, ssize_t sz, pos_t from = 0, uint opt = 0, pos_t last = -1, byte = 0) const;
+	pos_t		indexOf(SSSearch &, cwchar_t *pat, ssize_t sz, pos_t from = 0, uint opt = 0, pos_t last = -1, byte = 0) const;
 	//	from:検索開始位置、last：検索終了位置
-	pos_t		rIndexOf(SSSearch &, cchar_t *pat, ssize_t sz, pos_t from = 0, uint opt = 0, pos_t last = -1, byte = 0) const;
-	bool	isMatched(cchar_t *pat, ssize_t sz, pos_t pos) const;
-	bool	isMatched(cchar_t *pat, pos_t pos) const;
-	bool	isMatchedIC(cchar_t *pat, ssize_t sz, pos_t pos) const;
-	bool	isMatchedIC(cchar_t *pat, pos_t pos) const;
+	pos_t		rIndexOf(SSSearch &, cwchar_t *pat, ssize_t sz, pos_t from = 0, uint opt = 0, pos_t last = -1, byte = 0) const;
+	bool	isMatched(cwchar_t *pat, ssize_t sz, pos_t pos) const;
+	bool	isMatched(cwchar_t *pat, pos_t pos) const;
+	bool	isMatchedIC(cwchar_t *pat, ssize_t sz, pos_t pos) const;
+	bool	isMatchedIC(cwchar_t *pat, pos_t pos) const;
 	bool	operator==(const Buffer &) const;
 	bool	operator!=(const Buffer &x) const { return !operator==(x); }
-	char_t	operator[](pos_t pos) const { return charAt(pos); }
+	wchar_t	operator[](pos_t pos) const { return charAt(pos); }
 	uint	lineFlags(int ln) const;
 	char	isMarked(pos_t pos) const;	//	マークされていない場合は 0 を返す
 	int		markPos(char ch) const;
@@ -150,14 +150,14 @@ public:
 	void	clearLineFlags();
 	void	prohibitMergeUndo();			//	挿入マージ禁止
 	void	onSaved();			//	保存時にコールされる
-	char_t	*data();
-	bool	insertText(pos_t, cchar_t *, ssize_t, int = -1);		//	挿入、undo 対応
+	wchar_t	*data();
+	bool	insertText(pos_t, cwchar_t *, ssize_t, int = -1);		//	挿入、undo 対応
 	bool	deleteText(pos_t, ssize_t, bool BS=false, int = -1);	//	削除、undo 対応
 //	置換、undo 対応
-	bool	replaceText(pos_t pos, ssize_t dsz, cchar_t *, int isz, int = -1,
+	bool	replaceText(pos_t pos, ssize_t dsz, cwchar_t *, int isz, int = -1,
 									bool = false);		//	編集箇所更新
-	int		replaceAll(cchar_t *before, ssize_t, cchar_t *after, ssize_t, uint opt = 0, byte = 0);
-	int		replaceAll(cchar_t *before, ssize_t, cchar_t *after, ssize_t, uint opt, byte, pos_t, pos_t &, pos_t &, bool = true);
+	int		replaceAll(cwchar_t *before, ssize_t, cwchar_t *after, ssize_t, uint opt = 0, byte = 0);
+	int		replaceAll(cwchar_t *before, ssize_t, cwchar_t *after, ssize_t, uint opt, byte, pos_t, pos_t &, pos_t &, bool = true);
 	int		undo();
 	int		redo();
 	void	openUndoBlock();
@@ -165,12 +165,12 @@ public:
 	void	closeAllUndoBlock();
 	void	clearUndoMgr();
 	//	undo 処理を行わない編集メソッド
-	bool	basicInsertText(pos_t, cchar_t);
-	bool	basicInsertText(pos_t, cchar_t *, cchar_t *, line_t ln = -1);
-	bool	basicInsertText(pos_t, cchar_t *, ssize_t, line_t ln = -1);
+	bool	basicInsertText(pos_t, cwchar_t);
+	bool	basicInsertText(pos_t, cwchar_t *, cwchar_t *, line_t ln = -1);
+	bool	basicInsertText(pos_t, cwchar_t *, ssize_t, line_t ln = -1);
 	void	basicDeleteText(pos_t);
 	void	basicDeleteText(pos_t, ssize_t sz, line_t ln = -1);
-	void	basicReplaceText(pos_t, ssize_t dsz, cchar_t *, ssize_t isz, line_t ln = -1);
+	void	basicReplaceText(pos_t, ssize_t dsz, cwchar_t *, ssize_t isz, line_t ln = -1);
 	//	↑undo 処理を行わない編集メソッド
 	void	rebuildLineMgr();
 	void	setLineFlag(line_t, uint);
@@ -200,9 +200,9 @@ private:
 private:
 	//class GapBuffer	*m_buffer;
 #if	USE_GAP_DEQUE
-	gap_deque<char_t>	*m_buffer;		//	テキスト生データ
+	gap_deque<wchar_t>	*m_buffer;		//	テキスト生データ
 #else
-	gap_buffer<char_t>	*m_buffer;		//	テキスト生データ
+	gap_buffer<wchar_t>	*m_buffer;		//	テキスト生データ
 #endif
 	LineMgr		*m_lineMgr;				//	行情報管理クラス
 	UndoMgr		*m_undoMgr;				//	Undo管理クラス

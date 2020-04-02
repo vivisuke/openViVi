@@ -166,7 +166,7 @@ public:
 //template<typename T>
 class UndoMgr
 {
-	typedef wchar_t char_t;
+	//typedef wchar_t char_t;
 
 public:
 	UndoMgr(Buffer *);
@@ -213,8 +213,8 @@ public:
 	//bool	m_blockOpened;
 	bool	m_actionPushed;			//	オープン中にアクションが追加された
 	std::vector<UndoAction *>	m_stack;
-	std::vector<char_t>		m_delText;		//	削除文字列
-	std::vector<char_t>		m_insText;		//	挿入文字列
+	std::vector<wchar_t>		m_delText;		//	削除文字列
+	std::vector<wchar_t>		m_insText;		//	挿入文字列
 
 #if USE_BOOST_POOL
 	boost::object_pool<UndoActionInsert>	m_actInsPool;

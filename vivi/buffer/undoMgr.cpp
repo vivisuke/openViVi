@@ -20,7 +20,7 @@ namespace My {
 	T min(T a, T b) { return (a>b ? a : b); }
 };
 #endif
-inline bool isNewLine(Buffer::char_t ch)
+inline bool isNewLine(wchar_t ch)
 {
 	return ch == '\r' || ch == '\n';
 }
@@ -103,7 +103,7 @@ void UndoMgr::onSaved()
 		}
 		case UndoAction::ACT_DELETE: {
 			auto p = (UndoActionDelete *)m_stack[i];
-			const int bits = sizeof(char_t) * 8 / 2;
+			const int bits = sizeof(wchar_t) * 8 / 2;
 			int msz = (p->m_lc + bits - 1) / bits;
 			int ix = p->m_ix + p->m_size;
 			for(int i = 0; i < msz; ++i) {
@@ -227,7 +227,7 @@ bool UndoMgr::push_back_delText(int pos, int sz, bool BS, int ln)
 {
 	const int ix = m_delText.size();
 	int ln2 = m_buffer->positionToLine(pos + sz);
-	const int bits = sizeof(char_t) * 8 / 2;
+	const int bits = sizeof(wchar_t) * 8 / 2;
 	int msz = (ln2 - ln + 1 + bits - 1) / bits;
 	m_delText.resize(ix + sz + msz);		//	削除文字用バッファ容量確保
 	m_buffer->getText(pos, &m_delText[ix], sz);
@@ -246,7 +246,7 @@ bool UndoMgr::push_back_delText(int pos, int sz, bool BS, int ln)
 	act->m_ln = ln;
 	act->m_lc = ln2 - ln + 1;		//	削除行情報行数
 	int mix = ix + sz;
-	char_t mask = 1;
+	wchar_t mask = 1;
 	for(int i = 0; ln <= ln2; ++i, ++ln) {
 		if( (m_buffer->lineFlags(ln) & Buffer::LINEFLAG_MODIFIED) != 0 )
 			m_delText[mix] |= mask;
@@ -269,7 +269,7 @@ UndoActionReplace *UndoMgr::push_back_repText(int pos, int dsz, int isz, int ln)
 {
 	const int ix = m_delText.size();
 	int ln2 = m_buffer->positionToLine(pos + dsz);
-	const int bits = sizeof(char_t) * 8 / 2;
+	const int bits = sizeof(wchar_t) * 8 / 2;
 	int msz = (ln2 - ln + 1 + bits - 1) / bits;
 	m_delText.resize(ix + dsz + msz);		//	削除文字用バッファ容量確保
 	m_buffer->getText(pos, &m_delText[ix], dsz);
@@ -287,7 +287,7 @@ UndoActionReplace *UndoMgr::push_back_repText(int pos, int dsz, int isz, int ln)
 	act->m_lcDel = ln2 - ln + 1;		//	削除行情報行数
 	act->m_sizeIns = isz;
 	int mix = ix + dsz;
-	char_t mask = 1;
+	wchar_t mask = 1;
 	for(int i = 0; ln <= ln2; ++i, ++ln) {
 		if( (m_buffer->lineFlags(ln) & Buffer::LINEFLAG_MODIFIED) != 0 )
 			m_delText[mix] |= mask;
@@ -327,12 +327,12 @@ int UndoMgr::undo()
 			auto p = (UndoActionInsert *)ptr;
 			pos = p->m_pos;
 			const int ix = p->m_ix = m_insText.size();
-			const int bits = sizeof(char_t) * 8 / 2;
+			const int bits = sizeof(wchar_t) * 8 / 2;
 			int msz = (p->m_lc + bits - 1) / bits;
 			m_insText.resize(ix + p->m_size + msz);
 			m_buffer->getText(p->m_pos, &m_insText[ix], p->m_size);
 			int mix = ix + p->m_size;
-			char_t mask = 1;
+			wchar_t mask = 1;
 			int ln = p->m_ln;
 			for(int i = 0; i < p->m_lc; ++i, ++ln) {
 				if( (m_buffer->lineFlags(ln) & Buffer::LINEFLAG_MODIFIED) != 0 )
@@ -363,7 +363,7 @@ int UndoMgr::undo()
 			pos = (p->m_flags & UndoAction::FLAG_BS) ? p->m_pos + p->m_size : p->m_pos;
 			m_buffer->basicInsertText(p->m_pos, &m_delText[p->m_ix], p->m_size);
 			int ln = p->m_ln;
-			char_t mask = 1;
+			wchar_t mask = 1;
 			int ix = p->m_ix + p->m_size;
 			for(int i = 0; i < p->m_lc; ++i, ++ln) {
 				if( (m_delText[ix] & mask) != 0 )
@@ -387,12 +387,12 @@ int UndoMgr::undo()
 			auto p = (UndoActionReplace *)ptr;
 			pos = p->m_pos;
 			int ix = p->m_ixIns = m_insText.size();
-			const int bits = sizeof(char_t) * 8 / 2;
+			const int bits = sizeof(wchar_t) * 8 / 2;
 			int msz = (p->m_lcIns + bits - 1) / bits;
 			m_insText.resize(ix + p->m_sizeIns + msz);
 			m_buffer->getText(p->m_pos, &m_insText[ix], p->m_sizeIns);
 			int mix = ix + p->m_sizeIns;
-			char_t mask = 1;
+			wchar_t mask = 1;
 			int ln = p->m_ln;
 			for(int i = 0; i < p->m_lcIns; ++i, ++ln) {
 				if( (m_buffer->lineFlags(ln) & Buffer::LINEFLAG_MODIFIED) != 0 )
@@ -481,7 +481,7 @@ int UndoMgr::redo()
 			auto p = (UndoActionInsert *)ptr;
 			m_buffer->basicInsertText(p->m_pos, &m_insText[p->m_ix], p->m_size);
 			int ln = p->m_ln;
-			char_t mask = 1;
+			wchar_t mask = 1;
 			int ix = p->m_ix + p->m_size;
 			for(int i = 0; i < p->m_lc; ++i, ++ln) {
 				if( (m_insText[ix] & mask) != 0 )
@@ -512,13 +512,13 @@ int UndoMgr::redo()
 		case UndoAction::ACT_DELETE: {
 			auto p = (UndoActionDelete *)ptr;
 			const int ix = m_delText.size();
-			const int bits = sizeof(char_t) * 8 / 2;
+			const int bits = sizeof(wchar_t) * 8 / 2;
 			int msz = (p->m_lc + bits - 1) / bits;
 			m_delText.resize(ix + p->m_size + msz);
 			m_buffer->getText(p->m_pos, &m_delText[ix], p->m_size);
 			m_buffer->basicDeleteText(p->m_pos, p->m_size);
 			int mix = ix + p->m_size;
-			char_t mask = 1;
+			wchar_t mask = 1;
 			int ln = p->m_ln;
 			for(int i = 0; i < p->m_lc; ++i, ++ln) {
 				if( (m_buffer->lineFlags(ln) & Buffer::LINEFLAG_MODIFIED) != 0 )

@@ -30,9 +30,9 @@ Buffer::Buffer()
 	, m_seqNumber(0)
 {
 #if		USE_GAP_DEQUE
-	m_buffer = new gap_deque<char_t>();
+	m_buffer = new gap_deque<wchar_t>();
 #else
-	m_buffer = new gap_buffer<char_t>();
+	m_buffer = new gap_buffer<wchar_t>();
 #endif
 	m_lineMgr = new LineMgr(this);
 	m_undoMgr = new UndoMgr(this);
@@ -44,9 +44,9 @@ Buffer::Buffer(const Buffer &x)
 	, m_seqNumber(x.m_seqNumber)
 {
 #if		USE_GAP_DEQUE
-	m_buffer = new gap_deque<char_t>(*x.m_buffer);
+	m_buffer = new gap_deque<wchar_t>(*x.m_buffer);
 #else
-	m_buffer = new gap_buffer<char_t>(*x.m_buffer);
+	m_buffer = new gap_buffer<wchar_t>(*x.m_buffer);
 #endif
 	m_lineMgr = new LineMgr(*x.m_lineMgr);
 	m_undoMgr = new UndoMgr(this);		//	Undo情報はコピーされないものとする
@@ -87,18 +87,18 @@ bool Buffer::isBlankEOFLine() const
 {
 	if( isEmpty() ) return true;
 	pos_t last = m_buffer->size() - 1;
-	char_t ch = charAt(last);
+	wchar_t ch = charAt(last);
 	return ch == '\r' || ch == '\n';
 }
 bool Buffer::isSpaces(pos_t first, pos_t last) const
 {
 	while( first != last ) {
-		char_t ch = charAt(first++);
+		wchar_t ch = charAt(first++);
 		if( ch != ' ' && ch != '\t' ) return false;
 	}
 	return true;
 }
-bool Buffer::isEqual(pos_t pos, const char_t *ptr) const
+bool Buffer::isEqual(pos_t pos, const wchar_t *ptr) const
 {
 	while( *ptr != '\0' ) {
 		if( charAt(pos++) != *ptr++ )
@@ -110,7 +110,7 @@ ssize_t Buffer::size() const
 {
 	return m_buffer->size();
 }
-Buffer::char_t Buffer::charAt(pos_t ix) const
+wchar_t Buffer::charAt(pos_t ix) const
 {
 	return m_buffer->at(ix);
 }
@@ -157,28 +157,28 @@ bool Buffer::canCollapse(line_t ln) const
 {
 	return (m_lineMgr->lineFlags(ln) & LINEFLAG_CAN_COLLAPSE) != 0;
 }
-inline bool isNewLine(Buffer::char_t ch)
+inline bool isNewLine(wchar_t ch)
 {
 	return ch == '\r' || ch == '\n';
 }
 //	行管理対応、undo/redo 非対象
-bool Buffer::basicInsertText(pos_t pos, cchar_t ch)
+bool Buffer::basicInsertText(pos_t pos, cwchar_t ch)
 {
 	return basicInsertText(pos, &ch, &ch + 1);
 }
-bool Buffer::basicInsertText(pos_t pos, cchar_t *first, cchar_t *last, line_t ln)
+bool Buffer::basicInsertText(pos_t pos, cwchar_t *first, cwchar_t *last, line_t ln)
 {
 	//m_buffer->insert(pos, first, last);
 	return basicInsertText(pos, first, last - first, ln);
 }
-bool Buffer::basicInsertText(pos_t pos, cchar_t *first, ssize_t sz, line_t ln)
+bool Buffer::basicInsertText(pos_t pos, cwchar_t *first, ssize_t sz, line_t ln)
 {
 	if( !sz ) return true;
 	if( pos < 0 ) pos = 0;
 	else if( pos > size() ) pos = size();
 	bool wasBlankEOFLine = isBlankEOFLine();
 	const bool atEOF = pos == size();
-	cchar_t *last = first + sz;
+	cwchar_t *last = first + sz;
 	if( ln < 0 ) ln = positionToLine(pos);		//	Buffer::positionToLine() は最後の改行有無を考慮
 	const line_t ln0 = ln;		//	挿入位置
 	const line_t lineCount0 = m_lineMgr->lineCount();		//	挿入前行数
@@ -191,7 +191,7 @@ bool Buffer::basicInsertText(pos_t pos, cchar_t *first, ssize_t sz, line_t ln)
 	if( prevChar == '\r' && nextChar == '\n' )		//	CRLF の間に挿入
 		m_lineMgr->addLine(ln++, p);
 	while( first != last ) {
-		char_t ch = *first++;
+		wchar_t ch = *first++;
 		if( ch == '\r' ) {
 			if( atEOF && prevChar >= 0 && !isNewLine(prevChar) )
 				m_lineMgr->addAt(++ln, 1);
@@ -249,7 +249,7 @@ void Buffer::basicDeleteText(pos_t first, ssize_t sz, line_t line)
 		emit  onDeleted(first, lineCount0);
 		return;
 	}
-	char_t prevChar = m_buffer->at(first-1);	//	範囲外は '\0' を返す仕様なので範囲チェック不要
+	wchar_t prevChar = m_buffer->at(first-1);	//	範囲外は '\0' を返す仕様なので範囲チェック不要
 	if( line < 0 ) line = m_lineMgr->positionToLine(first);
 	const line_t line0 = line;
 	const line_t lineCount0 = m_lineMgr->lineCount();
@@ -280,7 +280,7 @@ void Buffer::basicDeleteText(pos_t first, ssize_t sz, line_t line)
 	if( !m_emphasizedRanges.empty() )
 		deleted(first, sz);
 }
-void Buffer::basicReplaceText(pos_t pos, ssize_t dsz, cchar_t *first, ssize_t isz, line_t ln)
+void Buffer::basicReplaceText(pos_t pos, ssize_t dsz, cwchar_t *first, ssize_t isz, line_t ln)
 {
 	basicDeleteText(pos, dsz, ln);
 	basicInsertText(pos, first, isz, ln);
@@ -306,7 +306,7 @@ void Buffer::rebuildLineMgr()
 	m_lineMgr->init();
 	pos_t pos = 0;
 	while( pos != size() ) {
-		char_t ch = charAt(pos++);
+		wchar_t ch = charAt(pos++);
 		if( ch == '\r' && pos < size() && charAt(pos) == '\n' )
 			++pos;
 		if( ch == '\r' || ch == '\n' )
@@ -315,28 +315,28 @@ void Buffer::rebuildLineMgr()
 	if( !isBlankEOFLine() )
 		m_lineMgr->push_back(pos);		//	最終行作成
 }
-Buffer::char_t *Buffer::data()
+wchar_t *Buffer::data()
 {
 	return m_buffer->data();
 }
-const Buffer::char_t *Buffer::raw_data(pos_t pos) const
+const wchar_t *Buffer::raw_data(pos_t pos) const
 {
 	return m_buffer->raw_data(pos);
 }
-bool Buffer::getText(pos_t pos, char_t *buf, int length) const
+bool Buffer::getText(pos_t pos, wchar_t *buf, int length) const
 {
 	if( length <= 0 ) return false;
 	//Q_ASSERT( length > 0 );
 	int n = m_buffer->get_data(pos, buf, length);
 	return n == length;
 }
-bool Buffer::getText(pos_t pos, ssize_t sz, std::vector<char_t> &v) const
+bool Buffer::getText(pos_t pos, ssize_t sz, std::vector<wchar_t> &v) const
 {
 	v.resize(sz);
 	int n = m_buffer->get_data(pos, &v[0], sz);
 	return n == sz;
 }
-bool Buffer::insertText(pos_t pos, cchar_t *first, ssize_t sz, line_t ln)
+bool Buffer::insertText(pos_t pos, cwchar_t *first, ssize_t sz, line_t ln)
 {
 	if( ln < 0 ) ln = m_lineMgr->positionToLine(pos);
 	if( m_editedPos.size() >= EDIT_POS_SIZE )
@@ -378,7 +378,7 @@ bool Buffer::deleteText(pos_t pos, ssize_t sz, bool BS, line_t ln)
 	return true;
 }
 //	置換、undo 対応
-bool Buffer::replaceText(pos_t pos, ssize_t dsz, cchar_t *first, int isz, line_t ln,
+bool Buffer::replaceText(pos_t pos, ssize_t dsz, cwchar_t *first, int isz, line_t ln,
 											bool updateEditedPos)
 {
 	if( ln < 0 ) ln = m_lineMgr->positionToLine(pos);
@@ -486,7 +486,7 @@ void Buffer::print() const
 	std::cout << "size = " << size() << "\n";
 	std::wstring txt;
 	for(int i = 0; i < size(); ++i) {
-		char_t ch = charAt(i);
+		wchar_t ch = charAt(i);
 		switch( ch ) {
 		case '\r':	txt += L"\\r";	break;
 		case '\n':	txt += L"\\n";	break;
@@ -519,7 +519,7 @@ bool Buffer::operator==(const Buffer &x) const
 	}
 	return true;
 }
-bool Buffer::isMatched(cchar_t *pat, ssize_t sz, pos_t pos) const
+bool Buffer::isMatched(cwchar_t *pat, ssize_t sz, pos_t pos) const
 {
 	while( pos < size() ) {
 		if( *pat++ != m_buffer->at(pos++) ) break;
@@ -527,7 +527,7 @@ bool Buffer::isMatched(cchar_t *pat, ssize_t sz, pos_t pos) const
 	}
 	return false;
 }
-bool Buffer::isMatchedIC(cchar_t *pat, ssize_t sz, pos_t pos) const
+bool Buffer::isMatchedIC(cwchar_t *pat, ssize_t sz, pos_t pos) const
 {
 	while( pos < size() ) {
 		if( tolower(*pat++) != tolower(m_buffer->at(pos++)) ) break;
@@ -535,7 +535,7 @@ bool Buffer::isMatchedIC(cchar_t *pat, ssize_t sz, pos_t pos) const
 	}
 	return false;
 }
-bool Buffer::isMatched(cchar_t *pat, pos_t pos) const
+bool Buffer::isMatched(cwchar_t *pat, pos_t pos) const
 {
 	while( pos < size() ) {
 		if( *pat++ != m_buffer->at(pos++) ) break;
@@ -543,7 +543,7 @@ bool Buffer::isMatched(cchar_t *pat, pos_t pos) const
 	}
 	return false;
 }
-bool Buffer::isMatchedIC(cchar_t *pat, pos_t pos) const
+bool Buffer::isMatchedIC(cwchar_t *pat, pos_t pos) const
 {
 	while( pos < size() ) {
 		if( tolower(*pat++) != tolower(m_buffer->at(pos++)) ) break;
@@ -551,7 +551,7 @@ bool Buffer::isMatchedIC(cchar_t *pat, pos_t pos) const
 	}
 	return false;
 }
-pos_t Buffer::strstr(cchar_t *pat, ssize_t sz, pos_t pos, pos_t last, bool ic) const
+pos_t Buffer::strstr(cwchar_t *pat, ssize_t sz, pos_t pos, pos_t last, bool ic) const
 {
 	if( last < 0 )
 		last = size();
@@ -568,7 +568,7 @@ pos_t Buffer::strstr(cchar_t *pat, ssize_t sz, pos_t pos, pos_t last, bool ic) c
 	}
 	return -1;
 }
-pos_t Buffer::strrstr(cchar_t *pat, ssize_t sz, pos_t pos, pos_t last, bool ic) const
+pos_t Buffer::strrstr(cwchar_t *pat, ssize_t sz, pos_t pos, pos_t last, bool ic) const
 {
 	if( pos < 0 || pos > size() )
 		pos = size();
@@ -583,14 +583,14 @@ pos_t Buffer::strrstr(cchar_t *pat, ssize_t sz, pos_t pos, pos_t last, bool ic) 
 	}
 	return -1;
 }
-pos_t Buffer::indexOf(SSSearch &sss, cchar_t *pat, ssize_t sz, pos_t pos, uint opt, pos_t last, byte algorithm) const
+pos_t Buffer::indexOf(SSSearch &sss, cwchar_t *pat, ssize_t sz, pos_t pos, uint opt, pos_t last, byte algorithm) const
 {
 	//uint opt = 0;
 	//if( ic ) opt |= SSSearch::IGNORE_CASE;
 	if( !sss.setup(pat, sz, opt, algorithm) ) return -1;
 	return sss.strstr(*this, pos, last);
 }
-pos_t Buffer::rIndexOf(SSSearch &sss, cchar_t *pat, ssize_t sz, pos_t from, uint opt, pos_t last, byte algorithm) const
+pos_t Buffer::rIndexOf(SSSearch &sss, cwchar_t *pat, ssize_t sz, pos_t from, uint opt, pos_t last, byte algorithm) const
 {
 	//uint opt = 0;
 	//if( ic ) opt |= SSSearch::IGNORE_CASE;
@@ -598,7 +598,7 @@ pos_t Buffer::rIndexOf(SSSearch &sss, cchar_t *pat, ssize_t sz, pos_t from, uint
 	return sss.strrstr(*this, from, last /*, algorithm*/);
 }
 
-int Buffer::replaceAll(cchar_t *before, ssize_t bsz, cchar_t *after, ssize_t asz, uint opt, byte algorithm)
+int Buffer::replaceAll(cwchar_t *before, ssize_t bsz, cwchar_t *after, ssize_t asz, uint opt, byte algorithm)
 {
 	pos_t first = 0;
 	pos_t last = -1;
@@ -664,7 +664,7 @@ std::wstring replaceText(const std::wstring &text,
 	}
 	return text2;
 }
-int Buffer::replaceAll(cchar_t *before, ssize_t bsz, cchar_t *after, ssize_t asz0, uint opt, byte algorithm,
+int Buffer::replaceAll(cwchar_t *before, ssize_t bsz, cwchar_t *after, ssize_t asz0, uint opt, byte algorithm,
 						pos_t first, pos_t &last, pos_t &lastPos, bool global)
 {
 	m_editedPos.clear();
@@ -691,7 +691,7 @@ int Buffer::replaceAll(cchar_t *before, ssize_t bsz, cchar_t *after, ssize_t asz
 		line_t ln = positionToLine(pos);		//??? パフォーマンス
 #if 0
 		//	13/08/17 行フラグを保存しない場合で、2.04秒/100万行
-		const int bits = sizeof(char_t) * 8 / 2;
+		const int bits = sizeof(wchar_t) * 8 / 2;
 		line_t ln2 = positionToLine(pos + bsz);
 		int lcDel = ln2 - ln + 1;
 		int msz = (lcDel + bits - 1) / bits;
@@ -763,7 +763,7 @@ void Buffer::clearMark(pos_t pos)
 bool Buffer::isWordBegin(pos_t pos) const
 {
 	if( !pos ) return true;
-	char_t pch;
+	wchar_t pch;
 	if( (pch = charAt(pos-1)) <= ' ' ) return true;
 	byte p = UTF16CharType(pch);
 	byte t = UTF16CharType(charAt(pos));
@@ -773,7 +773,7 @@ bool Buffer::isWordEnd(pos_t pos) const
 {
 	if( pos >= size() ) return true;
 	///if( pos == 1 ) return false;
-	char_t ch;
+	wchar_t ch;
 	if( (ch = charAt(pos)) <= ' ' ) return true;
 	byte p = UTF16CharType(charAt(pos - 1));
 	byte t = UTF16CharType(ch);

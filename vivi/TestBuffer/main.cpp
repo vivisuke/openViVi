@@ -31,7 +31,7 @@ void test_Buffer()
 	}
 	//
 	QString txt = "abc\nXYZZZ\n";
-	buf.insertText(0, (const wchar_t*)&txt[0], txt.size());
+	buf.insertText(0, (const wchar_t*)txt.data(), txt.size());
 	{
 		auto b = buf.isEmpty();
 		auto sz = buf.size();
