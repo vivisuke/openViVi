@@ -101,7 +101,7 @@ bool Buffer::isSpaces(pos_t first, pos_t last) const
 bool Buffer::isEqual(pos_t pos, const wchar_t *ptr) const
 {
 	while( *ptr != '\0' ) {
-		if( charAt(pos++) != *ptr++ )
+		if( operator[](pos++) != *ptr++ )
 			return false;
 	}
 	return true;

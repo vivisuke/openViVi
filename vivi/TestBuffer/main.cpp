@@ -52,6 +52,7 @@ void test_Buffer()
 		Q_ASSERT( !buf.isMatched(L"ZZZ", 5) );
 		Q_ASSERT( !buf.isMatched(L"zzz", 6) );
 		Q_ASSERT( buf.isModified() );
+		Q_ASSERT( buf.isEqual(0, L"abc\nXYZZZ\n") );
 	}
 	txt = "12345";
 	buf.insertText(6, (const wchar_t*)txt.data(), txt.size());
@@ -112,5 +113,19 @@ void test_Buffer()
 		}
 		Q_ASSERT( txt2 == txt );
 		Q_ASSERT( buf.isModified() );
+	}
+	buf.deleteText(2, 1);
+	{
+		Q_ASSERT( !buf.isEmpty() );
+		Q_ASSERT( buf.size() == 8 );
+		Q_ASSERT( buf.lineCount() == 2 );
+		Q_ASSERT( buf.isEqual(0, L"ab\nXYZZZ\n") );
+	}
+	buf.deleteText(2, 1);
+	{
+		Q_ASSERT( !buf.isEmpty() );
+		Q_ASSERT( buf.size() == 8 );
+		Q_ASSERT( buf.lineCount() == 1 );
+		Q_ASSERT( buf.isEqual(0, L"abXYZZZ\n") );
 	}
 }

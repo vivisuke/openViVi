@@ -58,5 +58,5 @@
 ● C 04/03             ToDo Buffer::deleteText() テスト
 ◎ C 04/03 04/03 0.001 ToDo Buffer undo/redo テスト
 ◎ C 04/03 04/03 0.001 ToDo Buffer::isMatched()：at() ではなく operator[] を使用？
-● C 04/03             ToDo 
+◎ C 04/03 04/03 0.001 ToDo Buffer::isEqual()：at() ではなく operator[] を使用？
 ● C 04/03             ToDo 
