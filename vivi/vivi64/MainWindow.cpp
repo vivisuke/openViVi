@@ -1,3 +1,4 @@
+#include "version.h"
 #include "MainWindow.h"
 //#include "EditView.h"
 #include <QFileDialog>
@@ -12,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.setupUi(this);
 	//char *ptr = nullptr;
 	//qDebug() << "sizeof(ptr) = " << sizeof(ptr) << "\n";
+	setWindowTitle(QString("ViVi64 ver %1").arg(VERSION_STR));
 	connectMenuActions();
 	
 	//	デザイナでタブの消し方がわからないので、ここで消しておく
@@ -31,9 +33,15 @@ void MainWindow::connectMenuActions()
 void MainWindow::on_action_New_triggered()
 {
 	qDebug() << "on_action_Open_triggered()";
-	EditView* view = new QPlainTextEdit();	//createView();
+	EditView* view = createView();
 	QString title = tr("Untitled-%1").arg(++m_docNumber);
 	addNewView(view, title);
+}
+EditView *MainWindow::createView()
+{
+	EditView* view = new QPlainTextEdit();	//createView();
+	view->setTabStopDistance(24);
+	return view;
 }
 void MainWindow::addNewView(EditView *view, const QString &title)
 {
@@ -84,7 +92,7 @@ EditView *MainWindow::openFile(const QString &pathName, bool forced)
     QString buf = in.readAll();
     inputFile.close();    
     
-	EditView* view = new QPlainTextEdit();
+	EditView* view = createView();
 	view->setPlainText(buf);
 	QFileInfo info(pathName);
 	auto title = info.fileName();
