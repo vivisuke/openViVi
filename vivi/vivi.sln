@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vivi", "vivi\vivi.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestBuffer", "TestBuffer\TestBuffer.vcxproj", "{43F913F6-9F36-43A2-9885-72EEEB34279A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vivi64", "vivi64\vivi64.vcxproj", "{20E57EE2-5E9A-4F00-9785-C8A6BA378FE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -27,6 +29,12 @@ Global
 		{43F913F6-9F36-43A2-9885-72EEEB34279A}.Release|x64.ActiveCfg = Release|x64
 		{43F913F6-9F36-43A2-9885-72EEEB34279A}.Release|x64.Build.0 = Release|x64
 		{43F913F6-9F36-43A2-9885-72EEEB34279A}.Release|x86.ActiveCfg = Release|x64
+		{20E57EE2-5E9A-4F00-9785-C8A6BA378FE6}.Debug|x64.ActiveCfg = Debug|x64
+		{20E57EE2-5E9A-4F00-9785-C8A6BA378FE6}.Debug|x64.Build.0 = Debug|x64
+		{20E57EE2-5E9A-4F00-9785-C8A6BA378FE6}.Debug|x86.ActiveCfg = Debug|x64
+		{20E57EE2-5E9A-4F00-9785-C8A6BA378FE6}.Release|x64.ActiveCfg = Release|x64
+		{20E57EE2-5E9A-4F00-9785-C8A6BA378FE6}.Release|x64.Build.0 = Release|x64
+		{20E57EE2-5E9A-4F00-9785-C8A6BA378FE6}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
