@@ -21,6 +21,9 @@ protected:
 private slots:
 	void	on_action_New_triggered();
 	void	on_action_Open_triggered();
+	void	on_action_Close_triggered();
+	//
+	void	tabCloseRequested(int index);
 	
 private:
 	Ui::MainWindowClass ui;

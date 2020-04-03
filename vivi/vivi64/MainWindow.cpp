@@ -25,7 +25,7 @@ void MainWindow::connectMenuActions()
 }
 void MainWindow::on_action_New_triggered()
 {
-	qDebug() << "on_action_Open_triggered()\n";
+	qDebug() << "on_action_Open_triggered()";
 	EditView* view = new QPlainTextEdit();	//createView();
 	QString title = tr("Untitled-%1").arg(++m_docNumber);
 	addNewView(view, title);
@@ -36,5 +36,14 @@ void MainWindow::addNewView(EditView *view, const QString &title)
 }
 void MainWindow::on_action_Open_triggered()
 {
-	qDebug() << "on_action_Open_triggered()\n";
+	qDebug() << "on_action_Open_triggered()";
+}
+void MainWindow::on_action_Close_triggered()
+{
+	qDebug() << "on_action_Close_triggered()";
+	tabCloseRequested(ui.tabWidget->currentIndex());
+}
+void MainWindow::tabCloseRequested(int index)
+{
+		ui.tabWidget->removeTab(index);
 }
