@@ -182,8 +182,8 @@ bool Buffer::basicInsertText(pos_t pos, cwchar_t *first, ssize_t sz, line_t ln)
 	if( ln < 0 ) ln = positionToLine(pos);		//	Buffer::positionToLine() は最後の改行有無を考慮
 	const line_t ln0 = ln;		//	挿入位置
 	const line_t lineCount0 = m_lineMgr->lineCount();		//	挿入前行数
-	int prevChar = !pos ? (-1) : m_buffer->at(pos-1);
-	int nextChar = atEOF ? (-1) : m_buffer->at(pos);
+	int prevChar = !pos ? (-1) : m_buffer->operator[](pos-1);
+	int nextChar = atEOF ? (-1) : m_buffer->operator[](pos);
 	if( !m_buffer->insert(pos, first, sz) )
 		return false;
 	//	挿入文字列に改行（CR/LF/CRLF）があった場合は、行を作成
@@ -215,7 +215,7 @@ bool Buffer::basicInsertText(pos_t pos, cwchar_t *first, ssize_t sz, line_t ln)
 		++p;
 		prevChar = (uint)ch;
 	}
-	if( prevChar == '\r' && !atEOF && m_buffer->at(p) == '\n' )
+	if( prevChar == '\r' && !atEOF && m_buffer->operator[](p) == '\n' )
 		m_lineMgr->eraseLine(ln--);
 	if( !atEOF )
 		m_lineMgr->textInserted(ln, sz);
@@ -249,7 +249,7 @@ void Buffer::basicDeleteText(pos_t first, ssize_t sz, line_t line)
 		emit  onDeleted(first, lineCount0);
 		return;
 	}
-	wchar_t prevChar = m_buffer->at(first-1);	//	範囲外は '\0' を返す仕様なので範囲チェック不要
+	wchar_t prevChar = m_buffer->operator[](first-1);	//	範囲外は '\0' を返す仕様なので範囲チェック不要
 	if( line < 0 ) line = m_lineMgr->positionToLine(first);
 	const line_t line0 = line;
 	const line_t lineCount0 = m_lineMgr->lineCount();
@@ -265,7 +265,7 @@ void Buffer::basicDeleteText(pos_t first, ssize_t sz, line_t line)
 		++ln;
 	m_lineMgr->eraseLine(ln0, ln - ln0);
 	if( prevChar == '\r' ) {
-		if( last != size() && m_buffer->at(last) == '\n') {
+		if( last != size() && m_buffer->operator[](last) == '\n') {
 			m_lineMgr->eraseLine(line--);
 		}
 	} else if( !bBegLine && last == size() /*&& prevChar != '\r'*/ ) {
@@ -526,7 +526,7 @@ bool Buffer::operator==(const Buffer &x) const
 bool Buffer::isMatched(cwchar_t *pat, ssize_t sz, pos_t pos) const
 {
 	while( pos < size() ) {
-		if( *pat++ != m_buffer->at(pos++) ) break;
+		if( *pat++ != m_buffer->operator[](pos++) ) break;
 		if( --sz <= 0 ) return true;
 	}
 	return false;
@@ -534,7 +534,7 @@ bool Buffer::isMatched(cwchar_t *pat, ssize_t sz, pos_t pos) const
 bool Buffer::isMatchedIC(cwchar_t *pat, ssize_t sz, pos_t pos) const
 {
 	while( pos < size() ) {
-		if( tolower(*pat++) != tolower(m_buffer->at(pos++)) ) break;
+		if( tolower(*pat++) != tolower(m_buffer->operator[](pos++)) ) break;
 		if( --sz <= 0 ) return true;
 	}
 	return false;
@@ -542,7 +542,7 @@ bool Buffer::isMatchedIC(cwchar_t *pat, ssize_t sz, pos_t pos) const
 bool Buffer::isMatched(cwchar_t *pat, pos_t pos) const
 {
 	while( pos < size() ) {
-		if( *pat++ != m_buffer->at(pos++) ) break;
+		if( *pat++ != m_buffer->operator[](pos++) ) break;
 		if( *pat == '\0' ) return true;
 	}
 	return false;
@@ -550,7 +550,7 @@ bool Buffer::isMatched(cwchar_t *pat, pos_t pos) const
 bool Buffer::isMatchedIC(cwchar_t *pat, pos_t pos) const
 {
 	while( pos < size() ) {
-		if( tolower(*pat++) != tolower(m_buffer->at(pos++)) ) break;
+		if( tolower(*pat++) != tolower(m_buffer->operator[](pos++)) ) break;
 		if( *pat == '\0' ) return true;
 	}
 	return false;
