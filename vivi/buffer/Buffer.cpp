@@ -498,6 +498,10 @@ void Buffer::print() const
 		std::cout << ln << ":" << m_lineMgr->lineStartPosition(ln) << "\n";
 	}
 }
+wchar_t Buffer::operator[](pos_t pos) const
+{
+	return m_buffer->operator[](pos);
+}
 bool Buffer::operator==(const Buffer &x) const
 {
 	if( *m_buffer != *x.m_buffer ) {

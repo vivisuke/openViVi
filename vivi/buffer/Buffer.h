@@ -124,7 +124,7 @@ public:
 	bool	isMatchedIC(cwchar_t *pat, pos_t pos) const;
 	bool	operator==(const Buffer &) const;
 	bool	operator!=(const Buffer &x) const { return !operator==(x); }
-	wchar_t	operator[](pos_t pos) const { return charAt(pos); }
+	wchar_t	operator[](pos_t pos) const;	// { return m_buffer->operator[](pos); }
 	uint	lineFlags(int ln) const;
 	char	isMarked(pos_t pos) const;	//	マークされていない場合は 0 を返す
 	int		markPos(char ch) const;

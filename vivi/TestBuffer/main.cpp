@@ -37,7 +37,46 @@ void test_Buffer()
 		auto sz = buf.size();
 		auto ln = buf.lineCount();
 		Q_ASSERT( !buf.isEmpty() );
-		Q_ASSERT( buf.size() != 0 );
+		Q_ASSERT( buf.size() == 10 );
+		Q_ASSERT( buf.lineCount() == 2 );
+		QString txt2;
+		for (int i = 0; i < buf.size(); ++i) {
+			txt2 += buf[i];
+		}
+		Q_ASSERT( txt2 == txt );
+	}
+	txt = "12345";
+	buf.insertText(6, (const wchar_t*)txt.data(), txt.size());
+	{
+		auto b = buf.isEmpty();
+		auto sz = buf.size();
+		auto ln = buf.lineCount();
+		Q_ASSERT( !buf.isEmpty() );
+		Q_ASSERT( buf.size() == 15 );
+		Q_ASSERT( buf.lineCount() == 2 );
+		QString txt2;
+		for (int i = 0; i < buf.size(); ++i) {
+			txt2 += buf[i];
+		}
+		Q_ASSERT( txt2 == "abc\nXY12345ZZZ\n" );
+	}
+	buf.clear();
+	{
+		//auto b = buf.isEmpty();
+		//auto sz = buf.size();
+		//auto ln = buf.lineCount();
+		Q_ASSERT( buf.isEmpty() );
+		Q_ASSERT( buf.size() == 0 );
+		Q_ASSERT( buf.lineCount() == 0 );
+	}
+	txt = "abc\nXYZZZ";		//	EOF行が空でない場合
+	buf.insertText(0, (const wchar_t*)txt.data(), txt.size());
+	{
+		auto b = buf.isEmpty();
+		auto sz = buf.size();
+		auto ln = buf.lineCount();
+		Q_ASSERT( !buf.isEmpty() );
+		Q_ASSERT( buf.size() == 9 );
 		Q_ASSERT( buf.lineCount() == 2 );
 		QString txt2;
 		for (int i = 0; i < buf.size(); ++i) {
