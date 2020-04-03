@@ -53,6 +53,12 @@ void test_Buffer()
 		Q_ASSERT( !buf.isMatched(L"zzz", 6) );
 		Q_ASSERT( buf.isModified() );
 		Q_ASSERT( buf.isEqual(0, L"abc\nXYZZZ\n") );
+		Q_ASSERT( buf.lineStartPosition(0) == 0 );
+		Q_ASSERT( buf.lineStartPosition(1) == 4 );
+		Q_ASSERT( buf.positionToLine(0) == 0 );
+		Q_ASSERT( buf.positionToLine(3) == 0 );
+		Q_ASSERT( buf.positionToLine(4) == 1 );
+		Q_ASSERT( buf.positionToLine(9) == 1 );
 	}
 	txt = "12345";
 	buf.insertText(6, (const wchar_t*)txt.data(), txt.size());
@@ -69,7 +75,7 @@ void test_Buffer()
 		}
 		Q_ASSERT( txt2 == "abc\nXY12345ZZZ\n" );
 	}
-	
+	//----------------------------------------------------------------------
 	buf.clear();
 	{
 		//auto b = buf.isEmpty();
@@ -123,11 +129,38 @@ void test_Buffer()
 		Q_ASSERT( buf.lineCount() == 2 );
 		Q_ASSERT( buf.isEqual(0, L"ab\nXYZZZ") );
 	}
-	buf.deleteText(2, 1);
+	buf.deleteText(2, 1);		//	改行削除
 	{
 		Q_ASSERT( !buf.isEmpty() );
 		Q_ASSERT( buf.size() == 7 );
 		Q_ASSERT( buf.lineCount() == 1 );
 		Q_ASSERT( buf.isEqual(0, L"abXYZZZ") );
+	}
+	//----------------------------------------------------------------------
+	buf.clear();
+	txt = "1\n22\n333\n4444\n55555\n";
+	buf.insertText(0, (const wchar_t*)txt.data(), txt.size());
+	{
+		Q_ASSERT( buf.lineStartPosition(0) == 0 );
+		Q_ASSERT( buf.lineStartPosition(1) == 2 );
+		Q_ASSERT( buf.lineStartPosition(2) == 5 );
+		Q_ASSERT( buf.lineStartPosition(3) == 9 );
+		Q_ASSERT( buf.lineStartPosition(4) == 14 );
+		Q_ASSERT( buf.positionToLine(4) == 1 );
+		Q_ASSERT( buf.positionToLine(5) == 2 );
+		Q_ASSERT( buf.positionToLine(8) == 2 );
+		Q_ASSERT( buf.positionToLine(9) == 3 );
+	}
+	buf.deleteText(1, 1);		//	１行目最後の改行削除 → "122\n333\n4444\n55555\n";
+	{
+		Q_ASSERT(buf.isEqual(0, L"122\n333\n4444\n55555\n"));
+		Q_ASSERT( buf.lineStartPosition(0) == 0 );
+		Q_ASSERT( buf.lineStartPosition(1) == 4 );
+		Q_ASSERT( buf.lineStartPosition(2) == 8 );
+		Q_ASSERT( buf.lineStartPosition(3) == 13 );
+		Q_ASSERT( buf.positionToLine(4) == 1 );
+		Q_ASSERT( buf.positionToLine(5) == 1 );
+		Q_ASSERT( buf.positionToLine(8) == 2 );
+		Q_ASSERT( buf.positionToLine(9) == 2 );
 	}
 }
