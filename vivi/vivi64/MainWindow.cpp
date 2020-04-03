@@ -16,7 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
 	//	デザイナでタブの消し方がわからないので、ここで消しておく
 	while( ui.tabWidget->count() )
 		ui.tabWidget->removeTab(0);
-	ui.tabWidget->setTabsClosable(true);		//	クローズ可能
+	ui.tabWidget->setTabsClosable(true);		//	タブクローズ可能
+	ui.tabWidget->setMovable(true);				//	タブ移動可能
 	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)),
 			this, SLOT(tabCloseRequested(int)));
 	//
