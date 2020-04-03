@@ -171,7 +171,7 @@ public:
 	bool isMatch(pos_t ix, const value_type *pat, ssize_t sz) const
 	{
 		while( ix < size() ) {
-			if( *pat != at(ix) ) break;
+			if( *pat != operator[](ix) ) break;
 			if( --sz <= 0 ) return true;
 			++pat;
 			++ix;
@@ -181,7 +181,7 @@ public:
 	bool isMatchLC(pos_t ix, const value_type *pat, size_t sz) const
 	{
 		while( ix < size() ) {
-			if( *pat != tolower(at(ix)) ) break;
+			if( *pat != tolower(operator[](ix)) ) break;
 			if( --sz <= 0 ) return true;
 			++pat;
 			++ix;
