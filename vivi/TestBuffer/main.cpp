@@ -94,6 +94,7 @@ void test_Buffer()
 		}
 		Q_ASSERT( txt2 == txt );
 		Q_ASSERT( buf.isModified() );
+		Q_ASSERT(buf.isEqual(0, L"abc\nXYZZZ"));
 	}
 	buf.undo();
 	{
@@ -113,19 +114,20 @@ void test_Buffer()
 		}
 		Q_ASSERT( txt2 == txt );
 		Q_ASSERT( buf.isModified() );
+		Q_ASSERT(buf.isEqual(0, L"abc\nXYZZZ"));
 	}
 	buf.deleteText(2, 1);
 	{
 		Q_ASSERT( !buf.isEmpty() );
 		Q_ASSERT( buf.size() == 8 );
 		Q_ASSERT( buf.lineCount() == 2 );
-		Q_ASSERT( buf.isEqual(0, L"ab\nXYZZZ\n") );
+		Q_ASSERT( buf.isEqual(0, L"ab\nXYZZZ") );
 	}
 	buf.deleteText(2, 1);
 	{
 		Q_ASSERT( !buf.isEmpty() );
-		Q_ASSERT( buf.size() == 8 );
+		Q_ASSERT( buf.size() == 7 );
 		Q_ASSERT( buf.lineCount() == 1 );
-		Q_ASSERT( buf.isEqual(0, L"abXYZZZ\n") );
+		Q_ASSERT( buf.isEqual(0, L"abXYZZZ") );
 	}
 }

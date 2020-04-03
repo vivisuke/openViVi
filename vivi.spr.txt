@@ -55,8 +55,20 @@
 ◎ C 04/01 04/03 0.001 問題 Buffer::lineCount() の返す値が不正？
 ● C 04/02             ToDo さくさくエディタ：画面上下・左右分割ソース調査
 ◎ C 04/03 04/03 0.001 ToDo Buffer：char_t は紛らわしいので wchar_t に変える？
-● C 04/03             ToDo Buffer::deleteText() テスト
+◎ C 04/03 04/03 0.001 ToDo Buffer::deleteText() テスト
 ◎ C 04/03 04/03 0.001 ToDo Buffer undo/redo テスト
 ◎ C 04/03 04/03 0.001 ToDo Buffer::isMatched()：at() ではなく operator[] を使用？
 ◎ C 04/03 04/03 0.001 ToDo Buffer::isEqual()：at() ではなく operator[] を使用？
+◎ C 04/03 04/03 0.001 問題 Buffer::insertText(), undo(), redo() するとバッファの最後が不正になる？
+							原因：m_insText[] に保存されているデータが不正？
+							原因：テストコードのバグだった orz
+● C 04/03             ToDo 
+● C 04/03             ToDo 
+● C 04/03             ToDo 
+● C 04/03             ToDo 
+● C 04/03             ToDo 
+● C 04/03             ToDo 
+● C 04/03             ToDo 
+● C 04/03             ToDo 
+● C 04/03             ToDo 
 ● C 04/03             ToDo 
