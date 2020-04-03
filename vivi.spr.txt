@@ -56,7 +56,7 @@
 ● C 04/02             ToDo さくさくエディタ：画面上下・左右分割ソース調査
 ◎ C 04/03 04/03 0.001 ToDo Buffer：char_t は紛らわしいので wchar_t に変える？
 ● C 04/03             ToDo Buffer::deleteText() テスト
-● C 04/03             ToDo Buffer undo/redo テスト
+◎ C 04/03 04/03 0.001 ToDo Buffer undo/redo テスト
 ◎ C 04/03 04/03 0.001 ToDo Buffer::isMatched()：at() ではなく operator[] を使用？
 ● C 04/03             ToDo 
 ● C 04/03             ToDo 

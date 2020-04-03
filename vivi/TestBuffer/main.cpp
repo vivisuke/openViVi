@@ -28,6 +28,7 @@ void test_Buffer()
 		Q_ASSERT( buf.isEmpty() );
 		Q_ASSERT( buf.size() == 0 );
 		Q_ASSERT( buf.lineCount() == 0 );
+		Q_ASSERT( !buf.isModified() );
 	}
 	//
 	QString txt = "abc\nXYZZZ\n";
@@ -44,6 +45,13 @@ void test_Buffer()
 			txt2 += buf[i];
 		}
 		Q_ASSERT( txt2 == txt );
+		Q_ASSERT( buf.isMatched(L"abc", 0) );
+		Q_ASSERT( !buf.isMatched(L"abc", 1) );
+		Q_ASSERT( !buf.isMatched(L"ABC", 0) );
+		Q_ASSERT( buf.isMatched(L"ZZZ", 6) );
+		Q_ASSERT( !buf.isMatched(L"ZZZ", 5) );
+		Q_ASSERT( !buf.isMatched(L"zzz", 6) );
+		Q_ASSERT( buf.isModified() );
 	}
 	txt = "12345";
 	buf.insertText(6, (const wchar_t*)txt.data(), txt.size());
@@ -60,6 +68,7 @@ void test_Buffer()
 		}
 		Q_ASSERT( txt2 == "abc\nXY12345ZZZ\n" );
 	}
+	
 	buf.clear();
 	{
 		//auto b = buf.isEmpty();
@@ -83,5 +92,25 @@ void test_Buffer()
 			txt2 += buf[i];
 		}
 		Q_ASSERT( txt2 == txt );
+		Q_ASSERT( buf.isModified() );
+	}
+	buf.undo();
+	{
+		Q_ASSERT( buf.isEmpty() );
+		Q_ASSERT( buf.size() == 0 );
+		Q_ASSERT( buf.lineCount() == 0 );
+		Q_ASSERT( !buf.isModified() );
+	}
+	buf.redo();
+	{
+		Q_ASSERT( !buf.isEmpty() );
+		Q_ASSERT( buf.size() == 9 );
+		Q_ASSERT( buf.lineCount() == 2 );
+		QString txt2;
+		for (int i = 0; i < buf.size(); ++i) {
+			txt2 += buf[i];
+		}
+		Q_ASSERT( txt2 == txt );
+		Q_ASSERT( buf.isModified() );
 	}
 }
