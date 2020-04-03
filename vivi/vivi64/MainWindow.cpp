@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 //#include "EditView.h"
+#include <QFileDialog>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -43,6 +44,37 @@ void MainWindow::addNewView(EditView *view, const QString &title)
 void MainWindow::on_action_Open_triggered()
 {
 	qDebug() << "on_action_Open_triggered()";
+	QStringList filter;
+	filter	<< tr("all files (*.*)")
+			<< tr("Text files (*.txt)")
+			<< tr("cpp files (*.cpp *.cxx *.cp *.cc *.c)")
+			<< tr("h files (*.h *.hpp *.hxx)")
+			<< tr("Java (*.java)")
+			<< tr("Pascal(*.pas *.inc *.int)")
+			<< tr("Ruby (*.rb)")
+			<< tr("Python (*.py)")
+			<< tr("C#(*.cs)")
+			<< tr("F#(*.fs *.fsi *.fsx *.fsscript *.ml *.mli)")
+			<< tr("HTML files (*.html)")
+			<< tr("XML files (*.xml)")
+			<< tr("Markdown files (*.md)")
+			<< tr("JavaScript (*.js)")
+			<< tr("css files (*.css)")
+			<< tr("CGI files (*.cgi)")
+			<< tr("Perl files (*.pl)")
+			<< tr("PHP files (*.php)")
+			<< tr("LOG files (*.log)")
+			<< tr("SQL files (*.sql)")
+			<< tr("CSV files (*.csv)")
+			<< tr("TSV files (*.tsv)")
+			<< tr("HLSL files (*.fx)");
+	QStringList fileNameList = QFileDialog::getOpenFileNames(this, tr("Open File"),
+																QString(), filter.join(";;"));
+	if( fileNameList.isEmpty() ) return;
+	foreach(const QString &fileName, fileNameList) {
+		qDebug() << "fineMame = " << fileName;
+		//openFile(fileName);
+	}
 }
 void MainWindow::on_action_Close_triggered()
 {
