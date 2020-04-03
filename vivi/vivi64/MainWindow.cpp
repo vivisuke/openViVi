@@ -32,7 +32,9 @@ void MainWindow::on_action_New_triggered()
 }
 void MainWindow::addNewView(EditView *view, const QString &title)
 {
-		ui.tabWidget->addTab(view, title);
+	auto cur = ui.tabWidget->addTab(view, title);
+	ui.tabWidget->setCurrentIndex(cur);
+	view->setFocus();
 }
 void MainWindow::on_action_Open_triggered()
 {
