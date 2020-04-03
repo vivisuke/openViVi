@@ -71,10 +71,26 @@ void MainWindow::on_action_Open_triggered()
 	QStringList fileNameList = QFileDialog::getOpenFileNames(this, tr("Open File"),
 																QString(), filter.join(";;"));
 	if( fileNameList.isEmpty() ) return;
-	foreach(const QString &fileName, fileNameList) {
-		qDebug() << "fineMame = " << fileName;
-		//openFile(fileName);
+	foreach(const QString &pathName, fileNameList) {
+		qDebug() << "pathName = " << pathName;
+		openFile(pathName);
 	}
+}
+EditView *MainWindow::openFile(const QString &pathName, bool forced)
+{
+	QFile inputFile(pathName);
+    inputFile.open(QIODevice::ReadOnly);
+	QTextStream in(&inputFile);
+    QString buf = in.readAll();
+    inputFile.close();    
+    
+	EditView* view = new QPlainTextEdit();
+	view->setPlainText(buf);
+	QFileInfo info(pathName);
+	auto title = info.fileName();
+	addNewView(view, title);
+
+	return view;
 }
 void MainWindow::on_action_Close_triggered()
 {

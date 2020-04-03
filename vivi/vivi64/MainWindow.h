@@ -17,6 +17,7 @@ protected:
 	void	connectMenuActions();
 	//EditView	*createView(Document *doc = 0, TypeSettings* = 0);
 	void	addNewView(EditView *, const QString &title);
+    EditView	*openFile(const QString &pathName, bool forced = false);
 
 private slots:
 	void	on_action_New_triggered();
