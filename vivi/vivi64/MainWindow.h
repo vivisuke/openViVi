@@ -19,6 +19,10 @@ protected:
 	EditView	*createView();
 	void	addNewView(EditView *, const QString &title);
     EditView	*openFile(const QString &pathName, bool forced = false);
+    
+protected:
+	void	dragEnterEvent(QDragEnterEvent *event);
+	void dropEvent(QDropEvent* event);
 
 private slots:
 	void	on_action_New_triggered();

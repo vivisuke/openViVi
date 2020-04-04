@@ -2,6 +2,7 @@
 #include "MainWindow.h"
 //#include "EditView.h"
 #include <QFileDialog>
+#include <qmimedata.h>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -15,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//qDebug() << "sizeof(ptr) = " << sizeof(ptr) << "\n";
 	setWindowTitle(QString("ViVi64 ver %1").arg(VERSION_STR));
 	connectMenuActions();
+	setAcceptDrops(true);		//ドロップを有効化
 	
 	//	デザイナでタブの消し方がわからないので、ここで消しておく
 	while( ui.tabWidget->count() )
@@ -30,6 +32,31 @@ void MainWindow::connectMenuActions()
 {
 	//QObject::connect(ui.action_New, SIGNAL(triggered()), this, SLOT(on_action_New_triggered()));
 }
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+	qDebug() << "dragEnterEvent()";
+    if (event->mimeData()->hasUrls()
+    	|| event->mimeData()->hasFormat("text/plain"))
+    {
+        event->acceptProposedAction();
+    }
+}
+void MainWindow::dropEvent(QDropEvent* event)
+{
+	qDebug() << "dropEvent()";
+	if( event->mimeData()->hasFormat("text/plain") ) {
+		QString text = event->mimeData()->text();
+		return;
+	}
+	//qDebug() << "MainWindow::dropEvent";
+	QList<QUrl> fileList = event->mimeData()->urls();
+	foreach(QUrl url, fileList) {
+		QString fileName = QDir::toNativeSeparators(url.toLocalFile());
+		fileName.replace('\\', '/');
+		//qDebug() << fileName;
+		openFile(fileName);
+	}
+}
 void MainWindow::on_action_New_triggered()
 {
 	qDebug() << "on_action_Open_triggered()";
@@ -40,6 +67,7 @@ void MainWindow::on_action_New_triggered()
 EditView *MainWindow::createView()
 {
 	EditView* view = new QPlainTextEdit();	//createView();
+	view->setAcceptDrops(false);		//ドロップを無効化
 	view->setTabStopDistance(24);
 	return view;
 }
