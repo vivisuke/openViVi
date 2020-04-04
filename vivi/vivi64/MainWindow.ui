@@ -56,9 +56,19 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <widget class="QMenu" name="menuRecentFiles">
+     <property name="title">
+      <string>RecentFiles(&amp;1)</string>
+     </property>
+     <addaction name="separator"/>
+    </widget>
     <addaction name="action_New"/>
     <addaction name="action_Open"/>
     <addaction name="action_Close"/>
+    <addaction name="separator"/>
+    <addaction name="menuRecentFiles"/>
+    <addaction name="separator"/>
+    <addaction name="action_eXit"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
     <property name="title">
@@ -193,6 +203,11 @@
   <action name="action_LineNumber">
    <property name="text">
     <string>&amp;LineNumber</string>
+   </property>
+  </action>
+  <action name="action_eXit">
+   <property name="text">
+    <string>e&amp;Xit</string>
    </property>
   </action>
  </widget>

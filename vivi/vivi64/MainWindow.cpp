@@ -2,8 +2,17 @@
 #include "MainWindow.h"
 //#include "EditView.h"
 #include <QFileDialog>
-#include <qmimedata.h>
+#include <QMimeData>
+#include <QSettings>
 #include <QDebug>
+
+#define		KEY_RECENTFILELIST			"recentFileList"
+#define		KEY_FAVORITEFILELIST		"favoriteFileList"
+#define		KEY_RECENTDIRLIST			"recentDirList"
+
+#define		MAX_FIND_STR_HIST			64
+#define		MAX_CLIPBOARD_HIST		100
+#define		MAX_N_EXT_CMD				32
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -15,7 +24,9 @@ MainWindow::MainWindow(QWidget *parent)
 	//char *ptr = nullptr;
 	//qDebug() << "sizeof(ptr) = " << sizeof(ptr) << "\n";
 	setWindowTitle(QString("ViVi64 ver %1").arg(VERSION_STR));
-	connectMenuActions();
+	createActions();
+	createMenus();
+	//connectMenuActions();
 	setAcceptDrops(true);		//ドロップを有効化
 	
 	//	デザイナでタブの消し方がわからないので、ここで消しておく
@@ -28,10 +39,55 @@ MainWindow::MainWindow(QWidget *parent)
 	//
 		on_action_New_triggered();
 }
+void MainWindow::createActions()
+{
+    //	RecentFilesMenu のための初期化
+    for (int i = 0; i < MaxRecentFiles; ++i) {
+        m_recentFileActs[i] = new QAction(this);
+        m_recentFileActs[i]->setVisible(false);
+        connect(m_recentFileActs[i], SIGNAL(triggered()), this, SLOT(openRecentFile()));
+    }
+}
+void MainWindow::createMenus()
+{
+    QMenu *MRU = ui.menuRecentFiles;
+    for (int i = 0; i < MaxRecentFiles; ++i)
+        MRU->addAction(m_recentFileActs[i]);
+    updateRecentFileActions();
+}
+//	settings から RecentFile 情報を取り出し、m_recentFileActs に設定
+void MainWindow::updateRecentFileActions()
+{
+    QSettings settings;
+    QStringList files = settings.value(KEY_RECENTFILELIST).toStringList();
+    int numRecentFiles = qMin(files.size(), (int)MaxRecentFiles);
+    for (int i = 0; i < numRecentFiles; ++i) {
+        QString fileName = files[i].replace('\\', '/');
+        QString text = tr("&%1 %2")
+        				.arg(QChar(i < 10 ? '0' + (i + 1) % 10 : 'A' + i - 10))
+        				.arg(fileName.replace("&", "&&"));
+        				//.arg(strippedName(files[i]));
+        m_recentFileActs[i]->setText(text);
+        m_recentFileActs[i]->setData(fileName);
+        m_recentFileActs[i]->setStatusTip(fileName);
+        setIcon(fileName, m_recentFileActs[i]);
+        m_recentFileActs[i]->setVisible(true);
+    }
+    for (int j = numRecentFiles; j < MaxRecentFiles; ++j)
+        m_recentFileActs[j]->setVisible(false);
+}
+void MainWindow::updateFavoriteFileActions()
+{
+}
+void MainWindow::setIcon(const QString &fileName, QAction *action)
+{
+}
+#if	0
 void MainWindow::connectMenuActions()
 {
 	//QObject::connect(ui.action_New, SIGNAL(triggered()), this, SLOT(on_action_New_triggered()));
 }
+#endif
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
 	qDebug() << "dragEnterEvent()";
@@ -112,6 +168,12 @@ void MainWindow::on_action_Open_triggered()
 		openFile(pathName);
 	}
 }
+void MainWindow::openRecentFile()
+{
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (action)
+        openFile(action->data().toString());
+}
 EditView *MainWindow::openFile(const QString &pathName, bool forced)
 {
 	QFile inputFile(pathName);
@@ -125,8 +187,22 @@ EditView *MainWindow::openFile(const QString &pathName, bool forced)
 	QFileInfo info(pathName);
 	auto title = info.fileName();
 	addNewView(view, title);
+	
+	addToRecentFileList(pathName);
+	updateRecentFileActions();
 
 	return view;
+}
+void MainWindow::addToRecentFileList(const QString &fullPath)		//	レジストリの "recentFileList" に追加
+{
+    QSettings settings;
+    QStringList files = settings.value(KEY_RECENTFILELIST).toStringList();
+    QString absPath = QDir(fullPath).absolutePath();
+    files.removeAll(absPath);
+    files.push_front(absPath);
+    while (files.size() > MaxRecentFiles)
+        files.removeLast();
+    settings.setValue(KEY_RECENTFILELIST, files);
 }
 void MainWindow::on_action_Close_triggered()
 {
@@ -136,4 +212,10 @@ void MainWindow::on_action_Close_triggered()
 void MainWindow::tabCloseRequested(int index)
 {
 		ui.tabWidget->removeTab(index);
+}
+void MainWindow::on_action_eXit_triggered()
+{
+	qDebug() << "on_action_eXit_triggered()";
+	//	undone: 修了確認
+	close();
 }
