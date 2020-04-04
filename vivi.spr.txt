@@ -51,7 +51,7 @@
 ◎ C 03/31 03/31 0.001 ToDo buffer/lineMgr.h 等を追加
 ◎ C 03/31 04/03 0.001 ToDo Buffer::operator[](pos) は範囲チェック無し、charAt(pos) は範囲チェック有りに
 ◎ C 04/01 04/01 0.001 問題 デバッグモードで実行しても assert() が実行されない？→ Q_ASSERT() に変更
-◎ C 04/01 04/01 0.001 ToDo MainWindows：QtabWidget を配置
+◎ C 04/01 04/01 0.001 ToDo MainWindow：QtabWidget を配置
 ◎ C 04/01 04/03 0.001 問題 Buffer::lineCount() の返す値が不正？
 ● C 04/02             ToDo さくさくエディタ：画面上下・左右分割ソース調査
 ◎ C 04/03 04/03 0.001 ToDo Buffer：char_t は紛らわしいので wchar_t に変える？
@@ -80,12 +80,12 @@
 ◎ C 04/04 04/04 0.001 ToDo とりあえず MainWindow タイトルを「ViVi64」に
 ◎ C 04/04 04/04 0.001 ToDo ファイルオープン履歴：File > RecentFiles
 ◎ C 04/04 04/04 0.001 ToDo File > eXit メニュー
-● C 04/04             ToDo 
-● C 04/04             ToDo 
-● C 04/04             ToDo 
-● C 04/04             ToDo 
-● C 04/04             ToDo 
-● C 04/04             ToDo 
-● C 04/04             ToDo 
+● C 04/04             ToDo 既にオープンしているファイルをオープンした場合は、それをアクティブにする
+● D 04/04             ToDo タブバー：右ボタンメニュー（とりあえずクローズのみ）
+● C 04/04             ToDo タブバー：ホバーでフルパス名表示
+● D 04/04             ToDo ファイルオープン時：空の無名文書を消す？
+● C 04/04             ToDo MainWindow タイトルバーに現在ファイル名表示
+● C 04/04             ToDo MainWindow タイトルバー左端にアプリアイコン表示
+◎ C 04/04 04/04 0.001 ToDo MainWindow：左にアウトラインバー表示？
 ● C 04/04             ToDo 
 ● C 04/04             ToDo 

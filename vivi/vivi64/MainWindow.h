@@ -47,6 +47,8 @@ private:
 	int		m_formerTabIndex;
 	int		m_docNumber;
 	
+	QDockWidget	*m_outlineDock;
+	
     enum { MaxRecentFiles = 10 + 26 };
     QAction *m_recentFileActs[MaxRecentFiles];
     enum { MaxFavoriteFiles = 10 + 26 };

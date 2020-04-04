@@ -1,6 +1,7 @@
 #include "version.h"
 #include "MainWindow.h"
 //#include "EditView.h"
+#include <QDockWidget>
 #include <QFileDialog>
 #include <QMimeData>
 #include <QSettings>
@@ -28,7 +29,12 @@ MainWindow::MainWindow(QWidget *parent)
 	createMenus();
 	//connectMenuActions();
 	setAcceptDrops(true);		//ドロップを有効化
-	
+	//
+	m_outlineDock = new QDockWidget(tr("Outline"));
+	m_outlineDock->setObjectName("Outline");
+	m_outlineDock->setWidget(new QPlainTextEdit());
+	m_outlineDock->setAllowedAreas(Qt::AllDockWidgetAreas);
+	addDockWidget(Qt::LeftDockWidgetArea, m_outlineDock);
 	//	デザイナでタブの消し方がわからないので、ここで消しておく
 	while( ui.tabWidget->count() )
 		ui.tabWidget->removeTab(0);
