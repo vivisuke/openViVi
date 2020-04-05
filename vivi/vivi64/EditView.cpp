@@ -36,6 +36,7 @@ void EditView::updateFont()
 					QFont::Bold);
 	m_fontBold.setKerning(false);
 	//
+	m_fontWidth = QFontMetrics(m_font).width('8');
 	m_fontHeight = QFontInfo(m_font).pixelSize();
 	m_lineHeight = (int)(m_fontHeight * 1.2);
 	//
@@ -88,7 +89,8 @@ void EditView::drawLineNumberArea(QPainter& pt)
 	int py = DRAW_Y_OFFSET;
 	for (int ln = 1; ln <= m_buffer->lineCount(); ++ln, py+=m_lineHeight) {
 		QString number = QString::number(ln);
-		pt.drawText(30, py+m_fontHeight, number);
+		int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
+		pt.drawText(px, py+m_fontHeight, number);
 	}
 }
 void EditView::drawTextArea(QPainter& pt)
@@ -102,6 +104,6 @@ void EditView::drawTextArea(QPainter& pt)
 		for (int i = 0; i < lnsz; ++i) {
 			txt += m_buffer->operator[](startIX+i);
 		}
-		pt.drawText(m_lineNumAreaWidth+20, py+m_fontHeight, txt);
+		pt.drawText(m_lineNumAreaWidth, py+m_fontHeight, txt);
 	}
 }

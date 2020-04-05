@@ -98,7 +98,7 @@
 ◎ C 04/05 04/05 0.001 ToDo テキストをとりあえず表示
 ● C 04/05             ToDo openViVi/vivi/vivi は削除
 ● C 04/05             ToDo ファイルオープン時・タブ切り替え時、View > LineNumber メニューのチェック更新
-● C 04/05             ToDo とりあえず、EditView が Buffer オブジェクトを保持？
-● C 04/05             ToDo 
+◎ C 04/05 04/05 0.001 ToDo とりあえず、EditView が Buffer オブジェクトを保持？
+◎ C 04/05 04/05 0.001 ToDo 行番号：右揃え表示
 ● C 04/05             ToDo 
 ● C 04/05             ToDo 

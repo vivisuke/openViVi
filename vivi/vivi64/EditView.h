@@ -36,6 +36,7 @@ protected:
 #endif
 private:
 	bool		m_lineNumberVisible;
+	int		m_fontWidth;
 	int		m_fontHeight;
 	int		m_lineHeight;		//	行高（in Pixel）
 	int		m_lineNumDigits;	//	log EOF行番号
