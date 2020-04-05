@@ -17,6 +17,7 @@
 
 typedef unsigned char byte;
 typedef unsigned int uint;
+typedef const wchar_t cwchar_t;
 
 #include <vector>
 #include <deque>
@@ -66,7 +67,6 @@ class Buffer : public QObject
 
 public:
 	//typedef wchar_t wchar_t;
-	typedef const wchar_t cwchar_t;
 
 	enum {
 		CASE_SENSITIVE = 0,

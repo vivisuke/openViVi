@@ -1,6 +1,8 @@
 #include "version.h"
 #include "MainWindow.h"
 #include "EditView.h"
+#include "typeSettings.h"
+#include "globalSettings.h"
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QMimeData>
@@ -229,7 +231,7 @@ EditView *MainWindow::openFile(const QString &pathName, bool forced)
     inputFile.close();    
     
 	EditView* view = createView();
-	//view->setPlainText(buf);
+	view->setPlainText(buf);
 	QFileInfo info(pathName);
 	auto title = info.fileName();
 	addNewView(view, title);

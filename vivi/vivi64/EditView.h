@@ -2,21 +2,27 @@
 
 #include <QScrollArea>
 #include <QFont>
-#include "typeSettings.h"
-#include "globalSettings.h"
+//#include "typeSettings.h"
+//#include "globalSettings.h"
+class TypeSettings;
+class GlobalSettings;
+class Buffer;
 
 class EditView : public QWidget		//QScrollArea
 {
 	Q_OBJECT
 public:
 	EditView();
+	~EditView();
 public:
 	QString	typeName() const;
 	TypeSettings	*typeSettings() { return m_typeSettings; }
 	void	setLineNumberVisible(bool);
+	void	setPlainText(const QString&);
 protected:
 	void	updateFont();
-	void	drawLineNumbers();
+	void	drawLineNumberArea(QPainter&);
+	void	drawTextArea(QPainter&);
 	void	updateLineNumberInfo();
 protected:
 	void	paintEvent(QPaintEvent *);
@@ -42,6 +48,7 @@ private:
 	TypeSettings	*m_phpTypeSettings;		//	PHPタイプ設定へのウィークポインタ
 	//TextCursor	*m_textCursor;
 	//TextCursor	*m_svTextCursor;
+	Buffer		*m_buffer;
 	QFont		m_font;
 	QFont		m_fontBold;
 	QWidget		*m_lineNumArea;

@@ -2,6 +2,9 @@
 #include <QDebug>
 #include "EditView.h"
 #include "typeSettings.h"
+#include "../buffer/Buffer.h"
+
+#define		DRAW_Y_OFFSET	2
 
 EditView::EditView()
 	: m_typeSettings(nullptr)
@@ -10,6 +13,17 @@ EditView::EditView()
 	m_typeSettings = new TypeSettings();
 	m_lineNumberVisible = m_typeSettings->boolValue(TypeSettings::VIEW_LINENUM);
 	updateFont();
+	m_buffer = new Buffer();
+}
+EditView::~EditView()
+{
+	delete m_buffer;
+}
+void EditView::setPlainText(const QString& txt)
+{
+	m_buffer->clear();
+	m_buffer->insertText(0, (cwchar_t*)txt.data(), txt.size());
+	update();
 }
 void EditView::updateFont()
 {
@@ -21,6 +35,9 @@ void EditView::updateFont()
 					m_typeSettings->intValue(TypeSettings::FONT_SIZE),
 					QFont::Bold);
 	m_fontBold.setKerning(false);
+	//
+	m_fontHeight = QFontInfo(m_font).pixelSize();
+	m_lineHeight = (int)(m_fontHeight * 1.2);
 	//
 	updateLineNumberInfo();
 }
@@ -47,6 +64,7 @@ void EditView::setLineNumberVisible(bool b)
 }
 void EditView::paintEvent(QPaintEvent *event)
 {
+	qDebug() << "lineCount = " << m_buffer->lineCount();
 	QPainter pt(this);
 	auto rct = rect();
 	qDebug() << "rect = " << rct;
@@ -60,7 +78,30 @@ void EditView::paintEvent(QPaintEvent *event)
 	pt.setBrush(col);
 	rct.setWidth(m_lineNumAreaWidth);
 	pt.drawRect(rct);
+	//
+	drawLineNumberArea(pt);		//	行番号エリア描画
+	drawTextArea(pt);					//	テキストエイア描画
 }
-void EditView::drawLineNumbers()
+void EditView::drawLineNumberArea(QPainter& pt)
 {
+	pt.setPen(Qt::black);
+	int py = DRAW_Y_OFFSET;
+	for (int ln = 1; ln <= m_buffer->lineCount(); ++ln, py+=m_lineHeight) {
+		QString number = QString::number(ln);
+		pt.drawText(30, py+m_fontHeight, number);
+	}
+}
+void EditView::drawTextArea(QPainter& pt)
+{
+	pt.setPen(Qt::black);
+	int py = DRAW_Y_OFFSET;
+	for (int ln = 1; ln <= m_buffer->lineCount(); ++ln, py+=m_lineHeight) {
+		auto startIX = m_buffer->lineStartPosition(ln-1);
+		auto lnsz = m_buffer->lineSize(ln-1);
+		QString txt;
+		for (int i = 0; i < lnsz; ++i) {
+			txt += m_buffer->operator[](startIX+i);
+		}
+		pt.drawText(m_lineNumAreaWidth+20, py+m_fontHeight, txt);
+	}
 }

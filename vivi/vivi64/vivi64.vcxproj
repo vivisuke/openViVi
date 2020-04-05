@@ -80,6 +80,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\buffer\Buffer.cpp" />
+    <ClCompile Include="..\buffer\BufferTokenizer.cpp" />
+    <ClCompile Include="..\buffer\bufferUtl.cpp" />
+    <ClCompile Include="..\buffer\MarkMgr.cpp" />
+    <ClCompile Include="..\buffer\sssearch.cpp" />
+    <ClCompile Include="..\buffer\undoMgr.cpp" />
+    <ClCompile Include="..\buffer\UTF16.cpp" />
+    <ClCompile Include="..\buffer\viewLineMgr.cpp" />
     <ClCompile Include="EditView.cpp" />
     <ClCompile Include="globalSettings.cpp" />
     <ClCompile Include="main.cpp" />
@@ -97,6 +105,18 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="EditView.h" />
+    <QtMoc Include="..\buffer\Buffer.h" />
+    <ClInclude Include="..\buffer\BufferTokenizer.h" />
+    <ClInclude Include="..\buffer\bufferUtl.h" />
+    <ClInclude Include="..\buffer\gap_buffer.h" />
+    <ClInclude Include="..\buffer\gap_deque.h" />
+    <ClInclude Include="..\buffer\LineMgr.h" />
+    <ClInclude Include="..\buffer\markItem.h" />
+    <ClInclude Include="..\buffer\MarkMgr.h" />
+    <ClInclude Include="..\buffer\sssearch.h" />
+    <ClInclude Include="..\buffer\undoMgr.h" />
+    <ClInclude Include="..\buffer\UTF16.h" />
+    <ClInclude Include="..\buffer\viewLineMgr.h" />
     <ClInclude Include="globalSettings.h" />
     <ClInclude Include="typeSettings.h" />
     <ClInclude Include="version.h" />
