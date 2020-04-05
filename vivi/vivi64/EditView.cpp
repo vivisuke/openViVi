@@ -1,6 +1,7 @@
 ﻿#include <QPainter>
 #include <QDebug>
 #include "EditView.h"
+#include "ViewTokenizer.h"
 #include "typeSettings.h"
 #include "../buffer/Buffer.h"
 
@@ -101,14 +102,49 @@ void EditView::drawTextArea(QPainter& pt)
 	auto rct = rect();
 	pt.setPen(Qt::black);
 	int py = DRAW_Y_OFFSET;
-	for (int ln = 1; ln <= m_buffer->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
+	bool inBlockComment = false;
+	bool inLineComment = false;
+	QString quotedText;
+	for (int ln = 0; ln < m_buffer->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
+		int px = m_lineNumAreaWidth;
 		auto startIX = m_buffer->lineStartPosition(ln-1);
-		auto lnsz = m_buffer->lineSize(ln-1);
+		auto lnsz = m_buffer->lineSize(ln);
+		drawLineText(pt, px, py+m_fontHeight, ln, startIX, lnsz, startIX+lnsz, inBlockComment, inLineComment, quotedText);
+#if	0
 		QString txt;
 		for (int i = 0; i < lnsz; ++i) {
 			txt += m_buffer->operator[](startIX+i);
 		}
 		pt.drawText(m_lineNumAreaWidth, py+m_fontHeight, txt);
+#endif
+	}
+}
+//	１行表示
+void EditView::drawLineText(QPainter &pt, int &px, int py,
+												int ln,			//	論理行番号, 0 org
+												pos_t ls,			//	表示行先頭位置
+												int vlnsz,		//	表示行サイズ
+												pos_t nxdls,		//	次の論理行先頭位置
+												bool &inBlockComment,
+												bool &inLineComment,
+												QString &quotedText)
+{
+	QFontMetrics fm(m_font);
+	QFontMetrics fmBold(m_fontBold);
+	const int last = ls + vlnsz;
+	ViewTokenizer tkn(typeSettings(), buffer(), ls, vlnsz, nxdls);
+	QString token = tkn.nextToken();
+	while( !token.isEmpty() ) {
+		if( tkn.tokenix() + token.size() > last )
+			token = token.left(last - tkn.tokenix());
+		qDebug() << "type = " << tkn.tokenType() << ", token = " << token;
+		switch( tkn.tokenType() ) {
+		case ViewTokenizer::ALNUM:
+			pt.drawText(px, py, token);
+			px += fm.width(token);
+			break;
+		}
+		token = tkn.nextToken();
 	}
 }
 void EditView::drawMiniMap(QPainter& pt)

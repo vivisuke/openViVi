@@ -2,6 +2,7 @@
 
 #include <QScrollArea>
 #include <QFont>
+#include "../buffer/Buffer.h"
 //#include "typeSettings.h"
 //#include "globalSettings.h"
 class TypeSettings;
@@ -23,8 +24,10 @@ protected:
 	void	updateFont();
 	void	drawLineNumberArea(QPainter&);
 	void	drawTextArea(QPainter&);
+	void	drawLineText(QPainter &, int &, int, int, pos_t, int, pos_t, bool&, bool&, QString&);
 	void	drawMiniMap(QPainter&);
 	void	updateLineNumberInfo();
+	Buffer	*buffer() { return m_buffer; }
 protected:
 	void	paintEvent(QPaintEvent *);
 #if	0
