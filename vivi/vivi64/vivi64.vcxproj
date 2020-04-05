@@ -93,6 +93,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="typeSettings.cpp" />
+    <ClCompile Include="ViewTokenizer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h" />
@@ -104,6 +105,7 @@
     <QtRcc Include="MainWindow.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ViewTokenizer.h" />
     <QtMoc Include="EditView.h" />
     <QtMoc Include="..\buffer\Buffer.h" />
     <ClInclude Include="..\buffer\BufferTokenizer.h" />

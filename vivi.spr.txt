@@ -108,8 +108,8 @@
 ● C 04/05             ToDo コメント強調
 ● C 04/06             ToDo View > MiniMap メニュー
 ● C 04/06             ToDo View > TabWidth メニュー
-● C 04/06             ToDo 
-● C 04/06             ToDo 
+● C 04/06             ToDo Document クラス追加？
+◎ C 04/06 04/06 0.001 ToDo ViewTokenizer クラス追加？
 ● C 04/06             ToDo 
 ● C 04/06             ToDo 
 ● C 04/06             ToDo 

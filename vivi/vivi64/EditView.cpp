@@ -87,9 +87,10 @@ void EditView::paintEvent(QPaintEvent *event)
 }
 void EditView::drawLineNumberArea(QPainter& pt)
 {
+	auto rct = rect();
 	pt.setPen(Qt::black);
 	int py = DRAW_Y_OFFSET;
-	for (int ln = 1; ln <= m_buffer->lineCount(); ++ln, py+=m_lineHeight) {
+	for (int ln = 1; ln <= m_buffer->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
 		QString number = QString::number(ln);
 		int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
 		pt.drawText(px, py+m_fontHeight, number);
@@ -97,9 +98,10 @@ void EditView::drawLineNumberArea(QPainter& pt)
 }
 void EditView::drawTextArea(QPainter& pt)
 {
+	auto rct = rect();
 	pt.setPen(Qt::black);
 	int py = DRAW_Y_OFFSET;
-	for (int ln = 1; ln <= m_buffer->lineCount(); ++ln, py+=m_lineHeight) {
+	for (int ln = 1; ln <= m_buffer->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
 		auto startIX = m_buffer->lineStartPosition(ln-1);
 		auto lnsz = m_buffer->lineSize(ln-1);
 		QString txt;
