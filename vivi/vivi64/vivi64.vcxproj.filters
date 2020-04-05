@@ -34,6 +34,12 @@
     <ClCompile Include="EditView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="globalSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="typeSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -55,6 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="globalSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="typeSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

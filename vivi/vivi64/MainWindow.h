@@ -3,8 +3,9 @@
 #include <QtWidgets/QMainWindow>
 #include <QPlainTextEdit>
 #include "ui_MainWindow.h"
+#include "EditView.h"
 
-typedef QPlainTextEdit	EditView;
+//typedef QPlainTextEdit	EditView;
 
 class MainWindow : public QMainWindow
 {

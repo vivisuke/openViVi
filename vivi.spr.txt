@@ -91,8 +91,8 @@
 ● C 04/04             ToDo 起動時引数：オープンファイル名指定
 ● C 04/04             ToDo 起動時引数：-l=行番号
 ◎ C 04/05 04/05 0.001 ToDo EditView クラス追加
-● C 04/05             ToDo 
-● C 04/05             ToDo 
+◎ C 04/05 04/05 0.001 ToDo EditView：行番号エリア背景描画
+◎ C 04/05 04/05 0.001 ToDo EditView：テキストエリア背景描画
 ● C 04/05             ToDo 
 ● C 04/05             ToDo 
 ● C 04/05             ToDo 

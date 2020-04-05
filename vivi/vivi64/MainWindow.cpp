@@ -128,9 +128,9 @@ void MainWindow::on_action_New_triggered()
 }
 EditView *MainWindow::createView()
 {
-	EditView* view = new QPlainTextEdit();	//createView();
-	view->setAcceptDrops(false);		//ドロップを無効化
-	view->setTabStopDistance(24);
+	EditView* view = new EditView();	//QPlainTextEdit();	//createView();
+	//view->setAcceptDrops(false);		//ドロップを無効化
+	//view->setTabStopDistance(24);
 	return view;
 }
 void MainWindow::addNewView(EditView *view, const QString &title)
@@ -189,7 +189,7 @@ EditView *MainWindow::openFile(const QString &pathName, bool forced)
     inputFile.close();    
     
 	EditView* view = createView();
-	view->setPlainText(buf);
+	//view->setPlainText(buf);
 	QFileInfo info(pathName);
 	auto title = info.fileName();
 	addNewView(view, title);
