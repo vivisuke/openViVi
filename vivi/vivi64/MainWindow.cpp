@@ -1,6 +1,6 @@
 #include "version.h"
 #include "MainWindow.h"
-//#include "EditView.h"
+#include "EditView.h"
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QMimeData>
@@ -15,6 +15,28 @@
 #define		MAX_CLIPBOARD_HIST		100
 #define		MAX_N_EXT_CMD				32
 
+//----------------------------------------------------------------------
+bool isValid(QWidget *w, const QString &className)
+{
+	return w != 0 && QString(w->metaObject()->className()) == className;
+}
+bool isEditViewFocused(QWidget *w)
+{
+	return isValid(w, "EditView") && w->hasFocus();
+}
+bool isEditView(QWidget *w)
+{
+	return isValid(w, "EditView");
+}
+bool isSplitter(QWidget *w)
+{
+	return isValid(w, "QSplitter");
+}
+bool isStartPage(QWidget *w)
+{
+	return isValid(w, "SSEStartPage");
+}
+//----------------------------------------------------------------------
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, m_curTabIndex(-1)
@@ -139,6 +161,24 @@ void MainWindow::addNewView(EditView *view, const QString &title)
 	ui.tabWidget->setCurrentIndex(cur);
 	view->setFocus();
 }
+EditView *MainWindow::currentWidget()
+{
+	return nthWidget(ui.tabWidget->currentIndex());
+}
+EditView *MainWindow::nthWidget(int ix)
+{
+	QWidget *w = ui.tabWidget->widget(ix);
+#if	0
+	if( isSplitter(w) ) {
+		QSplitter *sp = (QSplitter *)w;
+		if( sp->count() > 1 && sp->widget(1)->hasFocus() )
+			return (EditView *)sp->widget(1);
+		else
+			return (EditView *)sp->widget(0);
+	}
+#endif
+	return (EditView *)w;
+}
 void MainWindow::on_action_Open_triggered()
 {
 	qDebug() << "on_action_Open_triggered()";
@@ -224,4 +264,21 @@ void MainWindow::on_action_eXit_triggered()
 	qDebug() << "on_action_eXit_triggered()";
 	//	undone: 修了確認
 	close();
+}
+void MainWindow::on_action_LineNumber_triggered()
+{
+	bool b = ui.action_LineNumber->isChecked();
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		view->typeSettings()->setBoolValue(TypeSettings::VIEW_LINENUM, b);
+		onViewLineNumberChanged(view->typeName(), b);
+	}
+}
+void MainWindow::onViewLineNumberChanged(const QString &typeName, bool b)
+{
+	for(int i = 0; i < ui.tabWidget->count(); ++i) {
+		EditView *view = nthWidget(i);
+		if( isEditView(view) && view->typeName() == typeName )
+			view->setLineNumberVisible(b);
+	}
 }

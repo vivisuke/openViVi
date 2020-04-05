@@ -8,6 +8,7 @@ EditView::EditView()
 	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
 {
 	m_typeSettings = new TypeSettings();
+	m_lineNumberVisible = m_typeSettings->boolValue(TypeSettings::VIEW_LINENUM);
 	updateFont();
 }
 void EditView::updateFont()
@@ -25,8 +26,24 @@ void EditView::updateFont()
 }
 void EditView::updateLineNumberInfo()
 {
+	if( m_lineNumberVisible ) {
 		m_lineNumWidth = QFontMetrics(m_font).width('8')*(m_lineNumDigits+1);
 		m_lineNumAreaWidth = QFontMetrics(m_font).width('8')*(m_lineNumDigits + 3);
+	} else {
+		m_lineNumWidth = 0;
+		m_lineNumAreaWidth = QFontMetrics(m_font).width('8')*2;
+	}
+}
+QString EditView::typeName() const
+{
+	return m_typeSettings->name();
+}
+void EditView::setLineNumberVisible(bool b)
+{
+	if( b == m_lineNumberVisible ) return;
+	m_lineNumberVisible = b;
+	updateLineNumberInfo();
+	update();
 }
 void EditView::paintEvent(QPaintEvent *event)
 {
@@ -41,7 +58,7 @@ void EditView::paintEvent(QPaintEvent *event)
 	//	行番号部分背景描画
 	col = m_typeSettings->color(TypeSettings::LINENUM_BG);
 	pt.setBrush(col);
-	rct.setWidth(m_lineNumWidth);
+	rct.setWidth(m_lineNumAreaWidth);
 	pt.drawRect(rct);
 }
 void EditView::drawLineNumbers()

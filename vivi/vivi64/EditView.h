@@ -10,6 +10,10 @@ class EditView : public QWidget		//QScrollArea
 	Q_OBJECT
 public:
 	EditView();
+public:
+	QString	typeName() const;
+	TypeSettings	*typeSettings() { return m_typeSettings; }
+	void	setLineNumberVisible(bool);
 protected:
 	void	updateFont();
 	void	drawLineNumbers();
@@ -25,6 +29,7 @@ protected:
 	void	keyPressEvent(QKeyEvent *);
 #endif
 private:
+	bool		m_lineNumberVisible;
 	int		m_fontHeight;
 	int		m_lineHeight;		//	行高（in Pixel）
 	int		m_lineNumDigits;	//	log EOF行番号

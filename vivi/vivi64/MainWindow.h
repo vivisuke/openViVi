@@ -27,6 +27,9 @@ protected:
 	EditView	*createView();
 	void	addNewView(EditView *, const QString &title);
     EditView	*openFile(const QString &pathName, bool forced = false);
+	EditView	*currentWidget();
+	EditView	*nthWidget(int);
+	void	onViewLineNumberChanged(const QString &, bool);
     
 protected:
 	void	dragEnterEvent(QDragEnterEvent *event);
@@ -37,6 +40,7 @@ private slots:
 	void	on_action_Open_triggered();
 	void	on_action_Close_triggered();
 	void	on_action_eXit_triggered();
+	void	on_action_LineNumber_triggered();
 	//
     void	openRecentFile();
 	void	tabCloseRequested(int index);
