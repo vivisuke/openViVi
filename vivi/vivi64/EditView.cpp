@@ -4,7 +4,8 @@
 #include "typeSettings.h"
 #include "../buffer/Buffer.h"
 
-#define		DRAW_Y_OFFSET	2
+#define		DRAW_Y_OFFSET		2
+#define		MINMAP_WIDTH			80
 
 EditView::EditView()
 	: m_typeSettings(nullptr)
@@ -82,6 +83,7 @@ void EditView::paintEvent(QPaintEvent *event)
 	//
 	drawLineNumberArea(pt);		//	行番号エリア描画
 	drawTextArea(pt);					//	テキストエイア描画
+	drawMiniMap(pt);					//	ミニマップ描画
 }
 void EditView::drawLineNumberArea(QPainter& pt)
 {
@@ -106,4 +108,13 @@ void EditView::drawTextArea(QPainter& pt)
 		}
 		pt.drawText(m_lineNumAreaWidth, py+m_fontHeight, txt);
 	}
+}
+void EditView::drawMiniMap(QPainter& pt)
+{
+	auto rct = rect();
+	rct.setX(rct.width() - MINMAP_WIDTH);
+	rct.setWidth(MINMAP_WIDTH);
+	pt.setBrush(QColor("lightgray"));
+	pt.setPen(Qt::transparent);
+	pt.drawRect(rct);
 }

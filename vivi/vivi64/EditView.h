@@ -23,6 +23,7 @@ protected:
 	void	updateFont();
 	void	drawLineNumberArea(QPainter&);
 	void	drawTextArea(QPainter&);
+	void	drawMiniMap(QPainter&);
 	void	updateLineNumberInfo();
 protected:
 	void	paintEvent(QPaintEvent *);
