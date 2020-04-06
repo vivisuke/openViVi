@@ -8,11 +8,12 @@
 #define		DRAW_Y_OFFSET		2
 #define		MINMAP_WIDTH			80
 
-EditView::EditView()
+EditView::EditView(TypeSettings* typeSettings)
 	: m_typeSettings(nullptr)
 	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
 {
-	m_typeSettings = new TypeSettings();
+	m_typeSettings = typeSettings == nullptr ? new TypeSettings() : typeSettings;
+	qDebug() << "typeSettings type = " << m_typeSettings->name();
 	m_lineNumberVisible = m_typeSettings->boolValue(TypeSettings::VIEW_LINENUM);
 	updateFont();
 	m_buffer = new Buffer();

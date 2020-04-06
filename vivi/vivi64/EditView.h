@@ -13,7 +13,7 @@ class EditView : public QWidget		//QScrollArea
 {
 	Q_OBJECT
 public:
-	EditView();
+	EditView(TypeSettings* = nullptr);
 	~EditView();
 public:
 	QString	typeName() const;

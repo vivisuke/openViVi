@@ -7,6 +7,10 @@
 
 //typedef QPlainTextEdit	EditView;
 
+class SettingsMgr;
+class TypeSettings;
+class GlobalSettings;
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -24,7 +28,7 @@ protected:
     void	updateFavoriteFileActions();
 	void	setIcon(const QString &fileName, QAction *action);
 	//EditView	*createView(Document *doc = 0, TypeSettings* = 0);
-	EditView	*createView();
+	EditView	*createView(TypeSettings* = nullptr);
 	void	addNewView(EditView *, const QString &title);
     EditView	*openFile(const QString &pathName, bool forced = false);
 	EditView	*currentWidget();
@@ -47,6 +51,9 @@ private slots:
 	
 private:
 	Ui::MainWindowClass ui;
+	
+	SettingsMgr		*m_settingsMgr;
+	GlobalSettings		*m_globSettings;
 	
 	int		m_curTabIndex;
 	int		m_formerTabIndex;

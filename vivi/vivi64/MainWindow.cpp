@@ -1,6 +1,7 @@
 #include "version.h"
 #include "MainWindow.h"
 #include "EditView.h"
+#include "settingsMgr.h"
 #include "typeSettings.h"
 #include "globalSettings.h"
 #include <QDockWidget>
@@ -37,6 +38,15 @@ bool isSplitter(QWidget *w)
 bool isStartPage(QWidget *w)
 {
 	return isValid(w, "SSEStartPage");
+}
+QString getExtension(const QString &fullPath)
+{
+	QString name = QFileInfo(fullPath).fileName();		//	ディレクトリを除去
+	int ix = name.lastIndexOf('.');
+	if( ix < 0 )
+		return QString();
+	else
+		return name.mid(ix+1);
 }
 //----------------------------------------------------------------------
 MainWindow::MainWindow(QWidget *parent)
@@ -150,9 +160,9 @@ void MainWindow::on_action_New_triggered()
 	QString title = tr("Untitled-%1").arg(++m_docNumber);
 	addNewView(view, title);
 }
-EditView *MainWindow::createView()
+EditView *MainWindow::createView(TypeSettings* typeSettings)
 {
-	EditView* view = new EditView();	//QPlainTextEdit();	//createView();
+	EditView* view = new EditView(typeSettings);	//QPlainTextEdit();	//createView();
 	//view->setAcceptDrops(false);		//ドロップを無効化
 	//view->setTabStopDistance(24);
 	return view;
@@ -230,6 +240,7 @@ EditView *MainWindow::openFile(const QString &pathName, bool forced)
     QString buf = in.readAll();
     inputFile.close();    
     
+    //QString typeName = m_settingsMgr->typeNameForExt(getExtension(fileName));
 	EditView* view = createView();
 	view->setPlainText(buf);
 	QFileInfo info(pathName);
