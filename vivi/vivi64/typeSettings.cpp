@@ -90,7 +90,7 @@ struct KeyTextItem
 	cchar	*m_key;		//	キー名
 	cwchar	*m_value;	//	
 } keyTextTable[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L""},
 	{"BlockCommentBeg",	L""},
 	{"BlockCommentEnd",	L""},
@@ -120,7 +120,7 @@ struct KeyTextItem
 	{0, false}
 };
 struct KeyTextItem keyTextTableCPP[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L"//"},
 	{"BlockCommentBeg",	L"/*"},
 	{"BlockCommentEnd",	L"*/"},
@@ -150,7 +150,7 @@ struct KeyTextItem keyTextTableCPP[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTableCS[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L"//"},
 	{"BlockCommentBeg",	L"/*"},
 	{"BlockCommentEnd",	L"*/"},
@@ -180,7 +180,7 @@ struct KeyTextItem keyTextTableCS[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTableCSS[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L""},
 	{"BlockCommentBeg",	L"/*"},
 	{"BlockCommentEnd",	L"*/"},
@@ -210,7 +210,7 @@ struct KeyTextItem keyTextTableCSS[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTableJAVA[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L"//"},
 	{"BlockCommentBeg",	L"/*"},
 	{"BlockCommentEnd",	L"*/"},
@@ -240,7 +240,7 @@ struct KeyTextItem keyTextTableJAVA[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTableRUBY[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L"#"},
 	{"BlockCommentBeg",	L"=begin"},
 	{"BlockCommentEnd",	L"=end"},
@@ -270,7 +270,7 @@ struct KeyTextItem keyTextTableRUBY[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTableFS[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L"//"},
 	{"BlockCommentBeg",	L"(*"},
 	{"BlockCommentEnd",	L"*)"},
@@ -300,7 +300,7 @@ struct KeyTextItem keyTextTableFS[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTablePYTHON[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L"#"},
 	{"BlockCommentBeg",	L""},
 	{"BlockCommentEnd",	L""},
@@ -330,7 +330,7 @@ struct KeyTextItem keyTextTablePYTHON[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTableJS[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L"//"},
 	{"BlockCommentBeg",	L"/*"},
 	{"BlockCommentEnd",	L"*/"},
@@ -360,7 +360,7 @@ struct KeyTextItem keyTextTableJS[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTableHLSL[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L"//"},
 	{"BlockCommentBeg",	L"/*"},
 	{"BlockCommentEnd",	L"*/"},
@@ -390,7 +390,7 @@ struct KeyTextItem keyTextTableHLSL[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTablePASCAL[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L"//"},
 	{"BlockCommentBeg",	L"{"},
 	{"BlockCommentEnd",	L"}"},
@@ -420,7 +420,7 @@ struct KeyTextItem keyTextTablePASCAL[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTablePERL[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L"#"},
 	{"BlockCommentBeg",	L"=pod"},
 	{"BlockCommentEnd",	L"=cut"},
@@ -450,7 +450,7 @@ struct KeyTextItem keyTextTablePERL[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTablePHP[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L"//"},
 	{"BlockCommentBeg",	L"/*"},
 	{"BlockCommentEnd",	L"*/"},
@@ -480,7 +480,7 @@ struct KeyTextItem keyTextTablePHP[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTableSQL[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L"--"},
 	{"BlockCommentBeg",	L"/*"},
 	{"BlockCommentEnd",	L"*/"},
@@ -510,7 +510,7 @@ struct KeyTextItem keyTextTableSQL[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTableHTML[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L""},
 	{"BlockCommentBeg",	L"<!--"},
 	{"BlockCommentEnd",	L"-->"},
@@ -540,7 +540,7 @@ struct KeyTextItem keyTextTableHTML[] = {
 	{0, false}
 };
 struct KeyTextItem keyTextTableLOG[] = {
-	{"FontName",	L"メイリオ"},
+	{"FontName",	L"Courier New"},
 	{"LineComment",	L""},
 	{"BlockCommentBeg",	L""},
 	{"BlockCommentEnd",	L""},

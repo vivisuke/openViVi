@@ -27,6 +27,11 @@ void EditView::setPlainText(const QString& txt)
 	m_buffer->insertText(0, (cwchar_t*)txt.data(), txt.size());
 	update();
 }
+int EditView::viewLineOffsetToPx(int vln, int offset) const
+{
+	Q_ASSERT(0);
+	return 0;
+}
 void EditView::updateFont()
 {
 	m_font = QFont(m_typeSettings->textValue(TypeSettings::FONT_NAME),
@@ -131,6 +136,9 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 {
 	QFontMetrics fm(m_font);
 	QFontMetrics fmBold(m_fontBold);
+	const auto spcWidth = fm.width("8");
+	int nTab = m_typeSettings->intValue(TypeSettings::TAB_WIDTH);
+	int ix = 0;
 	const int last = ls + vlnsz;
 	ViewTokenizer tkn(typeSettings(), buffer(), ls, vlnsz, nxdls);
 	QString token = tkn.nextToken();
@@ -140,6 +148,35 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 		qDebug() << "type = " << tkn.tokenType() << ", token = " << token;
 		switch( tkn.tokenType() ) {
 		case ViewTokenizer::ALNUM:
+			pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
+			pt.drawText(px, py, token);
+			px += fm.width(token);
+			break;
+		case ViewTokenizer::DIGITS:
+			pt.setPen(m_typeSettings->color(TypeSettings::DIGITS));
+			pt.drawText(px, py, token);
+			px += fm.width(token);
+			break;
+		case ViewTokenizer::QUOTED:
+			pt.setPen(m_typeSettings->color(TypeSettings::STRING));
+			pt.drawText(px, py, token);
+			px += fm.width(token);
+			break;
+		case ViewTokenizer::CTRL:
+			if( token == "\t" ) {
+				pt.setPen(m_typeSettings->color(TypeSettings::TAB));
+				pt.drawText(px, py, ">");
+				int clmn = (px - m_lineNumAreaWidth) / spcWidth;
+				clmn += nTab - (clmn % nTab);
+				px = m_lineNumAreaWidth + clmn * spcWidth;
+			} else {
+				pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
+				pt.drawText(px, py, token);
+				px += fm.width(token);
+			}
+			break;
+		case ViewTokenizer::OTHER:
+			pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
 			pt.drawText(px, py, token);
 			px += fm.width(token);
 			break;

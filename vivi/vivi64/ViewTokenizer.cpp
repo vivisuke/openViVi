@@ -264,7 +264,11 @@ QString ViewTokenizer::nextToken()
 	}
 #endif
 	QString txt(qch);
-	if( (qch.unicode() < 0x20 || qch == L'　') ) {
+	if( qch.unicode() < 0x20 ) {
+		m_tokenType = CTRL;
+		return m_tokenText = txt;
+	}
+	if( qch == L'　' ) {
 		m_tokenType = ZEN_SPACE;
 		return m_tokenText = txt;
 	}
