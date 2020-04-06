@@ -113,7 +113,7 @@ void EditView::drawTextArea(QPainter& pt)
 	for (int ln = 0; ln < m_buffer->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
 		inLineComment = false;		//	undone: 折返し行対応
 		int px = m_lineNumAreaWidth;
-		auto startIX = m_buffer->lineStartPosition(ln-1);
+		auto startIX = m_buffer->lineStartPosition(ln);
 		auto lnsz = m_buffer->lineSize(ln);
 		drawLineText(pt, px, py+m_fontHeight, ln, startIX, lnsz, startIX+lnsz, inBlockComment, inLineComment, quotedText);
 #if	0
@@ -141,6 +141,7 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 	int nTab = m_typeSettings->intValue(TypeSettings::TAB_WIDTH);
 	int ix = 0;
 	const int last = ls + vlnsz;
+	const QString lineComment = m_typeSettings->textValue(TypeSettings::LINE_COMMENT);
 	ViewTokenizer tkn(typeSettings(), buffer(), ls, vlnsz, nxdls);
 	QString token = tkn.nextToken();
 	while( !token.isEmpty() ) {
@@ -186,7 +187,7 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 			}
 			break;
 		case ViewTokenizer::OTHER:
-			if( !inLineComment && token.startsWith(m_typeSettings->textValue(TypeSettings::LINE_COMMENT)) ) {
+			if( !inLineComment && !lineComment.isEmpty() && token.startsWith(lineComment) ) {
 				inLineComment = true;
 				col = m_typeSettings->color(TypeSettings::COMMENT);
 			}
