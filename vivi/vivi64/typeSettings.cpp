@@ -880,7 +880,12 @@ bool TypeSettings::loadKeyWords(int ix, QSet<QString> &kwSet, bool ic)
 	QString fileName = textValue(ix);
 	if( fileName.isEmpty() ) return false;
 #ifdef	_DEBUG
-	QDir dir("C:/user/sse.bin/keywords/");
+	//QDir dir("C:/user/sse.bin/keywords/");
+	QDir dir(qApp->applicationDirPath());
+	dir.cdUp();
+	dir.cdUp();
+	//path = dir.absolutePath();
+	dir.cd("keywords");
 #else
 	QDir dir(qApp->applicationDirPath() + "/keywords/");
 #endif

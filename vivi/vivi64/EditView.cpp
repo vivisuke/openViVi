@@ -111,6 +111,7 @@ void EditView::drawTextArea(QPainter& pt)
 	bool inLineComment = false;
 	QString quotedText;
 	for (int ln = 0; ln < m_buffer->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
+		inLineComment = false;		//	undone: 折返し行対応
 		int px = m_lineNumAreaWidth;
 		auto startIX = m_buffer->lineStartPosition(ln-1);
 		auto lnsz = m_buffer->lineSize(ln);
@@ -146,41 +147,59 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 		if( tkn.tokenix() + token.size() > last )
 			token = token.left(last - tkn.tokenix());
 		qDebug() << "type = " << tkn.tokenType() << ", token = " << token;
+		QColor col = m_typeSettings->color(inBlockComment || inLineComment ? TypeSettings::COMMENT : TypeSettings::TEXT);
+		auto wd = fm.width(token);
 		switch( tkn.tokenType() ) {
 		case ViewTokenizer::ALNUM:
-			pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
-			pt.drawText(px, py, token);
-			px += fm.width(token);
+			//pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
+			//pt.drawText(px, py, token);
+			//px += fm.width(token);
 			break;
 		case ViewTokenizer::DIGITS:
-			pt.setPen(m_typeSettings->color(TypeSettings::DIGITS));
-			pt.drawText(px, py, token);
-			px += fm.width(token);
+			if( !inLineComment && !inBlockComment )
+				col = m_typeSettings->color(TypeSettings::DIGITS);
+			//pt.setPen(m_typeSettings->color(TypeSettings::DIGITS));
+			//pt.drawText(px, py, token);
+			//px += fm.width(token);
 			break;
 		case ViewTokenizer::QUOTED:
-			pt.setPen(m_typeSettings->color(TypeSettings::STRING));
-			pt.drawText(px, py, token);
-			px += fm.width(token);
+			if( !inLineComment && !inBlockComment )
+				col = m_typeSettings->color(TypeSettings::STRING);
+			//pt.setPen(m_typeSettings->color(TypeSettings::STRING));
+			//pt.drawText(px, py, token);
+			//px += fm.width(token);
 			break;
 		case ViewTokenizer::CTRL:
 			if( token == "\t" ) {
-				pt.setPen(m_typeSettings->color(TypeSettings::TAB));
-				pt.drawText(px, py, ">");
+				token = ">";
+				col = m_typeSettings->color(TypeSettings::TAB);
+				//pt.setPen(m_typeSettings->color(TypeSettings::TAB));
+				//pt.drawText(px, py, ">");
 				int clmn = (px - m_lineNumAreaWidth) / spcWidth;
-				clmn += nTab - (clmn % nTab);
-				px = m_lineNumAreaWidth + clmn * spcWidth;
+				wd = (nTab - (clmn % nTab)) * spcWidth;
+				//clmn += nTab - (clmn % nTab);
+				//px = m_lineNumAreaWidth + clmn * spcWidth;
 			} else {
-				pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
-				pt.drawText(px, py, token);
-				px += fm.width(token);
+				//pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
+				//pt.drawText(px, py, token);
+				//px += fm.width(token);
 			}
 			break;
 		case ViewTokenizer::OTHER:
-			pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
-			pt.drawText(px, py, token);
-			px += fm.width(token);
+			if( !inLineComment && token.startsWith(m_typeSettings->textValue(TypeSettings::LINE_COMMENT)) ) {
+				inLineComment = true;
+				col = m_typeSettings->color(TypeSettings::COMMENT);
+			}
+			//else
+			//	pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
+			//pt.drawText(px, py, token);
+			//px += fm.width(token);
 			break;
 		}
+		pt.setPen(col);
+		pt.drawText(px, py, token);
+		px += wd;
+		//
 		token = tkn.nextToken();
 	}
 }

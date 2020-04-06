@@ -1,0 +1,64 @@
+// Java keywords	by matobaa éÅ
+// by Java Language Spec. 
+// http://java.sun.com/docs/books/jls/third_edition/html/lexical.html#3.9
+abstract
+boolean
+break
+byte
+case
+catch
+char
+class
+continue
+default
+do
+double
+else
+extends
+final
+finally
+float
+for
+if
+implements
+import
+instanceof
+int
+interface
+long
+native
+new
+package
+private
+protected
+public
+return
+short
+static
+super
+switch
+synchronized
+this
+throw
+throws
+transient
+try
+void
+volatile
+while
+
+// keywords, but not defined its functionality
+const
+goto
+
+// literals
+null
+true
+false
+
+// for JLS 2
+strictfp
+
+// for JLS 3
+assert
+enum
