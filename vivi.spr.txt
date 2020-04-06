@@ -121,11 +121,11 @@
 ● C 04/06             ToDo ステータスバー右端にタイプ名ドロップダウン表示
 ◎ C 04/06 04/06 0.001 ToDo 各タイプアイコンをリソースに追加
 ◎ C 04/06 04/06 0.001 ToDo 改行記号は改行記号色表示
-● C 04/06             ToDo ファイル種別に対応する TypeSettings 選択
+◎ C 04/06 04/07 0.001 ToDo ファイル種別に対応する TypeSettings 選択
 ◎ C 04/07 04/07 0.001 ToDo SettingsMgr 追加
 ◎ C 04/07 04/07 0.001 ToDo settingsMgr はグローバル変数にしたほうがよい？
-● C 04/07             ToDo 
-● C 04/07             ToDo 
+● C 04/07             ToDo TypeSettings：デフォルト拡張子を設定
+● C 04/07             ToDo Buffer は functional を使用するようにし、Qt を使わなくてもビルド可能にしておく？
 ● C 04/07             ToDo 
 ● C 04/07             ToDo 
 ● C 04/07             ToDo 

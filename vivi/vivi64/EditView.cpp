@@ -142,8 +142,8 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 	int nTab = m_typeSettings->intValue(TypeSettings::TAB_WIDTH);
 	int ix = 0;
 	const int last = ls + vlnsz;
-	//const QString lineComment = m_typeSettings->textValue(TypeSettings::LINE_COMMENT);
-	const QString lineComment = "//";		//	暫定コード
+	const QString lineComment = m_typeSettings->textValue(TypeSettings::LINE_COMMENT);
+	//const QString lineComment = "//";		//	暫定コード
 	ViewTokenizer tkn(typeSettings(), buffer(), ls, vlnsz, nxdls);
 	QString token = tkn.nextToken();
 	while( !token.isEmpty() ) {
@@ -191,6 +191,11 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 		case ViewTokenizer::NEWLINE:
 			col = m_typeSettings->color(TypeSettings::NEWLINE);
 			break;
+		case ViewTokenizer::COMMENT:
+			inLineComment = true;
+			col = m_typeSettings->color(TypeSettings::COMMENT);
+			break;
+#if	0
 		case ViewTokenizer::OTHER:
 			if( !inLineComment && !lineComment.isEmpty() && token.startsWith(lineComment) ) {
 				inLineComment = true;
@@ -201,6 +206,7 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 			//pt.drawText(px, py, token);
 			//px += fm.width(token);
 			break;
+#endif
 		}
 		pt.setPen(col);
 		pt.drawText(px, py, token);
