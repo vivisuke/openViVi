@@ -18,6 +18,8 @@
 #define		MAX_CLIPBOARD_HIST		100
 #define		MAX_N_EXT_CMD				32
 
+SettingsMgr	g_settingsMgr;
+
 //----------------------------------------------------------------------
 bool isValid(QWidget *w, const QString &className)
 {
@@ -56,6 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_docNumber(0)
 {
 	ui.setupUi(this);
+	//m_settingsMgr = new SettingsMgr();
 	//char *ptr = nullptr;
 	//qDebug() << "sizeof(ptr) = " << sizeof(ptr) << "\n";
 	setWindowTitle(QString("ViVi64 ver %1").arg(VERSION_STR));
@@ -78,6 +81,10 @@ MainWindow::MainWindow(QWidget *parent)
 			this, SLOT(tabCloseRequested(int)));
 	//
 		on_action_New_triggered();
+}
+MainWindow::~MainWindow()
+{
+	//delete m_settingsMgr;
 }
 void MainWindow::createActions()
 {
@@ -160,8 +167,9 @@ void MainWindow::on_action_New_triggered()
 	QString title = tr("Untitled-%1").arg(++m_docNumber);
 	addNewView(view, title);
 }
-EditView *MainWindow::createView(TypeSettings* typeSettings)
+EditView *MainWindow::createView(QString typeName)
 {
+	auto* typeSettings = new TypeSettings(typeName);
 	EditView* view = new EditView(typeSettings);	//QPlainTextEdit();	//createView();
 	//view->setAcceptDrops(false);		//ドロップを無効化
 	//view->setTabStopDistance(24);
@@ -240,8 +248,8 @@ EditView *MainWindow::openFile(const QString &pathName, bool forced)
     QString buf = in.readAll();
     inputFile.close();    
     
-    //QString typeName = m_settingsMgr->typeNameForExt(getExtension(fileName));
-	EditView* view = createView();
+    QString typeName = g_settingsMgr.typeNameForExt(getExtension(pathName));
+	EditView* view = createView(typeName);
 	view->setPlainText(buf);
 	QFileInfo info(pathName);
 	auto title = info.fileName();
