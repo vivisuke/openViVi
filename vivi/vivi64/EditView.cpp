@@ -35,8 +35,8 @@ EditView::~EditView()
 }
 void EditView::setPlainText(const QString& txt)
 {
-	m_buffer->clear();
-	m_buffer->insertText(0, (cwchar_t*)txt.data(), txt.size());
+	buffer()->clear();
+	buffer()->insertText(0, (cwchar_t*)txt.data(), txt.size());
 	buildMinMap();
 	update();
 }
@@ -116,7 +116,7 @@ void EditView::keyPressEvent(QKeyEvent *)
 }
 void EditView::paintEvent(QPaintEvent *event)
 {
-	qDebug() << "lineCount = " << m_buffer->lineCount();
+	qDebug() << "lineCount = " << buffer()->lineCount();
 	QPainter pt(this);
 	auto rct = rect();
 	qDebug() << "rect = " << rct;
@@ -140,7 +140,8 @@ void EditView::drawLineNumberArea(QPainter& pt)
 	auto rct = rect();
 	pt.setPen(Qt::black);
 	int py = DRAW_Y_OFFSET;
-	for (int ln = 1 + m_scrollX0; ln <= m_buffer->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
+	int limit = buffer()->lineCount() + (buffer()->isBlankEOFLine() ? 1 : 0);
+	for (int ln = 1 + m_scrollX0; ln <= limit && py < rct.height(); ++ln, py+=m_lineHeight) {
 		QString number = QString::number(ln);
 		int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
 		pt.drawText(px, py+m_fontHeight, number);
@@ -150,23 +151,24 @@ void EditView::drawTextArea(QPainter& pt)
 {
 	auto rct = rect();
 	pt.setPen(Qt::black);
-	int py = DRAW_Y_OFFSET;
+	int px, py = DRAW_Y_OFFSET;
 	bool inBlockComment = false;
 	bool inLineComment = false;
 	QString quotedText;
-	for (int ln = m_scrollX0; ln < m_buffer->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
+	for (int ln = m_scrollX0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
 		inLineComment = false;		//	undone: 折返し行対応
-		int px = m_lineNumAreaWidth;
-		auto startIX = m_buffer->lineStartPosition(ln);
-		auto lnsz = m_buffer->lineSize(ln);
+		px = m_lineNumAreaWidth;
+		auto startIX = buffer()->lineStartPosition(ln);
+		auto lnsz = buffer()->lineSize(ln);
 		drawLineText(pt, px, py+m_fontHeight, ln, startIX, lnsz, startIX+lnsz, inBlockComment, inLineComment, quotedText);
-#if	0
-		QString txt;
-		for (int i = 0; i < lnsz; ++i) {
-			txt += m_buffer->operator[](startIX+i);
+		if( !buffer()->isBlankEOFLine() && ln == buffer()->lineCount() - 1 ) {
+			pt.setPen(typeSettings()->color(TypeSettings::EOF_MARK));
+			pt.drawText(px, py+m_fontHeight, "[EOF]");
 		}
-		pt.drawText(m_lineNumAreaWidth, py+m_fontHeight, txt);
-#endif
+	}
+	if( buffer()->isBlankEOFLine() ) {
+		pt.setPen(typeSettings()->color(TypeSettings::EOF_MARK));
+		pt.drawText(m_lineNumAreaWidth, py+m_fontHeight, "[EOF]");
 	}
 }
 //	１行表示
@@ -276,9 +278,9 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 }
 void EditView::buildMinMap()
 {
-	if( m_buffer->lineCount() > 10000 ) return;		//	最大1万行
-	int ht = qMin(MAX_MINMAP_HEIGHT, m_buffer->lineCount());
-	m_mmScale = (double)ht / m_buffer->lineCount();
+	if( buffer()->lineCount() > 10000 ) return;		//	最大1万行
+	int ht = qMin(MAX_MINMAP_HEIGHT, buffer()->lineCount());
+	m_mmScale = (double)ht / buffer()->lineCount();
 	m_minMap = QPixmap(MINMAP_WIDTH, ht);
 	auto ts = m_typeSettings;
 	m_minMap.fill(ts->color(TypeSettings::BACK_GROUND));
@@ -287,23 +289,23 @@ void EditView::buildMinMap()
 	//if( lineCount() > 10000 ) return;
 	painter.setPen(ts->color(TypeSettings::TEXT));
 	bool inBlockComment = false;
-	for (int ln = 0; ln < m_buffer->lineCount(); ++ln) {
-		int p = m_buffer->lineStartPosition(ln);
-		int last= m_buffer->lineStartPosition(ln+1);
+	for (int ln = 0; ln < buffer()->lineCount(); ++ln) {
+		int p = buffer()->lineStartPosition(ln);
+		int last= buffer()->lineStartPosition(ln+1);
 		int px = MINMAP_LN_WD;
-		if( m_buffer->charAt(p) == '\t' ) {
-			while (m_buffer->charAt(p) == '\t') {
+		if( buffer()->charAt(p) == '\t' ) {
+			while (buffer()->charAt(p) == '\t') {
 				++p;
 				px += ts->intValue(TypeSettings::TAB_WIDTH);
 			}
 		} else {
-			while (m_buffer->charAt(p) == ' ') {
+			while (buffer()->charAt(p) == ' ') {
 				++p;
 				++px;
 			}
 		}
-		if( p >= m_buffer->size() || isNewLine(m_buffer->charAt(p)) ) continue;
-		while( last > p && isNewLine(m_buffer->charAt(last - 1)) )
+		if( p >= buffer()->size() || isNewLine(buffer()->charAt(p)) ) continue;
+		while( last > p && isNewLine(buffer()->charAt(last - 1)) )
 			--last;
 		painter.drawLine(px, ln*m_mmScale, px + last - p, ln*m_mmScale);
 	}

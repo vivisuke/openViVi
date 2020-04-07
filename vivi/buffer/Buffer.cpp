@@ -86,8 +86,9 @@ bool Buffer::isEmpty() const
 bool Buffer::isBlankEOFLine() const
 {
 	if( isEmpty() ) return true;
-	pos_t last = m_buffer->size() - 1;
-	wchar_t ch = charAt(last);
+	//pos_t last = m_buffer->size() - 1;
+	//wchar_t ch = charAt(last);
+	wchar_t ch = m_buffer->back();
 	return ch == '\r' || ch == '\n';
 }
 bool Buffer::isSpaces(pos_t first, pos_t last) const
