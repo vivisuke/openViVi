@@ -319,6 +319,7 @@ void EditView::buildMinMap()
 void EditView::drawMinMap(QPainter& pt)
 {
 	auto rct = rect();
+	int nLine = rct.height() / m_lineHeight;
 	int px = rct.width() - m_minMap.width();
 	int py = 0;
 	//
@@ -331,4 +332,16 @@ void EditView::drawMinMap(QPainter& pt)
 	//
 	pt.setOpacity(0.5);
 	pt.drawPixmap(px, py, m_minMap);
+	//
+	pt.setOpacity(0.25);
+	pt.setBrush(Qt::black);
+	if( m_scrollX0 != 0 ) {
+		rct.setHeight(m_scrollX0);
+		pt.drawRect(rct);
+	}
+	if( m_minMap.height() - (m_scrollX0+nLine) > 0 ) {
+		rct.setY(m_scrollX0+nLine);
+		rct.setHeight(m_minMap.height() - (m_scrollX0+nLine));
+		pt.drawRect(rct);
+	}
 }
