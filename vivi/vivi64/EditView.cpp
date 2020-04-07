@@ -83,8 +83,15 @@ void EditView::setLineNumberVisible(bool b)
 	updateLineNumberInfo();
 	update();
 }
-void EditView::mousePressEvent(QMouseEvent *)
+void EditView::mousePressEvent(QMouseEvent *event)
 {
+	auto rct = rect();
+	QPoint pnt = event->pos();
+	if( pnt.x() >= rct.width() - MINMAP_WIDTH ) {
+		int nLines = rct.height() / m_lineHeight;
+		m_scrollX0 = qMax(0, pnt.y() - nLines / 2);
+		update();
+	}
 }
 void EditView::mouseMoveEvent(QMouseEvent *)
 {
