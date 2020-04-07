@@ -10,9 +10,7 @@ open source version of ViVi text editor, which supports standard text editor fea
 - ViVi 1.x 相当をまず実装予定（期間：1～2年？）
   - （暫定）優先順位：
     1. エディットバッファ（非GUI）
-    1. テキストエディタ基本機能（GUI）
-      - ビューワ機能
-      - 編集機能
+    1. テキストエディタ基本機能（GUI）（[1] ビューワ機能, [2] 編集機能）
     1. 基本 vi コマンド
     1. 文字列変換など基本以外の機能
     1. 基本以外の vi コマンド
