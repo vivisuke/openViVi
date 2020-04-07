@@ -317,7 +317,7 @@ void EditView::buildMinMap()
 void EditView::drawMinMap(QPainter& pt)
 {
 	auto rct = rect();
-	int nLine = rct.height() / m_lineHeight;
+	int nLines = rct.height() / m_lineHeight;
 	int px = rct.width() - m_minMap.width();
 	int py = 0;
 	//
@@ -326,20 +326,25 @@ void EditView::drawMinMap(QPainter& pt)
 	//pt.setBrush(QColor("lightgray"));
 	pt.setBrush(typeSettings()->color(TypeSettings::BACK_GROUND));
 	pt.setPen(Qt::transparent);
-	pt.drawRect(rct);
+	pt.drawRect(rct);		//	背景（テキスト背景と同一）描画
 	//
 	pt.setOpacity(0.5);
-	pt.drawPixmap(px, py, m_minMap);
+	pt.drawPixmap(px, py, m_minMap);		//	テキストPixmap描画
 	//
 	pt.setOpacity(0.25);
 	pt.setBrush(Qt::black);
 	if( m_scrollX0 != 0 ) {
 		rct.setHeight(m_scrollX0);
-		pt.drawRect(rct);
+		pt.drawRect(rct);			//	現エリアより上部（前）描画
 	}
-	if( m_minMap.height() - (m_scrollX0+nLine) > 0 ) {
-		rct.setY(m_scrollX0+nLine);
-		rct.setHeight(m_minMap.height() - (m_scrollX0+nLine));
-		pt.drawRect(rct);
+	if( m_minMap.height() - (m_scrollX0+nLines) > 0 ) {
+		rct.setY(m_scrollX0+nLines);
+		rct.setHeight(m_minMap.height() - (m_scrollX0+nLines));
+		pt.drawRect(rct);			//	現エリアより下部（後）描画
 	}
+	rct.setY(m_scrollX0);
+	rct.setHeight(nLines);
+	pt.setBrush(Qt::transparent);
+	pt.setPen(Qt::red);
+	pt.drawRect(rct);				//	現エリアに赤枠描画
 }
