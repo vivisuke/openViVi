@@ -21,9 +21,9 @@ public:
 	//const TypeSettings* cTypeSettings() { return (const TypeSettings*)m_typeSettings; }
 	int	viewLineOffsetToPx(int vln, int offset) const;
 	void	setLineNumberVisible(bool);
+	void	updateFont();
 	void	setPlainText(const QString&);
 protected:
-	void	updateFont();
 	void	drawLineNumberArea(QPainter&);
 	void	drawTextArea(QPainter&);
 	void	drawLineText(QPainter &, int &, int, int, pos_t, int, pos_t, bool&, bool&, QString&);

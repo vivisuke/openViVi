@@ -70,6 +70,12 @@
     <ClCompile Include="settingsMgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TypeStgDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NamedColorDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -81,9 +87,18 @@
     <QtMoc Include="..\buffer\Buffer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="TypeStgDlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="NamedColorDlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainWindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="TypeStgDlg.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

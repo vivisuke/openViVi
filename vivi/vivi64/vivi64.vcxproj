@@ -92,8 +92,10 @@
     <ClCompile Include="globalSettings.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="NamedColorDlg.cpp" />
     <ClCompile Include="settingsMgr.cpp" />
     <ClCompile Include="typeSettings.cpp" />
+    <ClCompile Include="TypeStgDlg.cpp" />
     <ClCompile Include="ViewTokenizer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -101,12 +103,15 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainWindow.ui" />
+    <QtUic Include="TypeStgDlg.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MainWindow.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="NamedColorDlg.h" />
     <ClInclude Include="settingsMgr.h" />
+    <QtMoc Include="TypeStgDlg.h" />
     <ClInclude Include="ViewTokenizer.h" />
     <QtMoc Include="EditView.h" />
     <QtMoc Include="..\buffer\Buffer.h" />
