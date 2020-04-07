@@ -31,7 +31,7 @@ protected:
 	Buffer	*buffer() { return m_buffer; }
 protected:
 	void	paintEvent(QPaintEvent *);
-#if	0
+#if	1
 	void	mousePressEvent(QMouseEvent *);
 	void	mouseMoveEvent(QMouseEvent *);
 	void	mouseReleaseEvent(QMouseEvent *);
@@ -41,6 +41,7 @@ protected:
 #endif
 private:
 	bool		m_lineNumberVisible;
+	int		m_scrollX0;
 	int		m_fontWidth;
 	int		m_fontHeight;
 	int		m_lineHeight;		//	行高（in Pixel）

@@ -1,4 +1,5 @@
-﻿#include <QPainter>
+﻿#include <QtGui>
+//#include <QPainter>
 #include <QDebug>
 #include "EditView.h"
 #include "ViewTokenizer.h"
@@ -11,6 +12,7 @@
 EditView::EditView(TypeSettings* typeSettings)
 	: m_typeSettings(nullptr)
 	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
+	, m_scrollX0(0)
 {
 	m_typeSettings = typeSettings == nullptr ? new TypeSettings() : typeSettings;
 	qDebug() << "typeSettings type = " << m_typeSettings->name();
@@ -71,6 +73,37 @@ void EditView::setLineNumberVisible(bool b)
 	updateLineNumberInfo();
 	update();
 }
+void EditView::mousePressEvent(QMouseEvent *)
+{
+}
+void EditView::mouseMoveEvent(QMouseEvent *)
+{
+}
+void EditView::mouseReleaseEvent(QMouseEvent *)
+{
+}
+void EditView::mouseDoubleClickEvent(QMouseEvent *)
+{
+}
+void EditView::wheelEvent(QWheelEvent * event)
+{
+	const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
+	const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
+	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
+	QPoint numPixels = event->pixelDelta();
+    QPoint numDegrees = event->angleDelta() / 8;
+    qDebug() << "numPixels = " << numPixels;
+    qDebug() << "numDegrees = " << numDegrees;
+    if (!numDegrees.isNull()) {
+    	QPoint numSteps = numDegrees / 15;
+    	if( (m_scrollX0 -= numSteps.y()*3) < 0 )
+    		m_scrollX0 = 0;
+    	update();
+    }
+}
+void EditView::keyPressEvent(QKeyEvent *)
+{
+}
 void EditView::paintEvent(QPaintEvent *event)
 {
 	qDebug() << "lineCount = " << m_buffer->lineCount();
@@ -97,7 +130,7 @@ void EditView::drawLineNumberArea(QPainter& pt)
 	auto rct = rect();
 	pt.setPen(Qt::black);
 	int py = DRAW_Y_OFFSET;
-	for (int ln = 1; ln <= m_buffer->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
+	for (int ln = 1 + m_scrollX0; ln <= m_buffer->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
 		QString number = QString::number(ln);
 		int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
 		pt.drawText(px, py+m_fontHeight, number);
@@ -111,7 +144,7 @@ void EditView::drawTextArea(QPainter& pt)
 	bool inBlockComment = false;
 	bool inLineComment = false;
 	QString quotedText;
-	for (int ln = 0; ln < m_buffer->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
+	for (int ln = m_scrollX0; ln < m_buffer->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
 		inLineComment = false;		//	undone: 折返し行対応
 		int px = m_lineNumAreaWidth;
 		auto startIX = m_buffer->lineStartPosition(ln);
