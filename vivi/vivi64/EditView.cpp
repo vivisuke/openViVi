@@ -237,6 +237,10 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 				//pt.drawText(px, py, token);
 				//px += fm.width(token);
 				break;
+			case ViewTokenizer::ZEN_SPACE:
+				token = QChar(L'□');
+				col = typeSettings()->color(TypeSettings::ZEN_SPACE);
+				break;
 			case ViewTokenizer::CTRL:
 				if( token == "\t" ) {
 					token = ">";
