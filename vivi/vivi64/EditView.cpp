@@ -91,6 +91,7 @@ void EditView::mousePressEvent(QMouseEvent *event)
 	if( pnt.x() >= rct.width() - MINMAP_WIDTH ) {
 		int nLines = rct.height() / m_lineHeight;
 		m_scrollX0 = qMax(0, pnt.y() - nLines / 2);
+    	m_scrollX0 = qMin(m_scrollX0, buffer()->lineCount());		//	undone: 折返し処理対応
 		update();
 	}
 }
@@ -102,6 +103,7 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 	if( pnt.x() >= rct.width() - MINMAP_WIDTH ) {
 		int nLines = rct.height() / m_lineHeight;
 		m_scrollX0 = qMax(0, pnt.y() - nLines / 2);
+    	m_scrollX0 = qMin(m_scrollX0, buffer()->lineCount());		//	undone: 折返し処理対応
 		update();
 	}
 }
@@ -124,6 +126,7 @@ void EditView::wheelEvent(QWheelEvent * event)
     	QPoint numSteps = numDegrees / 15;
     	if( (m_scrollX0 -= numSteps.y()*3) < 0 )
     		m_scrollX0 = 0;
+    	m_scrollX0 = qMin(m_scrollX0, buffer()->lineCount());		//	undone: 折返し処理対応
     	update();
     }
 }
