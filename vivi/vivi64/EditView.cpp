@@ -154,6 +154,10 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 		auto wd = fm.width(token);
 		switch( tkn.tokenType() ) {
 		case ViewTokenizer::ALNUM:
+			if( m_typeSettings->isKeyWord1(token) )
+				col = m_typeSettings->color(TypeSettings::KEYWORD1);
+			else if( m_typeSettings->isKeyWord2(token) )
+				col = m_typeSettings->color(TypeSettings::KEYWORD2);
 			//pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
 			//pt.drawText(px, py, token);
 			//px += fm.width(token);
