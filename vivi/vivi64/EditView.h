@@ -18,6 +18,7 @@ public:
 public:
 	QString	typeName() const;
 	TypeSettings	*typeSettings() { return m_typeSettings; }
+	//const TypeSettings* cTypeSettings() { return (const TypeSettings*)m_typeSettings; }
 	int	viewLineOffsetToPx(int vln, int offset) const;
 	void	setLineNumberVisible(bool);
 	void	setPlainText(const QString&);

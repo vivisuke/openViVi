@@ -47,12 +47,12 @@ int EditView::viewLineOffsetToPx(int vln, int offset) const
 }
 void EditView::updateFont()
 {
-	m_font = QFont(m_typeSettings->textValue(TypeSettings::FONT_NAME),
-					m_typeSettings->intValue(TypeSettings::FONT_SIZE));
+	m_font = QFont(typeSettings()->textValue(TypeSettings::FONT_NAME),
+					typeSettings()->intValue(TypeSettings::FONT_SIZE));
 	m_font.setKerning(false);
 	setFont(m_font);
-	m_fontBold = QFont(m_typeSettings->textValue(TypeSettings::FONT_NAME),
-					m_typeSettings->intValue(TypeSettings::FONT_SIZE),
+	m_fontBold = QFont(typeSettings()->textValue(TypeSettings::FONT_NAME),
+					typeSettings()->intValue(TypeSettings::FONT_SIZE),
 					QFont::Bold);
 	m_fontBold.setKerning(false);
 	//
@@ -122,11 +122,11 @@ void EditView::paintEvent(QPaintEvent *event)
 	qDebug() << "rect = " << rct;
 	//	全体背景描画
 	pt.setPen(Qt::transparent);
-	QColor col = m_typeSettings->color(TypeSettings::BACK_GROUND);
+	QColor col = typeSettings()->color(TypeSettings::BACK_GROUND);
 	pt.setBrush(col);
 	pt.drawRect(rct);
 	//	行番号部分背景描画
-	col = m_typeSettings->color(TypeSettings::LINENUM_BG);
+	col = typeSettings()->color(TypeSettings::LINENUM_BG);
 	pt.setBrush(col);
 	rct.setWidth(m_lineNumAreaWidth);
 	pt.drawRect(rct);
@@ -184,10 +184,10 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 	QFontMetrics fm(m_font);
 	QFontMetrics fmBold(m_fontBold);
 	const auto spcWidth = fm.width("8");
-	int nTab = m_typeSettings->intValue(TypeSettings::TAB_WIDTH);
+	int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
 	int ix = 0;
 	const int last = ls + vlnsz;
-	const QString lineComment = m_typeSettings->textValue(TypeSettings::LINE_COMMENT);
+	const QString lineComment = typeSettings()->textValue(TypeSettings::LINE_COMMENT);
 	//const QString lineComment = "//";		//	暫定コード
 	ViewTokenizer tkn(typeSettings(), buffer(), ls, vlnsz, nxdls);
 	tkn.setInLineComment(inLineComment);
@@ -198,72 +198,72 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 			token = token.left(last - tkn.tokenix());
 		qDebug() << "type = " << tkn.tokenType() << ", token = " << token;
 		pt.setFont(m_font);
-		QColor col = m_typeSettings->color(inBlockComment || inLineComment ? TypeSettings::COMMENT : TypeSettings::TEXT);
+		QColor col = typeSettings()->color(inBlockComment || inLineComment ? TypeSettings::COMMENT : TypeSettings::TEXT);
 		auto wd = fm.width(token);
 		if( inLineComment ) {
-			col = m_typeSettings->color(TypeSettings::COMMENT);
+			col = typeSettings()->color(TypeSettings::COMMENT);
 		} else if( inBlockComment ) {
-			col = m_typeSettings->color(TypeSettings::COMMENT);
-			if( token == m_typeSettings->textValue(TypeSettings::BLOCK_COMMENT_END) ) {
+			col = typeSettings()->color(TypeSettings::COMMENT);
+			if( token == typeSettings()->textValue(TypeSettings::BLOCK_COMMENT_END) ) {
 				inBlockComment = false;
 			}
 		} else {
 			switch( tkn.tokenType() ) {
 			case ViewTokenizer::ALNUM:
-				if( m_typeSettings->isKeyWord1(token) ) {
-					col = m_typeSettings->color(TypeSettings::KEYWORD1);
-					if( m_typeSettings->boolValue(TypeSettings::KEYWORD1_BOLD) )
+				if( typeSettings()->isKeyWord1(token) ) {
+					col = typeSettings()->color(TypeSettings::KEYWORD1);
+					if( typeSettings()->boolValue(TypeSettings::KEYWORD1_BOLD) )
 						pt.setFont(m_fontBold);
-				} else if( m_typeSettings->isKeyWord2(token) ) {
-					col = m_typeSettings->color(TypeSettings::KEYWORD2);
-					if( m_typeSettings->boolValue(TypeSettings::KEYWORD2_BOLD) )
+				} else if( typeSettings()->isKeyWord2(token) ) {
+					col = typeSettings()->color(TypeSettings::KEYWORD2);
+					if( typeSettings()->boolValue(TypeSettings::KEYWORD2_BOLD) )
 						pt.setFont(m_fontBold);
 				}
-				//pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
+				//pt.setPen(typeSettings()->color(TypeSettings::TEXT));
 				//pt.drawText(px, py, token);
 				//px += fm.width(token);
 				break;
 			case ViewTokenizer::DIGITS:
 				if( !inLineComment && !inBlockComment )
-					col = m_typeSettings->color(TypeSettings::DIGITS);
-				//pt.setPen(m_typeSettings->color(TypeSettings::DIGITS));
+					col = typeSettings()->color(TypeSettings::DIGITS);
+				//pt.setPen(typeSettings()->color(TypeSettings::DIGITS));
 				//pt.drawText(px, py, token);
 				//px += fm.width(token);
 				break;
 			case ViewTokenizer::QUOTED:
 				if( !inLineComment && !inBlockComment )
-					col = m_typeSettings->color(TypeSettings::STRING);
-				//pt.setPen(m_typeSettings->color(TypeSettings::STRING));
+					col = typeSettings()->color(TypeSettings::STRING);
+				//pt.setPen(typeSettings()->color(TypeSettings::STRING));
 				//pt.drawText(px, py, token);
 				//px += fm.width(token);
 				break;
 			case ViewTokenizer::CTRL:
 				if( token == "\t" ) {
 					token = ">";
-					col = m_typeSettings->color(TypeSettings::TAB);
-					//pt.setPen(m_typeSettings->color(TypeSettings::TAB));
+					col = typeSettings()->color(TypeSettings::TAB);
+					//pt.setPen(typeSettings()->color(TypeSettings::TAB));
 					//pt.drawText(px, py, ">");
 					int clmn = (px - m_lineNumAreaWidth) / spcWidth;
 					wd = (nTab - (clmn % nTab)) * spcWidth;
 					//clmn += nTab - (clmn % nTab);
 					//px = m_lineNumAreaWidth + clmn * spcWidth;
 				} else {
-					//pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
+					//pt.setPen(typeSettings()->color(TypeSettings::TEXT));
 					//pt.drawText(px, py, token);
 					//px += fm.width(token);
 				}
 				break;
 			case ViewTokenizer::NEWLINE:
-				col = m_typeSettings->color(TypeSettings::NEWLINE);
+				col = typeSettings()->color(TypeSettings::NEWLINE);
 				break;
 			case ViewTokenizer::COMMENT:
 				//if( !inBlockComment ) {
-					if( token == m_typeSettings->textValue(TypeSettings::BLOCK_COMMENT_BEG) ) {
-						col = m_typeSettings->color(TypeSettings::COMMENT);
+					if( token == typeSettings()->textValue(TypeSettings::BLOCK_COMMENT_BEG) ) {
+						col = typeSettings()->color(TypeSettings::COMMENT);
 						inBlockComment = true;
-					} else if( token == m_typeSettings->textValue(TypeSettings::LINE_COMMENT) ) {
+					} else if( token == typeSettings()->textValue(TypeSettings::LINE_COMMENT) ) {
 						inLineComment = true;
-						col = m_typeSettings->color(TypeSettings::COMMENT);
+						col = typeSettings()->color(TypeSettings::COMMENT);
 					}
 				//}
 				break;
@@ -282,7 +282,7 @@ void EditView::buildMinMap()
 	int ht = qMin(MAX_MINMAP_HEIGHT, buffer()->lineCount());
 	m_mmScale = (double)ht / buffer()->lineCount();
 	m_minMap = QPixmap(MINMAP_WIDTH, ht);
-	auto ts = m_typeSettings;
+	auto ts = typeSettings();
 	m_minMap.fill(ts->color(TypeSettings::BACK_GROUND));
 	QPainter painter(&m_minMap);
 	painter.fillRect(QRect(0, 0, MINMAP_LN_WD, ht), ts->color(TypeSettings::LINENUM_BG));
@@ -320,7 +320,7 @@ void EditView::drawMinMap(QPainter& pt)
 	rct.setX(rct.width() - MINMAP_WIDTH);
 	rct.setWidth(MINMAP_WIDTH);
 	//pt.setBrush(QColor("lightgray"));
-	pt.setBrush(m_typeSettings->color(TypeSettings::BACK_GROUND));
+	pt.setBrush(typeSettings()->color(TypeSettings::BACK_GROUND));
 	pt.setPen(Qt::transparent);
 	pt.drawRect(rct);
 	//
