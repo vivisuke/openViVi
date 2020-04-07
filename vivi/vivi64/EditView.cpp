@@ -7,8 +7,16 @@
 #include "../buffer/Buffer.h"
 
 #define		DRAW_Y_OFFSET		2
-#define		MINMAP_WIDTH			80
+#define		MINMAP_LN_WD		4			//	行番号部分幅
+#define		MINMAP_WIDTH		80
+#define		MAX_MINMAP_HEIGHT	10000		//	ピックスマップ最大高さ
 
+//----------------------------------------------------------------------
+inline bool isNewLine(wchar_t ch)
+{
+	return ch == '\r' || ch == '\n';
+}
+//----------------------------------------------------------------------
 EditView::EditView(TypeSettings* typeSettings)
 	: m_typeSettings(nullptr)
 	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
@@ -19,6 +27,7 @@ EditView::EditView(TypeSettings* typeSettings)
 	m_lineNumberVisible = m_typeSettings->boolValue(TypeSettings::VIEW_LINENUM);
 	updateFont();
 	m_buffer = new Buffer();
+	buildMinMap();
 }
 EditView::~EditView()
 {
@@ -28,6 +37,7 @@ void EditView::setPlainText(const QString& txt)
 {
 	m_buffer->clear();
 	m_buffer->insertText(0, (cwchar_t*)txt.data(), txt.size());
+	buildMinMap();
 	update();
 }
 int EditView::viewLineOffsetToPx(int vln, int offset) const
@@ -123,7 +133,7 @@ void EditView::paintEvent(QPaintEvent *event)
 	//
 	drawLineNumberArea(pt);		//	行番号エリア描画
 	drawTextArea(pt);					//	テキストエイア描画
-	drawMiniMap(pt);					//	ミニマップ描画
+	drawMinMap(pt);					//	ミニマップ描画
 }
 void EditView::drawLineNumberArea(QPainter& pt)
 {
@@ -272,12 +282,53 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 		token = tkn.nextToken();
 	}
 }
-void EditView::drawMiniMap(QPainter& pt)
+void EditView::buildMinMap()
+{
+	if( m_buffer->lineCount() > 10000 ) return;		//	最大1万行
+	int ht = qMin(MAX_MINMAP_HEIGHT, m_buffer->lineCount());
+	m_mmScale = (double)ht / m_buffer->lineCount();
+	m_minMap = QPixmap(MINMAP_WIDTH, ht);
+	auto ts = m_typeSettings;
+	m_minMap.fill(ts->color(TypeSettings::BACK_GROUND));
+	QPainter painter(&m_minMap);
+	painter.fillRect(QRect(0, 0, MINMAP_LN_WD, ht), ts->color(TypeSettings::LINENUM_BG));
+	//if( lineCount() > 10000 ) return;
+	painter.setPen(ts->color(TypeSettings::TEXT));
+	bool inBlockComment = false;
+	for (int ln = 0; ln < m_buffer->lineCount(); ++ln) {
+		int p = m_buffer->lineStartPosition(ln);
+		int last= m_buffer->lineStartPosition(ln+1);
+		int px = MINMAP_LN_WD;
+		if( m_buffer->charAt(p) == '\t' ) {
+			while (m_buffer->charAt(p) == '\t') {
+				++p;
+				px += ts->intValue(TypeSettings::TAB_WIDTH);
+			}
+		} else {
+			while (m_buffer->charAt(p) == ' ') {
+				++p;
+				++px;
+			}
+		}
+		if( p >= m_buffer->size() || isNewLine(m_buffer->charAt(p)) ) continue;
+		while( last > p && isNewLine(m_buffer->charAt(last - 1)) )
+			--last;
+		painter.drawLine(px, ln*m_mmScale, px + last - p, ln*m_mmScale);
+	}
+}
+void EditView::drawMinMap(QPainter& pt)
 {
 	auto rct = rect();
+	int px = rct.width() - m_minMap.width();
+	int py = 0;
+	//
 	rct.setX(rct.width() - MINMAP_WIDTH);
 	rct.setWidth(MINMAP_WIDTH);
-	pt.setBrush(QColor("lightgray"));
+	//pt.setBrush(QColor("lightgray"));
+	pt.setBrush(m_typeSettings->color(TypeSettings::BACK_GROUND));
 	pt.setPen(Qt::transparent);
 	pt.drawRect(rct);
+	//
+	pt.setOpacity(0.5);
+	pt.drawPixmap(px, py, m_minMap);
 }

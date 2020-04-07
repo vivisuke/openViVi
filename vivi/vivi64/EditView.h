@@ -26,8 +26,9 @@ protected:
 	void	drawLineNumberArea(QPainter&);
 	void	drawTextArea(QPainter&);
 	void	drawLineText(QPainter &, int &, int, int, pos_t, int, pos_t, bool&, bool&, QString&);
-	void	drawMiniMap(QPainter&);
+	void	drawMinMap(QPainter&);
 	void	updateLineNumberInfo();
+	void	buildMinMap();
 	Buffer	*buffer() { return m_buffer; }
 protected:
 	void	paintEvent(QPaintEvent *);
@@ -58,5 +59,9 @@ private:
 	Buffer		*m_buffer;
 	QFont		m_font;
 	QFont		m_fontBold;
-	QWidget		*m_lineNumArea;
+	//	ミニマップ関連、undone:そのうち Document に移動
+	double		m_mmScale;				//	1.0 未満であれば縮小されている
+	QPixmap		m_minMap;
+	//
+	//QWidget		*m_lineNumArea;
 };
