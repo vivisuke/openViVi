@@ -198,82 +198,74 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 		pt.setFont(m_font);
 		QColor col = m_typeSettings->color(inBlockComment || inLineComment ? TypeSettings::COMMENT : TypeSettings::TEXT);
 		auto wd = fm.width(token);
-		switch( tkn.tokenType() ) {
-		case ViewTokenizer::ALNUM:
-			if( m_typeSettings->isKeyWord1(token) ) {
-				col = m_typeSettings->color(TypeSettings::KEYWORD1);
-				if( m_typeSettings->boolValue(TypeSettings::KEYWORD1_BOLD) )
-					pt.setFont(m_fontBold);
-			} else if( m_typeSettings->isKeyWord2(token) ) {
-				col = m_typeSettings->color(TypeSettings::KEYWORD2);
-				if( m_typeSettings->boolValue(TypeSettings::KEYWORD2_BOLD) )
-					pt.setFont(m_fontBold);
+		if( inLineComment ) {
+			col = m_typeSettings->color(TypeSettings::COMMENT);
+		} else if( inBlockComment ) {
+			col = m_typeSettings->color(TypeSettings::COMMENT);
+			if( token == m_typeSettings->textValue(TypeSettings::BLOCK_COMMENT_END) ) {
+				inBlockComment = false;
 			}
-			//pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
-			//pt.drawText(px, py, token);
-			//px += fm.width(token);
-			break;
-		case ViewTokenizer::DIGITS:
-			if( !inLineComment && !inBlockComment )
-				col = m_typeSettings->color(TypeSettings::DIGITS);
-			//pt.setPen(m_typeSettings->color(TypeSettings::DIGITS));
-			//pt.drawText(px, py, token);
-			//px += fm.width(token);
-			break;
-		case ViewTokenizer::QUOTED:
-			if( !inLineComment && !inBlockComment )
-				col = m_typeSettings->color(TypeSettings::STRING);
-			//pt.setPen(m_typeSettings->color(TypeSettings::STRING));
-			//pt.drawText(px, py, token);
-			//px += fm.width(token);
-			break;
-		case ViewTokenizer::CTRL:
-			if( token == "\t" ) {
-				token = ">";
-				col = m_typeSettings->color(TypeSettings::TAB);
-				//pt.setPen(m_typeSettings->color(TypeSettings::TAB));
-				//pt.drawText(px, py, ">");
-				int clmn = (px - m_lineNumAreaWidth) / spcWidth;
-				wd = (nTab - (clmn % nTab)) * spcWidth;
-				//clmn += nTab - (clmn % nTab);
-				//px = m_lineNumAreaWidth + clmn * spcWidth;
-			} else {
+		} else {
+			switch( tkn.tokenType() ) {
+			case ViewTokenizer::ALNUM:
+				if( m_typeSettings->isKeyWord1(token) ) {
+					col = m_typeSettings->color(TypeSettings::KEYWORD1);
+					if( m_typeSettings->boolValue(TypeSettings::KEYWORD1_BOLD) )
+						pt.setFont(m_fontBold);
+				} else if( m_typeSettings->isKeyWord2(token) ) {
+					col = m_typeSettings->color(TypeSettings::KEYWORD2);
+					if( m_typeSettings->boolValue(TypeSettings::KEYWORD2_BOLD) )
+						pt.setFont(m_fontBold);
+				}
 				//pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
 				//pt.drawText(px, py, token);
 				//px += fm.width(token);
-			}
-			break;
-		case ViewTokenizer::NEWLINE:
-			col = m_typeSettings->color(TypeSettings::NEWLINE);
-			break;
-		case ViewTokenizer::COMMENT:
-			if( !inBlockComment ) {
-				if( token == m_typeSettings->textValue(TypeSettings::BLOCK_COMMENT_BEG) ) {
-					col = m_typeSettings->color(TypeSettings::COMMENT);
-					inBlockComment = true;
-				} else if( token == m_typeSettings->textValue(TypeSettings::LINE_COMMENT) ) {
-					inLineComment = true;
-					col = m_typeSettings->color(TypeSettings::COMMENT);
+				break;
+			case ViewTokenizer::DIGITS:
+				if( !inLineComment && !inBlockComment )
+					col = m_typeSettings->color(TypeSettings::DIGITS);
+				//pt.setPen(m_typeSettings->color(TypeSettings::DIGITS));
+				//pt.drawText(px, py, token);
+				//px += fm.width(token);
+				break;
+			case ViewTokenizer::QUOTED:
+				if( !inLineComment && !inBlockComment )
+					col = m_typeSettings->color(TypeSettings::STRING);
+				//pt.setPen(m_typeSettings->color(TypeSettings::STRING));
+				//pt.drawText(px, py, token);
+				//px += fm.width(token);
+				break;
+			case ViewTokenizer::CTRL:
+				if( token == "\t" ) {
+					token = ">";
+					col = m_typeSettings->color(TypeSettings::TAB);
+					//pt.setPen(m_typeSettings->color(TypeSettings::TAB));
+					//pt.drawText(px, py, ">");
+					int clmn = (px - m_lineNumAreaWidth) / spcWidth;
+					wd = (nTab - (clmn % nTab)) * spcWidth;
+					//clmn += nTab - (clmn % nTab);
+					//px = m_lineNumAreaWidth + clmn * spcWidth;
+				} else {
+					//pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
+					//pt.drawText(px, py, token);
+					//px += fm.width(token);
 				}
-			} else {
-				col = m_typeSettings->color(TypeSettings::COMMENT);
-				if( token == m_typeSettings->textValue(TypeSettings::BLOCK_COMMENT_END) ) {
-					inBlockComment = false;
-				}
+				break;
+			case ViewTokenizer::NEWLINE:
+				col = m_typeSettings->color(TypeSettings::NEWLINE);
+				break;
+			case ViewTokenizer::COMMENT:
+				//if( !inBlockComment ) {
+					if( token == m_typeSettings->textValue(TypeSettings::BLOCK_COMMENT_BEG) ) {
+						col = m_typeSettings->color(TypeSettings::COMMENT);
+						inBlockComment = true;
+					} else if( token == m_typeSettings->textValue(TypeSettings::LINE_COMMENT) ) {
+						inLineComment = true;
+						col = m_typeSettings->color(TypeSettings::COMMENT);
+					}
+				//}
+				break;
 			}
-			break;
-#if	0
-		case ViewTokenizer::OTHER:
-			if( !inLineComment && !lineComment.isEmpty() && token.startsWith(lineComment) ) {
-				inLineComment = true;
-				col = m_typeSettings->color(TypeSettings::COMMENT);
-			}
-			//else
-			//	pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
-			//pt.drawText(px, py, token);
-			//px += fm.width(token);
-			break;
-#endif
 		}
 		pt.setPen(col);
 		pt.drawText(px, py, token);
