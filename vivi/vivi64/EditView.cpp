@@ -145,19 +145,27 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 	const QString lineComment = m_typeSettings->textValue(TypeSettings::LINE_COMMENT);
 	//const QString lineComment = "//";		//	暫定コード
 	ViewTokenizer tkn(typeSettings(), buffer(), ls, vlnsz, nxdls);
+	tkn.setInLineComment(inLineComment);
+	tkn.setInBlockComment(inBlockComment);
 	QString token = tkn.nextToken();
 	while( !token.isEmpty() ) {
 		if( tkn.tokenix() + token.size() > last )
 			token = token.left(last - tkn.tokenix());
 		qDebug() << "type = " << tkn.tokenType() << ", token = " << token;
+		pt.setFont(m_font);
 		QColor col = m_typeSettings->color(inBlockComment || inLineComment ? TypeSettings::COMMENT : TypeSettings::TEXT);
 		auto wd = fm.width(token);
 		switch( tkn.tokenType() ) {
 		case ViewTokenizer::ALNUM:
-			if( m_typeSettings->isKeyWord1(token) )
+			if( m_typeSettings->isKeyWord1(token) ) {
 				col = m_typeSettings->color(TypeSettings::KEYWORD1);
-			else if( m_typeSettings->isKeyWord2(token) )
+				if( m_typeSettings->boolValue(TypeSettings::KEYWORD1_BOLD) )
+					pt.setFont(m_fontBold);
+			} else if( m_typeSettings->isKeyWord2(token) ) {
 				col = m_typeSettings->color(TypeSettings::KEYWORD2);
+				if( m_typeSettings->boolValue(TypeSettings::KEYWORD2_BOLD) )
+					pt.setFont(m_fontBold);
+			}
 			//pt.setPen(m_typeSettings->color(TypeSettings::TEXT));
 			//pt.drawText(px, py, token);
 			//px += fm.width(token);
@@ -196,8 +204,20 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 			col = m_typeSettings->color(TypeSettings::NEWLINE);
 			break;
 		case ViewTokenizer::COMMENT:
-			inLineComment = true;
-			col = m_typeSettings->color(TypeSettings::COMMENT);
+			if( !inBlockComment ) {
+				if( token == m_typeSettings->textValue(TypeSettings::BLOCK_COMMENT_BEG) ) {
+					col = m_typeSettings->color(TypeSettings::COMMENT);
+					inBlockComment = true;
+				} else if( token == m_typeSettings->textValue(TypeSettings::COMMENT) ) {
+					inLineComment = true;
+					col = m_typeSettings->color(TypeSettings::COMMENT);
+				}
+			} else {
+				col = m_typeSettings->color(TypeSettings::COMMENT);
+				if( token == m_typeSettings->textValue(TypeSettings::BLOCK_COMMENT_END) ) {
+					inBlockComment = false;
+				}
+			}
 			break;
 #if	0
 		case ViewTokenizer::OTHER:
