@@ -139,7 +139,7 @@
 ● C 04/07             ToDo ミニマップ：マウスクリックでそこが表示されるようにスクロール
 ◎ C 04/07 04/08 0.001 問題 コメント中のキーワードがキーワード色表示されてしまう
 ● C 04/08             ToDo Ctrl + マウスホイール：拡大・縮小
-● C 04/08             ToDo ViewEdit.cpp：m_buffer を直接アクセスせず、buffer() を介してアクセス
+◎ C 04/08 04/08 0.001 ToDo ViewEdit.cpp：m_buffer を直接アクセスせず、buffer() を介してアクセス
 ● C 04/08             ToDo 
 ● C 04/08             ToDo 
 ● C 04/08             ToDo 
