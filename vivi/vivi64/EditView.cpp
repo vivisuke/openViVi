@@ -208,7 +208,7 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 				if( token == m_typeSettings->textValue(TypeSettings::BLOCK_COMMENT_BEG) ) {
 					col = m_typeSettings->color(TypeSettings::COMMENT);
 					inBlockComment = true;
-				} else if( token == m_typeSettings->textValue(TypeSettings::COMMENT) ) {
+				} else if( token == m_typeSettings->textValue(TypeSettings::LINE_COMMENT) ) {
 					inLineComment = true;
 					col = m_typeSettings->color(TypeSettings::COMMENT);
 				}
