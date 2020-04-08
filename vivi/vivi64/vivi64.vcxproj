@@ -88,6 +88,7 @@
     <ClCompile Include="..\buffer\undoMgr.cpp" />
     <ClCompile Include="..\buffer\UTF16.cpp" />
     <ClCompile Include="..\buffer\viewLineMgr.cpp" />
+    <ClCompile Include="charEncoding.cpp" />
     <ClCompile Include="EditView.cpp" />
     <ClCompile Include="globalSettings.cpp" />
     <ClCompile Include="main.cpp" />
@@ -110,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="NamedColorDlg.h" />
+    <ClInclude Include="charEncoding.h" />
     <ClInclude Include="settingsMgr.h" />
     <QtMoc Include="TypeStgDlg.h" />
     <ClInclude Include="ViewTokenizer.h" />

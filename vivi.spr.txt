@@ -154,7 +154,7 @@
 ● C 04/08             ToDo ミニマップ：Debug モードだとドラッグ処理が遅れるので、溜まっている mouseMoveEvent() を削除？
 ◎ C 04/08 04/08 0.001 ToDo MainWindow：タイプ設定ダイアログ表示
 ◎ C 04/08 04/08 0.001 ToDo MainWindow：カレントビューが切り替わった場合は、右下タイプドロップダウン更新
-● C 04/08             ToDo 
+◎ C 04/08 04/08 0.001 ToDo charEncoding.h cpp 追加
 ● C 04/08             ToDo 
 ● C 04/08             ToDo 
 ● C 04/08             ToDo 
