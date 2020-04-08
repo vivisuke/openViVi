@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QMimeData>
 #include <QSettings>
+#include <QComboBox>
 #include <QDebug>
 
 #define		KEY_RECENTFILELIST			"recentFileList"
@@ -19,6 +20,7 @@
 #define		MAX_N_EXT_CMD				32
 
 SettingsMgr	g_settingsMgr;
+GlobalSettings	g_globalSettings;
 
 //----------------------------------------------------------------------
 bool isValid(QWidget *w, const QString &className)
@@ -80,6 +82,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)),
 			this, SLOT(tabCloseRequested(int)));
 	//
+	setupStatusBar();		//	ステータスバーセットアップ
+	//
 		on_action_New_triggered();
 }
 MainWindow::~MainWindow()
@@ -128,6 +132,46 @@ void MainWindow::updateFavoriteFileActions()
 }
 void MainWindow::setIcon(const QString &fileName, QAction *action)
 {
+}
+void MainWindow::setupStatusBar()
+{
+	m_iconCPP = new QIcon(":/MainWindow/Resources/CPP.png");
+	m_iconCS = new QIcon(":/MainWindow/Resources/CS.png");
+	m_iconCSS = new QIcon(":/MainWindow/Resources/CSS.png");
+	m_iconMARKDN = new QIcon(":/MainWindow/Resources/Markdown.png");
+	m_iconFS = new QIcon(":/MainWindow/Resources/FS.png");
+	m_iconHLSL = new QIcon(":/MainWindow/Resources/HLSL.png");
+	m_iconHTML = new QIcon(":/MainWindow/Resources/HTML.png");
+	m_iconJAVA = new QIcon(":/MainWindow/Resources/JAVA.png");
+	m_iconJS = new QIcon(":/MainWindow/Resources/JS.png");
+	m_iconLOG = new QIcon(":/MainWindow/Resources/LOG.png");
+	m_iconPASCAL = new QIcon(":/MainWindow/Resources/PASCAL.png");
+	m_iconPERL = new QIcon(":/MainWindow/Resources/PERL.png");
+	m_iconPHP = new QIcon(":/MainWindow/Resources/PHP.png");
+	m_iconPYTHON = new QIcon(":/MainWindow/Resources/PYTHON.png");
+	m_iconRUBY = new QIcon(":/MainWindow/Resources/RUBY.png");
+	m_iconSQL = new QIcon(":/MainWindow/Resources/SQL.png");
+	m_iconTXT = new QIcon(":/MainWindow/Resources/TXT.png");
+	//
+	statusBar()->addPermanentWidget(m_typeCB = new QComboBox());
+	m_typeCB->addItem("Default");
+	m_typeCB->addItem(*m_iconCPP, "CPP");
+	m_typeCB->addItem(*m_iconCS, "C#");
+	m_typeCB->addItem(*m_iconCSS, "CSS");
+	m_typeCB->addItem(*m_iconFS, "F#");
+	m_typeCB->addItem(*m_iconHLSL, "HLSL");
+	m_typeCB->addItem(*m_iconHTML, "HTML");
+	m_typeCB->addItem(*m_iconJAVA, "JAVA");
+	m_typeCB->addItem(*m_iconJS, "JS");
+	m_typeCB->addItem(*m_iconLOG, "LOG");
+	m_typeCB->addItem(*m_iconMARKDN, "MARKDN");
+	m_typeCB->addItem(*m_iconPASCAL, "PASCAL");
+	m_typeCB->addItem(*m_iconPERL, "PERL");
+	m_typeCB->addItem(*m_iconPHP, "PHP");
+	m_typeCB->addItem(*m_iconPYTHON, "PYTHON");
+	m_typeCB->addItem(*m_iconRUBY, "RUBY");
+	m_typeCB->addItem(*m_iconSQL, "SQL");
+	m_typeCB->addItem(*m_iconTXT, "TXT");
 }
 #if	0
 void MainWindow::connectMenuActions()

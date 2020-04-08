@@ -47,6 +47,12 @@ int EditView::viewLineOffsetToPx(int vln, int offset) const
 }
 void EditView::updateFont()
 {
+	//	暫定コード
+	m_fontMB = QFont("MS ゴシック",
+					typeSettings()->intValue(TypeSettings::FONT_SIZE));
+	m_fontMB.setFixedPitch(true);
+	m_fontMB.setKerning(false);
+	//
 	m_font = QFont(typeSettings()->textValue(TypeSettings::FONT_NAME),
 					typeSettings()->intValue(TypeSettings::FONT_SIZE));
 	m_font.setKerning(false);
@@ -202,6 +208,7 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 {
 	QFontMetrics fm(m_font);
 	QFontMetrics fmBold(m_fontBold);
+	QFontMetrics fmMB(m_fontMB);
 	const auto spcWidth = fm.width("8");
 	int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
 	int ix = 0;
@@ -216,7 +223,8 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 		if( tkn.tokenix() + token.size() > last )
 			token = token.left(last - tkn.tokenix());
 		qDebug() << "type = " << tkn.tokenType() << ", token = " << token;
-		pt.setFont(m_font);
+		bool bold = false;
+		//pt.setFont(m_font);
 		QColor col = typeSettings()->color(inBlockComment || inLineComment ? TypeSettings::COMMENT : TypeSettings::TEXT);
 		auto wd = fm.width(token);
 		if( inLineComment ) {
@@ -231,12 +239,14 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 			case ViewTokenizer::ALNUM:
 				if( typeSettings()->isKeyWord1(token) ) {
 					col = typeSettings()->color(TypeSettings::KEYWORD1);
-					if( typeSettings()->boolValue(TypeSettings::KEYWORD1_BOLD) )
-						pt.setFont(m_fontBold);
+					bold = typeSettings()->boolValue(TypeSettings::KEYWORD1_BOLD);
+					//if( typeSettings()->boolValue(TypeSettings::KEYWORD1_BOLD) )
+					//	pt.setFont(m_fontBold);
 				} else if( typeSettings()->isKeyWord2(token) ) {
 					col = typeSettings()->color(TypeSettings::KEYWORD2);
-					if( typeSettings()->boolValue(TypeSettings::KEYWORD2_BOLD) )
-						pt.setFont(m_fontBold);
+					bold = typeSettings()->boolValue(TypeSettings::KEYWORD2_BOLD);
+					//if( typeSettings()->boolValue(TypeSettings::KEYWORD2_BOLD) )
+					//	pt.setFont(m_fontBold);
 				}
 				//pt.setPen(typeSettings()->color(TypeSettings::TEXT));
 				//pt.drawText(px, py, token);
@@ -292,8 +302,18 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 				break;
 			}
 		}
-		pt.setPen(col);
-		pt.drawText(px, py, token);
+		if( !token.isEmpty() ) {
+			pt.setPen(col);
+			if( bold )
+				pt.setFont(m_fontBold);
+			else if( token[0] < 0x80 )
+				pt.setFont(m_font);
+			else {
+				pt.setFont(m_fontMB);
+				wd = fmMB.width(token);
+			}
+			pt.drawText(px, py, token);
+		}
 		px += wd;
 		//
 		token = tkn.nextToken();

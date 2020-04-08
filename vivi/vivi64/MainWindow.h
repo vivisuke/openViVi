@@ -28,6 +28,7 @@ protected:
     void	updateRecentFileActions();
     void	updateFavoriteFileActions();
 	void	setIcon(const QString &fileName, QAction *action);
+	void	setupStatusBar();
 	//EditView	*createView(Document *doc = 0, TypeSettings* = 0);
 	//EditView	*createView(TypeSettings* = nullptr);
 	EditView	*createView(QString = QString());
@@ -55,7 +56,7 @@ private:
 	Ui::MainWindowClass ui;
 	
 	//SettingsMgr		*m_settingsMgr;
-	GlobalSettings		*m_globSettings;
+	//GlobalSettings		*m_globSettings;
 	
 	int		m_curTabIndex;
 	int		m_formerTabIndex;
@@ -63,6 +64,24 @@ private:
 	
 	QDockWidget	*m_outlineDock;
 	
+	QComboBox	*m_typeCB;
+	QIcon	*m_iconCPP;
+	QIcon	*m_iconCS;
+	QIcon	*m_iconCSS;
+	QIcon	*m_iconMARKDN;
+	QIcon	*m_iconFS;
+	QIcon	*m_iconHLSL;
+	QIcon	*m_iconHTML;
+	QIcon	*m_iconJAVA;
+	QIcon	*m_iconJS;			//	JavaScript
+	QIcon	*m_iconPASCAL;
+	QIcon	*m_iconPERL;
+	QIcon	*m_iconPHP;
+	QIcon	*m_iconPYTHON;
+	QIcon	*m_iconRUBY;
+	QIcon	*m_iconSQL;
+	QIcon	*m_iconLOG;
+	QIcon	*m_iconTXT;
     enum { MaxRecentFiles = 10 + 26 };
     QAction *m_recentFileActs[MaxRecentFiles];
     enum { MaxFavoriteFiles = 10 + 26 };

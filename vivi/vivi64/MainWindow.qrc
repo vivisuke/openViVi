@@ -1,4 +1,20 @@
 <RCC>
-    <qresource prefix="MainWindow">
+    <qresource prefix="/MainWindow">
+        <file>Resources/CPP.png</file>
+        <file>Resources/CS.png</file>
+        <file>Resources/CSS.png</file>
+        <file>Resources/FS.png</file>
+        <file>Resources/HLSL.png</file>
+        <file>Resources/HTML.png</file>
+        <file>Resources/JS.png</file>
+        <file>Resources/LOG.png</file>
+        <file>Resources/Markdown.png</file>
+        <file>Resources/PASCAL.png</file>
+        <file>Resources/PERL.png</file>
+        <file>Resources/PHP.png</file>
+        <file>Resources/PYTHON.png</file>
+        <file>Resources/RUBY.png</file>
+        <file>Resources/SQL.png</file>
+        <file>Resources/TXT.png</file>
     </qresource>
 </RCC>
