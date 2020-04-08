@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include <QPlainTextEdit>
+#include <QCheckBox>
 #include "ui_MainWindow.h"
 #include "EditView.h"
 
@@ -35,7 +36,7 @@ protected:
 	//EditView	*createView(TypeSettings* = nullptr);
 	EditView	*createView(QString = QString());
 	void	addNewView(EditView *, const QString &title);
-    bool	loadFile(EditView *, const QString &fileName, cchar *codecName = 0, bool = true);
+    bool	loadFile(EditView *, const QString &fileName, /*cchar *codecName = 0,*/ bool = true);
     EditView	*openFile(const QString &pathName, bool forced = false);
 	EditView	*currentWidget();
 	EditView	*nthWidget(int);
@@ -57,6 +58,10 @@ private slots:
     void	openRecentFile();
 	void	tabCloseRequested(int index);
 	void	currentChanged(int index);
+    void	onCharEncodingChanged(const QString &);
+    void	onBomChanged(bool);
+	void	onTypeChanged(const QString &);
+	void	onNewLineCodeChanged(int);
 	
 private:
 	Ui::MainWindowClass ui;
@@ -70,6 +75,9 @@ private:
 	
 	QDockWidget	*m_outlineDock;
 	
+	QCheckBox	*m_bomChkBx;
+	QComboBox	*m_encodingCB;
+	QComboBox	*m_newLineCodeCB;
 	QComboBox	*m_typeCB;
 	QIcon	*m_iconCPP;
 	QIcon	*m_iconCS;

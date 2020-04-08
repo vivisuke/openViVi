@@ -59,8 +59,8 @@ inline int isEUCcode(uchar uch)
 }
 bool isDBCSLeadByte(uchar ch);
 bool isDBCSSecondByte(uchar ch);
-uchar	checkCharEncoding(cuchar *, cuchar *, int &BOMLength);
-bool	loadFile(const QString& pathName, QString& buf, QString& errMess, uchar& charEncoding, int& BOMLength);
+uchar	checkCharEncoding(cuchar *, cuchar *, int &bomLength);
+bool	loadFile(const QString& pathName, QString& buf, QString& errMess, uchar& charEncoding, int& bomLength);
 //bool	loadFile(const QString &, QString &, QString &, uchar * = 0, bool * = 0);
 //bool	getTextCodec(const QString &fileName, QString &errorString, QTextCodec *&codec,
 //						int &bomLength, byte &);

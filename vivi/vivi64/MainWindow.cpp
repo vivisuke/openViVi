@@ -5,6 +5,7 @@
 #include "TypeStgDlg.h"
 #include "typeSettings.h"
 #include "globalSettings.h"
+#include "charEncoding.h"
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QMimeData>
@@ -154,7 +155,19 @@ void MainWindow::setupStatusBar()
 	m_iconSQL = new QIcon(":/MainWindow/Resources/SQL.png");
 	m_iconTXT = new QIcon(":/MainWindow/Resources/TXT.png");
 	//
-	statusBar()->addPermanentWidget(m_typeCB = new QComboBox());
+	statusBar()->addPermanentWidget(m_bomChkBx = new QCheckBox("BOM"));		//	BOM
+	statusBar()->addPermanentWidget(m_encodingCB = new QComboBox());		//	文字エンコーディング
+	QStringList encList;
+	encList << "UTF-8" << "UTF-16LE" << "UTF-16BE" << "Shift_JIS" << "EUC-JP";
+	m_encodingCB->addItems(encList);
+	connect(m_encodingCB, SIGNAL(currentIndexChanged(const QString &)),
+			this, SLOT(onCharEncodingChanged(const QString &)));
+	statusBar()->addPermanentWidget(m_newLineCodeCB = new QComboBox());		//	改行コード
+	QStringList nlList; nlList << "CRLF" << "LF" << "CR";
+	m_newLineCodeCB->addItems(nlList);
+	connect(m_newLineCodeCB, SIGNAL(currentIndexChanged(int)),
+			this, SLOT(onNewLineCodeChanged(int)));
+	statusBar()->addPermanentWidget(m_typeCB = new QComboBox());	//	タイプ
 	m_typeCB->addItem("Default");
 	m_typeCB->addItem(*m_iconCPP, "CPP");
 	m_typeCB->addItem(*m_iconCS, "C#");
@@ -174,12 +187,18 @@ void MainWindow::setupStatusBar()
 	m_typeCB->addItem(*m_iconSQL, "SQL");
 	m_typeCB->addItem(*m_iconTXT, "TXT");
 }
-#if	0
-void MainWindow::connectMenuActions()
+void MainWindow::onCharEncodingChanged(const QString &)
 {
-	//QObject::connect(ui.action_New, SIGNAL(triggered()), this, SLOT(on_action_New_triggered()));
 }
-#endif
+void MainWindow::onBomChanged(bool)
+{
+}
+void MainWindow::onTypeChanged(const QString &)
+{
+}
+void MainWindow::onNewLineCodeChanged(int)
+{
+}
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
 	qDebug() << "dragEnterEvent()";
@@ -297,7 +316,9 @@ EditView *MainWindow::openFile(const QString &pathName, bool forced)
     
     QString typeName = g_settingsMgr.typeNameForExt(getExtension(pathName));
 	EditView* view = createView(typeName);
-	loadFile(view, pathName);
+	if( !loadFile(view, pathName) ) {
+		return nullptr;
+	}
 	//view->setPlainText(buf);
 	QFileInfo info(pathName);
 	auto title = info.fileName();
@@ -308,11 +329,15 @@ EditView *MainWindow::openFile(const QString &pathName, bool forced)
 
 	return view;
 }
-bool MainWindow::loadFile(EditView *view, const QString &pathName, cchar *codecName,
+bool MainWindow::loadFile(EditView *view, const QString &pathName, /*cchar *codecName,*/
 										bool bJump)		//	保存カーソル位置にジャンプ
 {
-	if (codecName == nullptr) {
-	}
+	uchar charEncoding;
+	int bomLength;
+	QString buf, errMess;
+	if( !::loadFile(pathName, buf, errMess, charEncoding, bomLength) )
+		return false;
+	view->setPlainText(buf);
 	return true;
 }
 void MainWindow::addToRecentFileList(const QString &fullPath)		//	レジストリの "recentFileList" に追加

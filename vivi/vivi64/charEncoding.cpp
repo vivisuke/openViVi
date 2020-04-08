@@ -108,21 +108,21 @@ inline bool isUTF8Bom(cuchar *ptr, cuchar *endptr)
 	//return ptr + 2 < endptr && ptr[0] == 0xef && ptr[1] == 0xbb && ptr[2] == 0xbf;
 }
 
-uchar checkCharEncoding(cuchar *ptr, cuchar *endptr, int &BOMLength)
+uchar checkCharEncoding(cuchar *ptr, cuchar *endptr, int &bomLength)
 {
 	if( isUTF8Bom(ptr, endptr) ) {
-		BOMLength = 3;
+		bomLength = 3;
 		return CharEncoding::UTF8;
 	}
 	if( isUTF16leBom(ptr, endptr) ) {
-		BOMLength = 2;
+		bomLength = 2;
 		return CharEncoding::UTF16LE;
 	}
 	if( isUTF16beBom(ptr, endptr) ) {
-		BOMLength = 2;
+		bomLength = 2;
 		return CharEncoding::UTF16BE;
 	}
-	BOMLength = 0;
+	bomLength = 0;
 	cuchar *ptr0 = ptr;
 
 	bool	psEUC = true;		//	EUC の可能性あり
@@ -306,9 +306,9 @@ bool getTextCodec(const QString &fileName, QString &errorString, QTextCodec *&co
 	cuchar *ptr = (uchar *)(ba.data());
 	//cuchar *ptr = static_cast<uchar *>(ba.data());
 	cuchar *endptr = ptr + ba.size();
-	//int BOMLength;
+	//int bomLength;
 	uchar ce = checkCharEncoding(ptr, endptr, bomLength);
-	//bom = BOMLength != 0;
+	//bom = bomLength != 0;
 	cchar *codecName = 0;
 	switch( ce ) {
 	case CharEncoding::UTF8:
@@ -353,8 +353,8 @@ bool loadFile(const QString &fileName, QString &buffer, QString &errorString,
 	cuchar *ptr = (uchar *)(ba.data());
 	//cuchar *ptr = static_cast<uchar *>(ba.data());
 	cuchar *endptr = ptr + ba.size();
-	int BOMLength;
-	uchar ce = checkCharEncoding(ptr, endptr, BOMLength);
+	int bomLength;
+	uchar ce = checkCharEncoding(ptr, endptr, bomLength);
 	cchar *codecName = 0;
 	switch( ce ) {
 	case CharEncoding::UTF8:
@@ -383,13 +383,13 @@ bool loadFile(const QString &fileName, QString &buffer, QString &errorString,
 	}
 	buffer = codec->toUnicode(ba);
 	if( cePtr != 0 ) *cePtr = ce;
-	if( wbPtr != 0 ) *wbPtr = BOMLength != 0;
+	if( wbPtr != 0 ) *wbPtr = bomLength != 0;
 	return true;
 }
 #endif
 bool loadFile(const QString& pathName, QString& buffer, QString& errorMess,
 				uchar& charEncoding,		//	文字エンコーディング
-				int& BOMLength)		//	BOM付き
+				int& bomLength)		//	BOM付き
 {
 	QDir path(pathName);
 	QFile file(path.path());
@@ -402,8 +402,8 @@ bool loadFile(const QString& pathName, QString& buffer, QString& errorMess,
 	cuchar *ptr = (uchar *)(ba.data());
 	//cuchar *ptr = static_cast<uchar *>(ba.data());
 	cuchar *endptr = ptr + ba.size();
-	//int BOMLength;
-	uchar ce = charEncoding = checkCharEncoding(ptr, endptr, BOMLength);
+	//int bomLength;
+	uchar ce = charEncoding = checkCharEncoding(ptr, endptr, bomLength);
 	cchar *codecName = 0;
 	switch( ce ) {
 	case CharEncoding::UTF8:
@@ -432,7 +432,7 @@ bool loadFile(const QString& pathName, QString& buffer, QString& errorMess,
 	}
 	buffer = codec->toUnicode(ba);
 	//if( cePtr != 0 ) *cePtr = ce;
-	//if( wbPtr != 0 ) *wbPtr = BOMLength != 0;
+	//if( wbPtr != 0 ) *wbPtr = bomLength != 0;
 	return true;
 }
 //	改行コード判別

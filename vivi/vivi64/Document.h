@@ -5,6 +5,7 @@
 #include <QPixmap>
 #include <vector>
 
+typedef unsigned char uchar;
 typedef const char cchar;
 typedef unsigned char byte;
 #ifdef	_WIN64
@@ -29,9 +30,17 @@ class Document : public QObject
 public:
 	Document(QObject *parent = 0);
 	~Document();
+public:
+	void	setPathName(const QString &pathName);
+	void	setTitle(const QString &);
+	void	setCodecName(const QByteArray &);
+	void	setBOM(bool bBom);
+	void	setCharEncoding(uchar charEncodeing);
 private:
+	QString	m_pathName;
 	Buffer	*m_buffer;
 	byte	m_newLineCode;
+	uchar	m_charEncodeing;
 	int		m_bomLength;
 	mutable QTextCodec	*m_codec;
 	QString	m_fullPathName;
