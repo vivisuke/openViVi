@@ -53,6 +53,7 @@ private slots:
 	//
     void	openRecentFile();
 	void	tabCloseRequested(int index);
+	void	currentChanged(int index);
 	
 private:
 	Ui::MainWindowClass ui;

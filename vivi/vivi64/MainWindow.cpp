@@ -80,8 +80,8 @@ MainWindow::MainWindow(QWidget *parent)
 		ui.tabWidget->removeTab(0);
 	ui.tabWidget->setTabsClosable(true);		//	タブクローズ可能
 	ui.tabWidget->setMovable(true);				//	タブ移動可能
-	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)),
-			this, SLOT(tabCloseRequested(int)));
+	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(tabCloseRequested(int)));
+	connect(ui.tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
 	//
 	setupStatusBar();		//	ステータスバーセットアップ
 	//
@@ -323,7 +323,16 @@ void MainWindow::on_action_Close_triggered()
 }
 void MainWindow::tabCloseRequested(int index)
 {
+	//	undone: 保存確認
 		ui.tabWidget->removeTab(index);
+}
+void MainWindow::currentChanged(int index)
+{
+	EditView *view = nthWidget(index);
+	//auto typeName = view->typeName();
+	int ix = m_typeCB->findText(view->typeName());
+	if( ix < 0 ) ix = 0;
+	m_typeCB->setCurrentIndex(ix);
 }
 void MainWindow::on_action_eXit_triggered()
 {
