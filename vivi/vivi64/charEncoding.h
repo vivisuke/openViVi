@@ -60,9 +60,10 @@ inline int isEUCcode(uchar uch)
 bool isDBCSLeadByte(uchar ch);
 bool isDBCSSecondByte(uchar ch);
 uchar	checkCharEncoding(cuchar *, cuchar *, int &BOMLength);
-bool	loadFile(const QString &, QString &, QString &, uchar * = 0, bool * = 0);
-bool	getTextCodec(const QString &fileName, QString &errorString, QTextCodec *&codec,
-						int &bomLength, byte &);
+bool	loadFile(const QString& pathName, QString& buf, QString& errMess, uchar& charEncoding, int& BOMLength);
+//bool	loadFile(const QString &, QString &, QString &, uchar * = 0, bool * = 0);
+//bool	getTextCodec(const QString &fileName, QString &errorString, QTextCodec *&codec,
+//						int &bomLength, byte &);
 
 byte checkNewLineCode(cbyte *ptr, cbyte *endptr, byte charCode);
 

@@ -29,4 +29,16 @@ class Document : public QObject
 public:
 	Document(QObject *parent = 0);
 	~Document();
+private:
+	Buffer	*m_buffer;
+	byte	m_newLineCode;
+	int		m_bomLength;
+	mutable QTextCodec	*m_codec;
+	QString	m_fullPathName;
+	QString	m_title;
+	mutable QDateTime	m_lastModified;
+	std::vector<EditView *>	m_views;
+	int			m_wmSeqNumber;		//	全体マップ作成時シリアル番号
+	double		m_wmScale;				//	1.0 未満であれば縮小されている
+	QPixmap	m_wholeMap;
 };

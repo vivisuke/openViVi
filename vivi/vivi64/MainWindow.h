@@ -7,6 +7,8 @@
 
 //typedef QPlainTextEdit	EditView;
 
+typedef const char cchar;
+
 class SettingsMgr;
 class TypeSettings;
 class GlobalSettings;
@@ -33,6 +35,7 @@ protected:
 	//EditView	*createView(TypeSettings* = nullptr);
 	EditView	*createView(QString = QString());
 	void	addNewView(EditView *, const QString &title);
+    bool	loadFile(EditView *, const QString &fileName, cchar *codecName = 0, bool = true);
     EditView	*openFile(const QString &pathName, bool forced = false);
 	EditView	*currentWidget();
 	EditView	*nthWidget(int);

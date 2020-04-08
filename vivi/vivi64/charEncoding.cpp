@@ -292,6 +292,7 @@ uchar checkCharEncoding(cuchar *ptr, cuchar *endptr, int &BOMLength)
 	return CharEncoding::UTF8;
 }
 
+#if	0
 bool getTextCodec(const QString &fileName, QString &errorString, QTextCodec *&codec,
 					int &bomLength, byte &newLine)
 {
@@ -338,7 +339,8 @@ bool getTextCodec(const QString &fileName, QString &errorString, QTextCodec *&co
 	return true;
 }
 bool loadFile(const QString &fileName, QString &buffer, QString &errorString,
-				uchar *cePtr, bool *wbPtr)
+				uchar *cePtr,		//	文字エンコーディング
+				bool *wbPtr)		//	BOM付き
 {
 	QDir path(fileName);
 	QFile file(path.path());
@@ -382,6 +384,55 @@ bool loadFile(const QString &fileName, QString &buffer, QString &errorString,
 	buffer = codec->toUnicode(ba);
 	if( cePtr != 0 ) *cePtr = ce;
 	if( wbPtr != 0 ) *wbPtr = BOMLength != 0;
+	return true;
+}
+#endif
+bool loadFile(const QString& pathName, QString& buffer, QString& errorMess,
+				uchar& charEncoding,		//	文字エンコーディング
+				int& BOMLength)		//	BOM付き
+{
+	QDir path(pathName);
+	QFile file(path.path());
+	if( !file.open(QFile::ReadOnly /*| QFile::Text*/) ) {
+		errorMess = file.errorString();
+		buffer.clear();
+		return false;
+	}
+	QByteArray ba = file.readAll();
+	cuchar *ptr = (uchar *)(ba.data());
+	//cuchar *ptr = static_cast<uchar *>(ba.data());
+	cuchar *endptr = ptr + ba.size();
+	//int BOMLength;
+	uchar ce = charEncoding = checkCharEncoding(ptr, endptr, BOMLength);
+	cchar *codecName = 0;
+	switch( ce ) {
+	case CharEncoding::UTF8:
+		codecName = "UTF-8";
+		break;
+	case CharEncoding::UTF16LE:
+		codecName = "UTF-16LE";
+		break;
+	case CharEncoding::UTF16BE:
+		codecName = "UTF-16BE";
+		break;
+	case CharEncoding::EUC:
+		codecName = "EUC-JP";
+		break;
+	case CharEncoding::SJIS:
+		codecName = "Shift-JIS";
+	}
+	QTextCodec *codec = codecName ? QTextCodec::codecForName(codecName) : 0;
+	if( codec == 0 )
+		codec = QTextCodec::codecForLocale();
+	if( codec == 0 ) {
+		QMessageBox::warning(0, "ViVi64",
+			QObject::tr("No QTextCodec for %1.")
+							 .arg(QString(codecName ? codecName : "Locale")));
+		return false;
+	}
+	buffer = codec->toUnicode(ba);
+	//if( cePtr != 0 ) *cePtr = ce;
+	//if( wbPtr != 0 ) *wbPtr = BOMLength != 0;
 	return true;
 }
 //	改行コード判別

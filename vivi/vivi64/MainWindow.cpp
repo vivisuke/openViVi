@@ -287,15 +287,18 @@ void MainWindow::openRecentFile()
 }
 EditView *MainWindow::openFile(const QString &pathName, bool forced)
 {
+#if	0
 	QFile inputFile(pathName);
     inputFile.open(QIODevice::ReadOnly);
 	QTextStream in(&inputFile);
     QString buf = in.readAll();
     inputFile.close();    
+#endif
     
     QString typeName = g_settingsMgr.typeNameForExt(getExtension(pathName));
 	EditView* view = createView(typeName);
-	view->setPlainText(buf);
+	loadFile(view, pathName);
+	//view->setPlainText(buf);
 	QFileInfo info(pathName);
 	auto title = info.fileName();
 	addNewView(view, title);
@@ -304,6 +307,13 @@ EditView *MainWindow::openFile(const QString &pathName, bool forced)
 	updateRecentFileActions();
 
 	return view;
+}
+bool MainWindow::loadFile(EditView *view, const QString &pathName, cchar *codecName,
+										bool bJump)		//	保存カーソル位置にジャンプ
+{
+	if (codecName == nullptr) {
+	}
+	return true;
 }
 void MainWindow::addToRecentFileList(const QString &fullPath)		//	レジストリの "recentFileList" に追加
 {
