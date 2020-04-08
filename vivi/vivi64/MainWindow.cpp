@@ -2,6 +2,7 @@
 #include "MainWindow.h"
 #include "EditView.h"
 #include "settingsMgr.h"
+#include "TypeStgDlg.h"
 #include "typeSettings.h"
 #include "globalSettings.h"
 #include <QDockWidget>
@@ -346,4 +347,15 @@ void MainWindow::onViewLineNumberChanged(const QString &typeName, bool b)
 		if( isEditView(view) && view->typeName() == typeName )
 			view->setLineNumberVisible(b);
 	}
+}
+void MainWindow::on_action_TypeSettings_triggered()
+{
+	EditView *view = currentWidget();
+	if( !isEditView(view) ) return;
+	TypeStgDlg aDlg(view, view->typeSettings());
+	aDlg.exec();
+	//##typesettingsChanged(view);
+}
+void MainWindow::on_action_GlobalSettings_triggered()
+{
 }

@@ -194,10 +194,16 @@
    <property name="text">
     <string>&amp;TypeSettings</string>
    </property>
+   <property name="shortcut">
+    <string>F8</string>
+   </property>
   </action>
   <action name="action_GlobalSettings">
    <property name="text">
     <string>&amp;GlobalSettings</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+F8</string>
    </property>
   </action>
   <action name="action_LineNumber">
