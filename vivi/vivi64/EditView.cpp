@@ -152,6 +152,12 @@ void EditView::keyPressEvent(QKeyEvent *event)
 			update();
 		}
 		break;
+	case Qt::Key_End:
+		if( ctrl ) {
+			m_scrollX0 = buffer()->lineCount();		//	暫定コード
+			update();
+		}
+		break;
 	}
 }
 void EditView::paintEvent(QPaintEvent *event)

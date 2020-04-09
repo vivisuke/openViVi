@@ -142,7 +142,7 @@
 ◎ C 04/08 04/08 0.001 ToDo ViewEdit.cpp：m_buffer を直接アクセスせず、buffer() を介してアクセス
 ◎ C 04/08 04/08 0.001 ToDo ViewEdit.cpp：m_typeSettings を直接アクセスせず、typeSettings() を介してアクセス
 ◎ C 04/08 04/09 0.001 ToDo Ctrl + Home で先頭移動
-● C 04/08             ToDo Ctrl + End で末尾移動
+◎ C 04/08 04/09 0.001 ToDo Ctrl + End で末尾移動
 ● C 04/08             ToDo 他のアプリでファイルが更新された場合は（とりあえず自動）再読み込み
 ● C 04/08             ToDo PageUp, PageDown
 ◎ C 04/08 04/08 0.001 ToDo ミニマップ：現表示領域を赤？枠で囲む
