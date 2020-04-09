@@ -142,6 +142,8 @@ void EditView::wheelEvent(QWheelEvent * event)
 }
 void EditView::keyPressEvent(QKeyEvent *event)
 {
+	auto rct = rect();
+	int nLines = rct.height() / m_lineHeight;
 	const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
 	const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
 	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
@@ -157,6 +159,14 @@ void EditView::keyPressEvent(QKeyEvent *event)
 			m_scrollX0 = buffer()->lineCount();		//	暫定コード
 			update();
 		}
+		break;
+	case Qt::Key_PageUp:
+		m_scrollX0 = qMax(0, m_scrollX0 - nLines);		//	暫定コード
+		update();
+		break;
+	case Qt::Key_PageDown:
+		m_scrollX0 = qMin(buffer()->lineCount(), m_scrollX0 + nLines);		//	暫定コード
+		update();
 		break;
 	}
 }
