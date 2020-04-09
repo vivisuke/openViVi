@@ -21,6 +21,7 @@ EditView::EditView(TypeSettings* typeSettings)
 	: m_typeSettings(nullptr)
 	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
 	, m_scrollX0(0)
+	, m_minMapDragging(false)
 {
 	m_typeSettings = typeSettings == nullptr ? new TypeSettings() : typeSettings;
 	qDebug() << "typeSettings type = " << m_typeSettings->name();
@@ -99,6 +100,7 @@ void EditView::mousePressEvent(QMouseEvent *event)
 	auto rct = rect();
 	QPoint pnt = event->pos();
 	if( pnt.x() >= rct.width() - MINMAP_WIDTH ) {
+		m_minMapDragging = true;
 		int nLines = rct.height() / m_lineHeight;
 		m_scrollX0 = qMax(0, pnt.y() - nLines / 2);
     	m_scrollX0 = qMin(m_scrollX0, buffer()->lineCount());		//	undone: 折返し処理対応
@@ -110,7 +112,9 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 	//	暫定実装
 	auto rct = rect();
 	QPoint pnt = event->pos();
-	if( pnt.x() >= rct.width() - MINMAP_WIDTH ) {
+	//if( pnt.x() >= rct.width() - MINMAP_WIDTH )
+	if( m_minMapDragging )
+	{
 		int nLines = rct.height() / m_lineHeight;
 		m_scrollX0 = qMax(0, pnt.y() - nLines / 2);
     	m_scrollX0 = qMin(m_scrollX0, buffer()->lineCount());		//	undone: 折返し処理対応
@@ -119,6 +123,7 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 }
 void EditView::mouseReleaseEvent(QMouseEvent *)
 {
+	m_minMapDragging = false;
 }
 void EditView::mouseDoubleClickEvent(QMouseEvent *)
 {

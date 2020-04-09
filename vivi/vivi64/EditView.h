@@ -43,7 +43,8 @@ protected:
 	void	keyPressEvent(QKeyEvent *);
 #endif
 private:
-	bool		m_lineNumberVisible;
+	bool	m_lineNumberVisible;
+	bool	m_minMapDragging;
 	int		m_scrollX0;
 	int		m_fontWidth;
 	int		m_fontHeight;
