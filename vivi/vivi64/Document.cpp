@@ -33,3 +33,22 @@ Document::~Document()
 #endif
 	delete m_buffer;
 }
+void Document::setPathName(const QString &pathName)
+{
+	m_pathName = pathName;
+}
+void Document::setTitle(const QString &title)
+{
+	m_title = title;
+}
+void Document::setCodecName(const QByteArray &)
+{
+}
+void Document::setBOM(bool bBom)
+{
+	m_bBom = bBom;
+}
+void Document::setCharEncoding(uchar charEncoding)
+{
+	m_charEncoding = charEncoding;
+}

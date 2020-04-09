@@ -35,16 +35,18 @@ public:
 	void	setTitle(const QString &);
 	void	setCodecName(const QByteArray &);
 	void	setBOM(bool bBom);
-	void	setCharEncoding(uchar charEncodeing);
+	void	setCharEncoding(uchar charEncoding);
 private:
 	QString	m_pathName;
+	QString	m_title;
 	Buffer	*m_buffer;
+	bool	m_bBom;
 	byte	m_newLineCode;
-	uchar	m_charEncodeing;
+	uchar	m_charEncoding;
 	int		m_bomLength;
 	mutable QTextCodec	*m_codec;
-	QString	m_fullPathName;
-	QString	m_title;
+	//QString	m_fullPathName;
+	//QString	m_title;
 	mutable QDateTime	m_lastModified;
 	std::vector<EditView *>	m_views;
 	int			m_wmSeqNumber;		//	全体マップ作成時シリアル番号

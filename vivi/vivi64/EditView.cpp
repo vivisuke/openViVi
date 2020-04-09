@@ -53,7 +53,7 @@ int EditView::viewLineOffsetToPx(int vln, int offset) const
 void EditView::updateFont()
 {
 	//	暫定コード
-	m_fontMB = QFont("MS ゴシック",
+	m_fontMB = QFont("ＭＳ ゴシック",
 					typeSettings()->intValue(TypeSettings::FONT_SIZE));
 	m_fontMB.setFixedPitch(true);
 	m_fontMB.setKerning(false);

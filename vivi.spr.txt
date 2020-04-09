@@ -166,6 +166,21 @@
 ● C 04/09             ToDo DocumentMgr 追加
 ◎ C 04/09 04/09 0.001 ToDo ステータスバーでタイプを変更しても、それがビューに反映されない
 ◎ C 04/09 04/09 0.001 ToDo ミニマップ：ドラッグ中にマウスカーソルがミニマップ領域から左に外れるとスクロールが停止する
-● C 04/09             ToDo 
-● C 04/09             ToDo 
-● C 04/09             ToDo 
+● C 04/09             ToDo タイプ設定ダイアログ > フォント一覧：固定ピッチフォントのみ表示
+● C 04/09             ToDo ミニマップ：コメント部分はコメント色表示？
+● C 04/09             ToDo ツールバー：検索用に QLineEdit・↓ ボタン配置
+● C 04/09             ToDo テキストカーソル表示？
+● C 04/09             ToDo 行番号エリア・ミニマップエリアは QWidget を配置？（マウスカーソルをテキスト部分と異なるようにするため）
+◎ C 04/10 04/10 0.001 ToDo Document::setPathName(), setTitle(), setBOM(), setCharEncoding()
+● C 04/10             ToDo 
+● C 04/10             ToDo 
+● C 04/10             ToDo 
+● C 04/10             ToDo 
+● C 04/10             ToDo 
+● C 04/10             ToDo 
+● C 04/10             ToDo 
+● C 04/10             ToDo 
+● C 04/10             ToDo 
+● C 04/10             ToDo 
+● C 04/10             ToDo 
+● C 04/10             ToDo 

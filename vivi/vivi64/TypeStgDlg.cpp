@@ -16,7 +16,14 @@ TypeStgDlg::TypeStgDlg(EditView *view, TypeSettings *typeStg, QWidget *parent)
 	ui.setupUi(this);
 	setWindowTitle(m_typeSettings->name() + tr(" - TypeStgDlg"));
 	QFontDatabase db;
-	ui.fontFamilyCB->addItems(db.families());
+	auto lst = db.families();
+	//auto b = db.isFixedPitch("Courier New");
+	for (int i = lst.size(); --i >= 0; ) {
+		if( !db.isFixedPitch(lst[i]) )
+			lst.erase(lst.begin() + i);
+	}
+	ui.fontFamilyCB->addItems(lst);
+	//ui.fontFamilyCB->addItems(db.families(/*QFontDatabase::FixedFont*/));
 	setFontFamily(m_typeSettings->textValue(TypeSettings::FONT_NAME));
 	ui.fontSizeSB->setValue(m_typeSettings->intValue(TypeSettings::FONT_SIZE));
 	ui.tab2->setChecked(m_typeSettings->intValue(TypeSettings::TAB_WIDTH) == 2);
@@ -100,7 +107,7 @@ void TypeStgDlg::onCheckToggled(bool vi)
 	int ix = m_typeSettings->indexOfBool(name);
 #else
 	QString txt = chk->text();
-	if( txt.right(1) == QChar(':') || txt.right(1) == QChar(L'ÅF') )
+	if( txt.right(1) == QChar(':') || txt.right(1) == QChar(L'ÔøΩF') )
 		txt = txt.left(txt.size() - 1);
 	qDebug() << txt;
 	int ix = m_typeSettings->indexOfBool(txt);
