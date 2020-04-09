@@ -140,8 +140,19 @@ void EditView::wheelEvent(QWheelEvent * event)
     	update();
     }
 }
-void EditView::keyPressEvent(QKeyEvent *)
+void EditView::keyPressEvent(QKeyEvent *event)
 {
+	const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
+	const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
+	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
+	switch( event->key() ) {
+	case Qt::Key_Home:
+		if( ctrl ) {
+			m_scrollX0 = 0;		//	暫定コード
+			update();
+		}
+		break;
+	}
 }
 void EditView::paintEvent(QPaintEvent *event)
 {
