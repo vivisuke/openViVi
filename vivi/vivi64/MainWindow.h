@@ -10,7 +10,7 @@
 
 typedef const char cchar;
 
-class SettingsMgr;
+//class SettingsMgr;
 class TypeSettings;
 class GlobalSettings;
 
@@ -40,6 +40,7 @@ protected:
     EditView	*openFile(const QString &pathName, bool forced = false);
 	EditView	*currentWidget();
 	EditView	*nthWidget(int);
+	void	setTypeSettings(EditView *, TypeSettings *);
 	void	onViewLineNumberChanged(const QString &, bool);
     
 protected:

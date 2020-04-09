@@ -23,6 +23,7 @@ public:
 	void	setLineNumberVisible(bool);
 	void	updateFont();
 	void	setPlainText(const QString&);
+	void	setTypeSettings(TypeSettings *);
 protected:
 	void	drawLineNumberArea(QPainter&);
 	void	drawTextArea(QPainter&);

@@ -186,6 +186,8 @@ void MainWindow::setupStatusBar()
 	m_typeCB->addItem(*m_iconRUBY, "RUBY");
 	m_typeCB->addItem(*m_iconSQL, "SQL");
 	m_typeCB->addItem(*m_iconTXT, "TXT");
+	connect(m_typeCB, SIGNAL(currentIndexChanged(const QString &)),
+			this, SLOT(onTypeChanged(const QString &)));
 }
 void MainWindow::onCharEncodingChanged(const QString &)
 {
@@ -193,11 +195,35 @@ void MainWindow::onCharEncodingChanged(const QString &)
 void MainWindow::onBomChanged(bool)
 {
 }
-void MainWindow::onTypeChanged(const QString &)
+void MainWindow::onTypeChanged(const QString &type)
 {
+	EditView *view = currentWidget();
+	if( !isEditView(view) ) return;
+	TypeSettings *typeSettings = g_settingsMgr.typeSettings(type);
+	setTypeSettings(view, typeSettings);
+	view->setFocus();
+	//view->update();
 }
 void MainWindow::onNewLineCodeChanged(int)
 {
+}
+void MainWindow::setTypeSettings(EditView *view, TypeSettings *typeSettings)
+{
+	view->setTypeSettings(typeSettings);
+#if	0
+	if( typeSettings->name() == "HTML" ) {
+		view->setJSTypeSettings(m_settingsMgr->typeSettings("JS"));		//	for JavaScript
+		view->setPHPTypeSettings(m_settingsMgr->typeSettings("PHP"));		//	for PHP
+	} else {
+		view->setJSTypeSettings(0);
+		view->setPHPTypeSettings(0);
+	}
+	view->setLineNumberVisible(typeSettings->boolValue(TypeSettings::VIEW_LINENUM));
+	view->setLineBreak(typeSettings->boolValue(TypeSettings::LINE_BREAK_WIN_WIDTH));
+	view->updateScrollBarInfo();
+#endif
+	view->updateFont();
+	view->update();
 }
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {

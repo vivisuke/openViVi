@@ -40,6 +40,10 @@ void EditView::setPlainText(const QString& txt)
 	buildMinMap();
 	update();
 }
+void EditView::setTypeSettings(TypeSettings *typeSettings)
+{
+	m_typeSettings = typeSettings;
+}
 int EditView::viewLineOffsetToPx(int vln, int offset) const
 {
 	Q_ASSERT(0);
