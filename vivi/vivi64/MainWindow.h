@@ -47,6 +47,7 @@ protected:
 	void dropEvent(QDropEvent* event);
 
 private slots:
+	void	on_action_NewWindow_triggered();
 	void	on_action_New_triggered();
 	void	on_action_Open_triggered();
 	void	on_action_Close_triggered();

@@ -224,9 +224,15 @@ void MainWindow::dropEvent(QDropEvent* event)
 		openFile(fileName);
 	}
 }
+void MainWindow::on_action_NewWindow_triggered()
+{
+	qDebug() << "on_action_NewWindow_triggered()";
+	MainWindow* w = new MainWindow();
+	w->show();
+}
 void MainWindow::on_action_New_triggered()
 {
-	qDebug() << "on_action_Open_triggered()";
+	qDebug() << "on_action_New_triggered()";
 	EditView* view = createView();
 	QString title = tr("Untitled-%1").arg(++m_docNumber);
 	addNewView(view, title);

@@ -62,11 +62,21 @@
      </property>
      <addaction name="separator"/>
     </widget>
+    <widget class="QMenu" name="menu_FavoriteFiles">
+     <property name="title">
+      <string>&amp;FavoriteFiles</string>
+     </property>
+     <addaction name="action_AddCurrectFile"/>
+     <addaction name="action_RemoveFile"/>
+     <addaction name="separator"/>
+    </widget>
+    <addaction name="action_NewWindow"/>
     <addaction name="action_New"/>
     <addaction name="action_Open"/>
     <addaction name="action_Close"/>
     <addaction name="separator"/>
     <addaction name="menuRecentFiles"/>
+    <addaction name="menu_FavoriteFiles"/>
     <addaction name="separator"/>
     <addaction name="action_eXit"/>
    </widget>
@@ -77,7 +87,7 @@
     <addaction name="action_Undo"/>
     <addaction name="action_Redo"/>
     <addaction name="separator"/>
-    <addaction name="actioncu_T"/>
+    <addaction name="action_Cut"/>
     <addaction name="action_Copy"/>
     <addaction name="action_Paste"/>
    </widget>
@@ -161,7 +171,7 @@
     <string>Ctrl+R</string>
    </property>
   </action>
-  <action name="actioncu_T">
+  <action name="action_Cut">
    <property name="text">
     <string>cu&amp;T</string>
    </property>
@@ -217,6 +227,24 @@
   <action name="action_eXit">
    <property name="text">
     <string>e&amp;Xit</string>
+   </property>
+  </action>
+  <action name="action_AddCurrectFile">
+   <property name="text">
+    <string>AddCurrectFile(&amp;@)</string>
+   </property>
+  </action>
+  <action name="action_RemoveFile">
+   <property name="text">
+    <string>RemoveFile(&amp;-)</string>
+   </property>
+  </action>
+  <action name="action_NewWindow">
+   <property name="text">
+    <string>NewWindow</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+N</string>
    </property>
   </action>
  </widget>
