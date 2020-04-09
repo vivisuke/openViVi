@@ -150,7 +150,7 @@
 ● C 04/08             ToDo 0x20未満の文字を「@ABC…」で反転表示
 ● C 04/08             問題 フォントが「Courier New」の場合、全角文字が半角文字のちょうど倍のサイズになっていない
 ◎ C 04/08 04/08 0.001 ToDo TypeStgDlg 追加
-● C 04/08             ToDo マウスカーソルがテキストエリアにある場合は、カーソル形状をIビームに変える
+◎ C 04/08 04/10 0.001 ToDo マウスカーソルがテキストエリアにある場合は、カーソル形状をIビームに変える
 ● C 04/08             ToDo ミニマップ：Debug モードだとドラッグ処理が遅れるので、溜まっている mouseMoveEvent() を削除？
 ◎ C 04/08 04/08 0.001 ToDo MainWindow：タイプ設定ダイアログ表示
 ◎ C 04/08 04/08 0.001 ToDo MainWindow：カレントビューが切り替わった場合は、右下タイプドロップダウン更新
@@ -170,11 +170,12 @@
 ● C 04/09             ToDo ミニマップ：コメント部分はコメント色表示？
 ● C 04/09             ToDo ツールバー：検索用に QLineEdit・↓ ボタン配置
 ● C 04/09             ToDo テキストカーソル表示？
-● C 04/09             ToDo 行番号エリア・ミニマップエリアは QWidget を配置？（マウスカーソルをテキスト部分と異なるようにするため）
+● C 04/09             ToDo 行番号エリアは QWidget を配置？（マウスカーソルをテキスト部分と異なるようにするため）
+● C 04/09             ToDo ミニマップエリアは QWidget を配置？（マウスカーソルをテキスト部分と異なるようにするため）
 ◎ C 04/10 04/10 0.001 ToDo Document::setPathName(), setTitle(), setBOM(), setCharEncoding()
-● C 04/10             ToDo 
-● C 04/10             ToDo 
-● C 04/10             ToDo 
+● C 04/10             ToDo Document：読み込んだファイル最終更新日付時刻保持
+● C 04/10             ToDo Document がバッファを保持するよう修正、EditView は単にバッファへのポインタを持つ
+● C 04/10             ToDo Document：関連する EditView へのポインタを vector で保持
 ● C 04/10             ToDo 
 ● C 04/10             ToDo 
 ● C 04/10             ToDo 

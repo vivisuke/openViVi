@@ -265,8 +265,9 @@ void MainWindow::on_action_New_triggered()
 }
 EditView *MainWindow::createView(QString typeName)
 {
+	auto* buffer = new Buffer();
 	auto* typeSettings = new TypeSettings(typeName);
-	EditView* view = new EditView(typeSettings);	//QPlainTextEdit();	//createView();
+	EditView* view = new EditView(buffer, typeSettings);	//QPlainTextEdit();	//createView();
 	//view->setAcceptDrops(false);		//ドロップを無効化
 	//view->setTabStopDistance(24);
 	return view;
@@ -338,17 +339,12 @@ void MainWindow::openRecentFile()
 }
 EditView *MainWindow::openFile(const QString &pathName, bool forced)
 {
-#if	0
-	QFile inputFile(pathName);
-    inputFile.open(QIODevice::ReadOnly);
-	QTextStream in(&inputFile);
-    QString buf = in.readAll();
-    inputFile.close();    
-#endif
-    
+	//	undone: 既にファイルがオープンされている場合は、それをアクティブに
+    //	undone: Document オブジェクト作成
     QString typeName = g_settingsMgr.typeNameForExt(getExtension(pathName));
 	EditView* view = createView(typeName);
 	if( !loadFile(view, pathName) ) {
+		//	undone: ファイルオープンに失敗した場合の後始末処理
 		return nullptr;
 	}
 	//view->setPlainText(buf);

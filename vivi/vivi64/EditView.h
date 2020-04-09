@@ -13,7 +13,7 @@ class EditView : public QWidget		//QScrollArea
 {
 	Q_OBJECT
 public:
-	EditView(TypeSettings* = nullptr);
+	EditView(Buffer *buffer, TypeSettings* = nullptr);
 	~EditView();
 public:
 	QString	typeName() const;
@@ -63,9 +63,9 @@ private:
 	QFont		m_font;
 	QFont		m_fontBold;
 	QFont		m_fontMB;				//	マルチバイト用フォント
+	QWidget*	m_lineNumArea;
 	//	ミニマップ関連、undone:そのうち Document に移動
 	double		m_mmScale;				//	1.0 未満であれば縮小されている
 	QPixmap		m_minMap;
 	//
-	//QWidget		*m_lineNumArea;
 };

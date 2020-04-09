@@ -17,8 +17,9 @@ inline bool isNewLine(wchar_t ch)
 	return ch == '\r' || ch == '\n';
 }
 //----------------------------------------------------------------------
-EditView::EditView(TypeSettings* typeSettings)
-	: m_typeSettings(nullptr)
+EditView::EditView(Buffer *buffer, TypeSettings* typeSettings)
+	: m_buffer(buffer)
+	, m_typeSettings(nullptr)
 	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
 	, m_scrollX0(0)
 	, m_minMapDragging(false)
@@ -26,9 +27,16 @@ EditView::EditView(TypeSettings* typeSettings)
 	m_typeSettings = typeSettings == nullptr ? new TypeSettings() : typeSettings;
 	qDebug() << "typeSettings type = " << m_typeSettings->name();
 	m_lineNumberVisible = m_typeSettings->boolValue(TypeSettings::VIEW_LINENUM);
-	updateFont();
-	m_buffer = new Buffer();
+	//m_buffer = new Buffer();
+	m_lineNumArea = new QWidget(this);
+	m_lineNumArea->installEventFilter(this);
+	//
 	buildMinMap();
+	//
+	updateFont();
+	//
+	setCursor(Qt::IBeamCursor);
+
 }
 EditView::~EditView()
 {
@@ -82,6 +90,10 @@ void EditView::updateLineNumberInfo()
 		m_lineNumWidth = 0;
 		m_lineNumAreaWidth = QFontMetrics(m_font).width('8')*2;
 	}
+	QRect rct = /*viewport()->*/rect();
+	//rct.moveTo(2, 2);
+	rct.setWidth(m_lineNumAreaWidth);
+	m_lineNumArea->setGeometry(rct);
 }
 QString EditView::typeName() const
 {
