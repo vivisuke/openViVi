@@ -28,8 +28,10 @@ EditView::EditView(Buffer *buffer, TypeSettings* typeSettings)
 	qDebug() << "typeSettings type = " << m_typeSettings->name();
 	m_lineNumberVisible = m_typeSettings->boolValue(TypeSettings::VIEW_LINENUM);
 	//m_buffer = new Buffer();
-	m_lineNumArea = new QWidget(this);
-	m_lineNumArea->installEventFilter(this);
+	//m_lineNumArea = new QWidget(this);
+	m_lineNumArea.setParent(this);
+	m_lineNumArea.setCursor(Qt::ArrowCursor);
+	//m_lineNumArea.installEventFiler(this);
 	//
 	buildMinMap();
 	//
@@ -93,7 +95,7 @@ void EditView::updateLineNumberInfo()
 	QRect rct = /*viewport()->*/rect();
 	//rct.moveTo(2, 2);
 	rct.setWidth(m_lineNumAreaWidth);
-	m_lineNumArea->setGeometry(rct);
+	m_lineNumArea.setGeometry(rct);
 }
 QString EditView::typeName() const
 {
@@ -105,6 +107,38 @@ void EditView::setLineNumberVisible(bool b)
 	m_lineNumberVisible = b;
 	updateLineNumberInfo();
 	update();
+}
+bool EditView::eventFilter(QObject *obj, QEvent *event)
+{
+	if( obj == &m_lineNumArea ) {
+		if( event->type() == QEvent::Paint ) {
+			drawLineNumbers();
+			return true;
+		}
+#if	0
+		if( event->type() == QEvent::MouseButtonPress) {
+			QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+			lineNumberMousePressed(mouseEvent);
+			return true;
+		}
+		if( event->type() == QEvent::MouseMove) {
+			QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+			lineNumberMouseMoved(mouseEvent);
+			return true;
+		}
+		if( event->type() == QEvent::ContextMenu) {
+			QContextMenuEvent *cmEvent = static_cast<QContextMenuEvent*>(event);
+			contextMenuEvent(cmEvent);
+			return true;
+		}
+		if( event->type() == QEvent::Wheel) {
+			QWheelEvent *wEvent = static_cast<QWheelEvent*>(event);
+			wheelEvent(wEvent);
+			return true;
+		}
+#endif
+	}
+	return false;
 }
 void EditView::mousePressEvent(QMouseEvent *event)
 {
@@ -219,6 +253,9 @@ void EditView::drawLineNumberArea(QPainter& pt)
 		int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
 		pt.drawText(px, py+m_fontHeight, number);
 	}
+}
+void EditView::drawLineNumbers()
+{
 }
 void EditView::drawTextArea(QPainter& pt)
 {

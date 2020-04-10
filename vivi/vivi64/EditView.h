@@ -25,6 +25,7 @@ public:
 	void	setPlainText(const QString&);
 	void	setTypeSettings(TypeSettings *);
 protected:
+	void	drawLineNumbers();
 	void	drawLineNumberArea(QPainter&);
 	void	drawTextArea(QPainter&);
 	void	drawLineText(QPainter &, int &, int, int, pos_t, int, pos_t, bool&, bool&, QString&);
@@ -34,14 +35,13 @@ protected:
 	Buffer	*buffer() { return m_buffer; }
 protected:
 	void	paintEvent(QPaintEvent *);
-#if	1
 	void	mousePressEvent(QMouseEvent *);
 	void	mouseMoveEvent(QMouseEvent *);
 	void	mouseReleaseEvent(QMouseEvent *);
 	void	mouseDoubleClickEvent(QMouseEvent *);
 	void	wheelEvent(QWheelEvent * event);
 	void	keyPressEvent(QKeyEvent *);
-#endif
+	bool	eventFilter(QObject *obj, QEvent *event);
 private:
 	bool	m_lineNumberVisible;
 	bool	m_minMapDragging;
@@ -63,7 +63,7 @@ private:
 	QFont		m_font;
 	QFont		m_fontBold;
 	QFont		m_fontMB;				//	マルチバイト用フォント
-	QWidget*	m_lineNumArea;
+	QWidget		m_lineNumArea;
 	//	ミニマップ関連、undone:そのうち Document に移動
 	double		m_mmScale;				//	1.0 未満であれば縮小されている
 	QPixmap		m_minMap;
