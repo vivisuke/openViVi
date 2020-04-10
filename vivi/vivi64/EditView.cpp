@@ -29,10 +29,12 @@ EditView::EditView(Buffer *buffer, TypeSettings* typeSettings)
 	m_lineNumberVisible = m_typeSettings->boolValue(TypeSettings::VIEW_LINENUM);
 	//m_buffer = new Buffer();
 	//m_lineNumArea = new QWidget(this);
-	m_lineNumArea.setParent(this);
-	m_lineNumArea.setCursor(Qt::ArrowCursor);
-	//m_lineNumArea.installEventFiler(this);
-	//
+	m_lineNumAreaWidget.setParent(this);
+	m_lineNumAreaWidget.setCursor(Qt::ArrowCursor);
+	//m_lineNumAreaWidget.installEventFiler(this);
+	//	ミニマップ
+	m_minMapWidget.setParent(this);
+	m_minMapWidget.setCursor(Qt::ArrowCursor);
 	buildMinMap();
 	//
 	updateFont();
@@ -93,9 +95,14 @@ void EditView::updateLineNumberInfo()
 		m_lineNumAreaWidth = QFontMetrics(m_font).width('8')*2;
 	}
 	QRect rct = /*viewport()->*/rect();
+	auto wd = rct.width();
 	//rct.moveTo(2, 2);
 	rct.setWidth(m_lineNumAreaWidth);
-	m_lineNumArea.setGeometry(rct);
+	m_lineNumAreaWidget.setGeometry(rct);
+	//
+	rct.setX(wd - MINMAP_WIDTH);
+	rct.setWidth(MINMAP_WIDTH);
+	m_minMapWidget.setGeometry(rct);
 }
 QString EditView::typeName() const
 {
@@ -110,7 +117,7 @@ void EditView::setLineNumberVisible(bool b)
 }
 bool EditView::eventFilter(QObject *obj, QEvent *event)
 {
-	if( obj == &m_lineNumArea ) {
+	if( obj == &m_lineNumAreaWidget ) {
 		if( event->type() == QEvent::Paint ) {
 			drawLineNumbers();
 			return true;

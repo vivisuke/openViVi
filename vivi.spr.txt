@@ -171,7 +171,7 @@
 ● C 04/09             ToDo ツールバー：検索用に QLineEdit・↓ ボタン配置
 ● C 04/09             ToDo テキストカーソル表示？
 ◎ C 04/09 04/10 0.001 ToDo 行番号エリアは QWidget を配置？（マウスカーソルをテキスト部分と異なるようにするため）
-● C 04/09             ToDo ミニマップエリアは QWidget を配置？（マウスカーソルをテキスト部分と異なるようにするため）
+◎ C 04/09 04/10 0.001 ToDo ミニマップエリアは QWidget を配置？（マウスカーソルをテキスト部分と異なるようにするため）
 ◎ C 04/10 04/10 0.001 ToDo Document::setPathName(), setTitle(), setBOM(), setCharEncoding()
 ● C 04/10             ToDo Document：読み込んだファイル最終更新日付時刻保持
 ● C 04/10             ToDo Document がバッファを保持するよう修正、EditView は単にバッファへのポインタを持つ

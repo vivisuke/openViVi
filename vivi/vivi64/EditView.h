@@ -63,8 +63,9 @@ private:
 	QFont		m_font;
 	QFont		m_fontBold;
 	QFont		m_fontMB;				//	マルチバイト用フォント
-	QWidget		m_lineNumArea;
+	QWidget		m_lineNumAreaWidget;
 	//	ミニマップ関連、undone:そのうち Document に移動
+	QWidget		m_minMapWidget;
 	double		m_mmScale;				//	1.0 未満であれば縮小されている
 	QPixmap		m_minMap;
 	//
