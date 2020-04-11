@@ -31,6 +31,9 @@ public:
 	Document(QObject *parent = 0);
 	~Document();
 public:
+	bool	bom() const { return m_bBom; }
+	uchar	charEncoding() const { return m_charEncoding; }
+public:
 	void	setPathName(const QString &pathName);
 	void	setTitle(const QString &);
 	void	setCodecName(const QByteArray &);
@@ -38,6 +41,7 @@ public:
 	void	setCharEncoding(uchar charEncoding);
 	void	setLastModified(const QDateTime&);
 	void	setPlainText(const QString&);
+	void	buildMinMap();
 	
 	Buffer	*buffer() { return m_buffer; }
 private:
@@ -53,7 +57,9 @@ private:
 	//QString	m_title;
 	mutable QDateTime	m_lastModified;
 	std::vector<EditView *>	m_views;
-	int			m_wmSeqNumber;		//	全体マップ作成時シリアル番号
-	double		m_wmScale;				//	1.0 未満であれば縮小されている
-	QPixmap	m_wholeMap;
+	int			m_mmSeqNumber;		//	ミニマップ作成時シリアル番号
+	double		m_mmScale;			//	1.0 未満であれば縮小されている
+	QPixmap		m_minMap;
+	//double		m_wmScale;				//	1.0 未満であれば縮小されている
+	//QPixmap	m_wholeMap;
 };

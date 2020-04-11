@@ -19,8 +19,8 @@ Document::Document(QObject *parent)
 	, m_codec(0)
 	, m_bomLength(0)
 	, m_newLineCode(CharEncoding::CRLF)
-	, m_wmSeqNumber(-1)
-	, m_wmScale(1.0)
+	, m_mmSeqNumber(-1)
+	, m_mmScale(1.0)
 {
 	m_buffer = new Buffer();
 }
@@ -57,5 +57,11 @@ void Document::setLastModified(const QDateTime& lastModified)
 	m_lastModified = lastModified;
 }
 void Document::setPlainText(const QString& txt)
+{
+	buffer()->clear();
+	buffer()->insertText(0, (cwchar_t*)txt.data(), txt.size());
+	buildMinMap();
+}
+void Document::buildMinMap()
 {
 }

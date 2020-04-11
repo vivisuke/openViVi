@@ -182,8 +182,8 @@
 ◎ C 04/11 04/11 0.002 ToDo Untitled- 番号は異なるメインウィンドウでも一意に
 ◎ C 04/11 04/11 0.002 問題 ビューを全て閉じるとクラッシュする
 ◎ C 04/11 04/11 0.002 ToDo MainWindow::loadFile() 第１引数を EditView* → Document* に変更
-● C 04/11             ToDo 
-● C 04/11             ToDo 
+● C 04/11             ToDo EditView::buildMinMap() は Document に移動
+◎ C 04/11 04/11 0.002 ToDo タブ切り替え時：ステータスバーの文字エンコーディング更新
 ● C 04/11             ToDo 
 ● C 04/11             ToDo 
 ● C 04/11             ToDo 

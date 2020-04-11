@@ -25,6 +25,7 @@ public:
 	void	updateFont();
 	void	setPlainText(const QString&);
 	void	setTypeSettings(TypeSettings *);
+	Document*	document() { return m_document; }
 protected:
 	void	drawLineNumbers();
 	void	drawLineNumberArea(QPainter&);

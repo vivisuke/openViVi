@@ -317,7 +317,7 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 	while( !token.isEmpty() ) {
 		if( tkn.tokenix() + token.size() > last )
 			token = token.left(last - tkn.tokenix());
-		qDebug() << "type = " << tkn.tokenType() << ", token = " << token;
+		//qDebug() << "type = " << tkn.tokenType() << ", token = " << token;
 		bool bold = false;
 		//pt.setFont(m_font);
 		QColor col = typeSettings()->color(inBlockComment || inLineComment ? TypeSettings::COMMENT : TypeSettings::TEXT);

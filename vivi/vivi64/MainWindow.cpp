@@ -192,7 +192,7 @@ void MainWindow::setupStatusBar()
 	statusBar()->addPermanentWidget(m_bomChkBx = new QCheckBox("BOM"));		//	BOM
 	statusBar()->addPermanentWidget(m_encodingCB = new QComboBox());		//	文字エンコーディング
 	QStringList encList;
-	encList << "UTF-8" << "UTF-16LE" << "UTF-16BE" << "Shift_JIS" << "EUC-JP";
+	encList  << "Shift_JIS" << "EUC-JP"<< "UTF-8" << "UTF-16LE" << "UTF-16BE";
 	m_encodingCB->addItems(encList);
 	connect(m_encodingCB, SIGNAL(currentIndexChanged(const QString &)),
 			this, SLOT(onCharEncodingChanged(const QString &)));
@@ -317,7 +317,7 @@ EditView *MainWindow::createView(QString pathName)
 	auto* typeSettings = new TypeSettings(typeName);
 	EditView* view = new EditView(doc, typeSettings);	//QPlainTextEdit();	//createView();
 	if( !pathName.isEmpty() ) {
-		if( !loadFile(view, pathName) ) {
+		if( !loadFile(doc, pathName) ) {
 			//	undone: ファイルオープンに失敗した場合の後始末処理
 			return nullptr;
 		}
@@ -434,7 +434,10 @@ bool MainWindow::loadFile(Document *doc, const QString &pathName, /*cchar *codec
 	QString buf, errMess;
 	if( !::loadFile(pathName, buf, errMess, charEncoding, bomLength) )
 		return false;
+	qDebug() << "charEncoding = " << (int)charEncoding;
 	doc->setPlainText(buf);
+	doc->setCharEncoding(charEncoding);
+	doc->setBOM(bomLength != 0);
 	QFileInfo info(pathName);
 	doc->setLastModified(info.lastModified());
 	return true;
@@ -464,10 +467,14 @@ void MainWindow::currentChanged(int index)
 {
 	if (index < 0) return;
 	EditView *view = nthWidget(index);
-	//auto typeName = view->typeName();
+	Document* doc = view->document();
+	//	ドキュメントタイプ
 	int ix = m_typeCB->findText(view->typeName());
 	if( ix < 0 ) ix = 0;
 	m_typeCB->setCurrentIndex(ix);
+	//	文字エンコーディング
+	m_encodingCB->setCurrentIndex(doc->charEncoding()-1);
+	m_bomChkBx->setCheckState(doc->bom() ? Qt::Checked : Qt::Unchecked);
 }
 void MainWindow::on_action_eXit_triggered()
 {
