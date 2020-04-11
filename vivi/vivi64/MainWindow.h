@@ -5,6 +5,7 @@
 #include <QCheckBox>
 #include "ui_MainWindow.h"
 #include "EditView.h"
+class FindLineEdit;
 
 //typedef QPlainTextEdit	EditView;
 
@@ -75,6 +76,12 @@ private:
 	int		m_formerTabIndex;
 	//int		m_docNumber;
 	
+	QComboBox	*m_findStringCB;
+	QString			m_findString;
+	QStringList		m_findStringHist;			//	検索文字列履歴
+	int				m_findStringHistIndex;
+	FindLineEdit	*m_findLineEdit;
+	//
 	QDockWidget	*m_outlineDock;
 	
 	QCheckBox	*m_bomChkBx;

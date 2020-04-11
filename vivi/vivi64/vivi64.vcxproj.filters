@@ -82,6 +82,9 @@
     <ClCompile Include="Document.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FindLineEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -100,6 +103,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Document.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FindLineEdit.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

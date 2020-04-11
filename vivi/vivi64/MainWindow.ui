@@ -56,7 +56,7 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <widget class="QMenu" name="menuRecentFiles">
+    <widget class="QMenu" name="menu_RecentFiles">
      <property name="title">
       <string>RecentFiles(&amp;1)</string>
      </property>
@@ -75,7 +75,7 @@
     <addaction name="action_Open"/>
     <addaction name="action_Close"/>
     <addaction name="separator"/>
-    <addaction name="menuRecentFiles"/>
+    <addaction name="menu_RecentFiles"/>
     <addaction name="menu_FavoriteFiles"/>
     <addaction name="separator"/>
     <addaction name="action_eXit"/>
@@ -115,8 +115,17 @@
     </property>
     <addaction name="action_Abount_ViVi"/>
    </widget>
+   <widget class="QMenu" name="menu_Search">
+    <property name="title">
+     <string>Search(&amp;K)</string>
+    </property>
+    <addaction name="action_Search"/>
+    <addaction name="action_SearchForward"/>
+    <addaction name="action_SearchBackward"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
+   <addaction name="menu_Search"/>
    <addaction name="menu_View"/>
    <addaction name="menu_Window"/>
    <addaction name="menu_Settings"/>
@@ -129,6 +138,10 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="action_New"/>
+   <addaction name="action_Open"/>
+   <addaction name="action_SearchForward"/>
+   <addaction name="action_SearchBackward"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_New">
@@ -245,6 +258,42 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+N</string>
+   </property>
+  </action>
+  <action name="action_Search">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/search.png</normaloff>:/MainWindow/Resources/search.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Search</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="action_SearchForward">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/arrow_downward.png</normaloff>:/MainWindow/Resources/arrow_downward.png</iconset>
+   </property>
+   <property name="text">
+    <string>Search&amp;Forward</string>
+   </property>
+   <property name="shortcut">
+    <string>F3</string>
+   </property>
+  </action>
+  <action name="action_SearchBackward">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/arrow_upward.png</normaloff>:/MainWindow/Resources/arrow_upward.png</iconset>
+   </property>
+   <property name="text">
+    <string>Search&amp;Backward</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F3</string>
    </property>
   </action>
  </widget>

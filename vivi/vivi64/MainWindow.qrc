@@ -16,5 +16,8 @@
         <file>Resources/RUBY.png</file>
         <file>Resources/SQL.png</file>
         <file>Resources/TXT.png</file>
+        <file>Resources/arrow_downward.png</file>
+        <file>Resources/arrow_upward.png</file>
+        <file>Resources/search.png</file>
     </qresource>
 </RCC>

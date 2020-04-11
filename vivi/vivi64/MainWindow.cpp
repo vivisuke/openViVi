@@ -7,6 +7,7 @@
 #include "typeSettings.h"
 #include "globalSettings.h"
 #include "charEncoding.h"
+#include "FindLineEdit.h"
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QMimeData>
@@ -104,6 +105,28 @@ MainWindow::MainWindow(QWidget *parent)
 	//connectMenuActions();
 	setAcceptDrops(true);		//ドロップを有効化
 	//
+	ui.mainToolBar->insertWidget(ui.action_SearchForward, m_findStringCB = new QComboBox());
+	m_findLineEdit = new FindLineEdit;
+	QFont fnt = m_findLineEdit->font();
+	fnt.setPointSize(10);
+	fnt.setFamily(QString((QChar *)L"ＭＳ ゴシック"));
+	m_findLineEdit->setFont(fnt);
+	m_findStringCB->setFont(fnt);
+	m_findStringCB->setLineEdit(m_findLineEdit);
+	//connect(lineEdit, SIGNAL(escPressed()), this, SLOT(escPressed()));
+	m_findStringCB->setMinimumWidth(160);
+	m_findStringCB->setMaximumWidth(160);m_findStringCB->setEditable(true);
+	m_findStringCB->setCompleter(0);
+	m_findStringCB->setInsertPolicy(QComboBox::InsertAtTop);
+#if	0
+	updateFindStringCB();
+	connect(m_findStringCB->lineEdit(), SIGNAL(returnPressed()), this, SLOT(doFindString()));
+	connect(m_findStringCB, SIGNAL(editTextChanged(const QString &)),
+					this, SLOT(findStringChanged(const QString &)));
+	connect(m_findLineEdit, SIGNAL(escPressed()), this, SLOT(onEscFindLineEdit()));
+	connect(m_findLineEdit, SIGNAL(focusIn()), this, SLOT(onFocusInFindLineEdit()));
+#endif
+	//
 	m_outlineDock = new QDockWidget(tr("Outline"));
 	m_outlineDock->setObjectName("Outline");
 	m_outlineDock->setWidget(new QPlainTextEdit());
@@ -137,7 +160,7 @@ void MainWindow::createActions()
 }
 void MainWindow::createMenus()
 {
-    QMenu *MRU = ui.menuRecentFiles;
+    QMenu *MRU = ui.menu_RecentFiles;
     for (int i = 0; i < MaxRecentFiles; ++i)
         MRU->addAction(m_recentFileActs[i]);
     updateRecentFileActions();

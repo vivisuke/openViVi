@@ -91,6 +91,7 @@
     <ClCompile Include="charEncoding.cpp" />
     <ClCompile Include="Document.cpp" />
     <ClCompile Include="EditView.cpp" />
+    <ClCompile Include="FindLineEdit.cpp" />
     <ClCompile Include="globalSettings.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
@@ -114,6 +115,7 @@
     <QtMoc Include="NamedColorDlg.h" />
     <ClInclude Include="charEncoding.h" />
     <QtMoc Include="Document.h" />
+    <QtMoc Include="FindLineEdit.h" />
     <ClInclude Include="settingsMgr.h" />
     <QtMoc Include="TypeStgDlg.h" />
     <ClInclude Include="ViewTokenizer.h" />
