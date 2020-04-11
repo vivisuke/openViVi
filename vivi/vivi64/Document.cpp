@@ -9,6 +9,10 @@
 #include "../buffer/MarkMgr.h"
 #include "charEncoding.h"
 
+#define		MINMAP_LN_WD		4			//	行番号部分幅
+#define		MINMAP_WIDTH		80
+#define		MAX_MINMAP_HEIGHT	10000		//	ピックスマップ最大高さ
+
 inline bool isNewLine(wchar_t ch)
 {
 	return ch == '\r' || ch == '\n';
@@ -74,4 +78,35 @@ void Document::setPlainText(const QString& txt)
 }
 void Document::buildMinMap()
 {
+	if( buffer()->lineCount() > 10000 ) return;		//	最大1万行
+	int ht = qMin(MAX_MINMAP_HEIGHT, buffer()->lineCount());
+	m_mmScale = (double)ht / buffer()->lineCount();
+	m_minMap = QPixmap(MINMAP_WIDTH, ht);
+	auto ts = typeSettings();
+	m_minMap.fill(ts->color(TypeSettings::BACK_GROUND));
+	QPainter painter(&m_minMap);
+	painter.fillRect(QRect(0, 0, MINMAP_LN_WD, ht), ts->color(TypeSettings::LINENUM_BG));
+	//if( lineCount() > 10000 ) return;
+	painter.setPen(ts->color(TypeSettings::TEXT));
+	bool inBlockComment = false;
+	for (int ln = 0; ln < buffer()->lineCount(); ++ln) {
+		int p = buffer()->lineStartPosition(ln);
+		int last= buffer()->lineStartPosition(ln+1);
+		int px = MINMAP_LN_WD;
+		if( buffer()->charAt(p) == '\t' ) {
+			while (buffer()->charAt(p) == '\t') {
+				++p;
+				px += ts->intValue(TypeSettings::TAB_WIDTH);
+			}
+		} else {
+			while (buffer()->charAt(p) == ' ') {
+				++p;
+				++px;
+			}
+		}
+		if( p >= buffer()->size() || isNewLine(buffer()->charAt(p)) ) continue;
+		while( last > p && isNewLine(buffer()->charAt(last - 1)) )
+			--last;
+		painter.drawLine(px, ln*m_mmScale, px + last - p, ln*m_mmScale);
+	}
 }

@@ -43,6 +43,7 @@ public:
 	void	setLastModified(const QDateTime&);
 	void	setPlainText(const QString&);
 	void	buildMinMap();
+	QPixmap&	minMap() { return m_minMap; }
 	
 	QString	typeName() const;
 	TypeSettings	*typeSettings() { return m_typeSettings; }

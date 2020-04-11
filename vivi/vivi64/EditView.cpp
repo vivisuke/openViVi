@@ -40,7 +40,7 @@ EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
 	//	ミニマップ
 	m_minMapWidget.setParent(this);
 	m_minMapWidget.setCursor(Qt::ArrowCursor);
-	buildMinMap();
+	document()->buildMinMap();
 	//
 	updateFont();
 	//
@@ -55,7 +55,7 @@ void EditView::setPlainText(const QString& txt)
 {
 	buffer()->clear();
 	buffer()->insertText(0, (cwchar_t*)txt.data(), txt.size());
-	buildMinMap();
+	document()->buildMinMap();
 	update();
 }
 TypeSettings *EditView::typeSettings()
@@ -426,6 +426,7 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 		token = tkn.nextToken();
 	}
 }
+#if	0
 void EditView::buildMinMap()
 {
 	if( buffer()->lineCount() > 10000 ) return;		//	最大1万行
@@ -460,11 +461,13 @@ void EditView::buildMinMap()
 		painter.drawLine(px, ln*m_mmScale, px + last - p, ln*m_mmScale);
 	}
 }
+#endif
 void EditView::drawMinMap(QPainter& pt)
 {
+	QPixmap& minMap = document()->minMap();
 	auto rct = rect();
 	int nLines = rct.height() / m_lineHeight;
-	int px = rct.width() - m_minMap.width();
+	int px = rct.width() - minMap.width();
 	int py = 0;
 	//
 	rct.setX(rct.width() - MINMAP_WIDTH);
@@ -475,7 +478,7 @@ void EditView::drawMinMap(QPainter& pt)
 	pt.drawRect(rct);		//	背景（テキスト背景と同一）描画
 	//
 	pt.setOpacity(0.5);
-	pt.drawPixmap(px, py, m_minMap);		//	テキストPixmap描画
+	pt.drawPixmap(px, py, minMap);		//	テキストPixmap描画
 	//
 	pt.setOpacity(0.25);
 	pt.setBrush(Qt::black);
@@ -483,9 +486,9 @@ void EditView::drawMinMap(QPainter& pt)
 		rct.setHeight(m_scrollX0);
 		pt.drawRect(rct);			//	現エリアより上部（前）描画
 	}
-	if( m_minMap.height() - (m_scrollX0+nLines) > 0 ) {
+	if( minMap.height() - (m_scrollX0+nLines) > 0 ) {
 		rct.setY(m_scrollX0+nLines);
-		rct.setHeight(m_minMap.height() - (m_scrollX0+nLines));
+		rct.setHeight(minMap.height() - (m_scrollX0+nLines));
 		pt.drawRect(rct);			//	現エリアより下部（後）描画
 	}
 	rct.setY(m_scrollX0);
