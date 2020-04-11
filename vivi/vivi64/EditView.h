@@ -8,6 +8,7 @@
 class TypeSettings;
 class GlobalSettings;
 class Buffer;
+class Document;
 
 class EditView : public QWidget		//QScrollArea
 {
@@ -59,7 +60,8 @@ private:
 	TypeSettings	*m_phpTypeSettings;		//	PHPタイプ設定へのウィークポインタ
 	//TextCursor	*m_textCursor;
 	//TextCursor	*m_svTextCursor;
-	Buffer		*m_buffer;
+	Document	*m_document;
+	Buffer		*m_buffer;				//	ポイントのみで、非所有
 	QFont		m_font;
 	QFont		m_fontBold;
 	QFont		m_fontMB;				//	マルチバイト用フォント

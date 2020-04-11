@@ -178,10 +178,14 @@
 ● C 04/10             ToDo Document：関連する EditView へのポインタを vector で保持
 ● C 04/10             ToDo EditView::resizeEvent()
 ● C 04/10             問題 View > LineNumber メニュー：初期チェック状態が不正（ビューアクティブ時に更新すべし）
-● C 04/10             ToDo 
-● C 04/10             ToDo 
-● C 04/10             ToDo 
-● C 04/10             ToDo 
-● C 04/10             ToDo 
-● C 04/10             ToDo 
-● C 04/10             ToDo 
+◎ C 04/11 04/11 0.001 ToDo on_action_New_triggered(), on_action_Open_triggered()：createView() で全ての処理を行うように修正
+● C 04/11             ToDo 
+● C 04/11             ToDo 
+● C 04/11             ToDo 
+● C 04/11             ToDo 
+● C 04/11             ToDo 
+● C 04/11             ToDo 
+● C 04/11             ToDo 
+● C 04/11             ToDo 
+● C 04/11             ToDo 
+● C 04/11             ToDo 

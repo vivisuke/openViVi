@@ -52,3 +52,10 @@ void Document::setCharEncoding(uchar charEncoding)
 {
 	m_charEncoding = charEncoding;
 }
+void Document::setLastModified(const QDateTime& lastModified)
+{
+	m_lastModified = lastModified;
+}
+void Document::setPlainText(const QString& txt)
+{
+}

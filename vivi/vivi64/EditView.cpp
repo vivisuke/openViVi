@@ -1,6 +1,7 @@
 ﻿#include <QtGui>
 //#include <QPainter>
 #include <QDebug>
+#include "Document.h"
 #include "EditView.h"
 #include "ViewTokenizer.h"
 #include "typeSettings.h"

@@ -34,7 +34,7 @@ protected:
 	void	setupStatusBar();
 	//EditView	*createView(Document *doc = 0, TypeSettings* = 0);
 	//EditView	*createView(TypeSettings* = nullptr);
-	EditView	*createView(QString = QString());
+	EditView	*createView(QString fullPathName = QString());
 	void	addNewView(EditView *, const QString &title);
     bool	loadFile(EditView *, const QString &fileName, /*cchar *codecName = 0,*/ bool = true);
     EditView	*openFile(const QString &pathName, bool forced = false);

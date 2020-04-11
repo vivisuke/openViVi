@@ -36,6 +36,10 @@ public:
 	void	setCodecName(const QByteArray &);
 	void	setBOM(bool bBom);
 	void	setCharEncoding(uchar charEncoding);
+	void	setLastModified(const QDateTime&);
+	void	setPlainText(const QString&);
+	
+	Buffer	*buffer() { return m_buffer; }
 private:
 	QString	m_pathName;
 	QString	m_title;
@@ -46,7 +50,7 @@ private:
 	int		m_bomLength;
 	mutable QTextCodec	*m_codec;
 	//QString	m_fullPathName;
-	//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^QString	m_title;
+	//QString	m_title;
 	mutable QDateTime	m_lastModified;
 	std::vector<EditView *>	m_views;
 	int			m_wmSeqNumber;		//	全体マップ作成時シリアル番号

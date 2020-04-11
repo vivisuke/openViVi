@@ -1,5 +1,6 @@
 #include "version.h"
 #include "MainWindow.h"
+#include "Document.h"
 #include "EditView.h"
 #include "settingsMgr.h"
 #include "TypeStgDlg.h"
@@ -24,6 +25,37 @@
 SettingsMgr	g_settingsMgr;
 GlobalSettings	g_globalSettings;
 
+//----------------------------------------------------------------------
+/*
+		on_action_New_triggered()
+			createView();
+			addNewView(view, title);
+		
+		on_action_Open_triggered()
+			QFileDialog::getOpenFileNames()
+			openFile(pathName)
+				createView(typeName)
+				loadFile(view, pathName)
+				addNewView(view, title)
+
+		↓
+		
+		on_action_New_triggered()
+			createView();
+				.....
+		
+		openRecentFile()
+			createView(pathName)
+				.....
+		on_action_Open_triggered()
+			QFileDialog::getOpenFileNames()
+			createView(pathName)
+				openFile(pathName)
+				.....
+				addNewView(view, title);
+
+
+*/
 //----------------------------------------------------------------------
 bool isValid(QWidget *w, const QString &className)
 {
@@ -81,6 +113,7 @@ MainWindow::MainWindow(QWidget *parent)
 		ui.tabWidget->removeTab(0);
 	ui.tabWidget->setTabsClosable(true);		//	タブクローズ可能
 	ui.tabWidget->setMovable(true);				//	タブ移動可能
+	ui.tabWidget->setTabShape(QTabWidget::Triangular);				//	タブ形状指定
 	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(tabCloseRequested(int)));
 	connect(ui.tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
 	//
@@ -259,10 +292,40 @@ void MainWindow::on_action_NewWindow_triggered()
 void MainWindow::on_action_New_triggered()
 {
 	qDebug() << "on_action_New_triggered()";
+	createView();
+#if	0
 	EditView* view = createView();
 	QString title = tr("Untitled-%1").arg(++m_docNumber);
 	addNewView(view, title);
+#endif
 }
+EditView *MainWindow::createView(QString pathName)
+{
+	//	undone: pathName を既にオープンしている場合対応
+	QString typeName, title;
+	if( !pathName.isEmpty() ) {
+		typeName = g_settingsMgr.typeNameForExt(getExtension(pathName));
+		QFileInfo info(pathName);
+		title = info.fileName();
+	} else {
+		title = tr("Untitled-%1").arg(++m_docNumber);
+	}
+	Document *doc = new Document();
+	Buffer* buffer = doc->buffer();
+	auto* typeSettings = new TypeSettings(typeName);
+	EditView* view = new EditView(buffer, typeSettings);	//QPlainTextEdit();	//createView();
+	if( !pathName.isEmpty() ) {
+		if( !loadFile(view, pathName) ) {
+			//	undone: ファイルオープンに失敗した場合の後始末処理
+			return nullptr;
+		}
+		addToRecentFileList(pathName);
+		updateRecentFileActions();
+	}
+	addNewView(view, title);
+	return view;
+}
+#if	0
 EditView *MainWindow::createView(QString typeName)
 {
 	auto* buffer = new Buffer();
@@ -272,6 +335,7 @@ EditView *MainWindow::createView(QString typeName)
 	//view->setTabStopDistance(24);
 	return view;
 }
+#endif
 void MainWindow::addNewView(EditView *view, const QString &title)
 {
 	auto cur = ui.tabWidget->addTab(view, title);
@@ -328,14 +392,17 @@ void MainWindow::on_action_Open_triggered()
 	if( fileNameList.isEmpty() ) return;
 	foreach(const QString &pathName, fileNameList) {
 		qDebug() << "pathName = " << pathName;
-		openFile(pathName);
+		//openFile(pathName);
+		createView(pathName);
 	}
 }
 void MainWindow::openRecentFile()
 {
     QAction *action = qobject_cast<QAction *>(sender());
-    if (action)
-        openFile(action->data().toString());
+    if (action) {
+    	createView(action->data().toString());
+        //openFile(action->data().toString());
+    }
 }
 EditView *MainWindow::openFile(const QString &pathName, bool forced)
 {
@@ -343,7 +410,7 @@ EditView *MainWindow::openFile(const QString &pathName, bool forced)
     //	undone: Document オブジェクト作成
     QString typeName = g_settingsMgr.typeNameForExt(getExtension(pathName));
 	EditView* view = createView(typeName);
-	if( !loadFile(view, pathName) ) {
+	if( !loadFile(view, pathName) ) {		//	Document オブジェクトを作成し、view を管理
 		//	undone: ファイルオープンに失敗した場合の後始末処理
 		return nullptr;
 	}
