@@ -18,8 +18,10 @@ inline bool isNewLine(wchar_t ch)
 	return ch == '\r' || ch == '\n';
 }
 //----------------------------------------------------------------------
-EditView::EditView(Buffer *buffer, TypeSettings* typeSettings)
-	: m_buffer(buffer)
+EditView::EditView(Document *doc, TypeSettings* typeSettings)
+	: m_document(doc)
+	, m_buffer(doc->buffer())
+	//, m_buffer(buffer)
 	, m_typeSettings(nullptr)
 	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
 	, m_scrollX0(0)

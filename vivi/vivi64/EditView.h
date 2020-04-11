@@ -14,7 +14,7 @@ class EditView : public QWidget		//QScrollArea
 {
 	Q_OBJECT
 public:
-	EditView(Buffer *buffer, TypeSettings* = nullptr);
+	EditView(Document *doc, TypeSettings* = nullptr);
 	~EditView();
 public:
 	QString	typeName() const;

@@ -303,23 +303,24 @@ void MainWindow::on_action_New_triggered()
 EditView *MainWindow::createView(QString pathName)
 {
 	//	undone: pathName を既にオープンしている場合対応
+	QFileInfo info(pathName);
 	QString typeName, title;
 	if( !pathName.isEmpty() ) {
 		typeName = g_settingsMgr.typeNameForExt(getExtension(pathName));
-		QFileInfo info(pathName);
 		title = info.fileName();
 	} else {
 		title = tr("Untitled-%1").arg(++g_docNumber);
 	}
 	Document *doc = new Document();
-	Buffer* buffer = doc->buffer();
+	//Buffer* buffer = doc->buffer();
 	auto* typeSettings = new TypeSettings(typeName);
-	EditView* view = new EditView(buffer, typeSettings);	//QPlainTextEdit();	//createView();
+	EditView* view = new EditView(doc, typeSettings);	//QPlainTextEdit();	//createView();
 	if( !pathName.isEmpty() ) {
 		if( !loadFile(view, pathName) ) {
 			//	undone: ファイルオープンに失敗した場合の後始末処理
 			return nullptr;
 		}
+		doc->setLastModified(info.lastModified());
 		addToRecentFileList(pathName);
 		updateRecentFileActions();
 	}
