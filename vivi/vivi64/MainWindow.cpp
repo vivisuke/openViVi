@@ -467,6 +467,7 @@ void MainWindow::currentChanged(int index)
 	m_bomChkBx->setCheckState(doc->bom() ? Qt::Checked : Qt::Unchecked);
 	//
 	auto* ts = doc->typeSettings();
+	ui.action_LineNumber->setChecked(ts->boolValue(TypeSettings::VIEW_LINENUM));
 }
 void MainWindow::on_action_eXit_triggered()
 {
