@@ -281,7 +281,8 @@ void MainWindow::dropEvent(QDropEvent* event)
 		QString fileName = QDir::toNativeSeparators(url.toLocalFile());
 		fileName.replace('\\', '/');
 		//qDebug() << fileName;
-		openFile(fileName);
+		createView(fileName);
+		//openFile(fileName);
 	}
 }
 void MainWindow::on_action_NewWindow_triggered()
@@ -320,7 +321,6 @@ EditView *MainWindow::createView(QString pathName)
 			//	undone: ファイルオープンに失敗した場合の後始末処理
 			return nullptr;
 		}
-		doc->setLastModified(info.lastModified());
 		addToRecentFileList(pathName);
 		updateRecentFileActions();
 	}
@@ -406,6 +406,7 @@ void MainWindow::openRecentFile()
         //openFile(action->data().toString());
     }
 }
+#if	0
 EditView *MainWindow::openFile(const QString &pathName, bool forced)
 {
 	//	undone: 既にファイルがオープンされている場合は、それをアクティブに
@@ -420,13 +421,12 @@ EditView *MainWindow::openFile(const QString &pathName, bool forced)
 	QFileInfo info(pathName);
 	auto title = info.fileName();
 	addNewView(view, title);
-	
 	addToRecentFileList(pathName);
 	updateRecentFileActions();
-
 	return view;
 }
-bool MainWindow::loadFile(EditView *view, const QString &pathName, /*cchar *codecName,*/
+#endif
+bool MainWindow::loadFile(Document *doc, const QString &pathName, /*cchar *codecName,*/
 										bool bJump)		//	保存カーソル位置にジャンプ
 {
 	uchar charEncoding;
@@ -434,7 +434,9 @@ bool MainWindow::loadFile(EditView *view, const QString &pathName, /*cchar *code
 	QString buf, errMess;
 	if( !::loadFile(pathName, buf, errMess, charEncoding, bomLength) )
 		return false;
-	view->setPlainText(buf);
+	doc->setPlainText(buf);
+	QFileInfo info(pathName);
+	doc->setLastModified(info.lastModified());
 	return true;
 }
 void MainWindow::addToRecentFileList(const QString &fullPath)		//	レジストリの "recentFileList" に追加
