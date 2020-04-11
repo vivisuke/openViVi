@@ -234,6 +234,7 @@ void MainWindow::onTypeChanged(const QString &type)
 	EditView *view = currentWidget();
 	if( !isEditView(view) ) return;
 	TypeSettings *typeSettings = g_settingsMgr.typeSettings(type);
+	//setTypeSettings(view, typeSettings);
 	setTypeSettings(view, typeSettings);
 	view->setFocus();
 	//view->update();
@@ -243,7 +244,7 @@ void MainWindow::onNewLineCodeChanged(int)
 }
 void MainWindow::setTypeSettings(EditView *view, TypeSettings *typeSettings)
 {
-	view->setTypeSettings(typeSettings);
+	view->document()->setTypeSettings(typeSettings);
 #if	0
 	if( typeSettings->name() == "HTML" ) {
 		view->setJSTypeSettings(m_settingsMgr->typeSettings("JS"));		//	for JavaScript
@@ -312,10 +313,10 @@ EditView *MainWindow::createView(QString pathName)
 	} else {
 		title = tr("Untitled-%1").arg(++g_docNumber);
 	}
-	Document *doc = new Document();
+	Document *doc = new Document(typeName);
 	//Buffer* buffer = doc->buffer();
-	auto* typeSettings = new TypeSettings(typeName);
-	EditView* view = new EditView(doc, typeSettings);	//QPlainTextEdit();	//createView();
+	//auto* typeSettings = new TypeSettings(typeName);
+	EditView* view = new EditView(doc /*, typeSettings*/);	//QPlainTextEdit();	//createView();
 	if( !pathName.isEmpty() ) {
 		if( !loadFile(doc, pathName) ) {
 			//	undone: ファイルオープンに失敗した場合の後始末処理
@@ -327,17 +328,6 @@ EditView *MainWindow::createView(QString pathName)
 	addNewView(view, title);
 	return view;
 }
-#if	0
-EditView *MainWindow::createView(QString typeName)
-{
-	auto* buffer = new Buffer();
-	auto* typeSettings = new TypeSettings(typeName);
-	EditView* view = new EditView(buffer, typeSettings);	//QPlainTextEdit();	//createView();
-	//view->setAcceptDrops(false);		//ドロップを無効化
-	//view->setTabStopDistance(24);
-	return view;
-}
-#endif
 void MainWindow::addNewView(EditView *view, const QString &title)
 {
 	auto cur = ui.tabWidget->addTab(view, title);
@@ -469,12 +459,14 @@ void MainWindow::currentChanged(int index)
 	EditView *view = nthWidget(index);
 	Document* doc = view->document();
 	//	ドキュメントタイプ
-	int ix = m_typeCB->findText(view->typeName());
+	int ix = m_typeCB->findText(view->document()->typeName());
 	if( ix < 0 ) ix = 0;
 	m_typeCB->setCurrentIndex(ix);
 	//	文字エンコーディング
 	m_encodingCB->setCurrentIndex(doc->charEncoding()-1);
 	m_bomChkBx->setCheckState(doc->bom() ? Qt::Checked : Qt::Unchecked);
+	//
+	auto* ts = doc->typeSettings();
 }
 void MainWindow::on_action_eXit_triggered()
 {

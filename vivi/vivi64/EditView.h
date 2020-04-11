@@ -14,18 +14,20 @@ class EditView : public QWidget		//QScrollArea
 {
 	Q_OBJECT
 public:
-	EditView(Document *doc, TypeSettings* = nullptr);
+	EditView(Document *doc /*, TypeSettings* = nullptr*/);
 	~EditView();
 public:
 	QString	typeName() const;
-	TypeSettings	*typeSettings() { return m_typeSettings; }
+	TypeSettings	*typeSettings();	// { return m_typeSettings; }
+	const TypeSettings	*typeSettings() const;	// { return m_typeSettings; }
 	//const TypeSettings* cTypeSettings() { return (const TypeSettings*)m_typeSettings; }
 	int	viewLineOffsetToPx(int vln, int offset) const;
 	void	setLineNumberVisible(bool);
 	void	updateFont();
 	void	setPlainText(const QString&);
-	void	setTypeSettings(TypeSettings *);
+	//void	setTypeSettings(TypeSettings *);
 	Document*	document() { return m_document; }
+	const Document*	document() const { return m_document; }
 protected:
 	void	drawLineNumbers();
 	void	drawLineNumberArea(QPainter&);
@@ -56,9 +58,9 @@ private:
 	int		m_lineNumAreaWidth;
 	int		m_nViewLine;
 	int		m_preeditPos;			//	変換位置
-	TypeSettings	*m_typeSettings;		//	タイプ設定へのウィークポインタ
-	TypeSettings	*m_jsTypeSettings;		//	JavaScriptタイプ設定へのウィークポインタ
-	TypeSettings	*m_phpTypeSettings;		//	PHPタイプ設定へのウィークポインタ
+	//TypeSettings	*m_typeSettings;		//	タイプ設定へのウィークポインタ
+	//##TypeSettings	*m_jsTypeSettings;		//	JavaScriptタイプ設定へのウィークポインタ
+	//##TypeSettings	*m_phpTypeSettings;		//	PHPタイプ設定へのウィークポインタ
 	//TextCursor	*m_textCursor;
 	//TextCursor	*m_svTextCursor;
 	Document	*m_document;

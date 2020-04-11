@@ -28,12 +28,13 @@ class Document : public QObject
 	Q_OBJECT
 
 public:
-	Document(QObject *parent = 0);
+	Document(QString typeName = QString(), QObject *parent = 0);
 	~Document();
 public:
 	bool	bom() const { return m_bBom; }
 	uchar	charEncoding() const { return m_charEncoding; }
 public:
+	void	setTypeSettings(TypeSettings *typeSettings);
 	void	setPathName(const QString &pathName);
 	void	setTitle(const QString &);
 	void	setCodecName(const QByteArray &);
@@ -43,6 +44,9 @@ public:
 	void	setPlainText(const QString&);
 	void	buildMinMap();
 	
+	QString	typeName() const;
+	TypeSettings	*typeSettings() { return m_typeSettings; }
+	const TypeSettings	*typeSettings() const { return m_typeSettings; }
 	Buffer	*buffer() { return m_buffer; }
 private:
 	QString	m_pathName;
@@ -52,6 +56,7 @@ private:
 	byte	m_newLineCode;
 	uchar	m_charEncoding;
 	int		m_bomLength;
+	TypeSettings	*m_typeSettings;
 	mutable QTextCodec	*m_codec;
 	//QString	m_fullPathName;
 	//QString	m_title;

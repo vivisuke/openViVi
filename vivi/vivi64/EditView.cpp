@@ -18,18 +18,20 @@ inline bool isNewLine(wchar_t ch)
 	return ch == '\r' || ch == '\n';
 }
 //----------------------------------------------------------------------
-EditView::EditView(Document *doc, TypeSettings* typeSettings)
+EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
 	: m_document(doc)
 	, m_buffer(doc->buffer())
 	//, m_buffer(buffer)
-	, m_typeSettings(nullptr)
+	//, m_typeSettings(nullptr)
 	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
 	, m_scrollX0(0)
 	, m_minMapDragging(false)
 {
-	m_typeSettings = typeSettings == nullptr ? new TypeSettings() : typeSettings;
-	qDebug() << "typeSettings type = " << m_typeSettings->name();
-	m_lineNumberVisible = m_typeSettings->boolValue(TypeSettings::VIEW_LINENUM);
+	Q_ASSERT(doc != nullptr);
+	//m_typeSettings = typeSettings == nullptr ? new TypeSettings() : typeSettings;
+	auto typeSettings = doc->typeSettings();
+	qDebug() << "typeSettings type = " << typeSettings->name();
+	m_lineNumberVisible = typeSettings->boolValue(TypeSettings::VIEW_LINENUM);
 	//m_buffer = new Buffer();
 	//m_lineNumArea = new QWidget(this);
 	m_lineNumAreaWidget.setParent(this);
@@ -56,10 +58,20 @@ void EditView::setPlainText(const QString& txt)
 	buildMinMap();
 	update();
 }
+TypeSettings *EditView::typeSettings()
+{
+	return document()->typeSettings();
+}
+const TypeSettings *EditView::typeSettings() const
+{
+	return document()->typeSettings();
+}
+#if	0
 void EditView::setTypeSettings(TypeSettings *typeSettings)
 {
 	m_typeSettings = typeSettings;
 }
+#endif
 int EditView::viewLineOffsetToPx(int vln, int offset) const
 {
 	Q_ASSERT(0);
@@ -109,7 +121,7 @@ void EditView::updateLineNumberInfo()
 }
 QString EditView::typeName() const
 {
-	return m_typeSettings->name();
+	return document()->typeName();
 }
 void EditView::setLineNumberVisible(bool b)
 {

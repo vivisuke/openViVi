@@ -14,14 +14,16 @@ inline bool isNewLine(wchar_t ch)
 	return ch == '\r' || ch == '\n';
 }
 
-Document::Document(QObject *parent)
+Document::Document(QString typeName, QObject *parent)
 	: QObject(parent)
+	//, m_typeSettings(nullptr)
 	, m_codec(0)
 	, m_bomLength(0)
 	, m_newLineCode(CharEncoding::CRLF)
 	, m_mmSeqNumber(-1)
 	, m_mmScale(1.0)
 {
+	m_typeSettings = new TypeSettings(typeName);
 	m_buffer = new Buffer();
 }
 Document::~Document()
@@ -32,6 +34,14 @@ Document::~Document()
 	}
 #endif
 	delete m_buffer;
+}
+QString Document::typeName() const
+{
+	return m_typeSettings->name();
+}
+void Document::setTypeSettings(TypeSettings* typeSettings)
+{
+	m_typeSettings = typeSettings;
 }
 void Document::setPathName(const QString &pathName)
 {
