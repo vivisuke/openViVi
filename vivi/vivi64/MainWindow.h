@@ -73,7 +73,7 @@ private:
 	
 	int		m_curTabIndex;
 	int		m_formerTabIndex;
-	int		m_docNumber;
+	//int		m_docNumber;
 	
 	QDockWidget	*m_outlineDock;
 	

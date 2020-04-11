@@ -22,6 +22,7 @@
 #define		MAX_CLIPBOARD_HIST		100
 #define		MAX_N_EXT_CMD				32
 
+int	g_docNumber = 0;
 SettingsMgr	g_settingsMgr;
 GlobalSettings	g_globalSettings;
 
@@ -91,7 +92,7 @@ MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, m_curTabIndex(-1)
 	, m_formerTabIndex(-1)
-	, m_docNumber(0)
+	//, m_docNumber(0)
 {
 	ui.setupUi(this);
 	//m_settingsMgr = new SettingsMgr();
@@ -308,7 +309,7 @@ EditView *MainWindow::createView(QString pathName)
 		QFileInfo info(pathName);
 		title = info.fileName();
 	} else {
-		title = tr("Untitled-%1").arg(++m_docNumber);
+		title = tr("Untitled-%1").arg(++g_docNumber);
 	}
 	Document *doc = new Document();
 	Buffer* buffer = doc->buffer();
@@ -458,6 +459,7 @@ void MainWindow::tabCloseRequested(int index)
 }
 void MainWindow::currentChanged(int index)
 {
+	if (index < 0) return;
 	EditView *view = nthWidget(index);
 	//auto typeName = view->typeName();
 	int ix = m_typeCB->findText(view->typeName());
