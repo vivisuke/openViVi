@@ -19,5 +19,10 @@
         <file>Resources/arrow_downward.png</file>
         <file>Resources/arrow_upward.png</file>
         <file>Resources/search.png</file>
+        <file>Resources/add_circle_outline.png</file>
+        <file>Resources/close_circle_outline.png</file>
+        <file>Resources/search_backward.png</file>
+        <file>Resources/search_forward.png</file>
+        <file>Resources/folder_open.png</file>
     </qresource>
 </RCC>

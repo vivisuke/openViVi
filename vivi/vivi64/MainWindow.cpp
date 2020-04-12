@@ -105,6 +105,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//connectMenuActions();
 	setAcceptDrops(true);		//ドロップを有効化
 	//
+	ui.mainToolBar->setAttribute( Qt::WA_AlwaysShowToolTips );
 	ui.mainToolBar->insertWidget(ui.action_SearchForward, m_findStringCB = new QComboBox());
 	m_findLineEdit = new FindLineEdit;
 	QFont fnt = m_findLineEdit->font();

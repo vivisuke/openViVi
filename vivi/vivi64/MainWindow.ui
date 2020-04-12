@@ -140,11 +140,16 @@
    </attribute>
    <addaction name="action_New"/>
    <addaction name="action_Open"/>
+   <addaction name="action_Close"/>
    <addaction name="action_SearchForward"/>
    <addaction name="action_SearchBackward"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_New">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/add_circle_outline.png</normaloff>:/MainWindow/Resources/add_circle_outline.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;New</string>
    </property>
@@ -153,6 +158,10 @@
    </property>
   </action>
   <action name="action_Open">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/folder_open.png</normaloff>:/MainWindow/Resources/folder_open.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Open</string>
    </property>
@@ -161,6 +170,10 @@
    </property>
   </action>
   <action name="action_Close">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/close_circle_outline.png</normaloff>:/MainWindow/Resources/close_circle_outline.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Close</string>
    </property>
@@ -186,7 +199,7 @@
   </action>
   <action name="action_Cut">
    <property name="text">
-    <string>cu&amp;T</string>
+    <string>Cu&amp;t</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+X</string>
@@ -275,7 +288,7 @@
   <action name="action_SearchForward">
    <property name="icon">
     <iconset resource="MainWindow.qrc">
-     <normaloff>:/MainWindow/Resources/arrow_downward.png</normaloff>:/MainWindow/Resources/arrow_downward.png</iconset>
+     <normaloff>:/MainWindow/Resources/search_forward.png</normaloff>:/MainWindow/Resources/search_forward.png</iconset>
    </property>
    <property name="text">
     <string>Search&amp;Forward</string>
@@ -287,7 +300,7 @@
   <action name="action_SearchBackward">
    <property name="icon">
     <iconset resource="MainWindow.qrc">
-     <normaloff>:/MainWindow/Resources/arrow_upward.png</normaloff>:/MainWindow/Resources/arrow_upward.png</iconset>
+     <normaloff>:/MainWindow/Resources/search_backward.png</normaloff>:/MainWindow/Resources/search_backward.png</iconset>
    </property>
    <property name="text">
     <string>Search&amp;Backward</string>
