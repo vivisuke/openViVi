@@ -9,6 +9,7 @@ class TypeSettings;
 class GlobalSettings;
 class Buffer;
 class Document;
+class TextCursor;
 
 class EditView : public QWidget		//QScrollArea
 {
@@ -28,6 +29,8 @@ public:
 	//void	setTypeSettings(TypeSettings *);
 	Document*	document() { return m_document; }
 	const Document*	document() const { return m_document; }
+	int		positionToLine(pos_t pos) const;
+	int		docLineToViewLine(int dln) const;
 protected:
 	void	drawLineNumbers();
 	void	drawLineNumberArea(QPainter&);
@@ -61,8 +64,10 @@ private:
 	//TypeSettings	*m_typeSettings;		//	タイプ設定へのウィークポインタ
 	//##TypeSettings	*m_jsTypeSettings;		//	JavaScriptタイプ設定へのウィークポインタ
 	//##TypeSettings	*m_phpTypeSettings;		//	PHPタイプ設定へのウィークポインタ
-	//TextCursor	*m_textCursor;
+	//	undone: マルチカーソル対応
+	TextCursor	*m_textCursor;
 	//TextCursor	*m_svTextCursor;
+	//
 	Document	*m_document;
 	Buffer		*m_buffer;				//	ポイントのみで、非所有
 	QFont		m_font;

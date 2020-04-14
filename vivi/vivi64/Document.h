@@ -49,6 +49,8 @@ public:
 	TypeSettings	*typeSettings() { return m_typeSettings; }
 	const TypeSettings	*typeSettings() const { return m_typeSettings; }
 	Buffer	*buffer() { return m_buffer; }
+	const Buffer	*buffer() const { return m_buffer; }
+	int		positionToLine(pos_t pos) const;
 private:
 	QString	m_pathName;
 	QString	m_title;

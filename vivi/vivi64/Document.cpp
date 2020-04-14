@@ -76,6 +76,10 @@ void Document::setPlainText(const QString& txt)
 	buffer()->insertText(0, (cwchar_t*)txt.data(), txt.size());
 	buildMinMap();
 }
+int Document::positionToLine(pos_t pos) const
+{
+	return buffer()->positionToLine(pos);
+}
 void Document::buildMinMap()
 {
 	if( buffer()->lineCount() > 10000 ) return;		//	最大1万行

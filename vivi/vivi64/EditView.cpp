@@ -5,6 +5,7 @@
 #include "EditView.h"
 #include "ViewTokenizer.h"
 #include "typeSettings.h"
+#include "TextCursor.h"
 #include "../buffer/Buffer.h"
 
 #define		DRAW_Y_OFFSET		2
@@ -32,6 +33,7 @@ EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
 	auto typeSettings = doc->typeSettings();
 	qDebug() << "typeSettings type = " << typeSettings->name();
 	m_lineNumberVisible = typeSettings->boolValue(TypeSettings::VIEW_LINENUM);
+	m_textCursor = new TextCursor(this);
 	//m_buffer = new Buffer();
 	//m_lineNumArea = new QWidget(this);
 	m_lineNumAreaWidget.setParent(this);
@@ -76,6 +78,14 @@ int EditView::viewLineOffsetToPx(int vln, int offset) const
 {
 	Q_ASSERT(0);
 	return 0;
+}
+int EditView::positionToLine(pos_t pos) const
+{
+	return document()->positionToLine(pos);
+}
+int EditView::docLineToViewLine(int dln) const
+{
+	return dln;
 }
 void EditView::updateFont()
 {
