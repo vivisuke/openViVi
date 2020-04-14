@@ -426,42 +426,6 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 		token = tkn.nextToken();
 	}
 }
-#if	0
-void EditView::buildMinMap()
-{
-	if( buffer()->lineCount() > 10000 ) return;		//	最大1万行
-	int ht = qMin(MAX_MINMAP_HEIGHT, buffer()->lineCount());
-	m_mmScale = (double)ht / buffer()->lineCount();
-	m_minMap = QPixmap(MINMAP_WIDTH, ht);
-	auto ts = typeSettings();
-	m_minMap.fill(ts->color(TypeSettings::BACK_GROUND));
-	QPainter painter(&m_minMap);
-	painter.fillRect(QRect(0, 0, MINMAP_LN_WD, ht), ts->color(TypeSettings::LINENUM_BG));
-	//if( lineCount() > 10000 ) return;
-	painter.setPen(ts->color(TypeSettings::TEXT));
-	bool inBlockComment = false;
-	for (int ln = 0; ln < buffer()->lineCount(); ++ln) {
-		int p = buffer()->lineStartPosition(ln);
-		int last= buffer()->lineStartPosition(ln+1);
-		int px = MINMAP_LN_WD;
-		if( buffer()->charAt(p) == '\t' ) {
-			while (buffer()->charAt(p) == '\t') {
-				++p;
-				px += ts->intValue(TypeSettings::TAB_WIDTH);
-			}
-		} else {
-			while (buffer()->charAt(p) == ' ') {
-				++p;
-				++px;
-			}
-		}
-		if( p >= buffer()->size() || isNewLine(buffer()->charAt(p)) ) continue;
-		while( last > p && isNewLine(buffer()->charAt(last - 1)) )
-			--last;
-		painter.drawLine(px, ln*m_mmScale, px + last - p, ln*m_mmScale);
-	}
-}
-#endif
 void EditView::drawMinMap(QPainter& pt)
 {
 	QPixmap& minMap = document()->minMap();
@@ -478,7 +442,14 @@ void EditView::drawMinMap(QPainter& pt)
 	pt.drawRect(rct);		//	背景（テキスト背景と同一）描画
 	//
 	pt.setOpacity(0.5);
-	pt.drawPixmap(px, py, minMap);		//	テキストPixmap描画
+	//	undone: minMap 高さがビュー高さより高い場合は、縮小表示
+	double scale = 1.0;
+	if( minMap.height() <= rct.height() )
+		pt.drawPixmap(px, py, minMap);		//	テキストPixmap描画
+	else {
+		scale = (double)minMap.height() / rct.height();
+		pt.drawPixmap(rct, minMap, minMap.rect());
+	}
 	//
 	pt.setOpacity(0.25);
 	pt.setBrush(Qt::black);
