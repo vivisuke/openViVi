@@ -193,10 +193,10 @@
 ● C 04/12             ToDo アウトライン：.h の場合は、クラス名・構造体名・enum class名表示？
 ● C 04/12             ToDo アウトライン：.cpp の場合は、メンバ関数名表示？
 ◎ C 04/14 04/14 0.002 ToDo QTabWidget, QTabBar を CTabWidget, CTabBar に置き換え
-◎ C 04/14 04/14 0.002 ToDo CtabWidget：タブにアイコン表示
-● C 04/14             ToDo 
-● C 04/14             ToDo 
-● C 04/14             ToDo 
+◎ C 04/14 04/14 0.002 ToDo CTabWidget：タブにアイコン表示
+◎ C 04/14 04/14 0.002 ToDo CTabBar：描画処理部分をクリーンナップ
+● C 04/14             ToDo CTabWidget：タブ上にマウスホバーした場合はアイコンを [☓] に変更？
+● C 04/14             ToDo ミニマップ：ビューウィンドウ高さが行数未満の場合は縮小表示？
 ● C 04/14             ToDo 
 ● C 04/14             ToDo 
 ● C 04/14             ToDo 
