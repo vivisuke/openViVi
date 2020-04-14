@@ -346,7 +346,7 @@ EditView *MainWindow::createView(QString pathName)
 		addToRecentFileList(pathName);
 		updateRecentFileActions();
 	}
-	addNewView(view, typeNameToIcon(typeName), title);
+	addNewView(view, typeNameToIcon(typeName), title, pathName);
 	return view;
 }
 QIcon *MainWindow::typeNameToIcon(const QString& typeName)
@@ -386,10 +386,11 @@ QIcon *MainWindow::typeNameToIcon(const QString& typeName)
     else //if( typeName == "TXT" )
     	return m_iconTXT;
 }
-void MainWindow::addNewView(EditView *view, QIcon *icon, const QString &title)
+void MainWindow::addNewView(EditView *view, QIcon *icon, const QString &title, const QString &pathName)
 {
 	auto cur = ui.tabWidget->addTab(view, *icon, title);
 	ui.tabWidget->setCurrentIndex(cur);
+	ui.tabWidget->tabBar()->setTabToolTip(cur, pathName.isEmpty() ? title : pathName);
 	view->setFocus();
 }
 EditView *MainWindow::currentWidget()

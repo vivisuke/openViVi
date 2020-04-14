@@ -197,8 +197,8 @@
 ◎ C 04/14 04/14 0.002 ToDo CTabBar：描画処理部分をクリーンナップ
 ● C 04/14             ToDo CTabWidget：タブ上にマウスホバーした場合はアイコンを [☓] に変更？
 ● C 04/14             ToDo ミニマップ：ビューウィンドウ高さが行数未満の場合は縮小表示？
-● C 04/14             ToDo 
-● C 04/14             ToDo 
+● C 04/14             ToDo TabWidget：右ボタンメニュー
+◎ C 04/14 04/14 0.002 ToDo TabBar：ToolTip でフルパス表示
 ● C 04/14             ToDo 
 ● C 04/14             ToDo 
 ● C 04/14             ToDo 

@@ -36,7 +36,7 @@ protected:
 	//EditView	*createView(Document *doc = 0, TypeSettings* = 0);
 	//EditView	*createView(TypeSettings* = nullptr);
 	EditView	*createView(QString fullPathName = QString());
-	void	addNewView(EditView *, QIcon*, const QString &title);
+	void	addNewView(EditView *, QIcon*, const QString &title, const QString &pathName);
     bool	loadFile(Document *, const QString &fileName, /*cchar *codecName = 0,*/ bool = true);
     //EditView	*openFile(const QString &pathName, bool forced = false);
 	EditView	*currentWidget();
