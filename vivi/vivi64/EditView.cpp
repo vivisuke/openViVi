@@ -13,6 +13,11 @@
 #define		MINMAP_WIDTH		80
 #define		MAX_MINMAP_HEIGHT	10000		//	ピックスマップ最大高さ
 
+#define		TM_FPS			50		//	50FPS
+#define		HS_MARGIN		60
+#define		PAI				3.1415926535
+#define		MAX_HSCB		(1024*40)
+
 //----------------------------------------------------------------------
 inline bool isNewLine(wchar_t ch)
 {
@@ -27,6 +32,7 @@ EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
 	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
 	, m_scrollX0(0)
 	, m_minMapDragging(false)
+	, m_dispCursor(true)
 {
 	Q_ASSERT(doc != nullptr);
 	//m_typeSettings = typeSettings == nullptr ? new TypeSettings() : typeSettings;
@@ -48,6 +54,9 @@ EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
 	//
 	setCursor(Qt::IBeamCursor);
 
+	connect(&m_timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+	m_tmCounter = TM_FPS / 2;
+	m_timer.start(1000/TM_FPS);
 }
 EditView::~EditView()
 {
@@ -139,6 +148,10 @@ void EditView::setLineNumberVisible(bool b)
 	m_lineNumberVisible = b;
 	updateLineNumberInfo();
 	update();
+}
+void EditView::onTimer()
+{
+	//qDebug() << "onTimer()";
 }
 bool EditView::eventFilter(QObject *obj, QEvent *event)
 {

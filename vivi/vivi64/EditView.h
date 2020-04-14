@@ -2,6 +2,7 @@
 
 #include <QScrollArea>
 #include <QFont>
+#include <QTimer>
 #include "../buffer/Buffer.h"
 //#include "typeSettings.h"
 //#include "globalSettings.h"
@@ -49,9 +50,12 @@ protected:
 	void	wheelEvent(QWheelEvent * event);
 	void	keyPressEvent(QKeyEvent *);
 	bool	eventFilter(QObject *obj, QEvent *event);
+private slots:
+	void	onTimer();
 private:
 	bool	m_lineNumberVisible;
 	bool	m_minMapDragging;
+	bool	m_dispCursor;
 	int		m_scrollX0;
 	int		m_fontWidth;
 	int		m_fontHeight;
@@ -61,6 +65,8 @@ private:
 	int		m_lineNumAreaWidth;
 	int		m_nViewLine;
 	int		m_preeditPos;			//	変換位置
+	int		m_tmCounter;
+	QTimer	m_timer;
 	//TypeSettings	*m_typeSettings;		//	タイプ設定へのウィークポインタ
 	//##TypeSettings	*m_jsTypeSettings;		//	JavaScriptタイプ設定へのウィークポインタ
 	//##TypeSettings	*m_phpTypeSettings;		//	PHPタイプ設定へのウィークポインタ
