@@ -245,10 +245,10 @@ void EditView::keyPressEvent(QKeyEvent *event)
 }
 void EditView::paintEvent(QPaintEvent *event)
 {
-	qDebug() << "lineCount = " << buffer()->lineCount();
+	//qDebug() << "lineCount = " << buffer()->lineCount();
 	QPainter pt(this);
 	auto rct = rect();
-	qDebug() << "rect = " << rct;
+	//qDebug() << "rect = " << rct;
 	//	全体背景描画
 	pt.setPen(Qt::transparent);
 	QColor col = typeSettings()->color(TypeSettings::BACK_GROUND);
@@ -444,26 +444,26 @@ void EditView::drawMinMap(QPainter& pt)
 	pt.setOpacity(0.5);
 	//	undone: minMap 高さがビュー高さより高い場合は、縮小表示
 	double scale = 1.0;
-	if( minMap.height() <= rct.height() )
+	if( minMap.height() <= rct.height() )	//	ミニマップが全部表示できる場合
 		pt.drawPixmap(px, py, minMap);		//	テキストPixmap描画
 	else {
-		scale = (double)minMap.height() / rct.height();
+		scale = (double)rct.height() / minMap.height();
 		pt.drawPixmap(rct, minMap, minMap.rect());
 	}
 	//
 	pt.setOpacity(0.25);
 	pt.setBrush(Qt::black);
 	if( m_scrollX0 != 0 ) {
-		rct.setHeight(m_scrollX0);
+		rct.setHeight(m_scrollX0*scale);
 		pt.drawRect(rct);			//	現エリアより上部（前）描画
 	}
 	if( minMap.height() - (m_scrollX0+nLines) > 0 ) {
-		rct.setY(m_scrollX0+nLines);
-		rct.setHeight(minMap.height() - (m_scrollX0+nLines));
+		rct.setY((m_scrollX0+nLines)*scale);
+		rct.setHeight((minMap.height() - (m_scrollX0+nLines))*scale);
 		pt.drawRect(rct);			//	現エリアより下部（後）描画
 	}
-	rct.setY(m_scrollX0);
-	rct.setHeight(nLines);
+	rct.setY(m_scrollX0*scale);
+	rct.setHeight(nLines*scale);
 	pt.setBrush(Qt::transparent);
 	pt.setPen(Qt::red);
 	pt.drawRect(rct);				//	現エリアに赤枠描画
