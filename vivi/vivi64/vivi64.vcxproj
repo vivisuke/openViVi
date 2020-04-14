@@ -99,6 +99,7 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NamedColorDlg.cpp" />
     <ClCompile Include="settingsMgr.cpp" />
+    <ClCompile Include="TextCursor.cpp" />
     <ClCompile Include="typeSettings.cpp" />
     <ClCompile Include="TypeStgDlg.cpp" />
     <ClCompile Include="ViewTokenizer.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="CTabWidget.h" />
     <ClInclude Include="settingsMgr.h" />
     <QtMoc Include="TypeStgDlg.h" />
+    <ClInclude Include="TextCursor.h" />
     <ClInclude Include="ViewTokenizer.h" />
     <QtMoc Include="EditView.h" />
     <QtMoc Include="..\buffer\Buffer.h" />
