@@ -169,8 +169,9 @@ void EditView::mousePressEvent(QMouseEvent *event)
 	QPoint pnt = event->pos();
 	if( pnt.x() >= rct.width() - MINMAP_WIDTH ) {
 		m_minMapDragging = true;
+		double scale = qMin(1.0, (double)rct.height() / document()->minMap().height());
 		int nLines = rct.height() / m_lineHeight;
-		m_scrollX0 = qMax(0, pnt.y() - nLines / 2);
+		m_scrollX0 = qMax(0, (int)(pnt.y() / scale) - nLines / 2);
     	m_scrollX0 = qMin(m_scrollX0, buffer()->lineCount());		//	undone: 折返し処理対応
 		update();
 	}
@@ -183,8 +184,9 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 	//if( pnt.x() >= rct.width() - MINMAP_WIDTH )
 	if( m_minMapDragging )
 	{
+		double scale = qMin(1.0, (double)rct.height() / document()->minMap().height());
 		int nLines = rct.height() / m_lineHeight;
-		m_scrollX0 = qMax(0, pnt.y() - nLines / 2);
+		m_scrollX0 = qMax(0, (int)(pnt.y()/scale) - nLines / 2);
     	m_scrollX0 = qMin(m_scrollX0, buffer()->lineCount());		//	undone: 折返し処理対応
 		update();
 	}
