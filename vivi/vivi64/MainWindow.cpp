@@ -1,5 +1,6 @@
 #include "version.h"
 #include "MainWindow.h"
+#include "CTabWidget.h"
 #include "Document.h"
 #include "EditView.h"
 #include "settingsMgr.h"
@@ -136,9 +137,10 @@ MainWindow::MainWindow(QWidget *parent)
 	//	デザイナでタブの消し方がわからないので、ここで消しておく
 	while( ui.tabWidget->count() )
 		ui.tabWidget->removeTab(0);
-	ui.tabWidget->setTabsClosable(true);		//	タブクローズ可能
+	ui.tabWidget->tabBar()->setShape(QTabBar::RoundedNorth);
+	//ui.tabWidget->setTabsClosable(true);		//	タブクローズ可能
 	ui.tabWidget->setMovable(true);				//	タブ移動可能
-	ui.tabWidget->setTabShape(QTabWidget::Triangular);				//	タブ形状指定
+	//ui.tabWidget->setTabShape(QTabWidget::Triangular);				//	タブ形状指定
 	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(tabCloseRequested(int)));
 	connect(ui.tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
 	//
@@ -320,11 +322,6 @@ void MainWindow::on_action_New_triggered()
 {
 	qDebug() << "on_action_New_triggered()";
 	createView();
-#if	0
-	EditView* view = createView();
-	QString title = tr("Untitled-%1").arg(++m_docNumber);
-	addNewView(view, title);
-#endif
 }
 EditView *MainWindow::createView(QString pathName)
 {
@@ -349,12 +346,49 @@ EditView *MainWindow::createView(QString pathName)
 		addToRecentFileList(pathName);
 		updateRecentFileActions();
 	}
-	addNewView(view, title);
+	addNewView(view, typeNameToIcon(typeName), title);
 	return view;
 }
-void MainWindow::addNewView(EditView *view, const QString &title)
+QIcon *MainWindow::typeNameToIcon(const QString& typeName)
 {
-	auto cur = ui.tabWidget->addTab(view, title);
+    if( typeName == "CPP" )
+    	return m_iconCPP;
+    else if( typeName == "CSS" )
+    	return m_iconCSS;
+    else if( typeName == "C#" )
+    	return m_iconCS;
+    else if( typeName == "F#" )
+    	return m_iconFS;
+    else if( typeName == "HLSL" )
+    	return m_iconHLSL;
+    else if( typeName == "HTML" )
+    	return m_iconHTML;
+    else if( typeName == "JAVA" )
+    	return m_iconJAVA;
+    else if( typeName == "JS" )
+    	return m_iconJS;
+    else if( typeName == "PASCAL" )
+    	return m_iconPASCAL;
+    else if( typeName == "PERL" )
+    	return m_iconPERL;
+    else if( typeName == "PHP" )
+    	return m_iconPHP;
+    else if( typeName == "PYTHON" )
+    	return m_iconPYTHON;
+    else if( typeName == "RUBY" )
+    	return m_iconRUBY;
+    else if( typeName == "SQL" )
+    	return m_iconSQL;
+    else if( typeName == "MARKDN" )
+    	return m_iconMARKDN;
+    else if( typeName == "LOG" )
+    	return m_iconLOG;
+    else //if( typeName == "TXT" )
+    	return m_iconTXT;
+}
+void MainWindow::addNewView(EditView *view, QIcon *icon, const QString &title)
+{
+	auto cur = ui.tabWidget->addTab(view, *icon, title);
 	ui.tabWidget->setCurrentIndex(cur);
 	view->setFocus();
 }
@@ -420,26 +454,6 @@ void MainWindow::openRecentFile()
         //openFile(action->data().toString());
     }
 }
-#if	0
-EditView *MainWindow::openFile(const QString &pathName, bool forced)
-{
-	//	undone: 既にファイルがオープンされている場合は、それをアクティブに
-    //	undone: Document オブジェクト作成
-    QString typeName = g_settingsMgr.typeNameForExt(getExtension(pathName));
-	EditView* view = createView(typeName);
-	if( !loadFile(view, pathName) ) {		//	Document オブジェクトを作成し、view を管理
-		//	undone: ファイルオープンに失敗した場合の後始末処理
-		return nullptr;
-	}
-	//view->setPlainText(buf);
-	QFileInfo info(pathName);
-	auto title = info.fileName();
-	addNewView(view, title);
-	addToRecentFileList(pathName);
-	updateRecentFileActions();
-	return view;
-}
-#endif
 bool MainWindow::loadFile(Document *doc, const QString &pathName, /*cchar *codecName,*/
 										bool bJump)		//	保存カーソル位置にジャンプ
 {

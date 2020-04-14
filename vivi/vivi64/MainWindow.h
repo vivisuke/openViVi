@@ -36,13 +36,14 @@ protected:
 	//EditView	*createView(Document *doc = 0, TypeSettings* = 0);
 	//EditView	*createView(TypeSettings* = nullptr);
 	EditView	*createView(QString fullPathName = QString());
-	void	addNewView(EditView *, const QString &title);
+	void	addNewView(EditView *, QIcon*, const QString &title);
     bool	loadFile(Document *, const QString &fileName, /*cchar *codecName = 0,*/ bool = true);
     //EditView	*openFile(const QString &pathName, bool forced = false);
 	EditView	*currentWidget();
 	EditView	*nthWidget(int);
 	void	setTypeSettings(EditView *, TypeSettings *);
 	void	onViewLineNumberChanged(const QString &, bool);
+	QIcon	*typeNameToIcon(const QString&);
     
 protected:
 	void	dragEnterEvent(QDragEnterEvent *event);
