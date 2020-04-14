@@ -30,7 +30,7 @@ EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
 	//, m_buffer(buffer)
 	//, m_typeSettings(nullptr)
 	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
-	, m_scrollX0(0)
+	,m_scrollY0(0)
 	, m_minMapDragging(false)
 	, m_dispCursor(true)
 {
@@ -85,7 +85,7 @@ void EditView::setTypeSettings(TypeSettings *typeSettings)
 #endif
 int EditView::viewLineOffsetToPx(int vln, int offset) const
 {
-	Q_ASSERT(0);
+	//Q_ASSERT(0);
 	return 0;
 }
 int EditView::positionToLine(pos_t pos) const
@@ -95,6 +95,25 @@ int EditView::positionToLine(pos_t pos) const
 int EditView::docLineToViewLine(int dln) const
 {
 	return dln;
+}
+int EditView::viewLineToDocLine(int vln) const
+{
+	return vln;
+}
+int EditView::viewLineToDocLine(int vln, int &offset) const
+{
+	offset = 0;
+	return vln;
+}
+int EditView::viewLineStartPosition(int vln) const
+{
+	int offset;
+	int dln = viewLineToDocLine(vln, offset);
+	return lineStartPosition(dln) + offset;
+}
+int EditView::lineStartPosition(int ln) const
+{
+	return document()->lineStartPosition(ln);
 }
 void EditView::updateFont()
 {
@@ -152,6 +171,11 @@ void EditView::setLineNumberVisible(bool b)
 void EditView::onTimer()
 {
 	//qDebug() << "onTimer()";
+	if( hasFocus() && --m_tmCounter < 0 ) {
+		m_dispCursor = !m_dispCursor;
+		m_tmCounter = TM_FPS / 2;
+		update();
+	}
 }
 bool EditView::eventFilter(QObject *obj, QEvent *event)
 {
@@ -194,8 +218,8 @@ void EditView::mousePressEvent(QMouseEvent *event)
 		m_minMapDragging = true;
 		double scale = qMin(1.0, (double)rct.height() / document()->minMap().height());
 		int nLines = rct.height() / m_lineHeight;
-		m_scrollX0 = qMax(0, (int)(pnt.y() / scale) - nLines / 2);
-    	m_scrollX0 = qMin(m_scrollX0, buffer()->lineCount());		//	undone: 折返し処理対応
+		m_scrollY0 = qMax(0, (int)(pnt.y() / scale) - nLines / 2);
+    	m_scrollY0 = qMin(m_scrollY0, buffer()->lineCount());		//	undone: 折返し処理対応
 		update();
 	}
 }
@@ -209,8 +233,8 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 	{
 		double scale = qMin(1.0, (double)rct.height() / document()->minMap().height());
 		int nLines = rct.height() / m_lineHeight;
-		m_scrollX0 = qMax(0, (int)(pnt.y()/scale) - nLines / 2);
-    	m_scrollX0 = qMin(m_scrollX0, buffer()->lineCount());		//	undone: 折返し処理対応
+		m_scrollY0 = qMax(0, (int)(pnt.y()/scale) - nLines / 2);
+    	m_scrollY0 = qMin(m_scrollY0, buffer()->lineCount());		//	undone: 折返し処理対応
 		update();
 	}
 }
@@ -232,9 +256,9 @@ void EditView::wheelEvent(QWheelEvent * event)
     qDebug() << "numDegrees = " << numDegrees;
     if (!numDegrees.isNull()) {
     	QPoint numSteps = numDegrees / 15;
-    	if( (m_scrollX0 -= numSteps.y()*3) < 0 )
-    		m_scrollX0 = 0;
-    	m_scrollX0 = qMin(m_scrollX0, buffer()->lineCount());		//	undone: 折返し処理対応
+    	if( (m_scrollY0 -= numSteps.y()*3) < 0 )
+    		m_scrollY0 = 0;
+    	m_scrollY0 = qMin(m_scrollY0, buffer()->lineCount());		//	undone: 折返し処理対応
     	update();
     }
 }
@@ -248,22 +272,22 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	switch( event->key() ) {
 	case Qt::Key_Home:
 		if( ctrl ) {
-			m_scrollX0 = 0;		//	暫定コード
+			m_scrollY0 = 0;		//	暫定コード
 			update();
 		}
 		break;
 	case Qt::Key_End:
 		if( ctrl ) {
-			m_scrollX0 = buffer()->lineCount();		//	暫定コード
+			m_scrollY0 = buffer()->lineCount();		//	暫定コード
 			update();
 		}
 		break;
 	case Qt::Key_PageUp:
-		m_scrollX0 = qMax(0, m_scrollX0 - nLines);		//	暫定コード
+		m_scrollY0 = qMax(0, m_scrollY0 - nLines);		//	暫定コード
 		update();
 		break;
 	case Qt::Key_PageDown:
-		m_scrollX0 = qMin(buffer()->lineCount(), m_scrollX0 + nLines);		//	暫定コード
+		m_scrollY0 = qMin(buffer()->lineCount(), m_scrollY0 + nLines);		//	暫定コード
 		update();
 		break;
 	}
@@ -286,8 +310,9 @@ void EditView::paintEvent(QPaintEvent *event)
 	pt.drawRect(rct);
 	//
 	drawLineNumberArea(pt);		//	行番号エリア描画
-	drawTextArea(pt);					//	テキストエイア描画
-	drawMinMap(pt);					//	ミニマップ描画
+	drawTextArea(pt);			//	テキストエイア描画
+	drawMinMap(pt);				//	ミニマップ描画
+	drawCursor(pt);				//	テキストカーソル表示
 }
 void EditView::drawLineNumberArea(QPainter& pt)
 {
@@ -295,7 +320,7 @@ void EditView::drawLineNumberArea(QPainter& pt)
 	pt.setPen(Qt::black);
 	int py = DRAW_Y_OFFSET;
 	int limit = buffer()->lineCount() + (buffer()->isBlankEOFLine() ? 1 : 0);
-	for (int ln = 1 + m_scrollX0; ln <= limit && py < rct.height(); ++ln, py+=m_lineHeight) {
+	for (int ln = 1 + m_scrollY0; ln <= limit && py < rct.height(); ++ln, py+=m_lineHeight) {
 		QString number = QString::number(ln);
 		int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
 		pt.drawText(px, py+m_fontHeight, number);
@@ -312,7 +337,7 @@ void EditView::drawTextArea(QPainter& pt)
 	bool inBlockComment = false;
 	bool inLineComment = false;
 	QString quotedText;
-	for (int ln = m_scrollX0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
+	for (int ln = m_scrollY0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
 		inLineComment = false;		//	undone: 折返し行対応
 		px = m_lineNumAreaWidth;
 		auto startIX = buffer()->lineStartPosition(ln);
@@ -478,18 +503,37 @@ void EditView::drawMinMap(QPainter& pt)
 	//
 	pt.setOpacity(0.25);
 	pt.setBrush(Qt::black);
-	if( m_scrollX0 != 0 ) {
-		rct.setHeight(m_scrollX0*scale);
+	if( m_scrollY0 != 0 ) {
+		rct.setHeight(m_scrollY0*scale);
 		pt.drawRect(rct);			//	現エリアより上部（前）描画
 	}
-	if( minMap.height() - (m_scrollX0+nLines) > 0 ) {
-		rct.setY((m_scrollX0+nLines)*scale);
-		rct.setHeight((minMap.height() - (m_scrollX0+nLines))*scale);
+	if( minMap.height() - (m_scrollY0+nLines) > 0 ) {
+		rct.setY((m_scrollY0+nLines)*scale);
+		rct.setHeight((minMap.height() - (m_scrollY0+nLines))*scale);
 		pt.drawRect(rct);			//	現エリアより下部（後）描画
 	}
-	rct.setY(m_scrollX0*scale);
+	rct.setY(m_scrollY0*scale);
 	rct.setHeight(nLines*scale);
 	pt.setBrush(Qt::transparent);
 	pt.setPen(Qt::red);
 	pt.drawRect(rct);				//	現エリアに赤枠描画
+}
+void EditView::drawCursor(QPainter& pt)
+{
+	if( !m_dispCursor ) return;
+	pt.setOpacity(1.0);
+	pos_t pos = m_textCursor->position();
+	int vln = m_textCursor->viewLine();
+	int offset;
+	int dln = viewLineToDocLine(vln, offset);
+	//int py = (vln - verticalScrollBar()->value()) * lineHeight() + DRAW_Y_OFFSET*2;
+	int py = (vln - m_scrollY0) * lineHeight() + DRAW_Y_OFFSET*2;
+	QRect rct = rect();
+	if( py < 0 || py >= rct.height() )
+		return;		//	画面外の場合
+	int hv = 0;		//horizontalScrollBar()->value();
+	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth;
+	int ht = QFontMetrics(m_font).ascent();
+	pt.fillRect(QRect(px /*- hv*/, py, 3, ht),
+						typeSettings()->color(TypeSettings::CURSOR));
 }

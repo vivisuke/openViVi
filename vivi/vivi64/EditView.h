@@ -32,12 +32,19 @@ public:
 	const Document*	document() const { return m_document; }
 	int		positionToLine(pos_t pos) const;
 	int		docLineToViewLine(int dln) const;
+	int		viewLineToDocLine(int vln) const;
+	int		viewLineToDocLine(int vln, int &offset) const;
+	int		viewLineStartPosition(int vln) const;
+	int		lineStartPosition(int ln) const;
+	int		fontHeight() const { return m_fontHeight; }
+	int		lineHeight() const { return m_lineHeight; }
 protected:
 	void	drawLineNumbers();
 	void	drawLineNumberArea(QPainter&);
 	void	drawTextArea(QPainter&);
 	void	drawLineText(QPainter &, int &, int, int, pos_t, int, pos_t, bool&, bool&, QString&);
 	void	drawMinMap(QPainter&);
+	void	drawCursor(QPainter&);
 	void	updateLineNumberInfo();
 	//void	buildMinMap();
 	Buffer	*buffer() { return m_buffer; }
@@ -56,7 +63,7 @@ private:
 	bool	m_lineNumberVisible;
 	bool	m_minMapDragging;
 	bool	m_dispCursor;
-	int		m_scrollX0;
+	int		m_scrollY0;
 	int		m_fontWidth;
 	int		m_fontHeight;
 	int		m_lineHeight;		//	行高（in Pixel）

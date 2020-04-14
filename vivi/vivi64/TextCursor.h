@@ -58,6 +58,11 @@ public:
 public:
 	TextCursor(EditView *view, pos_t pos = 0, int anchor= 0);
 	TextCursor(const TextCursor &x);
+public:
+	int		position() const { return m_pos; }
+	int		positionInLine() const;	//	行内オフセットを返す
+	int		anchor() const { return m_anchor; }
+	int		viewLine() const { return m_viewLine; }
 
 private:
 	EditView	*m_view;

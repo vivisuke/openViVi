@@ -114,3 +114,7 @@ void Document::buildMinMap()
 		painter.drawLine(px, ln*m_mmScale, px + last - p, ln*m_mmScale);
 	}
 }
+int Document::lineStartPosition(pos_t pos) const
+{
+	return buffer()->lineStartPosition(pos);
+}

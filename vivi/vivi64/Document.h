@@ -44,6 +44,7 @@ public:
 	void	setPlainText(const QString&);
 	void	buildMinMap();
 	QPixmap&	minMap() { return m_minMap; }
+	int		lineStartPosition(pos_t pos) const;
 	
 	QString	typeName() const;
 	TypeSettings	*typeSettings() { return m_typeSettings; }
