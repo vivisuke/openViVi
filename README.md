@@ -41,4 +41,5 @@ open source version of ViVi text editor, which supports standard text editor fea
 http://vivi.dyndns.org/vivi/donate.html
 
 ~~本プロジェクト管理者（ntsuda@master.email.ne.jp または https://twitter.com/vivisuke ）までご連絡ください。
-よろしくおながいしますー~~
+
+よろしくおながいしますー
