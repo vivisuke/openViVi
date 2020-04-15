@@ -87,7 +87,6 @@
     <ClCompile Include="..\buffer\sssearch.cpp" />
     <ClCompile Include="..\buffer\undoMgr.cpp" />
     <ClCompile Include="..\buffer\UTF16.cpp" />
-    <ClCompile Include="..\buffer\viewLineMgr.cpp" />
     <ClCompile Include="charEncoding.cpp" />
     <ClCompile Include="CTabBar.cpp" />
     <ClCompile Include="CTabWidget.cpp" />
@@ -102,6 +101,7 @@
     <ClCompile Include="TextCursor.cpp" />
     <ClCompile Include="typeSettings.cpp" />
     <ClCompile Include="TypeStgDlg.cpp" />
+    <ClCompile Include="viewLineMgr.cpp" />
     <ClCompile Include="ViewTokenizer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +124,7 @@
     <ClInclude Include="settingsMgr.h" />
     <QtMoc Include="TypeStgDlg.h" />
     <ClInclude Include="TextCursor.h" />
+    <QtMoc Include="viewLineMgr.h" />
     <ClInclude Include="ViewTokenizer.h" />
     <QtMoc Include="EditView.h" />
     <QtMoc Include="..\buffer\Buffer.h" />
@@ -137,7 +138,6 @@
     <ClInclude Include="..\buffer\sssearch.h" />
     <ClInclude Include="..\buffer\undoMgr.h" />
     <ClInclude Include="..\buffer\UTF16.h" />
-    <ClInclude Include="..\buffer\viewLineMgr.h" />
     <ClInclude Include="globalSettings.h" />
     <ClInclude Include="typeSettings.h" />
     <ClInclude Include="version.h" />

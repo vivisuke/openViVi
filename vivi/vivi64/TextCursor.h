@@ -63,6 +63,7 @@ public:
 	int		positionInLine() const;	//	行内オフセットを返す
 	int		anchor() const { return m_anchor; }
 	int		viewLine() const { return m_viewLine; }
+	void	movePosition(int op, int mode = MOVE_ANCHOR, int n = 1, bool vi = false);
 
 private:
 	EditView	*m_view;

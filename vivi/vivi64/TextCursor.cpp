@@ -29,3 +29,24 @@ TextCursor::TextCursor(const TextCursor &x)
 {
 	//m_viewLine = m_view->viewLine();
 }
+void TextCursor::movePosition(int op, int mode, int n, bool vi)
+{
+	pos_t pos = position();
+	const pos_t pos0 = pos;
+	Q_ASSERT( pos >= 0 );
+	int vln0 = viewLine();
+	int vln = vln0;
+	int dln = m_view->viewLineToDocLine(vln);
+	switch( op ) {
+	case LEFT: {
+		if( m_pos == 0 ) return;
+		--m_pos;
+		break;
+	}
+	case RIGHT: {
+		if( m_pos < m_view->buffer()->size() )
+			++m_pos;
+		break;
+	}
+	}
+}

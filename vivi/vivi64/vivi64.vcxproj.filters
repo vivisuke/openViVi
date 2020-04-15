@@ -61,9 +61,6 @@
     <ClCompile Include="..\buffer\UTF16.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\buffer\viewLineMgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ViewTokenizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -94,6 +91,9 @@
     <ClCompile Include="TextCursor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="viewLineMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -115,6 +115,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="FindLineEdit.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="viewLineMgr.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -169,9 +172,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\buffer\UTF16.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\buffer\viewLineMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ViewTokenizer.h">

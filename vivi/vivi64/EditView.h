@@ -11,6 +11,7 @@ class GlobalSettings;
 class Buffer;
 class Document;
 class TextCursor;
+class ViewLineMgr;
 
 class EditView : public QWidget		//QScrollArea
 {
@@ -30,14 +31,19 @@ public:
 	//void	setTypeSettings(TypeSettings *);
 	Document*	document() { return m_document; }
 	const Document*	document() const { return m_document; }
+	Buffer	*buffer() { return m_buffer; }
+	const Buffer	*buffer() const { return m_buffer; }
 	int		positionToLine(pos_t pos) const;
 	int		docLineToViewLine(int dln) const;
 	int		viewLineToDocLine(int vln) const;
 	int		viewLineToDocLine(int vln, int &offset) const;
 	int		viewLineStartPosition(int vln) const;
+	const ViewLineMgr *viewLineMgr() const { return m_viewLineMgr; }
 	int		lineStartPosition(int ln) const;
 	int		fontHeight() const { return m_fontHeight; }
 	int		lineHeight() const { return m_lineHeight; }
+	int		textWidth(const QString &) const;
+	int		textWidth(pos_t, ssize_t, pos_t, const Buffer* = 0) const;
 protected:
 	void	drawLineNumbers();
 	void	drawLineNumberArea(QPainter&);
@@ -47,7 +53,6 @@ protected:
 	void	drawCursor(QPainter&);
 	void	updateLineNumberInfo();
 	//void	buildMinMap();
-	Buffer	*buffer() { return m_buffer; }
 protected:
 	void	paintEvent(QPaintEvent *);
 	void	mousePressEvent(QMouseEvent *);
@@ -81,6 +86,7 @@ private:
 	TextCursor	*m_textCursor;
 	//TextCursor	*m_svTextCursor;
 	//
+	ViewLineMgr	*m_viewLineMgr;
 	Document	*m_document;
 	Buffer		*m_buffer;				//	ポイントのみで、非所有
 	QFont		m_font;

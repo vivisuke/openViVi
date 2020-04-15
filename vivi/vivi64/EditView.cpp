@@ -6,6 +6,7 @@
 #include "ViewTokenizer.h"
 #include "typeSettings.h"
 #include "TextCursor.h"
+#include "viewLineMgr.h"
 #include "../buffer/Buffer.h"
 
 #define		DRAW_Y_OFFSET		2
@@ -17,6 +18,8 @@
 #define		HS_MARGIN		60
 #define		PAI				3.1415926535
 #define		MAX_HSCB		(1024*40)
+
+#define		CURSOR_WD		2
 
 //----------------------------------------------------------------------
 inline bool isNewLine(wchar_t ch)
@@ -33,6 +36,7 @@ EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
 	,m_scrollY0(0)
 	, m_minMapDragging(false)
 	, m_dispCursor(true)
+	//, m_viewLineMgr(new ViewLineMgr(this))
 {
 	Q_ASSERT(doc != nullptr);
 	//m_typeSettings = typeSettings == nullptr ? new TypeSettings() : typeSettings;
@@ -61,6 +65,7 @@ EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
 EditView::~EditView()
 {
 	delete m_buffer;
+	//delete m_viewLineMgr;
 }
 void EditView::setPlainText(const QString& txt)
 {
@@ -85,6 +90,8 @@ void EditView::setTypeSettings(TypeSettings *typeSettings)
 #endif
 int EditView::viewLineOffsetToPx(int vln, int offset) const
 {
+	//return textWidth(viewLineMgr()->viewLineStartPosition(vln), offset,
+	//							viewLineMgr()->viewLineStartPosition(vln+1));
 	//Q_ASSERT(0);
 	return 0;
 }
@@ -269,28 +276,29 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
 	const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
 	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
+	int mvmd = shift ? TextCursor::KEEP_ANCHOR : TextCursor::MOVE_ANCHOR;
 	switch( event->key() ) {
+	case Qt::Key_Right:
+		m_textCursor->movePosition(TextCursor::RIGHT, mvmd);
+		break;
 	case Qt::Key_Home:
 		if( ctrl ) {
 			m_scrollY0 = 0;		//	暫定コード
-			update();
 		}
 		break;
 	case Qt::Key_End:
 		if( ctrl ) {
 			m_scrollY0 = buffer()->lineCount();		//	暫定コード
-			update();
 		}
 		break;
 	case Qt::Key_PageUp:
 		m_scrollY0 = qMax(0, m_scrollY0 - nLines);		//	暫定コード
-		update();
 		break;
 	case Qt::Key_PageDown:
 		m_scrollY0 = qMin(buffer()->lineCount(), m_scrollY0 + nLines);		//	暫定コード
-		update();
 		break;
 	}
+	update();
 }
 void EditView::paintEvent(QPaintEvent *event)
 {
@@ -534,6 +542,74 @@ void EditView::drawCursor(QPainter& pt)
 	int hv = 0;		//horizontalScrollBar()->value();
 	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth;
 	int ht = QFontMetrics(m_font).ascent();
-	pt.fillRect(QRect(px /*- hv*/, py, 3, ht),
+	pt.fillRect(QRect(px /*- hv*/, py, CURSOR_WD, ht),
 						typeSettings()->color(TypeSettings::CURSOR));
+}
+int EditView::textWidth(const QString &text) const
+{
+	if( text.isEmpty() ) return 0;
+	Buffer b;
+	b.basicInsertText(0, (wchar_t *)text.data(), text.size());
+	return textWidth(0, b.size(), b.size(), &b);
+}
+int EditView::textWidth(pos_t first, ssize_t sz, pos_t last, const Buffer* pbuffer) const
+{
+	if( !sz ) return 0;
+	if( pbuffer == 0 ) pbuffer = buffer();
+	QFontMetrics fm = fontMetrics();
+	QFontMetrics fmBold(m_fontBold);
+	int nTab = document()->typeSettings()->intValue(TypeSettings::TAB_WIDTH);
+	int tabWidth = fm.width(QString(nTab, QChar(' ')));
+	int wd = 0;
+	bool bHTML = typeSettings()->name() == "HTML";
+	int ln = pbuffer->positionToLine(first);
+	const TypeSettings *pTypeSettings = typeSettings();
+	uint lineFlags = pbuffer->lineFlags(ln);
+#if	0		//##
+	if( (lineFlags & Buffer::LINEFLAG_IN_SCRIPT) != 0 ) {
+		bHTML = false;
+		if( m_jsTypeSettings != 0 ) {
+			pTypeSettings = m_jsTypeSettings;
+		}
+	} else if( (lineFlags & Buffer::LINEFLAG_IN_PHP) != 0 ) {
+		bHTML = false;
+		///dt.setInPHP(true);
+		if( m_phpTypeSettings != 0 ) {
+			pTypeSettings = m_phpTypeSettings;
+		}
+	}
+#endif
+	ViewTokenizer dt(pTypeSettings, pbuffer, first, sz, last);
+	dt.setCursorLine();		//	HTML特殊文字を置換しませんように
+	if( (lineFlags & Buffer::LINEFLAG_IN_BLOCK_COMMENT) != 0 )
+		dt.setInBlockComment(true);
+	QString token;
+	for(;;) {
+		token = dt.nextToken();
+		if( token.isEmpty() ) break;
+		if( token == "\t" ) {
+			wd = (wd / tabWidth + 1) * tabWidth;
+			//wd += tabWidth;
+		} else if( token[0].unicode() < 0x20 ) {
+			wd += fm.width(QString(QChar('@' + token[0].unicode())));
+		} else {
+			//QString token0 = token;
+			if( dt.ix() > first + sz ) {		//	URL 対応
+				token = token.left(first + sz - dt.tokenix());
+			}
+			QString fullText = dt.fullText();
+			if( !dt.isInLineComment() && !dt.isInBlockComment()
+					&& dt.tokenType() == ViewTokenizer::ALNUM
+					&& (!bHTML || dt.isInHTMLTag())
+					&& (pTypeSettings->boolValue(TypeSettings::KEYWORD1_BOLD)
+							&& pTypeSettings->isKeyWord1(fullText)
+						|| pTypeSettings->boolValue(TypeSettings::KEYWORD2_BOLD)
+							&& pTypeSettings->isKeyWord2(fullText)) )
+			{
+				wd += fmBold.width(token);
+			} else
+				wd += fm.width(token);
+		}
+	}
+	return wd;
 }
