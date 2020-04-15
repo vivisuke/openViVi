@@ -36,5 +36,7 @@ open source version of ViVi text editor, which supports standard text editor fea
 - つぼい 様 （2020年3月 ￥2,000)
 - Y.K 様 （2020年2月 ￥1,000)
 
-スポンサーになって支援してあげようという方は、本プロジェクト管理者（ntsuda@master.email.ne.jp または https://twitter.com/vivisuke ）までご連絡ください。
-よろしくおながいしますー
+スポンサーになって支援してあげようという方は、以下のページから寄付を行ってください。
+http://vivi.dyndns.org/vivi/donate.html
+~~本プロジェクト管理者（ntsuda@master.email.ne.jp または https://twitter.com/vivisuke ）までご連絡ください。
+よろしくおながいしますー~~
