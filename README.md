@@ -23,6 +23,11 @@ open source version of ViVi text editor, which supports standard text editor fea
 - Windows 10, Visual Studio 2019, C++, ~~当面は32~~ 64bitモード only
 - GUI は Qt5（VS2019 VS tools） を使用   ~~？または今更 MFC ？~~
   - Qt であれば Mac, Linux でもビルド可能なはず
+  
+## ビルド方法
+- Visual Studio 2019, Qt5.14(以上、64ビットモード必須) をインストール
+- VS2019：拡張機能 > 拡張機能の管理 から Qt VS Tools をインストール
+- リポジトリの vivi/vivi.sln を VS2019 で開き、ビルド
 
 ## スポンサー
 本プロジェクトへのご意見・ご要望は、スポンサー様からのみ受け付けます。
