@@ -39,6 +39,10 @@ Document::~Document()
 #endif
 	delete m_buffer;
 }
+wchar_t Document::charAt(pos_t pos) const
+{
+	return m_buffer->charAt(pos);
+}
 QString Document::typeName() const
 {
 	return m_typeSettings->name();

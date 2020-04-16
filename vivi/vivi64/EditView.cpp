@@ -165,9 +165,17 @@ void EditView::updateLineNumberInfo()
 	rct.setWidth(MINMAP_WIDTH);
 	m_minMapWidget.setGeometry(rct);
 }
-int EditView::cursorPosition() const
+wchar_t EditView::charAt(pos_t pos) const
+{
+	return document()->charAt(pos);
+}
+pos_t EditView::cursorPosition() const
 {
 	return m_textCursor->position();
+}
+size_t EditView::bufferSize() const
+{
+	return buffer()->size();
 }
 void EditView::onCursorPosChanged()
 {

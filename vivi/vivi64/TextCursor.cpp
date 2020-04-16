@@ -1,5 +1,29 @@
 ﻿#include "TextCursor.h"
 #include "EditView.h"
+#include "viewLineMgr.h"
+
+bool isSafeChar(wchar_t ch);
+
+inline bool isSpace(wchar_t ch)
+{
+	return ch == ' ' || ch == '\t';
+}
+inline bool isSpaceOrNewLine(wchar_t ch)
+{
+	return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n';
+}
+inline bool isSpaceOrNewLineOrSharp(wchar_t ch)
+{
+	return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n' || ch == '#';
+}
+inline bool isNewLine(wchar_t ch)
+{
+	return ch == '\r' || ch == '\n';
+}
+inline bool isAlpha(wchar_t ch)
+{
+	return ch < 0x100 && isalpha(ch);
+}
 
 TextCursor::TextCursor(EditView *view, pos_t pos, int anchor)
 	: m_view(view)
@@ -29,6 +53,14 @@ TextCursor::TextCursor(const TextCursor &x)
 {
 	//m_viewLine = m_view->viewLine();
 }
+wchar_t TextCursor::charAt() const
+{
+	return m_view->charAt(position());
+}
+int TextCursor::viewLineStartPosition(int vln) const
+{
+	return m_view->viewLineMgr()->viewLineStartPosition(vln);
+}
 void TextCursor::movePosition(int op, int mode, int n, bool vi)
 {
 	pos_t pos = position();
@@ -39,18 +71,25 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 	int dln = m_view->viewLineToDocLine(vln);
 	switch( op ) {
 	case LEFT: {
-		if( m_pos == 0 ) return;
-		--m_pos;
+		if( pos == 0 ) return;
+		--pos;
 		break;
 	}
 	case RIGHT: {
-		if( m_pos < m_view->buffer()->size() )
-			++m_pos;
+		if( pos < m_view->buffer()->size() )
+			++pos;
 		break;
 	}
+	case HOME_LINE:
+		pos = viewLineStartPosition(vln);
+		while( pos < m_view->bufferSize() && isSpace(m_view->charAt(pos)) )
+			++pos;
+		if( position() == pos )
+			pos = viewLineStartPosition(vln);
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		break;
 	case LAST_CHAR_LINE:
 	case END_LINE: {
-#if	0
 		if( pos != m_view->bufferSize() ) {
 			pos = viewLineStartPosition(vln + 1);
 			wchar_t pch = m_view->charAt(pos-1);
@@ -66,7 +105,7 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 		if( op == LAST_CHAR_LINE && pos != m_view->lineStartPosition(dln) )
 			--pos;
 		break;
-#endif
 	}
 	}
+	m_pos = pos;
 }

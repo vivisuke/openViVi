@@ -64,6 +64,9 @@ public:
 	int		anchor() const { return m_anchor; }
 	int		viewLine() const { return m_viewLine; }
 	void	movePosition(int op, int mode = MOVE_ANCHOR, int n = 1, bool vi = false);
+	wchar_t	charAt() const;
+protected:
+	int		viewLineStartPosition(int vln) const;
 
 private:
 	EditView	*m_view;

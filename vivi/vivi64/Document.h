@@ -31,6 +31,7 @@ public:
 	Document(QString typeName = QString(), QObject *parent = 0);
 	~Document();
 public:
+	wchar_t	charAt(pos_t pos) const;
 	bool	bom() const { return m_bBom; }
 	uchar	charEncoding() const { return m_charEncoding; }
 public:

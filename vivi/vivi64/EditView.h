@@ -20,7 +20,9 @@ public:
 	EditView(Document *doc /*, TypeSettings* = nullptr*/);
 	~EditView();
 public:
-	int		cursorPosition() const;
+	wchar_t	charAt(pos_t pos) const;
+	size_t	bufferSize() const;
+	pos_t	cursorPosition() const;
 	QString	typeName() const;
 	TypeSettings	*typeSettings();	// { return m_typeSettings; }
 	const TypeSettings	*typeSettings() const;	// { return m_typeSettings; }
