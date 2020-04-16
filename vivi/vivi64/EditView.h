@@ -23,6 +23,7 @@ public:
 	wchar_t	charAt(pos_t pos) const;
 	size_t	bufferSize() const;
 	pos_t	cursorPosition() const;
+	int		EOFLine() const;
 	QString	typeName() const;
 	TypeSettings	*typeSettings();	// { return m_typeSettings; }
 	const TypeSettings	*typeSettings() const;	// { return m_typeSettings; }
@@ -47,6 +48,7 @@ public:
 	int		lineHeight() const { return m_lineHeight; }
 	int		textWidth(const QString &) const;
 	int		textWidth(pos_t, ssize_t, pos_t, const Buffer* = 0) const;
+	int		pxToOffset(int vln, int px) const;
 public:
 	void	onCursorPosChanged();
 protected:

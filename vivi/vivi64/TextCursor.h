@@ -65,6 +65,8 @@ public:
 	int		viewLine() const { return m_viewLine; }
 	void	movePosition(int op, int mode = MOVE_ANCHOR, int n = 1, bool vi = false);
 	wchar_t	charAt() const;
+public:
+	void	setLineAndPosition(int vln, pos_t pos, int mode = MOVE_ANCHOR);
 protected:
 	int		viewLineStartPosition(int vln) const;
 

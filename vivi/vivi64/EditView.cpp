@@ -173,6 +173,10 @@ pos_t EditView::cursorPosition() const
 {
 	return m_textCursor->position();
 }
+int EditView::EOFLine() const
+{
+	return m_viewLineMgr->EOFLine();
+}
 size_t EditView::bufferSize() const
 {
 	return buffer()->size();
@@ -304,6 +308,12 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		break;
 	case Qt::Key_Right:
 		m_textCursor->movePosition(TextCursor::RIGHT, mvmd);
+		break;
+	case Qt::Key_Up:
+		m_textCursor->movePosition(TextCursor::UP, mvmd);
+		break;
+	case Qt::Key_Down:
+		m_textCursor->movePosition(TextCursor::DOWN, mvmd);
 		break;
 	case Qt::Key_Home:
 		if( ctrl ) {
@@ -641,4 +651,67 @@ int EditView::textWidth(pos_t first, ssize_t sz, pos_t last, const Buffer* pbuff
 		}
 	}
 	return wd;
+}
+int EditView::pxToOffset(int vln, int px) const
+{
+	if( px == 0 ) return 0;
+	QFontMetricsF fm = QFontMetricsF(fontMetrics());
+	QFontMetricsF fmBold(m_fontBold);
+	int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
+	int tabWidth = fm.width(QString(nTab, QChar(' ')));
+	//QString txt = m_doc->lineText(ln);
+	//DrawTokenizer dt(txt);
+	bool bHTML = typeSettings()->name() == "HTML";
+	const TypeSettings *pTypeSettings = typeSettings();
+	int offset0;
+	int ln = viewLineToDocLine(vln, offset0);
+	const int lineStart = viewLineMgr()->viewLineStartPosition(vln);
+	const int lineStart2 = viewLineMgr()->viewLineStartPosition(vln+1);
+	ssize_t sz = lineStart2 - lineStart;
+	pos_t first = lineStart;
+	ViewTokenizer dt(typeSettings(), buffer(), first, sz, lineStart2);
+	dt.setCursorLine();
+	int offset = 0;
+	qreal wd = 0;
+	for(;;) {
+		//int ix = dt.ix();
+		QString token = dt.nextToken();
+		int ix = dt.tokenix();
+		if( token.isEmpty() || dt.isTokenNewLine() )
+			return ix - lineStart;
+		if( token == "\t" ) {
+			wd = ((int)wd / tabWidth + 1) * tabWidth;
+			if( wd > px ) return ix - lineStart;
+			if( wd == px ) return dt.ix() - lineStart;
+		} else if( token[0].unicode() < 0x20 ) {
+			wd += fm.width(QString(QChar('@' + token[0].unicode())));
+			if( wd > px ) return ix - lineStart;
+			if( wd == px ) return dt.ix() - lineStart;
+		} else {
+			QFontMetricsF *pFM;
+			QString token0 = token;
+			if( dt.ix() > first + sz ) {
+				token = token.left(first + sz - dt.tokenix());
+			}
+			if( !dt.isInLineComment() && !dt.isInBlockComment()
+					&& dt.tokenType() == ViewTokenizer::ALNUM
+					&& (!bHTML || dt.isInHTMLTag())
+					&& (pTypeSettings->boolValue(TypeSettings::KEYWORD1_BOLD)
+							&& pTypeSettings->isKeyWord1(token0)
+						|| pTypeSettings->boolValue(TypeSettings::KEYWORD2_BOLD)
+							&& pTypeSettings->isKeyWord2(token0)) )
+			{
+				pFM = &fmBold;
+			} else
+				pFM = &fm;
+			int wd2 = wd + pFM->width(token);
+			if( wd2 > px ) {
+				for(int i = 0; i < token.size(); ++i) {
+					if( (wd += pFM->width(token.mid(i, 1))) > px )
+						return ix + i - lineStart;
+				}
+			}
+			wd = wd2;
+		}
+	}
 }

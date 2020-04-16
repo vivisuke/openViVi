@@ -80,6 +80,44 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 			++pos;
 		break;
 	}
+	case UP:
+		if( (vln -= n) < 0 ) vln = 0;
+		
+			pos = m_view->viewLineMgr()->viewLineStartPosition(vln);
+			pos += m_view->pxToOffset(vln, m_px);
+		break;
+	case DOWN:
+		vln = qMin(vln + n, m_view->EOFLine());
+#if	1
+			pos = m_view->viewLineMgr()->viewLineStartPosition(vln);
+			pos += m_view->pxToOffset(vln, m_px);
+#else
+		if( vln == vln0 && mode != KEEP_ANCHOR ) {
+			clearSelection();
+			return;
+		}
+		if( isBoxSelectionMode() ) {
+			int ln = m_view->viewLineToDocLine(vln);
+			pos = m_view->lineStartPosition(ln);
+			pos += m_view->pxToOffset(vln, m_boxCurPx1);
+			pos_t posNL = m_view->newLinePosition(ln);
+			if( pos >= posNL ) {
+				//	改行以降の場合、px1, px2 は変化しない
+				m_pos = pos;
+				m_boxCurLine = vln;
+				if( mode == MOVE_ANCHOR ) {
+					m_anchor = pos;
+					m_anchorViewLine = m_viewLine;
+					copyBoxCurToAnchor();
+				}
+				return;
+			}
+		} else {
+			pos = m_view->viewLineMgr()->viewLineStartPosition(vln);
+			pos += m_view->pxToOffset(vln, m_px);
+		}
+#endif
+		break;
 	case HOME_LINE:
 		pos = viewLineStartPosition(vln);
 		while( pos < m_view->bufferSize() && isSpace(m_view->charAt(pos)) )
@@ -107,5 +145,23 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 		break;
 	}
 	}
+	//m_pos = pos;
+	setLineAndPosition(vln, pos, mode);
+}
+void TextCursor::setLineAndPosition(int vln, pos_t pos, int mode)
+{
+	Q_ASSERT( pos >= 0 );
+	m_viewLine = vln;
 	m_pos = pos;
+#if	0
+	if( isBoxSelectionMode() ) {
+		updateBoxCur();
+	}
+	if( mode == MOVE_ANCHOR && m_mode == NOMAL_MODE ) {
+		m_anchor = pos;
+		m_anchorViewLine = m_viewLine;
+		if( isBoxSelectionMode() )
+			copyBoxCurToAnchor();
+	}
+#endif
 }
