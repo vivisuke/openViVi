@@ -48,5 +48,25 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 			++m_pos;
 		break;
 	}
+	case LAST_CHAR_LINE:
+	case END_LINE: {
+#if	0
+		if( pos != m_view->bufferSize() ) {
+			pos = viewLineStartPosition(vln + 1);
+			wchar_t pch = m_view->charAt(pos-1);
+			if( pch == '\n') {
+				if( m_view->charAt(pos-2) == '\r' )
+					pos -= 2;
+				else
+					--pos;
+			} else if( pch == '\r' )
+				--pos;
+			m_px = INT_MAX;
+		}
+		if( op == LAST_CHAR_LINE && pos != m_view->lineStartPosition(dln) )
+			--pos;
+		break;
+#endif
+	}
 	}
 }

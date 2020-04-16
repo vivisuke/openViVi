@@ -300,11 +300,15 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_Home:
 		if( ctrl ) {
 			m_scrollY0 = 0;		//	暫定コード
+		} else {
+			m_textCursor->movePosition(TextCursor::HOME_LINE, mvmd);
 		}
 		break;
 	case Qt::Key_End:
 		if( ctrl ) {
 			m_scrollY0 = buffer()->lineCount();		//	暫定コード
+		} else {
+			m_textCursor->movePosition(TextCursor::END_LINE, mvmd);
 		}
 		break;
 	case Qt::Key_PageUp:

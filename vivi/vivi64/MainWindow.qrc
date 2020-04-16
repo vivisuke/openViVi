@@ -24,5 +24,6 @@
         <file>Resources/search_backward.png</file>
         <file>Resources/search_forward.png</file>
         <file>Resources/folder_open.png</file>
+        <file>Resources/save_black.png</file>
     </qresource>
 </RCC>

@@ -74,6 +74,7 @@
     <addaction name="action_New"/>
     <addaction name="action_Open"/>
     <addaction name="action_Close"/>
+    <addaction name="action_Save"/>
     <addaction name="separator"/>
     <addaction name="menu_RecentFiles"/>
     <addaction name="menu_FavoriteFiles"/>
@@ -141,6 +142,7 @@
    <addaction name="action_New"/>
    <addaction name="action_Open"/>
    <addaction name="action_Close"/>
+   <addaction name="action_Save"/>
    <addaction name="action_SearchForward"/>
    <addaction name="action_SearchBackward"/>
   </widget>
@@ -307,6 +309,18 @@
    </property>
    <property name="shortcut">
     <string>Shift+F3</string>
+   </property>
+  </action>
+  <action name="action_Save">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/save_black.png</normaloff>:/MainWindow/Resources/save_black.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>
