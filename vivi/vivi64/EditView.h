@@ -20,6 +20,7 @@ public:
 	EditView(Document *doc /*, TypeSettings* = nullptr*/);
 	~EditView();
 public:
+	int		cursorPosition() const;
 	QString	typeName() const;
 	TypeSettings	*typeSettings();	// { return m_typeSettings; }
 	const TypeSettings	*typeSettings() const;	// { return m_typeSettings; }
@@ -44,6 +45,8 @@ public:
 	int		lineHeight() const { return m_lineHeight; }
 	int		textWidth(const QString &) const;
 	int		textWidth(pos_t, ssize_t, pos_t, const Buffer* = 0) const;
+public:
+	void	onCursorPosChanged();
 protected:
 	void	drawLineNumbers();
 	void	drawLineNumberArea(QPainter&);
@@ -64,6 +67,9 @@ protected:
 	bool	eventFilter(QObject *obj, QEvent *event);
 private slots:
 	void	onTimer();
+signals:
+	void	cursorPosChanged(int, int);
+	
 private:
 	bool	m_lineNumberVisible;
 	bool	m_minMapDragging;

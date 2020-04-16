@@ -215,6 +215,8 @@ void MainWindow::setupStatusBar()
 	m_iconSQL = new QIcon(":/MainWindow/Resources/SQL.png");
 	m_iconTXT = new QIcon(":/MainWindow/Resources/TXT.png");
 	//
+	statusBar()->addPermanentWidget(m_curCharCode = new QLabel());			//	カーソル位置文字コード
+	statusBar()->addPermanentWidget(m_lineOffsetLabel = new QLabel());		//	カーソル位置
 	statusBar()->addPermanentWidget(m_bomChkBx = new QCheckBox("BOM"));		//	BOM
 	statusBar()->addPermanentWidget(m_encodingCB = new QComboBox());		//	文字エンコーディング
 	QStringList encList;
@@ -267,6 +269,14 @@ void MainWindow::onTypeChanged(const QString &type)
 }
 void MainWindow::onNewLineCodeChanged(int)
 {
+}
+void MainWindow::onCursorPosChanged(int ln, int offset)
+{
+	EditView *view = (EditView *)sender();
+	if( !isEditView(view) ) return;
+	m_lineOffsetLabel->setText(QString("pos: %1 (%2:%3)")
+												.arg(view->cursorPosition()).arg(ln).arg(offset));
+	//##updateCurPosCharCode(view);
 }
 void MainWindow::setTypeSettings(EditView *view, TypeSettings *typeSettings)
 {
@@ -338,6 +348,7 @@ EditView *MainWindow::createView(QString pathName)
 	//Buffer* buffer = doc->buffer();
 	//auto* typeSettings = new TypeSettings(typeName);
 	EditView* view = new EditView(doc /*, typeSettings*/);	//QPlainTextEdit();	//createView();
+	connect(view, SIGNAL(cursorPosChanged(int, int)), this, SLOT(onCursorPosChanged(int, int)));
 	if( !pathName.isEmpty() ) {
 		if( !loadFile(doc, pathName) ) {
 			//	undone: ファイルオープンに失敗した場合の後始末処理

@@ -3,6 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QPlainTextEdit>
 #include <QCheckBox>
+#include <QLabel>
 #include "ui_MainWindow.h"
 #include "EditView.h"
 class FindLineEdit;
@@ -66,6 +67,7 @@ private slots:
     void	onBomChanged(bool);
 	void	onTypeChanged(const QString &);
 	void	onNewLineCodeChanged(int);
+    void	onCursorPosChanged(int, int);
 	
 private:
 	Ui::MainWindowClass ui;
@@ -85,6 +87,8 @@ private:
 	//
 	QDockWidget	*m_outlineDock;
 	
+	QLabel		*m_lineOffsetLabel;
+	QLabel		*m_curCharCode;			//	カーソル位置文字コード
 	QCheckBox	*m_bomChkBx;
 	QComboBox	*m_encodingCB;
 	QComboBox	*m_newLineCodeCB;

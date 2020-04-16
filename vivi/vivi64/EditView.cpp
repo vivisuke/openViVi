@@ -49,6 +49,7 @@ EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
 	m_lineNumAreaWidget.setParent(this);
 	m_lineNumAreaWidget.setCursor(Qt::ArrowCursor);
 	//m_lineNumAreaWidget.installEventFiler(this);
+	m_viewLineMgr = new ViewLineMgr(this);
 	//	ミニマップ
 	m_minMapWidget.setParent(this);
 	m_minMapWidget.setCursor(Qt::ArrowCursor);
@@ -90,10 +91,10 @@ void EditView::setTypeSettings(TypeSettings *typeSettings)
 #endif
 int EditView::viewLineOffsetToPx(int vln, int offset) const
 {
-	//return textWidth(viewLineMgr()->viewLineStartPosition(vln), offset,
-	//							viewLineMgr()->viewLineStartPosition(vln+1));
+	return textWidth(viewLineMgr()->viewLineStartPosition(vln), offset,
+								viewLineMgr()->viewLineStartPosition(vln+1));
 	//Q_ASSERT(0);
-	return 0;
+	//return 0;
 }
 int EditView::positionToLine(pos_t pos) const
 {
@@ -163,6 +164,18 @@ void EditView::updateLineNumberInfo()
 	rct.setX(wd - MINMAP_WIDTH);
 	rct.setWidth(MINMAP_WIDTH);
 	m_minMapWidget.setGeometry(rct);
+}
+int EditView::cursorPosition() const
+{
+	return m_textCursor->position();
+}
+void EditView::onCursorPosChanged()
+{
+	m_dispCursor = true;
+	m_tmCounter = TM_FPS / 2;
+	pos_t pos = m_textCursor->position();
+	int ln = document()->positionToLine(pos);
+	emit cursorPosChanged(ln+1, pos - lineStartPosition(ln));
 }
 QString EditView::typeName() const
 {
@@ -278,6 +291,9 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
 	int mvmd = shift ? TextCursor::KEEP_ANCHOR : TextCursor::MOVE_ANCHOR;
 	switch( event->key() ) {
+	case Qt::Key_Left:
+		m_textCursor->movePosition(TextCursor::LEFT, mvmd);
+		break;
 	case Qt::Key_Right:
 		m_textCursor->movePosition(TextCursor::RIGHT, mvmd);
 		break;
@@ -298,6 +314,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		m_scrollY0 = qMin(buffer()->lineCount(), m_scrollY0 + nLines);		//	暫定コード
 		break;
 	}
+	onCursorPosChanged();
 	update();
 }
 void EditView::paintEvent(QPaintEvent *event)

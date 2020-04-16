@@ -206,9 +206,19 @@
 ◎ C 04/15 04/15 0.002 ToDo EditView：テキストカーソルオブジェクト保持
 ◎ C 04/15 04/15 0.002 ToDo EditView：タイマー処理関数追加
 ◎ C 04/15 04/15 0.002 問題 m_scrollX0 は m_scrollY0 の間違い
-● C 04/15             ToDo 左右カーソル移動
+◎ C 04/15 04/16 0.002 ToDo 左右カーソル移動
 ● C 04/15             ToDo MDITab 多段化？
 ● C 04/15             ToDo C-\：.h .cpp 切り替え
 ◎ C 04/15 04/16 0.002 ToDo ViewLineMgr 追加
-● C 04/15             ToDo 
-● C 04/15             ToDo 
+◎ C 04/16 04/16 0.002 ToDo ステータスバーに現行・カラム位置表示
+● C 04/16             ToDo 
+● C 04/16             ToDo 
+● C 04/16             ToDo 
+● C 04/16             ToDo 
+● C 04/16             ToDo 
+● C 04/16             ToDo 
+● C 04/16             ToDo 
+● C 04/16             ToDo 
+● C 04/16             ToDo 
+● C 04/16             ToDo 
+● C 04/16             ToDo 
