@@ -189,6 +189,88 @@ void EditView::onCursorPosChanged()
 	int ln = document()->positionToLine(pos);
 	emit cursorPosChanged(ln+1, pos - lineStartPosition(ln));
 }
+//	return:	スクロールしたかどうか
+bool EditView::makeCursorInView(bool bQuarter)
+{
+	pos_t pos = m_textCursor->position();
+	int dln = positionToLine(pos);
+	int vln = m_textCursor->viewLine();
+#if	0
+	if( viewLineToDocLine(vln) != dln ) {	//	折畳まれている場合
+		expand(vln);
+		m_textCursor->updateViewLine();
+		vln = m_textCursor->viewLine();
+	}
+#endif
+	bool scrolled = false;
+	if( m_textCursor->position() > bufferSize() )
+		m_textCursor->movePosition(TextCursor::END_DOC);
+	//int nLine = viewport()->rect().height() / lineHeight();		//	表示可能行数
+	int nLine = rect().height() / lineHeight();		//	表示可能行数
+	int anchor = m_textCursor->anchor();
+#if	0
+	if( m_viewLineMgr->isLineBreakMode() ) {
+		//	表示範囲を折り返し処理
+		bool lineBreaked = false;
+		int v = qMax(0, vln - nLine);
+		while ( v < viewLineCount() && viewLineStartPosition(v) <= pos ) {
+			if( viewLineMgr()->ensureLineBreak(v++) )
+				lineBreaked = true;
+		}
+		if( lineBreaked ) {
+			m_textCursor->setPosition(pos);
+			if( anchor != pos )
+				m_textCursor->setAnchor(anchor);
+			vln = m_textCursor->viewLine();
+		}
+	}
+#endif
+	//int ln = m_doc->positionToLine(pos);
+	int vpos = m_scrollY0;	//verticalScrollBar()->value();
+	if( vln >= vpos && vln < vpos + nLine ) {
+	} else {
+		if (nLine >= EOFLine() ) {		//	全行を表示可能な場合
+			//verticalScrollBar()->setValue(0);
+			m_scrollY0 = 0;
+			return true;
+		} else if( bQuarter ) {
+			//verticalScrollBar()->setValue(vln - nLine / 4);
+			m_scrollY0 = vln - nLine / 4;
+			scrolled = true;
+		} else {
+			if( vln < vpos ) {
+				//verticalScrollBar()->setValue(vln);
+				m_scrollY0 = vln;
+			} else {
+				//int nLine = rect().height() / lineHeight();
+				if( vln >= vpos + nLine ) {
+					if( vln - (vpos + nLine) <= 5 ) {		//	直ぐ下の場合
+						//verticalScrollBar()->setValue(vln - nLine + 1);
+						m_scrollY0 = vln - nLine + 1;
+					} else {
+						//verticalScrollBar()->setValue(vln - nLine / 4);
+						m_scrollY0 = vln - nLine / 4;
+					}
+					scrolled = true;
+				}
+			}
+		}
+	}
+	//qDebug() << verticalScrollBar()->value();
+#if	0
+	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+	int hpos = horizontalScrollBar()->value();
+	int wd = viewport()->rect().width() /*- m_lineNumAreaWidth*/;
+	if( px < hpos ) {
+		horizontalScrollBar()->setValue(qMax(0, px - HS_MARGIN));
+		scrolled = true;
+	} else if( px >= hpos + wd - HS_MARGIN / 2 ) {
+		horizontalScrollBar()->setValue(px - wd + HS_MARGIN);
+		scrolled = true;
+	}
+#endif
+	return scrolled;
+}
 QString EditView::typeName() const
 {
 	return document()->typeName();
@@ -343,6 +425,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		break;
 	}
 	onCursorPosChanged();
+	makeCursorInView();
 	update();
 }
 void EditView::paintEvent(QPaintEvent *event)

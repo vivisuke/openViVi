@@ -51,6 +51,7 @@ public:
 	int		textWidth(pos_t, ssize_t, pos_t, const Buffer* = 0) const;
 	int		pxToOffset(int vln, int px) const;
 public:
+	bool	makeCursorInView(bool bQuarter = false);
 	void	onCursorPosChanged();
 protected:
 	void	drawLineNumbers();
