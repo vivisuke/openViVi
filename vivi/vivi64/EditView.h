@@ -24,6 +24,7 @@ public:
 	size_t	bufferSize() const;
 	pos_t	cursorPosition() const;
 	int		EOFLine() const;
+	QString	fullPathName() const;
 	QString	typeName() const;
 	TypeSettings	*typeSettings();	// { return m_typeSettings; }
 	const TypeSettings	*typeSettings() const;	// { return m_typeSettings; }

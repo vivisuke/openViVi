@@ -296,6 +296,20 @@ void MainWindow::setTypeSettings(EditView *view, TypeSettings *typeSettings)
 	view->updateFont();
 	view->update();
 }
+void MainWindow::closeNullDocs()			//	空のドキュメントをクローズ
+{
+	for(int i = ui.tabWidget->count(); --i >= 0; ) {
+		//EditView *view = (EditView *)ui.tabWidget->widget(i);
+		EditView *view = nthWidget(i);
+		if( isEditView(view) && view->fullPathName().isEmpty()
+			&& view->bufferSize() == 0 )
+		{
+			ui.tabWidget->removeTab(i);
+			view->close();
+			delete view;
+		}
+	}
+}
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
 	qDebug() << "dragEnterEvent()";
@@ -474,6 +488,7 @@ bool MainWindow::loadFile(Document *doc, const QString &pathName, /*cchar *codec
 	QString buf, errMess;
 	if( !::loadFile(pathName, buf, errMess, charEncoding, bomLength) )
 		return false;
+	closeNullDocs();		//	空のドキュメントをクローズ
 	qDebug() << "charEncoding = " << (int)charEncoding;
 	doc->setPlainText(buf);
 	doc->setCharEncoding(charEncoding);

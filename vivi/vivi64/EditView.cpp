@@ -193,6 +193,10 @@ QString EditView::typeName() const
 {
 	return document()->typeName();
 }
+QString EditView::fullPathName() const
+{
+	return document()->fullPathName();
+}
 void EditView::setLineNumberVisible(bool b)
 {
 	if( b == m_lineNumberVisible ) return;

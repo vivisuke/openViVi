@@ -47,6 +47,10 @@ QString Document::typeName() const
 {
 	return m_typeSettings->name();
 }
+QString Document::fullPathName() const
+{
+	return m_pathName;
+}
 void Document::setTypeSettings(TypeSettings* typeSettings)
 {
 	m_typeSettings = typeSettings;

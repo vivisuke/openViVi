@@ -45,6 +45,7 @@ protected:
 	void	setTypeSettings(EditView *, TypeSettings *);
 	void	onViewLineNumberChanged(const QString &, bool);
 	QIcon	*typeNameToIcon(const QString&);
+	void	closeNullDocs();			//	空のドキュメントをクローズ
     
 protected:
 	void	dragEnterEvent(QDragEnterEvent *event);
