@@ -464,7 +464,7 @@ void EditView::drawLineNumberArea(QPainter& pt)
 {
 	auto rct = rect();
 	pt.setPen(Qt::black);
-	int py = DRAW_Y_OFFSET;
+	int py = 0 /*DRAW_Y_OFFSET*/;
 	int limit = buffer()->lineCount() + (buffer()->isBlankEOFLine() ? 1 : 0);
 	for (int ln = 1 + m_scrollY0; ln <= limit && py < rct.height(); ++ln, py+=m_lineHeight) {
 		QString number = QString::number(ln);
@@ -479,7 +479,7 @@ void EditView::drawTextArea(QPainter& pt)
 {
 	auto rct = rect();
 	pt.setPen(Qt::black);
-	int px, py = DRAW_Y_OFFSET;
+	int px, py = 0 /*DRAW_Y_OFFSET*2*/;
 	bool inBlockComment = false;
 	bool inLineComment = false;
 	QString quotedText;
