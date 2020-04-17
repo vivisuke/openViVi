@@ -234,6 +234,6 @@
 ● C 04/18             ToDo File > FavoriteFiles > addCurrentFile
 ● C 04/18             ToDo File > FavoriteFiles > removeFile
 ◎ C 04/18 04/18 0.002 ToDo タイプ設定・グローバル設定：アイコン表示
-● C 04/18             ToDo 
+◎ C 04/18 04/18 0.002 ToDo Undo/Redo：アイコン表示
 ● C 04/18             ToDo 
 ● C 04/18             ToDo 

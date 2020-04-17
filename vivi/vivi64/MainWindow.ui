@@ -143,8 +143,13 @@
    <addaction name="action_Open"/>
    <addaction name="action_Close"/>
    <addaction name="action_Save"/>
+   <addaction name="separator"/>
+   <addaction name="action_Undo"/>
+   <addaction name="action_Redo"/>
+   <addaction name="separator"/>
    <addaction name="action_SearchForward"/>
    <addaction name="action_SearchBackward"/>
+   <addaction name="separator"/>
    <addaction name="action_TypeSettings"/>
    <addaction name="action_GlobalSettings"/>
   </widget>
@@ -186,6 +191,10 @@
    </property>
   </action>
   <action name="action_Undo">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/undo_black.png</normaloff>:/MainWindow/Resources/undo_black.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Undo</string>
    </property>
@@ -194,6 +203,10 @@
    </property>
   </action>
   <action name="action_Redo">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/redo_black.png</normaloff>:/MainWindow/Resources/redo_black.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Redo</string>
    </property>

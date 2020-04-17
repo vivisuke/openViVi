@@ -29,5 +29,7 @@
         <file>Resources/exit_black.png</file>
         <file>Resources/build_black.png</file>
         <file>Resources/settings.png</file>
+        <file>Resources/redo_black.png</file>
+        <file>Resources/undo_black.png</file>
     </qresource>
 </RCC>
