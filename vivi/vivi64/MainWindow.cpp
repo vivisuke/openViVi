@@ -564,6 +564,7 @@ void MainWindow::on_action_TypeSettings_triggered()
 	TypeStgDlg aDlg(view, view->typeSettings());
 	aDlg.exec();
 	//##typesettingsChanged(view);
+	view->typeSettings()->writeSettings();
 }
 void MainWindow::on_action_GlobalSettings_triggered()
 {
