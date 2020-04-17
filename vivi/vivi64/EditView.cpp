@@ -321,6 +321,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		break;
 	case Qt::Key_Home:
 		if( ctrl ) {
+			m_textCursor->movePosition(TextCursor::BEG_DOC, mvmd);
 			m_scrollY0 = 0;		//	暫定コード
 		} else {
 			m_textCursor->movePosition(TextCursor::HOME_LINE, mvmd);
@@ -328,6 +329,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		break;
 	case Qt::Key_End:
 		if( ctrl ) {
+			m_textCursor->movePosition(TextCursor::END_DOC, mvmd);
 			m_scrollY0 = buffer()->lineCount();		//	暫定コード
 		} else {
 			m_textCursor->movePosition(TextCursor::END_LINE, mvmd);

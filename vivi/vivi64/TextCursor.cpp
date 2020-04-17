@@ -183,6 +183,16 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 			--pos;
 		break;
 	}
+	case BEG_DOC:
+		vln = 0;
+		pos = 0;
+		m_px = 0;
+		break;
+	case END_DOC:
+		pos = m_view->bufferSize();
+		vln = m_view->EOFLine();
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		break;
 	}
 	//m_pos = pos;
 	setLineAndPosition(vln, pos, mode);
