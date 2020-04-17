@@ -41,7 +41,7 @@ static uchar sbCharTypeTbl[] = {
 /* f */	0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, CTSB_OTHER, CTSB_OTHER,
 };
 
-byte UTF16CharType(ushort uch)
+byte UTF16CharType(wchar_t uch)
 {
 	if( uch < 0x80 )
 		return sbCharTypeTbl[uch];

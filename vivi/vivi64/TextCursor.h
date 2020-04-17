@@ -68,6 +68,15 @@ public:
 public:
 	void	setLineAndPosition(int vln, pos_t pos, int mode = MOVE_ANCHOR);
 protected:
+	uchar	getCharType(wchar_t &);
+	int		nextWord(int n, bool cw = false);
+	int		nextCapWord(int n);
+	int		prevWord(int n);
+	int		begWord();
+	int		endWord(int n);
+	int		nextSSWord(int n, bool cw = false);
+	int		prevSSWord(int n);
+	int		endSSWord(int n);
 	int		viewLineStartPosition(int vln) const;
 
 private:

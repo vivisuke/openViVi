@@ -33,6 +33,6 @@ enum {
 	CTDB_CONT,
 	CTDB_OTHER,
 };
-byte UTF16CharType(ushort);
+byte UTF16CharType(wchar_t);
 
 #endif		//_HEADER_UTF16_H

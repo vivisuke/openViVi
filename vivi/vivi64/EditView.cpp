@@ -390,10 +390,18 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	int mvmd = shift ? TextCursor::KEEP_ANCHOR : TextCursor::MOVE_ANCHOR;
 	switch( event->key() ) {
 	case Qt::Key_Left:
-		m_textCursor->movePosition(TextCursor::LEFT, mvmd);
+		if( ctrl )
+			m_textCursor->movePosition(TextCursor::PREV_WORD, mvmd);
+		else {
+			m_textCursor->movePosition(TextCursor::LEFT, mvmd);
+		}
 		break;
 	case Qt::Key_Right:
-		m_textCursor->movePosition(TextCursor::RIGHT, mvmd);
+		if( ctrl )
+			m_textCursor->movePosition(TextCursor::NEXT_WORD, mvmd);
+		else {
+			m_textCursor->movePosition(TextCursor::RIGHT, mvmd);
+		}
 		break;
 	case Qt::Key_Up:
 		m_textCursor->movePosition(TextCursor::UP, mvmd);

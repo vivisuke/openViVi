@@ -1,6 +1,8 @@
 ﻿#include "TextCursor.h"
 #include "EditView.h"
 #include "viewLineMgr.h"
+#include "../buffer/UTF16.h"
+#include "../buffer/bufferUtl.h"
 
 bool isSafeChar(wchar_t ch);
 
@@ -158,6 +160,21 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 		}
 #endif
 		break;
+	case PREV_WORD:
+		pos = prevWord(n);
+		while( pos < m_view->viewLineStartPosition(vln) ) {
+			--vln;
+		}
+		m_px = m_view->viewLineOffsetToPx(vln, pos - m_view->viewLineStartPosition(vln));
+		break;
+	case NEXT_WORD:
+		if( pos == m_view->bufferSize() ) return;
+		pos = nextWord(n);
+		while( pos < m_view->bufferSize() && pos >= viewLineStartPosition(vln+1) ) {
+			++vln;
+		}
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		break;
 	case HOME_LINE:
 		pos = viewLineStartPosition(vln);
 		while( pos < m_view->bufferSize() && isSpace(m_view->charAt(pos)) )
@@ -214,4 +231,192 @@ void TextCursor::setLineAndPosition(int vln, pos_t pos, int mode)
 			copyBoxCurToAnchor();
 	}
 #endif
+}
+uchar TextCursor::getCharType(wchar_t &ch)
+{
+	if( m_pos == m_view->bufferSize() )
+		return CT_EOF;
+	ch = m_view->charAt(m_pos);
+	return UTF16CharType(ch);
+}
+//	cw: true の場合は、継続する空白をスキップしない
+int TextCursor::nextWord(int n, bool cw)
+{
+	uchar type2;
+	const bool HTML = false;
+	const bool dollarPrefix = false;
+	const bool dollar = false;
+	const bool skipTailSpaces = !cw;
+	const bool vi = false;
+	const bool skipNewlines = false;
+	wchar_t ch;
+	while( --n >= 0 ) {
+		uchar type = getCharType(ch);
+		if( type == CT_EOF ) break;
+		bool dollar = true;
+		switch( type ) {
+		case CTSB_SPACE:
+		case CTSB_ALNUM:
+		case CTSB_KANA:
+		case CTSB_SYM:
+		case CTDB_SPACE:
+			do {
+				if( ch != '$' ) dollar = false;
+				++m_pos;
+			} while( (type2 = getCharType(ch)) == type && !(HTML && ch == '<') );		//	同じ文字種、または <
+			if( dollar && dollarPrefix && type2 == CTSB_ALNUM ) {
+				type = type2;
+				goto skipAlnum;
+			}
+skipSpaces:
+			if( n == 0 && !skipTailSpaces ) break;
+			while( (type = getCharType(ch)) == CTSB_SPACE || type == CTDB_SPACE )	//	継続スペース
+				++m_pos;
+//skipNewlines:
+			if( n > 0 || vi && skipNewlines ) {
+				while( (type = getCharType(ch)) == CT_NEWLINE || type == CTSB_SPACE || type == CTDB_SPACE )
+					++m_pos;
+			}
+			break;
+		case CTDB_KANJI:
+			do {
+				++m_pos;
+			} while( getCharType(ch) == type );		//	同じ文字種
+			while( getCharType(ch) == CTDB_CONT )		//	継続文字（ヽヾゝゞ〃仝々）
+				++m_pos;
+			goto skipSpaces;
+			break;
+		case CTDB_HIRA:
+		case CTDB_KANA:
+		case CTDB_ALNUM:
+		case CTDB_SYM:
+		case CTDB_CONT:
+skipAlnum:
+			do {
+				++m_pos;
+			} while( getCharType(ch) == type );		//	同じ文字種
+			goto skipSpaces;
+		case CT_NEWLINE:
+			if( ch == '\r' && m_view->charAt(m_pos+1) == '\n' )
+				++m_pos;
+		case CTSB_OTHER:
+		case CTDB_OTHER:
+			++m_pos;
+			goto skipSpaces;
+		default:
+			//ASSERT(0);
+			Q_ASSERT(0);
+		}
+	}
+	return m_pos;
+}
+int TextCursor::nextCapWord(int n)
+{
+	return m_pos;
+}
+int TextCursor::prevWord(int n)
+{
+	const bool HTML = false;
+	const bool dollarPrefix = false;
+	const bool dollar = false;
+	const bool skipTailSpaces = true;
+	const bool vi = false;
+	const bool skipNewlines = false;
+	wchar_t ch;
+	uchar type;
+	int vln = viewLine();
+	int offset;
+	pos_t ls = m_view->lineStartPosition(m_view->viewLineToDocLine(vln, offset));
+	while( --n >= 0 ) {
+		if( !m_pos ) break;
+		--m_pos;
+		if( m_view->charAt(m_pos-1) == '\r' && m_view->charAt(m_pos) == '\n' )
+			--m_pos;
+		while( (type = getCharType(ch)) == CTSB_SPACE || type == CTDB_SPACE ||		//	継続スペース
+				vi && type == CT_NEWLINE )		//	vi モードでは改行は空白扱い
+		{
+			if( !m_pos ) return 0;
+			if( m_pos == ls ) break;	//	行頭の場合
+			--m_pos;
+		}
+		type = getCharType(ch);
+		//if( vi && type == CT_NEWLINE )
+		//	type = CTSB_SPACE;		//	vi モードでは改行は空白扱い
+		if( type == CT_EOF ) break;
+		bool alnum = false;
+		switch( type ) {
+		case CTSB_ALNUM:
+			alnum = true;
+		case CTSB_SPACE:
+		case CTSB_KANA:
+		case CTSB_SYM:
+		case CTDB_SPACE:
+			do {
+				if( !m_pos ) return 0;
+				--m_pos;
+			} while( !(HTML && ch == '<') && getCharType(ch) == type );		//	同じ文字種、または <
+			break;
+		case CTDB_CONT:
+			do {
+				if( !m_pos ) return 0;
+				--m_pos;
+			} while( getCharType(ch) == type );		//	継続文字
+			if( type != CTDB_KANJI )
+				break;
+			//	スルー
+		case CTDB_KANJI:
+			do {
+				if( !m_pos ) return 0;
+				--m_pos;
+			} while( getCharType(ch) == type );		//	同じ文字種
+			break;
+		case CTDB_HIRA:
+		case CTDB_KANA:
+		case CTDB_ALNUM:
+		case CTDB_SYM:
+			do {
+				if( !m_pos ) return 0;
+				--m_pos;
+			} while( getCharType(ch) == type );		//	同じ文字種
+			break;
+		case CT_NEWLINE:
+		case CTSB_OTHER:
+		case CTDB_OTHER:
+			--m_pos;
+			break;
+		default:
+			//ASSERT(0);
+			Q_ASSERT(0);
+		}
+#if 0
+		if( alnum && m_vwLineMgr->getTypeSettings()->getBoolValue(TYPESTG_DOLLAR_PREFIX_WORD) ) {
+			while( getChar() == '$' ) {
+				if( !m_pos ) return 0;
+				--m_pos;
+			}
+		}
+#endif
+		++m_pos;
+	}
+	return m_pos;
+}
+int TextCursor::begWord()
+{
+	return m_pos;
+}
+int TextCursor::endWord(int n)
+{
+	return m_pos;
+}
+int TextCursor::nextSSWord(int n, bool cw)
+{
+	return m_pos;
+}
+int TextCursor::prevSSWord(int n)
+{
+	return m_pos;
+}
+int TextCursor::endSSWord(int n)
+{
+	return m_pos;
 }
