@@ -146,6 +146,9 @@
    <addaction name="separator"/>
    <addaction name="action_Undo"/>
    <addaction name="action_Redo"/>
+   <addaction name="action_Cut"/>
+   <addaction name="action_Copy"/>
+   <addaction name="action_Paste"/>
    <addaction name="separator"/>
    <addaction name="action_SearchForward"/>
    <addaction name="action_SearchBackward"/>
@@ -215,6 +218,10 @@
    </property>
   </action>
   <action name="action_Cut">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/cut.png</normaloff>:/MainWindow/Resources/cut.png</iconset>
+   </property>
    <property name="text">
     <string>Cu&amp;t</string>
    </property>
@@ -223,6 +230,10 @@
    </property>
   </action>
   <action name="action_Copy">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/copy.png</normaloff>:/MainWindow/Resources/copy.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Copy</string>
    </property>
@@ -231,6 +242,10 @@
    </property>
   </action>
   <action name="action_Paste">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/paste.png</normaloff>:/MainWindow/Resources/paste.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Paste</string>
    </property>

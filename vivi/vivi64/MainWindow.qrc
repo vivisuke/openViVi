@@ -31,5 +31,8 @@
         <file>Resources/settings.png</file>
         <file>Resources/redo_black.png</file>
         <file>Resources/undo_black.png</file>
+        <file>Resources/copy.png</file>
+        <file>Resources/cut.png</file>
+        <file>Resources/paste.png</file>
     </qresource>
 </RCC>
