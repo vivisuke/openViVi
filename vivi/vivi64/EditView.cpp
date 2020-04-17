@@ -427,9 +427,11 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		break;
 	case Qt::Key_PageUp:
 		m_scrollY0 = qMax(0, m_scrollY0 - nLines);		//	暫定コード
+		m_textCursor->movePosition(TextCursor::UP, mvmd, nLines);
 		break;
 	case Qt::Key_PageDown:
 		m_scrollY0 = qMin(buffer()->lineCount(), m_scrollY0 + nLines);		//	暫定コード
+		m_textCursor->movePosition(TextCursor::DOWN, mvmd, nLines);
 		break;
 	}
 	onCursorPosChanged();
