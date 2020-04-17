@@ -145,6 +145,8 @@
    <addaction name="action_Save"/>
    <addaction name="action_SearchForward"/>
    <addaction name="action_SearchBackward"/>
+   <addaction name="action_TypeSettings"/>
+   <addaction name="action_GlobalSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_New">
@@ -229,6 +231,10 @@
    </property>
   </action>
   <action name="action_TypeSettings">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/settings.png</normaloff>:/MainWindow/Resources/settings.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;TypeSettings</string>
    </property>
@@ -237,6 +243,10 @@
    </property>
   </action>
   <action name="action_GlobalSettings">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/build_black.png</normaloff>:/MainWindow/Resources/build_black.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;GlobalSettings</string>
    </property>

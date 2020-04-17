@@ -27,5 +27,7 @@
         <file>Resources/save_black.png</file>
         <file>Resources/new_window.png</file>
         <file>Resources/exit_black.png</file>
+        <file>Resources/build_black.png</file>
+        <file>Resources/settings.png</file>
     </qresource>
 </RCC>
