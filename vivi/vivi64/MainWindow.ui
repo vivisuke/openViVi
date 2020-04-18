@@ -155,6 +155,7 @@
    <addaction name="separator"/>
    <addaction name="action_TypeSettings"/>
    <addaction name="action_GlobalSettings"/>
+   <addaction name="action_Abount_ViVi"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_New">
@@ -254,6 +255,10 @@
    </property>
   </action>
   <action name="action_Abount_ViVi">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/info_black.png</normaloff>:/MainWindow/Resources/info_black.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Abount ViVi</string>
    </property>

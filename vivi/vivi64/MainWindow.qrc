@@ -34,5 +34,6 @@
         <file>Resources/copy.png</file>
         <file>Resources/cut.png</file>
         <file>Resources/paste.png</file>
+        <file>Resources/info_black.png</file>
     </qresource>
 </RCC>
