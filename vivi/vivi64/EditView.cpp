@@ -77,6 +77,10 @@ void EditView::onResized()
 	rct.setX(rct.width() - MINMAP_WIDTH);
 	rct.setWidth(MINMAP_WIDTH);
 	m_minMapWidget.setGeometry(rct);
+	//
+	rct.setX(0);
+	rct.setWidth(m_lineNumAreaWidth);
+	m_lineNumAreaWidget.setGeometry(rct);
 }
 void EditView::setPlainText(const QString& txt)
 {
