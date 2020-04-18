@@ -109,6 +109,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.mainToolBar->setAttribute( Qt::WA_AlwaysShowToolTips );
 	ui.mainToolBar->insertWidget(ui.action_SearchForward, m_findStringCB = new QComboBox());
 	m_findLineEdit = new FindLineEdit;
+	m_findLineEdit->setPlaceholderText(tr("search text"));
 	QFont fnt = m_findLineEdit->font();
 	fnt.setPointSize(10);
 	fnt.setFamily(QString((QChar *)L"ＭＳ ゴシック"));
