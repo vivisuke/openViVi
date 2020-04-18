@@ -743,6 +743,8 @@ int EditView::textWidth(pos_t first, ssize_t sz, pos_t last, const Buffer* pbuff
 		auto ch = pbuffer->operator[](pos);
 		if( ch == '\t' ) {
 			wd += chWidth * (nTab - (pos - first) % nTab);
+		} else if( ch == '\r' || ch == '\n' ) {
+			break;
 		} else if( ch < 0x100 )
 			wd += chWidth;
 		else {
