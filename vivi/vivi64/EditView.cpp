@@ -54,7 +54,9 @@ EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
 	//	ミニマップ
 	m_minMapWidget.setParent(this);
 	m_minMapWidget.setCursor(Qt::ArrowCursor);
+	//m_minMapWidget.setGeometry();
 	document()->buildMinMap();
+	onResized();
 	//
 	updateFont();
 	//
@@ -68,6 +70,13 @@ EditView::~EditView()
 {
 	delete m_buffer;
 	//delete m_viewLineMgr;
+}
+void EditView::onResized()
+{
+	auto rct = rect();
+	rct.setX(rct.width() - MINMAP_WIDTH);
+	rct.setWidth(MINMAP_WIDTH);
+	m_minMapWidget.setGeometry(rct);
 }
 void EditView::setPlainText(const QString& txt)
 {
@@ -161,10 +170,12 @@ void EditView::updateLineNumberInfo()
 	//rct.moveTo(2, 2);
 	rct.setWidth(m_lineNumAreaWidth);
 	m_lineNumAreaWidget.setGeometry(rct);
+#if	0
 	//
 	rct.setX(wd - MINMAP_WIDTH);
 	rct.setWidth(MINMAP_WIDTH);
 	m_minMapWidget.setGeometry(rct);
+#endif
 }
 wchar_t EditView::charAt(pos_t pos) const
 {
@@ -296,6 +307,7 @@ void EditView::onTimer()
 		update();
 	}
 }
+#if	0
 bool EditView::eventFilter(QObject *obj, QEvent *event)
 {
 #if	0
@@ -327,6 +339,11 @@ bool EditView::eventFilter(QObject *obj, QEvent *event)
 	}
 #endif
 	return false;
+}
+#endif
+void EditView::resizeEvent(QResizeEvent *event)
+{
+	onResized();
 }
 void EditView::mousePressEvent(QMouseEvent *event)
 {

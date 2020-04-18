@@ -61,6 +61,7 @@ protected:
 	void	drawMinMap(QPainter&);
 	void	drawCursor(QPainter&);
 	void	updateLineNumberInfo();
+	void	onResized();
 	//void	buildMinMap();
 protected:
 	void	paintEvent(QPaintEvent *);
@@ -70,7 +71,8 @@ protected:
 	void	mouseDoubleClickEvent(QMouseEvent *);
 	void	wheelEvent(QWheelEvent * event);
 	void	keyPressEvent(QKeyEvent *);
-	bool	eventFilter(QObject *obj, QEvent *event);
+	void	resizeEvent(QResizeEvent *event);
+	//bool	eventFilter(QObject *obj, QEvent *event);
 private slots:
 	void	onTimer();
 signals:
