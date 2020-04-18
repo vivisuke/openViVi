@@ -8,6 +8,7 @@
 #include "TextCursor.h"
 #include "viewLineMgr.h"
 #include "../buffer/Buffer.h"
+#include "../buffer/UTF16.h"
 
 #define		DRAW_Y_OFFSET		2
 #define		MINMAP_LN_WD		4			//	行番号部分幅
@@ -297,12 +298,12 @@ void EditView::onTimer()
 }
 bool EditView::eventFilter(QObject *obj, QEvent *event)
 {
+#if	0
 	if( obj == &m_lineNumAreaWidget ) {
 		if( event->type() == QEvent::Paint ) {
 			drawLineNumbers();
 			return true;
 		}
-#if	0
 		if( event->type() == QEvent::MouseButtonPress) {
 			QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
 			lineNumberMousePressed(mouseEvent);
@@ -323,8 +324,8 @@ bool EditView::eventFilter(QObject *obj, QEvent *event)
 			wheelEvent(wEvent);
 			return true;
 		}
-#endif
 	}
+#endif
 	return false;
 }
 void EditView::mousePressEvent(QMouseEvent *event)
@@ -472,9 +473,11 @@ void EditView::drawLineNumberArea(QPainter& pt)
 		pt.drawText(px, py+m_fontHeight, number);
 	}
 }
+#if	0
 void EditView::drawLineNumbers()
 {
 }
+#endif
 void EditView::drawTextArea(QPainter& pt)
 {
 	auto rct = rect();
@@ -512,7 +515,7 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 	QFontMetrics fm(m_font);
 	QFontMetrics fmBold(m_fontBold);
 	QFontMetrics fmMB(m_fontMB);
-	const auto spcWidth = fm.width("8");
+	const auto chWidth = fm.width("8");
 	int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
 	int ix = 0;
 	const int last = ls + vlnsz;
@@ -579,10 +582,10 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 					col = typeSettings()->color(TypeSettings::TAB);
 					//pt.setPen(typeSettings()->color(TypeSettings::TAB));
 					//pt.drawText(px, py, ">");
-					int clmn = (px - m_lineNumAreaWidth) / spcWidth;
-					wd = (nTab - (clmn % nTab)) * spcWidth;
+					int clmn = (px - m_lineNumAreaWidth) / chWidth;
+					wd = (nTab - (clmn % nTab)) * chWidth;
 					//clmn += nTab - (clmn % nTab);
-					//px = m_lineNumAreaWidth + clmn * spcWidth;
+					//px = m_lineNumAreaWidth + clmn * chWidth;
 				} else {
 					//pt.setPen(typeSettings()->color(TypeSettings::TEXT));
 					//pt.drawText(px, py, token);
@@ -607,15 +610,26 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 		}
 		if( !token.isEmpty() ) {
 			pt.setPen(col);
-			if( bold )
+			if( bold ) {
 				pt.setFont(m_fontBold);
-			else if( token[0] < 0x80 )
+				pt.drawText(px, py, token);
+			} else if( token[0] < 0x100 ) {
 				pt.setFont(m_font);
-			else {
+				pt.drawText(px, py, token);
+			} else {
+				auto x = px;
+				for (int i = 0; i != token.size(); ++i) {
+					QString txt = token[i];
+					pt.drawText(x, py-m_fontHeight, chWidth*2, m_fontHeight, Qt::AlignHCenter, txt);
+					x += chWidth * 2;
+				}
+				wd = chWidth * 2 * token.size();
+#if	0
 				pt.setFont(m_fontMB);
 				wd = fmMB.width(token);
+#endif
 			}
-			pt.drawText(px, py, token);
+			//pt.drawText(px, py, token);
 		}
 		px += wd;
 		//
@@ -699,6 +713,17 @@ int EditView::textWidth(pos_t first, ssize_t sz, pos_t last, const Buffer* pbuff
 	int nTab = document()->typeSettings()->intValue(TypeSettings::TAB_WIDTH);
 	int tabWidth = fm.width(QString(nTab, QChar(' ')));
 	int wd = 0;
+#if	1
+	auto chWidth = fm.width("8");
+	const auto endpos = first + sz;
+	while( first != endpos ) {
+		auto ch = pbuffer->operator[](first++);
+		if( ch < 0x100 )
+			wd += chWidth;
+		else
+			wd += chWidth * 2;
+	}
+#else
 	bool bHTML = typeSettings()->name() == "HTML";
 	int ln = pbuffer->positionToLine(first);
 	const TypeSettings *pTypeSettings = typeSettings();
@@ -749,6 +774,7 @@ int EditView::textWidth(pos_t first, ssize_t sz, pos_t last, const Buffer* pbuff
 				wd += fm.width(token);
 		}
 	}
+#endif
 	return wd;
 }
 int EditView::pxToOffset(int vln, int px) const

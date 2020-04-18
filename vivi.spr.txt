@@ -241,9 +241,9 @@
 ◎ C 04/18 04/18 0.002 問題 オープンしたドキュメントの Document::m_fullPathName が空
 ◎ C 04/18 04/18 0.002 問題 MainWindow::updateFavoriteFileActions() でクラッシュする
 ◎ C 04/18 04/18 0.002 問題 お気に入りのファイルがオープンされない
-● C 04/18             ToDo 
-● C 04/18             ToDo 
-● C 04/18             ToDo 
-● C 04/18             ToDo 
-● C 04/18             ToDo 
+● C 04/18             ToDo View > Outline メニュー追加
+● C 04/18             ToDo View > Output メニュー追加
+● C 04/18             ToDo View > FileSystem メニュー追加
+◎ C 04/18 04/18 0.002 問題 欧文フォントの場合マルチバイト文字が等幅表示されない？
+● C 04/18             ToDo Other > Aboue ViVi：アイコン追加
 ● C 04/18             ToDo 
