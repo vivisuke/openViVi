@@ -56,6 +56,7 @@ private slots:
 	void	on_action_New_triggered();
 	void	on_action_Open_triggered();
 	void	on_action_Close_triggered();
+	void	on_action_AddCurrentFile();
 	void	on_action_eXit_triggered();
 	void	on_action_LineNumber_triggered();
 	void	on_action_TypeSettings_triggered();

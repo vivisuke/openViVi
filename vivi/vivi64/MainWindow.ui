@@ -66,7 +66,7 @@
      <property name="title">
       <string>&amp;FavoriteFiles</string>
      </property>
-     <addaction name="action_AddCurrectFile"/>
+     <addaction name="action_AddCurrentFile"/>
      <addaction name="action_RemoveFile"/>
      <addaction name="separator"/>
     </widget>
@@ -299,9 +299,9 @@
     <string>e&amp;Xit</string>
    </property>
   </action>
-  <action name="action_AddCurrectFile">
+  <action name="action_AddCurrentFile">
    <property name="text">
-    <string>AddCurrectFile(&amp;@)</string>
+    <string>AddCurrentFile(&amp;@)</string>
    </property>
   </action>
   <action name="action_RemoveFile">
