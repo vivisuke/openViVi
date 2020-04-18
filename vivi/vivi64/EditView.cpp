@@ -737,12 +737,17 @@ int EditView::textWidth(pos_t first, ssize_t sz, pos_t last, const Buffer* pbuff
 #if	1
 	auto chWidth = fm.width("8");
 	const auto endpos = first + sz;
-	while( first != endpos ) {
-		auto ch = pbuffer->operator[](first++);
-		if( ch < 0x100 )
+	auto pos = first;
+	while( pos != endpos ) {
+		auto ch = pbuffer->operator[](pos);
+		if( ch == '\t' ) {
+			wd += chWidth * (nTab - (pos - first) % nTab);
+		} else if( ch < 0x100 )
 			wd += chWidth;
-		else
+		else {
 			wd += chWidth * 2;
+		}
+		++pos;
 	}
 #else
 	bool bHTML = typeSettings()->name() == "HTML";
@@ -797,6 +802,11 @@ int EditView::textWidth(pos_t first, ssize_t sz, pos_t last, const Buffer* pbuff
 	}
 #endif
 	return wd;
+}
+void EditView::pointToLineOffset(const QPoint &pnt, int &vln, int &offset) const
+{
+	vln = qMin(pnt.y() / lineHeight() + m_scrollY0, EOFLine());
+	offset = pxToOffset(vln, pnt.x());
 }
 int EditView::pxToOffset(int vln, int px) const
 {
