@@ -238,8 +238,8 @@
 ◎ C 04/18 04/18 0.002 ToDo Cut/Copy/Paste：アイコン表示
 ◎ C 04/18 04/18 0.002 問題 タイプ設定を変更後、アプリを修了・再起動すると元に戻っている
 ◎ C 04/18 04/18 0.002 問題 「addCurrentFile」が「addCurrectFile」になっている
-● C 04/18             ToDo 
-● C 04/18             ToDo 
+◎ C 04/18 04/18 0.002 問題 オープンしたドキュメントの Document::m_fullPathName が空
+◎ C 04/18 04/18 0.002 問題 MainWindow::updateFavoriteFileActions() でクラッシュする
 ● C 04/18             ToDo 
 ● C 04/18             ToDo 
 ● C 04/18             ToDo 

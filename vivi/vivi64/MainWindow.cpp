@@ -160,6 +160,19 @@ void MainWindow::createActions()
         m_recentFileActs[i]->setVisible(false);
         connect(m_recentFileActs[i], SIGNAL(triggered()), this, SLOT(openRecentFile()));
     }
+    for (int i = 0; i < MaxFavoriteFiles; ++i) {
+        m_favoriteFileActs[i] = new QAction(this);
+        m_favoriteFileActs[i]->setVisible(false);
+        connect(m_favoriteFileActs[i], SIGNAL(triggered()), this, SLOT(openFavoriteFile()));
+    }
+    for (int i = 0; i < MaxClipboardHist; ++i) {
+        m_clipboardHistActs[i] = new QAction(this);
+        m_clipboardHistActs[i]->setVisible(false);
+        connect(m_clipboardHistActs[i], SIGNAL(triggered()), this, SLOT(insertClipboardHistText()));
+    }
+    m_clipboardHistActs[0]->setText(tr("No Clipboard Data"));
+    m_clipboardHistActs[0]->setEnabled(false);
+    m_clipboardHistActs[0]->setVisible(true);
 }
 void MainWindow::createMenus()
 {
@@ -167,6 +180,17 @@ void MainWindow::createMenus()
     for (int i = 0; i < MaxRecentFiles; ++i)
         MRU->addAction(m_recentFileActs[i]);
     updateRecentFileActions();
+    QMenu *fvMRU = ui.menu_FavoriteFiles;
+    for (int i = 0; i < MaxFavoriteFiles; ++i)
+        fvMRU->addAction(m_favoriteFileActs[i]);
+    updateFavoriteFileActions();
+#if	0
+    QMenu *menu = new QMenu();
+    for (int i = 0; i < MaxClipboardHist; ++i) {
+    	menu->addAction(m_clipboardHistActs[i]);
+    }
+    m_clipboardToolButton->setMenu(menu);
+#endif
 }
 //	settings から RecentFile 情報を取り出し、m_recentFileActs に設定
 void MainWindow::updateRecentFileActions()
@@ -191,6 +215,24 @@ void MainWindow::updateRecentFileActions()
 }
 void MainWindow::updateFavoriteFileActions()
 {
+    QSettings settings;
+    QStringList files = settings.value(KEY_FAVORITEFILELIST).toStringList();
+    int numRecentFiles = qMin(files.size(), (int)MaxFavoriteFiles);
+    for (int i = 0; i < numRecentFiles; ++i) {
+        QString fileName = files[i].replace('\\', '/');
+        QString text = tr("&%1 %2")
+        				.arg(QChar(i < 10 ? '0' + (i + 1) % 10 : 'A' + i - 10))
+        				.arg(fileName.replace("&", "&&"));
+        				//.arg(strippedName(files[i]));
+        m_favoriteFileActs[i]->setText(text);
+		//qDebug() << fileName;
+        m_favoriteFileActs[i]->setData(fileName);
+        m_favoriteFileActs[i]->setStatusTip(fileName);
+        setIcon(fileName, m_favoriteFileActs[i]);
+        m_favoriteFileActs[i]->setVisible(true);
+    }
+    for (int j = numRecentFiles; j < MaxFavoriteFiles; ++j)
+        m_favoriteFileActs[j]->setVisible(false);
 }
 void MainWindow::setIcon(const QString &fileName, QAction *action)
 {
@@ -490,6 +532,7 @@ bool MainWindow::loadFile(Document *doc, const QString &pathName, /*cchar *codec
 		return false;
 	closeNullDocs();		//	空のドキュメントをクローズ
 	qDebug() << "charEncoding = " << (int)charEncoding;
+	doc->setPathName(pathName);
 	doc->setPlainText(buf);
 	doc->setCharEncoding(charEncoding);
 	doc->setBOM(bomLength != 0);
@@ -512,6 +555,31 @@ void MainWindow::on_action_Close_triggered()
 {
 	qDebug() << "on_action_Close_triggered()";
 	tabCloseRequested(ui.tabWidget->currentIndex());
+}
+void MainWindow::on_action_RemoveFile_triggered()
+{
+	qDebug() << "on_action_RemoveFile()";
+}
+void MainWindow::on_action_AddCurrentFile_triggered()
+{
+	EditView *view = currentWidget();
+	if( !isEditView(view) ) return;
+	QString fullPathName = view->fullPathName();
+	if( fullPathName.isEmpty() ) return;
+	addToFavoriteFileList(fullPathName);
+	updateFavoriteFileActions();
+}
+//	レジストリの "favoriteFileList" に追加
+void MainWindow::addToFavoriteFileList(const QString &fullPathName)		//	レジストリの "favoriteFileList" に追加
+{
+    QSettings settings;
+    QStringList files = settings.value(KEY_FAVORITEFILELIST).toStringList();
+    QString absPath = QDir(fullPathName).absolutePath();
+    files.removeAll(absPath);
+    files.push_front(absPath);
+    while (files.size() > MaxFavoriteFiles)
+        files.removeLast();
+    settings.setValue(KEY_FAVORITEFILELIST, files);
 }
 void MainWindow::tabCloseRequested(int index)
 {

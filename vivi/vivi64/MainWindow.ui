@@ -299,11 +299,6 @@
     <string>e&amp;Xit</string>
    </property>
   </action>
-  <action name="action_AddCurrentFile">
-   <property name="text">
-    <string>AddCurrentFile(&amp;@)</string>
-   </property>
-  </action>
   <action name="action_RemoveFile">
    <property name="text">
     <string>RemoveFile(&amp;-)</string>
@@ -367,6 +362,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="action_AddCurrentFile">
+   <property name="text">
+    <string>AddCurrentFile(&amp;@)</string>
    </property>
   </action>
  </widget>
