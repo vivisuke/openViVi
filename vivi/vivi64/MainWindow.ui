@@ -298,7 +298,7 @@
   <action name="action_eXit">
    <property name="icon">
     <iconset resource="MainWindow.qrc">
-     <normaloff>:/MainWindow/Resources/exit_black.png</normaloff>:/MainWindow/Resources/exit_black.png</iconset>
+     <normaloff>:/MainWindow/Resources/power.png</normaloff>:/MainWindow/Resources/power.png</iconset>
    </property>
    <property name="text">
     <string>e&amp;Xit</string>

@@ -246,4 +246,14 @@
 ● C 04/18             ToDo View > FileSystem メニュー追加
 ◎ C 04/18 04/18 0.002 問題 欧文フォントの場合マルチバイト文字が等幅表示されない？
 ◎ C 04/18 04/18 0.002 ToDo Other > Aboue ViVi：アイコン追加
+◎ C 04/18 04/18 0.002 ToDo eXit アイコンを電源アイコンに変更？
+● C 04/18             ToDo 
+● C 04/18             ToDo 
+● C 04/18             ToDo 
+● C 04/18             ToDo 
+● C 04/18             ToDo 
+● C 04/18             ToDo 
+● C 04/18             ToDo 
+● C 04/18             ToDo 
+● C 04/18             ToDo 
 ● C 04/18             ToDo 
