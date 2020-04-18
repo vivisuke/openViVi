@@ -105,8 +105,9 @@ void EditView::setTypeSettings(TypeSettings *typeSettings)
 #endif
 int EditView::viewLineOffsetToPx(int vln, int offset) const
 {
-	return textWidth(viewLineMgr()->viewLineStartPosition(vln), offset,
-								viewLineMgr()->viewLineStartPosition(vln+1));
+	auto start = viewLineMgr()->viewLineStartPosition(vln);
+	auto next = viewLineMgr()->viewLineStartPosition(vln + 1);
+	return textWidth(start, offset, next);
 	//Q_ASSERT(0);
 	//return 0;
 }
@@ -536,7 +537,7 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 	QFontMetrics fm(m_font);
 	QFontMetrics fmBold(m_fontBold);
 	QFontMetrics fmMB(m_fontMB);
-	const auto chWidth = fm.width("8");
+	const auto chWidth = m_fontWidth;		//fm.width(QString("8"));
 	int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
 	int ix = 0;
 	const int last = ls + vlnsz;
@@ -732,10 +733,10 @@ int EditView::textWidth(pos_t first, ssize_t sz, pos_t last, const Buffer* pbuff
 	QFontMetrics fm = fontMetrics();
 	QFontMetrics fmBold(m_fontBold);
 	int nTab = document()->typeSettings()->intValue(TypeSettings::TAB_WIDTH);
-	int tabWidth = fm.width(QString(nTab, QChar(' ')));
+	//int tabWidth = fm.width(QString(nTab, QChar(' ')));
 	int wd = 0;
 #if	1
-	auto chWidth = fm.width("8");
+	auto chWidth = m_fontWidth;		//fm.width(QString("8"));
 	const auto endpos = first + sz;
 	auto pos = first;
 	while( pos != endpos ) {
@@ -811,6 +812,29 @@ void EditView::pointToLineOffset(const QPoint &pnt, int &vln, int &offset) const
 int EditView::pxToOffset(int vln, int px) const
 {
 	if( px == 0 ) return 0;
+	QFontMetrics fm = fontMetrics();
+	QFontMetrics fmBold(m_fontBold);
+	const int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
+	const int chWidth = m_fontWidth;		//fm.width(QString(nTab, QChar('8')));
+	int pos = viewLineMgr()->viewLineStartPosition(vln);
+	const int nextLinePos = viewLineMgr()->viewLineStartPosition(vln+1);
+	int wd = 0;
+	int offset = 0;
+	const Buffer* buf = buffer();
+	while( wd < px && pos < nextLinePos ) {
+		auto ch = buf->operator[](pos);
+		if( ch == '\t' ) {
+			wd += chWidth * (nTab - offset % nTab);
+		} else if( ch < 0x100 )
+			wd += chWidth;
+		else {
+			wd += chWidth * 2;
+		}
+		++offset;
+		++pos;
+	}
+	return px < wd ? offset - 1 : offset;
+#if	0
 	QFontMetricsF fm = QFontMetricsF(fontMetrics());
 	QFontMetricsF fmBold(m_fontBold);
 	int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
@@ -870,4 +894,5 @@ int EditView::pxToOffset(int vln, int px) const
 			wd = wd2;
 		}
 	}
+#endif
 }
