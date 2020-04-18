@@ -352,6 +352,7 @@ void EditView::resizeEvent(QResizeEvent *event)
 }
 void EditView::mousePressEvent(QMouseEvent *event)
 {
+	setFocus();
 	//	暫定実装
 	auto rct = rect();
 	QPoint pnt = event->pos();
