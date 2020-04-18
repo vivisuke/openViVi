@@ -129,6 +129,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(m_findLineEdit, SIGNAL(escPressed()), this, SLOT(onEscFindLineEdit()));
 	connect(m_findLineEdit, SIGNAL(focusIn()), this, SLOT(onFocusInFindLineEdit()));
 #endif
+	ui.mainToolBar->setObjectName("MainToolBar");
+	ui.mainToolBar->setWindowTitle(tr("MainToolBar"));
 	//
 	m_outlineDock = new QDockWidget(tr("Outline"));
 	m_outlineDock->setObjectName("Outline");
