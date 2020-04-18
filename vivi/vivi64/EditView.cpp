@@ -827,6 +827,8 @@ int EditView::pxToOffset(int vln, int px) const
 		auto ch = buf->operator[](pos);
 		if( ch == '\t' ) {
 			wd += chWidth * (nTab - offset % nTab);
+		} else if( ch == '\r' || ch == '\n' ) {
+			break;
 		} else if( ch < 0x100 )
 			wd += chWidth;
 		else {

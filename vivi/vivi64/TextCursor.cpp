@@ -102,6 +102,7 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 					break;
 			}
 #endif
+			auto ch = m_view->charAt(pos);
 			if( m_view->charAt(pos) == '\r' || m_view->charAt(pos) == '\n' ) {
 				if( m_view->charAt(pos) == '\r' && m_view->charAt(pos+1) == '\n' )
 					pos += 2;
