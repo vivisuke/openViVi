@@ -522,6 +522,12 @@ void MainWindow::openRecentFile()
         //openFile(action->data().toString());
     }
 }
+void MainWindow::openFavoriteFile()
+{
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (action)
+		createView(action->data().toString());
+}
 bool MainWindow::loadFile(Document *doc, const QString &pathName, /*cchar *codecName,*/
 										bool bJump)		//	保存カーソル位置にジャンプ
 {

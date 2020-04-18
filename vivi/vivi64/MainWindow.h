@@ -64,6 +64,7 @@ private slots:
 	void	on_action_GlobalSettings_triggered();
 	//
     void	openRecentFile();
+    void	openFavoriteFile();
 	void	tabCloseRequested(int index);
 	void	currentChanged(int index);
     void	onCharEncodingChanged(const QString &);
