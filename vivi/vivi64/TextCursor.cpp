@@ -230,13 +230,13 @@ void TextCursor::setLineAndPosition(int vln, pos_t pos, int mode)
 	if( isBoxSelectionMode() ) {
 		updateBoxCur();
 	}
+#endif
 	if( mode == MOVE_ANCHOR && m_mode == NOMAL_MODE ) {
 		m_anchor = pos;
 		m_anchorViewLine = m_viewLine;
-		if( isBoxSelectionMode() )
-			copyBoxCurToAnchor();
+		//if( isBoxSelectionMode() )
+		//	copyBoxCurToAnchor();
 	}
-#endif
 }
 uchar TextCursor::getCharType(wchar_t &ch)
 {

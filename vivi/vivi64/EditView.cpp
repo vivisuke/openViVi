@@ -469,6 +469,8 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		onDelete(ctrl, shift, alt);
 		break;
 	case Qt::Key_Backspace:
+			onBackSpace(ctrl, shift, alt);
+			break;
 #if	0
 		if( mainWindow()->viEngine()->mode() != Mode::COMMAND ) {
 			mainWindow()->viEngine()->onBackSpace();
@@ -948,6 +950,9 @@ void EditView::insertTextRaw(pos_t pos, const QString &text)
 }
 void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
 {
+			m_textCursor->movePosition(TextCursor::LEFT /*, TextCursor::KEEP_ANCHOR*/);
+	//if( !editForVar(QString()) )
+		m_textCursor->deleteChar(/*BS=*/true);
 }
 void EditView::onDelete(bool ctrl, bool shift, bool alt)
 {
