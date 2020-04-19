@@ -7,11 +7,11 @@
 - [X] File > Open
 - [X] File > Close
 - [X] File > RecentFiles
-- [ ] File > FavoriteFiles
+- [X] File > FavoriteFiles
 
 ## テキストカーソル
 - [X] テキストカーソル表示・ブリンク
-- [ ] 上下左右移動
+- [X] 上下左右移動
 - [X] Home, End, C-Home, C-End
 - [ ] 選択状態カーソル表示
 - [ ] S-上下左右カーソルキーによる選択
