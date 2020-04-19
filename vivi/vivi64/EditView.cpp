@@ -40,6 +40,7 @@ EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
 	//, m_viewLineMgr(new ViewLineMgr(this))
 {
 	Q_ASSERT(doc != nullptr);
+	setAttribute(Qt::WA_InputMethodEnabled);
 	//m_typeSettings = typeSettings == nullptr ? new TypeSettings() : typeSettings;
 	auto typeSettings = doc->typeSettings();
 	qDebug() << "typeSettings type = " << typeSettings->name();
@@ -499,6 +500,19 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	onCursorPosChanged();
 	makeCursorInView();
 	update();
+}
+QVariant EditView::inputMethodQuery( Qt::InputMethodQuery query ) const
+{
+	if( query == Qt::ImMicroFocus ) {
+	}
+	return QWidget::inputMethodQuery(query);
+}
+void EditView::inputMethodEvent(QInputMethodEvent * event)
+{
+	const QString &text = event->commitString();
+	if( !text.isEmpty() ) {		//	■ IME入力が確定した場合
+		m_textCursor->insertText(text);
+	}
 }
 void EditView::paintEvent(QPaintEvent *event)
 {

@@ -77,6 +77,8 @@ protected:
 	void	mouseDoubleClickEvent(QMouseEvent *);
 	void	wheelEvent(QWheelEvent * event);
 	void	keyPressEvent(QKeyEvent *);
+    QVariant	inputMethodQuery ( Qt::InputMethodQuery query ) const;
+	void	inputMethodEvent(QInputMethodEvent * event);
 	void	resizeEvent(QResizeEvent *event);
 	//bool	eventFilter(QObject *obj, QEvent *event);
 private slots:
