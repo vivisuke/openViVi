@@ -113,6 +113,7 @@ ssize_t Buffer::size() const
 }
 wchar_t Buffer::charAt(pos_t ix) const
 {
+	if (ix >= m_buffer->size()) return '\0';
 	return m_buffer->at(ix);
 }
 uint Buffer::lineFlags(line_t ln) const
