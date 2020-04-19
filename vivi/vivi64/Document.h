@@ -31,6 +31,7 @@ public:
 	Document(QString typeName = QString(), QObject *parent = 0);
 	~Document();
 public:
+	int		size() const;
 	wchar_t	charAt(pos_t pos) const;
 	bool	bom() const { return m_bBom; }
 	uchar	charEncoding() const { return m_charEncoding; }
@@ -54,6 +55,8 @@ public:
 	Buffer	*buffer() { return m_buffer; }
 	const Buffer	*buffer() const { return m_buffer; }
 	int		positionToLine(pos_t pos) const;
+	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
+	void	updateView(EditView *);
 private:
 	QString	m_pathName;
 	QString	m_title;

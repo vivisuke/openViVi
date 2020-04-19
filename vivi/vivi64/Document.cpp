@@ -39,6 +39,10 @@ Document::~Document()
 #endif
 	delete m_buffer;
 }
+int Document::size() const
+{
+	return m_buffer->size();
+}
 wchar_t Document::charAt(pos_t pos) const
 {
 	return m_buffer->charAt(pos);
@@ -125,4 +129,11 @@ void Document::buildMinMap()
 int Document::lineStartPosition(pos_t pos) const
 {
 	return buffer()->lineStartPosition(pos);
+}
+void Document::deleteText(pos_t pos, ssize_t sz, bool BS)
+{
+	m_buffer->deleteText(pos, sz, BS);
+}
+void Document::updateView(EditView *view)
+{
 }

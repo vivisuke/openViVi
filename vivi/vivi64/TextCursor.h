@@ -65,8 +65,17 @@ public:
 	int		viewLine() const { return m_viewLine; }
 	void	movePosition(int op, int mode = MOVE_ANCHOR, int n = 1, bool vi = false);
 	wchar_t	charAt() const;
+	wchar_t	charAt(int pos) const;
+	int		selectionSize() const;
+	int		selectionFirst() const;
+	int		selectionLast() const;
+	bool	hasSelection() const { return m_mode != NOMAL_MODE || m_anchor != m_pos; }
 public:
+	void	clearSelection();
+	void	setPosition(pos_t pos, int mode = MOVE_ANCHOR);
 	void	setLineAndPosition(int vln, pos_t pos, int mode = MOVE_ANCHOR);
+	void	deleteChar(bool BS = false, bool vi = false);
+	void	deletePrevChar(bool vi = false);
 protected:
 	uchar	getCharType(wchar_t &);
 	int		nextWord(int n, bool cw = false);

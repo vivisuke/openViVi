@@ -457,6 +457,9 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		m_scrollY0 = qMin(buffer()->lineCount(), m_scrollY0 + nLines);		//	暫定コード
 		m_textCursor->movePosition(TextCursor::DOWN, mvmd, nLines);
 		break;
+	case Qt::Key_Delete:
+		onDelete(ctrl, shift, alt);
+		break;
 	}
 	onCursorPosChanged();
 	makeCursorInView();
@@ -900,4 +903,13 @@ int EditView::pxToOffset(int vln, int px) const
 		}
 	}
 #endif
+}
+void EditView::onDelete(bool ctrl, bool shift, bool alt)
+{
+	m_textCursor->deleteChar();
+}
+void EditView::deleteText(pos_t pos, ssize_t sz, bool BS)
+{
+	document()->deleteText(pos, sz, BS);
+	update();
 }

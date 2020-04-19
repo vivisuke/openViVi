@@ -250,7 +250,7 @@ void Buffer::basicDeleteText(pos_t first, ssize_t sz, line_t line)
 		emit  onDeleted(first, lineCount0);
 		return;
 	}
-	wchar_t prevChar = m_buffer->operator[](first-1);	//	範囲外は '\0' を返す仕様なので範囲チェック不要
+	wchar_t prevChar = !first ? '\0' : m_buffer->operator[](first-1);	//	範囲外は '\0' を返す仕様なので範囲チェック不要
 	if( line < 0 ) line = m_lineMgr->positionToLine(first);
 	const line_t line0 = line;
 	const line_t lineCount0 = m_lineMgr->lineCount();

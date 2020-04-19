@@ -54,6 +54,7 @@ public:
 public:
 	bool	makeCursorInView(bool bQuarter = false);
 	void	onCursorPosChanged();
+	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
 protected:
 	void	drawLineNumbers();
 	void	drawLineNumberArea(QPainter&);
@@ -63,7 +64,7 @@ protected:
 	void	drawCursor(QPainter&);
 	void	updateLineNumberInfo();
 	void	onResized();
-	//void	buildMinMap();
+	void	onDelete(bool ctrl, bool shift, bool alt);
 protected:
 	void	paintEvent(QPaintEvent *);
 	void	mousePressEvent(QMouseEvent *);

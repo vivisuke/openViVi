@@ -1,6 +1,7 @@
 ﻿#include "TextCursor.h"
 #include "EditView.h"
 #include "viewLineMgr.h"
+#include "Document.h"
 #include "../buffer/UTF16.h"
 #include "../buffer/bufferUtl.h"
 
@@ -58,6 +59,10 @@ TextCursor::TextCursor(const TextCursor &x)
 wchar_t TextCursor::charAt() const
 {
 	return m_view->charAt(position());
+}
+wchar_t TextCursor::charAt(int pos) const
+{
+	return m_view->charAt(pos);
 }
 int TextCursor::viewLineStartPosition(int vln) const
 {
@@ -420,4 +425,73 @@ int TextCursor::prevSSWord(int n)
 int TextCursor::endSSWord(int n)
 {
 	return m_pos;
+}
+void TextCursor::clearSelection()
+{
+	m_mode = NOMAL_MODE;
+	m_anchor = m_pos;
+}
+void TextCursor::setPosition(pos_t pos, int mode)
+{
+	Q_ASSERT( pos >= 0 );
+	//int ln = m_view->positionToLine(pos);
+	//m_viewLine = m_view->docLineToViewLine(ln);
+	m_viewLine = m_view->viewLineMgr()->positionToViewLine(pos);
+	int ln = m_view->viewLineToDocLine(m_viewLine);
+	m_pos = pos;
+	m_px = m_view->viewLineOffsetToPx(m_viewLine, pos - m_view->viewLineStartPosition(m_viewLine));
+#if	0
+	if( isBoxSelectionMode() ) {
+		updateBoxCur();
+	}
+	if( mode == MOVE_ANCHOR && m_mode == NOMAL_MODE ) {
+		m_anchor = pos;
+		m_anchorViewLine = m_viewLine;
+		if( isBoxSelectionMode() )
+			copyBoxCurToAnchor();
+	}
+#endif
+}
+int TextCursor::selectionSize() const
+{
+	int sz = m_pos - m_anchor;
+	if( sz < 0 ) sz = -sz;
+	return sz;
+}
+int TextCursor::selectionFirst() const
+{
+	if( m_mode != VI_LINE_SEL_MODE )
+		return qMin(m_pos, m_anchor);
+	int vln = qMin(m_viewLine, m_anchorViewLine);
+	//return m_view->viewLineStartPosition(vln);
+	//	行選択モードの場合、選択範囲は論理行単位
+	int dln = m_view->viewLineToDocLine(vln);
+	return m_view->lineStartPosition(dln);
+}
+int TextCursor::selectionLast() const
+{
+	if( m_mode == VI_CHAR_SEL_MODE )
+		return qMax(m_pos, m_anchor) + 1;
+	if( m_mode != VI_LINE_SEL_MODE )
+		return qMax(m_pos, m_anchor);
+	int vln = qMax(m_viewLine, m_anchorViewLine);
+	//return m_view->viewLineStartPosition(vln+1);
+	int dln = m_view->viewLineToDocLine(vln);
+	return m_view->lineStartPosition(dln+1);
+}
+void TextCursor::deleteChar(bool BS, bool vi)
+{
+	pos_t pos = selectionFirst();
+	if( pos == m_view->document()->size() ) return;
+	if( !hasSelection() ) {
+		int sz = charAt(pos) == '\r' && pos + 1 < m_view->document()->size() && charAt(pos+1) == '\n' ? 2 : 1;
+		m_view->deleteText(pos, sz, BS);
+	} else
+		m_view->deleteText(pos, selectionLast() - pos, BS);
+	setPosition(pos);
+	clearSelection();
+	m_viewLine = m_view->viewLineMgr()->positionToViewLine(pos);
+	m_px = m_view->viewLineOffsetToPx(m_viewLine, pos - m_view->viewLineStartPosition(m_viewLine));
+	m_view->update();
+	m_view->document()->updateView(m_view);
 }
