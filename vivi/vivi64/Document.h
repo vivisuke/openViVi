@@ -56,6 +56,7 @@ public:
 	const Buffer	*buffer() const { return m_buffer; }
 	int		positionToLine(pos_t pos) const;
 	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
+	void	insertText(pos_t pos, const QString &);
 	void	updateView(EditView *);
 private:
 	QString	m_pathName;

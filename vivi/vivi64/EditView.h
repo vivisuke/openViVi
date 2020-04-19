@@ -55,7 +55,9 @@ public:
 	bool	makeCursorInView(bool bQuarter = false);
 	void	onCursorPosChanged();
 	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
+	void	insertTextRaw(pos_t pos, const QString &);
 protected:
+	void	resetCursorBlinking();
 	void	drawLineNumbers();
 	void	drawLineNumberArea(QPainter&);
 	void	drawTextArea(QPainter&);
@@ -64,6 +66,8 @@ protected:
 	void	drawCursor(QPainter&);
 	void	updateLineNumberInfo();
 	void	onResized();
+	void	insertTextSub(QString, bool ctrl, bool shift, bool alt);
+	void	onBackSpace(bool ctrl, bool shift, bool alt);
 	void	onDelete(bool ctrl, bool shift, bool alt);
 protected:
 	void	paintEvent(QPaintEvent *);

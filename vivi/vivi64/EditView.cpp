@@ -200,8 +200,9 @@ size_t EditView::bufferSize() const
 }
 void EditView::onCursorPosChanged()
 {
-	m_dispCursor = true;
-	m_tmCounter = TM_FPS / 2;
+	resetCursorBlinking();
+	//m_dispCursor = true;
+	//m_tmCounter = TM_FPS / 2;
 	pos_t pos = m_textCursor->position();
 	int ln = document()->positionToLine(pos);
 	emit cursorPosChanged(ln+1, pos - lineStartPosition(ln));
@@ -302,6 +303,12 @@ void EditView::setLineNumberVisible(bool b)
 	m_lineNumberVisible = b;
 	updateLineNumberInfo();
 	update();
+}
+void EditView::resetCursorBlinking()
+{
+	m_dispCursor = true;
+	m_tmCounter = TM_FPS / 2;
+	m_timer.start(1000/TM_FPS);
 }
 void EditView::onTimer()
 {
@@ -412,6 +419,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
 	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
 	int mvmd = shift ? TextCursor::KEEP_ANCHOR : TextCursor::MOVE_ANCHOR;
+	QString text = event->text();
 	switch( event->key() ) {
 	case Qt::Key_Left:
 		if( ctrl )
@@ -460,6 +468,31 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_Delete:
 		onDelete(ctrl, shift, alt);
 		break;
+	case Qt::Key_Backspace:
+#if	0
+		if( mainWindow()->viEngine()->mode() != Mode::COMMAND ) {
+			mainWindow()->viEngine()->onBackSpace();
+			onBackSpace(ctrl, shift, alt);
+			break;
+		}
+#endif
+		//	下にスルー
+	default: {
+		if( text.isEmpty() )
+			return;
+		if( text[0].unicode() == 0x08 && ctrl ) {	//	Ctrl + H
+			onBackSpace(false, shift, alt);
+			break;
+		}
+	ins:
+		insertTextSub(text, ctrl, shift, alt);
+		//##if( isModified() != im )
+		//##	emit modifiedChanged();
+		makeCursorInView();
+		resetCursorBlinking();
+		update();
+		return;
+	}
 	}
 	onCursorPosChanged();
 	makeCursorInView();
@@ -903,6 +936,18 @@ int EditView::pxToOffset(int vln, int px) const
 		}
 	}
 #endif
+}
+void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
+{
+			m_textCursor->insertText(text);		//	文字挿入
+}
+void EditView::insertTextRaw(pos_t pos, const QString &text)
+{
+	document()->insertText(pos, text);
+	update();
+}
+void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
+{
 }
 void EditView::onDelete(bool ctrl, bool shift, bool alt)
 {

@@ -495,3 +495,11 @@ void TextCursor::deleteChar(bool BS, bool vi)
 	m_view->update();
 	m_view->document()->updateView(m_view);
 }
+void TextCursor::insertText(const QString &text)
+{
+		m_view->insertTextRaw(position(), text);
+		//int sz = text == "\r\n" ? 1 : text.size();
+		QString t = text;
+		t.replace("\r\n", "\n");	//	CRLF は1回で移動
+		movePosition(RIGHT, MOVE_ANCHOR, t.size());
+}

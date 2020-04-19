@@ -76,6 +76,7 @@ public:
 	void	setLineAndPosition(int vln, pos_t pos, int mode = MOVE_ANCHOR);
 	void	deleteChar(bool BS = false, bool vi = false);
 	void	deletePrevChar(bool vi = false);
+	void	insertText(const QString &);
 protected:
 	uchar	getCharType(wchar_t &);
 	int		nextWord(int n, bool cw = false);

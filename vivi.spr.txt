@@ -262,13 +262,14 @@
 ◎ C 04/19 04/19 0.002 ToDo Delete：テキストカーソル位置文字をとりあえず削除
 ◎ C 04/19 04/19 0.002 問題 ビューをクリックしてもビューにフォーカスが移動しない
 ● D 04/19             ToDo MDITab：ピン留め機能？
-● C 04/19             ToDo 
-● C 04/19             ToDo 
-● C 04/19             ToDo 
-● C 04/19             ToDo 
-● C 04/19             ToDo 
-● C 04/19             ToDo 
-● C 04/19             ToDo 
-● C 04/19             ToDo 
-● C 04/19             ToDo 
-● C 04/19             ToDo 
+◎ C 04/20 04/20 0.002 ToDo カーソル位置に文字挿入をとりあえず可能に
+● C 04/20             ToDo 
+● C 04/20             ToDo 
+● C 04/20             ToDo 
+● C 04/20             ToDo 
+● C 04/20             ToDo 
+● C 04/20             ToDo 
+● C 04/20             ToDo 
+● C 04/20             ToDo 
+● C 04/20             ToDo 
+● C 04/20             ToDo 

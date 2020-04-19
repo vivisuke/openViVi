@@ -1,4 +1,5 @@
 ﻿#include <QtGui>
+#include <QMessageBox>
 #include <algorithm>
 #include "Document.h"
 #include "EditView.h"
@@ -133,6 +134,13 @@ int Document::lineStartPosition(pos_t pos) const
 void Document::deleteText(pos_t pos, ssize_t sz, bool BS)
 {
 	m_buffer->deleteText(pos, sz, BS);
+}
+void Document::insertText(pos_t pos, const QString &text)
+{
+	if( !m_buffer->insertText(pos, (const wchar_t *)text.data(), text.size()) ) {
+		QMessageBox::warning(0, tr("ViVi64"),
+								tr("because of No Memory, can't insert text."));
+	}
 }
 void Document::updateView(EditView *view)
 {
