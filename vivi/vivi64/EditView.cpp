@@ -588,15 +588,16 @@ void EditView::drawTextArea(QPainter& pt)
 //	１行表示
 //
 //			
-void EditView::drawLineText(QPainter &pt, int &px,
-												int py,			//	ベースライン位置
-												int ln,			//	論理行番号, 0 org
-												pos_t ls,			//	表示行先頭位置
-												int vlnsz,		//	表示行サイズ
-												pos_t nxdls,		//	次の論理行先頭位置
-												bool &inBlockComment,
-												bool &inLineComment,
-												QString &quotedText)
+void EditView::drawLineText(QPainter &pt,
+							int &px,
+							int py,			//	ベースライン位置
+							int ln,			//	論理行番号, 0 org
+							pos_t ls,			//	表示行先頭位置
+							int vlnsz,		//	表示行サイズ
+							pos_t nxdls,		//	次の論理行先頭位置
+							bool &inBlockComment,
+							bool &inLineComment,
+							QString &quotedText)
 {
 	QFontMetrics fm(m_font);
 	QFontMetrics fmBold(m_fontBold);
