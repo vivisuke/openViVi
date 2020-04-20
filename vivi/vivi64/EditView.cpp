@@ -504,6 +504,11 @@ void EditView::keyPressEvent(QKeyEvent *event)
 QVariant EditView::inputMethodQuery( Qt::InputMethodQuery query ) const
 {
 	if( query == Qt::ImMicroFocus ) {
+			pos_t pos = /*m_toDeleteIMEPreeditText ? m_preeditPos :*/ m_textCursor->position();
+			int vln = m_textCursor->viewLine();
+			int x = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) /*- horizontalScrollBar()->value()*/;
+			int y = (vln - m_scrollY0) * lineHeight();
+			return QVariant(QRect(x + m_lineNumAreaWidth, y, 2, lineHeight() + 4));
 	}
 	return QWidget::inputMethodQuery(query);
 }
@@ -578,7 +583,10 @@ void EditView::drawTextArea(QPainter& pt)
 	}
 }
 //	１行表示
-void EditView::drawLineText(QPainter &pt, int &px, int py,
+//
+//			
+void EditView::drawLineText(QPainter &pt, int &px,
+												int py,			//	ベースライン位置
 												int ln,			//	論理行番号, 0 org
 												pos_t ls,			//	表示行先頭位置
 												int vlnsz,		//	表示行サイズ
@@ -590,6 +598,7 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 	QFontMetrics fm(m_font);
 	QFontMetrics fmBold(m_fontBold);
 	QFontMetrics fmMB(m_fontMB);
+	const auto descent = fm.descent();
 	const auto chWidth = m_fontWidth;		//fm.width(QString("8"));
 	int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
 	int ix = 0;
@@ -695,7 +704,7 @@ void EditView::drawLineText(QPainter &pt, int &px, int py,
 				auto x = px;
 				for (int i = 0; i != token.size(); ++i) {
 					QString txt = token[i];
-					pt.drawText(x, py-m_fontHeight, chWidth*2, m_fontHeight, Qt::AlignHCenter, txt);
+					pt.drawText(x, py-m_fontHeight+descent, chWidth*2, m_fontHeight, Qt::AlignHCenter|Qt::AlignBottom, txt);
 					x += chWidth * 2;
 				}
 				wd = chWidth * 2 * token.size();
