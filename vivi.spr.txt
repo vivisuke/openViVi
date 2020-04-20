@@ -281,7 +281,17 @@
 ● C 04/20             ToDo 行カーソル表示？
 ◎ C 04/20 04/20 0.002 ToDo ステータスバー>タイプCB：全アイテムが表示されるようにドロップダウンの高さを広げる
 ◎ C 04/20 04/20 0.002 問題 .SPR ファイルをオープンしても、タイプが SPR にならない
-● C 04/20             ToDo 
-● C 04/20             ToDo 
-● C 04/20             ToDo 
-● C 04/20             ToDo 
+◎ C 04/21 04/21 0.002 ToDo ViewTokenizer：トークン中半角空白は別トークンにする
+● C 04/21             ToDo 
+● C 04/21             ToDo 
+● C 04/21             ToDo 
+● C 04/21             ToDo 
+● C 04/21             ToDo 
+● C 04/21             ToDo 
+● C 04/21             ToDo 
+● C 04/21             ToDo 
+● C 04/21             ToDo 
+● C 04/21             ToDo 
+● C 04/21             ToDo 
+● C 04/21             ToDo 
+● C 04/21             ToDo 

@@ -17,6 +17,7 @@ public:
 		DIGITS,		//	10進数
 		QUOTED,		//	シングル、ダブルクォートされた文字列
 		SYMBOL,		//	!"# などの記号類（半角空白も含む）
+		ANSI_SPACE,	//	半角空白
 		ZEN_SPACE,	//	全角空白
 		HTMLTAG,	//	<...> 内テキスト
 		COMMENT,	//	コメント

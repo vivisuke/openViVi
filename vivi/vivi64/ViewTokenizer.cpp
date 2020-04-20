@@ -231,6 +231,18 @@ QString ViewTokenizer::nextToken()
 		}
 		return m_tokenText = txt;
 	}
+	if( qch == ' ' ) {
+		QString txt(qch);
+		while( m_ix < m_lastBuffer ) {
+			qch = m_buffer->charAt(m_ix);
+			if( qch != ' ' )
+				break;
+			txt += qch;
+			++m_ix;
+		}
+		m_tokenType = ANSI_SPACE;
+		return m_tokenText = txt;
+	}
 	if( isDigit(qch) ) {
 		QString txt(qch);
 		while( m_ix < m_lastBuffer ) {
@@ -402,7 +414,7 @@ QString ViewTokenizer::nextToken()
 	while( m_ix < m_lastBuffer ) {
 		qch = m_buffer->charAt(m_ix);
 		if( qch.unicode() < 0x20
-			|| qch == '\"' || qch == '\'' || qch == '@'
+			|| qch == ' ' || qch == '\"' || qch == '\'' || qch == '@'
 			|| isAlnum(qch)
 			|| bHTMLTag /*&& !m_inHTMLTag*/ && qch == '<'
 			|| !m_inLineComment && !m_lineCommentText.isEmpty()
