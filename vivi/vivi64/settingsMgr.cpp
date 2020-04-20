@@ -139,7 +139,8 @@ void SettingsMgr::readSettings()
 			<< "F# = fs,fsi,fsx,fsscript,ml,mli"
 			<< "SQL = sql"
 			<< "HLSL = fx"
-			<< "LOG = log";;
+			<< "SPR = spr"
+			<< "LOG = log";
 	}
 	foreach(QString txt, lst) {
 		int x = txt.indexOf(' ');
