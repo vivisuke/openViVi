@@ -36,5 +36,6 @@
         <file>Resources/paste.png</file>
         <file>Resources/info_black.png</file>
         <file>Resources/power.png</file>
+        <file>Resources/SPR.png</file>
     </qresource>
 </RCC>

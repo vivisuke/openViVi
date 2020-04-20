@@ -113,6 +113,7 @@ private:
 	QIcon	*m_iconRUBY;
 	QIcon	*m_iconSQL;
 	QIcon	*m_iconLOG;
+	QIcon	*m_iconSPR;
 	QIcon	*m_iconTXT;
     enum { MaxRecentFiles = 10 + 26 };
     QAction *m_recentFileActs[MaxRecentFiles];

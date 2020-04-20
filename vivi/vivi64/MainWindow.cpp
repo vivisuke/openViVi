@@ -258,6 +258,7 @@ void MainWindow::setupStatusBar()
 	m_iconPYTHON = new QIcon(":/MainWindow/Resources/PYTHON.png");
 	m_iconRUBY = new QIcon(":/MainWindow/Resources/RUBY.png");
 	m_iconSQL = new QIcon(":/MainWindow/Resources/SQL.png");
+	m_iconSPR = new QIcon(":/MainWindow/Resources/SPR.png");
 	m_iconTXT = new QIcon(":/MainWindow/Resources/TXT.png");
 	//
 	statusBar()->addPermanentWidget(m_curCharCode = new QLabel());			//	カーソル位置文字コード
@@ -292,6 +293,7 @@ void MainWindow::setupStatusBar()
 	m_typeCB->addItem(*m_iconPYTHON, "PYTHON");
 	m_typeCB->addItem(*m_iconRUBY, "RUBY");
 	m_typeCB->addItem(*m_iconSQL, "SQL");
+	m_typeCB->addItem(*m_iconSPR, "SPR");
 	m_typeCB->addItem(*m_iconTXT, "TXT");
 	m_typeCB->setMaxVisibleItems(m_typeCB->count());
 	connect(m_typeCB, SIGNAL(currentIndexChanged(const QString &)),
@@ -454,6 +456,8 @@ QIcon *MainWindow::typeNameToIcon(const QString& typeName)
     	return m_iconMARKDN;
     else if( typeName == "LOG" )
     	return m_iconLOG;
+    else if( typeName == "SPR" )
+    	return m_iconSPR;
     else //if( typeName == "TXT" )
     	return m_iconTXT;
 }

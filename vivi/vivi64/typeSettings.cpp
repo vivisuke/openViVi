@@ -569,6 +569,36 @@ struct KeyTextItem keyTextTableLOG[] = {
 	{"ShortTextSel9",	L""},
 	{0, false}
 };
+struct KeyTextItem keyTextTableSPR[] = {
+	{"FontName",	L"Courier New"},
+	{"LineComment",	L""},
+	{"BlockCommentBeg",	L""},
+	{"BlockCommentEnd",	L""},
+	{"KeyWord1File",	L""},
+	{"KeyWord2File",	L""},
+	{"KeyWord3File",	L""},
+	{"ShortText0",		L""},
+	{"ShortText1",		L""},
+	{"ShortText2",		L""},
+	{"ShortText3",		L""},
+	{"ShortText4",		L""},
+	{"ShortText5",		L""},
+	{"ShortText6",		L""},
+	{"ShortText7",		L""},
+	{"ShortText8",		L""},
+	{"ShortText9",		L""},
+	{"ShortTextSel0",	L""},
+	{"ShortTextSel1",	L""},
+	{"ShortTextSel2",	L""},
+	{"ShortTextSel3",	L""},
+	{"ShortTextSel4",	L""},
+	{"ShortTextSel5",	L""},
+	{"ShortTextSel6",	L""},
+	{"ShortTextSel7",	L""},
+	{"ShortTextSel8",	L""},
+	{"ShortTextSel9",	L""},
+	{0, false}
+};
 const KeyTextItem *tableForType(const QString &typeName)
 {
 	//const KeyTextItem *table = keyTextTable;
@@ -600,11 +630,13 @@ const KeyTextItem *tableForType(const QString &typeName)
 		return keyTextTableSQL;
 	} else if( typeName == "HLSL" ) {
 		return keyTextTableHLSL;
-	} else if( typeName == "HTML" )
+	} else if( typeName == "HTML" ) {
 		return keyTextTableHTML;
-	else if( typeName == "LOG" ) {
+	} else if( typeName == "LOG" ) {
 		//m_boolValues[JUMP_EOF_AT_OPEN] = true;
 		return keyTextTableLOG;
+	} else if( typeName == "SPR" ) {
+		return keyTextTableSPR;
 	}
 	return keyTextTable;
 }
