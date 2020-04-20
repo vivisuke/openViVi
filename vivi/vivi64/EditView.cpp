@@ -705,16 +705,19 @@ void EditView::drawLineText(QPainter &pt, int &px,
 				pt.drawText(px, py, token);
 			} else {
 				auto x = px;
+				wd = 0;
 				for (int i = 0; i != token.size(); ++i) {
 					QString txt = token[i];
-					if( txt == " " )
+					if( txt == " " ) {
 						x += chWidth;
-					else {
+						wd += chWidth;
+					} else {
 						pt.drawText(x, py-m_fontHeight+descent, chWidth*2, m_fontHeight, Qt::AlignHCenter|Qt::AlignBottom, txt);
 						x += chWidth * 2;
+						wd += chWidth * 2;
 					}
 				}
-				wd = chWidth * 2 * token.size();
+				//wd = chWidth * 2 * token.size();
 #if	0
 				pt.setFont(m_fontMB);
 				wd = fmMB.width(token);
