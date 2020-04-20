@@ -233,7 +233,8 @@ public:
 	value_type& back()
 	{
 		//	undone: ƒf[ƒ^‚ª–³‚¢ê‡‘Î‰
-		return m_data[m_size - 1];
+		//return m_data[m_size - 1];
+		return ref(m_size - 1);
 	}
 	value_type &ref(pos_t ix)
 	{
