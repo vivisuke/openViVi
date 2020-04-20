@@ -293,6 +293,7 @@ void MainWindow::setupStatusBar()
 	m_typeCB->addItem(*m_iconRUBY, "RUBY");
 	m_typeCB->addItem(*m_iconSQL, "SQL");
 	m_typeCB->addItem(*m_iconTXT, "TXT");
+	m_typeCB->setMaxVisibleItems(m_typeCB->count());
 	connect(m_typeCB, SIGNAL(currentIndexChanged(const QString &)),
 			this, SLOT(onTypeChanged(const QString &)));
 }
