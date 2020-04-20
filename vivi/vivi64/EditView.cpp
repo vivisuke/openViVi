@@ -469,6 +469,9 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_Delete:
 		onDelete(ctrl, shift, alt);
 		break;
+	case Qt::Key_Escape:
+		//onEscape(ctrl, shift, alt);
+		break;
 	case Qt::Key_Backspace:
 			onBackSpace(ctrl, shift, alt);
 			break;
@@ -704,8 +707,12 @@ void EditView::drawLineText(QPainter &pt, int &px,
 				auto x = px;
 				for (int i = 0; i != token.size(); ++i) {
 					QString txt = token[i];
-					pt.drawText(x, py-m_fontHeight+descent, chWidth*2, m_fontHeight, Qt::AlignHCenter|Qt::AlignBottom, txt);
-					x += chWidth * 2;
+					if( txt == " " )
+						x += chWidth;
+					else {
+						pt.drawText(x, py-m_fontHeight+descent, chWidth*2, m_fontHeight, Qt::AlignHCenter|Qt::AlignBottom, txt);
+						x += chWidth * 2;
+					}
 				}
 				wd = chWidth * 2 * token.size();
 #if	0
