@@ -75,6 +75,7 @@
     <addaction name="action_Open"/>
     <addaction name="action_Close"/>
     <addaction name="action_Save"/>
+    <addaction name="action_SaveAs"/>
     <addaction name="separator"/>
     <addaction name="menu_RecentFiles"/>
     <addaction name="menu_FavoriteFiles"/>
@@ -372,6 +373,11 @@
   <action name="action_AddCurrentFile">
    <property name="text">
     <string>AddCurrentFile(&amp;@)</string>
+   </property>
+  </action>
+  <action name="action_SaveAs">
+   <property name="text">
+    <string>Save&amp;As</string>
    </property>
   </action>
  </widget>

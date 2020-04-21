@@ -56,10 +56,6 @@ QString Document::typeName() const
 {
 	return m_typeSettings->name();
 }
-QString Document::fullPathName() const
-{
-	return m_fullPathName;
-}
 int Document::lineCount() const
 {
 	return m_buffer->lineCount();

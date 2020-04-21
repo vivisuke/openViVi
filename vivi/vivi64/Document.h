@@ -39,6 +39,9 @@ public:
 	bool	saveFile() const;
 	int		lineCount() const;
 	int		EOFLine() const;
+	QString	fullPathName() const { return m_fullPathName; }
+	QString	title() const { return m_title; }
+	QString	typeName() const;
 	QString	text(pos_t pos, ssize_t sz) const;
 	QString	lineText(int) const;
 public:
@@ -54,8 +57,8 @@ public:
 	QPixmap&	minMap() { return m_minMap; }
 	int		lineStartPosition(pos_t pos) const;
 	
-	QString	fullPathName() const;
-	QString	typeName() const;
+	//QString	fullPathName() const;
+	//QString	typeName() const;
 	TypeSettings	*typeSettings() { return m_typeSettings; }
 	const TypeSettings	*typeSettings() const { return m_typeSettings; }
 	Buffer	*buffer() { return m_buffer; }

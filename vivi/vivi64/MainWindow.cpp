@@ -97,7 +97,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//, m_docNumber(0)
 {
 	ui.setupUi(this);
-	//m_settingsMgr = new SettingsMgr();
+	//g_settingsMgr = new SettingsMgr();
 	//char *ptr = nullptr;
 	//qDebug() << "sizeof(ptr) = " << sizeof(ptr) << "\n";
 	setWindowTitle(QString("ViVi64 ver %1").arg(VERSION_STR));
@@ -331,8 +331,8 @@ void MainWindow::setTypeSettings(EditView *view, TypeSettings *typeSettings)
 	view->document()->setTypeSettings(typeSettings);
 #if	0
 	if( typeSettings->name() == "HTML" ) {
-		view->setJSTypeSettings(m_settingsMgr->typeSettings("JS"));		//	for JavaScript
-		view->setPHPTypeSettings(m_settingsMgr->typeSettings("PHP"));		//	for PHP
+		view->setJSTypeSettings(g_settingsMgr.typeSettings("JS"));		//	for JavaScript
+		view->setPHPTypeSettings(g_settingsMgr.typeSettings("PHP"));		//	for PHP
 	} else {
 		view->setJSTypeSettings(0);
 		view->setPHPTypeSettings(0);
@@ -572,6 +572,10 @@ void MainWindow::on_action_Save_triggered()
 	if( !isEditView(view) ) return;
 	doSave(view);
 }
+void MainWindow::on_action_SaveAs_triggered()
+{
+	qDebug() << "on_action_SaveAs_triggered()";
+}
 bool MainWindow::doSave(EditView *view)
 {
 	if( view->fullPathName().isEmpty() ) {
@@ -579,8 +583,108 @@ bool MainWindow::doSave(EditView *view)
 	} else
 		return view->saveFile();
 }
-bool MainWindow::doSaveAs(EditView *)
+bool MainWindow::doSaveAs(EditView *view)
 {
+	QString fileName = view->fullPathName();
+	if( fileName.isEmpty() ) {
+#if	0
+		QString tn = view->typeSettings()->name();
+		if( tn == "Default" || tn == "TXT" || tn == "MARKDN" ) {
+			fileName = getLineText(*view->buffer(), 0).trimmed();
+			fileName.replace("\t", " ");
+			fileName.replace(QRegExp("[\\/:*?\"<>|]"), "");
+		}
+		else if( tn == "HTML" ) {
+			const int slen = strlen("<title>");
+			int ix = view->buffer()->strstr(L"<title>", slen, 0, -1, /*ic=*/true);
+			if( ix >= 0 ) {
+				int ix2 = view->buffer()->strstr(L"</title>", strlen("</title>"), ix, -1, /*ic=*/true);
+				if( ix2 >= 0 ) {
+					fileName = getText(*view->buffer(), ix+slen, ix2-ix-slen);
+					fileName.replace(QRegExp("[\\/:*?\"<>|]"), "");
+					fileName = fileName.trimmed();
+				}
+			}
+		}
+#endif
+#if	0
+		else if( tn == "PASCAL" ) {
+			SSSearch sss;
+			const int slen = strlen("program");
+			int ix = view->buffer()->indexOf(sss, L"\\bprogram\\b", slen+2, 0, 0, /*last=*/-1, SSSearch::STD_REGEX);
+			if( ix >= 0 ) {
+				ix += slen;
+				while( isSpaceChar(view->charAt(ix)) ) ++ix;
+				if( isAlphaOrUnderbar(view->charAt(ix)) ) {
+					int ix2 = ix;
+					wchar_t c;
+					//while( isAlnumOrUnderbar(view->charAt(ix2)) ) ++ix2;
+					while( !isNewLineChar(c = view->charAt(ix2)) && c != ';' ) ++ix2;
+					if( c == ';' ) {
+						fileName = getText(*view->buffer(), ix, ix2-ix);
+						fileName.replace(QRegExp("[\\/:*?\"<>|]"), "");
+						fileName = fileName.trimmed();
+					}
+				}
+			}
+		}
+#endif
+	}
+	if( fileName.isEmpty() )
+		fileName = view->title();
+	QString ext0 = getExtension(fileName);
+	if (ext0.isEmpty()) {
+		//	undone: 拡張子が無い場合は、タイプのデフォルト拡張子
+		ext0 = view->typeSettings()->defaultExt();
+	}
+	QStringList filter;
+	filter	<< tr("Text files (*.txt)")
+			<< tr("cpp files (*.cpp)")
+			<< tr("h files (*.h)")
+			<< tr("Java (*.java)")
+			<< tr("Pascal (*.pas)")
+			<< tr("Ruby (*.rb)")
+			<< tr("Python (*.py)")
+			<< tr("C#(*.cs)")
+			<< tr("F#(*.fs)")
+			<< tr("HTML files (*.html)")
+			<< tr("Markdown files (*.md)")
+			<< tr("JavaScript (*.js)")
+			<< tr("css files (*.css)")
+			<< tr("CGI files (*.cgi)")
+			<< tr("Perl files (*.pl)")
+			<< tr("PHP files (*.php)")
+			<< tr("LOG files (*.log)")
+			<< tr("SQL files (*.sql)")
+			<< tr("CSV files (*.csv)")
+			<< tr("TSV files (*.tsv)")
+			<< tr("HLSL files (*.fx)")
+			<< tr("all files (*.*)");
+	QString *selptr = 0;
+	const QString e = "(*." + ext0.toLower() + ")";
+	int ix = 0;
+	for(; ix < filter.size(); ++ix) {
+		if( filter[ix].endsWith(e) ) break;
+	}
+	if( ix < filter.size() )
+		selptr = &filter[ix];
+	fileName = QFileDialog::getSaveFileName(this, tr("Save File"), fileName,
+											filter.join(";;"),
+											selptr);
+	if( fileName.isEmpty() ) return false;
+	QString ext = getExtension(fileName);
+	if( !ext.isEmpty() && ext != ext0 ) {
+		TypeSettings *typeSettings = g_settingsMgr.typeSettingsForExt(ext);
+		setTypeSettings(view, typeSettings);
+		int ix = m_typeCB->findText(view->typeName());
+		if( ix < 0 ) ix = 0;
+		m_typeCB->setCurrentIndex(ix);
+	}
+	view->setFullPathName(fileName);
+	view->saveFile();
+	addToRecentFileList(fileName);
+	updateRecentFileActions();
+	//##updateTabText(view);
 	return true;
 }
 void MainWindow::on_action_Close_triggered()

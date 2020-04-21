@@ -25,6 +25,7 @@ public:
 	pos_t	cursorPosition() const;
 	int		EOFLine() const;
 	QString	fullPathName() const;
+	QString	title() const;
 	QString	typeName() const;
 	TypeSettings	*typeSettings();	// { return m_typeSettings; }
 	const TypeSettings	*typeSettings() const;	// { return m_typeSettings; }
@@ -57,6 +58,7 @@ public:
 	void	onCursorPosChanged();
 	void	insertTextRaw(pos_t pos, const QString &);
 	void	updateFont();
+	void	setFullPathName(const QString &);
 	bool	saveFile() const;
 protected:
 	void	resetCursorBlinking();

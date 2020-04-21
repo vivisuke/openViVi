@@ -90,6 +90,10 @@ void EditView::setPlainText(const QString& txt)
 	document()->buildMinMap();
 	update();
 }
+void EditView::setFullPathName(const QString &pathName)
+{
+	document()->setPathName(pathName);
+}
 TypeSettings *EditView::typeSettings()
 {
 	return document()->typeSettings();
@@ -295,6 +299,10 @@ QString EditView::typeName() const
 QString EditView::fullPathName() const
 {
 	return document()->fullPathName();
+}
+QString EditView::title() const
+{
+	return document()->title();
 }
 void EditView::setLineNumberVisible(bool b)
 {
