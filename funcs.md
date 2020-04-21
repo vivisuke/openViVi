@@ -6,6 +6,9 @@
 - [X] File > New
 - [X] File > Open
 - [X] File > Close
+- [ ] File > Save
+- [ ] File > SaveAs
+- [ ] File > SaveAll
 - [X] File > RecentFiles
 - [X] File > FavoriteFiles
 
@@ -19,8 +22,10 @@
 - [ ] マウスクリック＋ドラッグによるテキスト選択
 
 ## 編集
-- [ ] 文字挿入
-- [ ] カーソル位置文字削除（Del, BackSpace）
+- [X] 文字挿入
+- [X] カーソル位置文字削除（Del, BackSpace）
+- [ ] 削除文字落下アニメーション
+- [X] IMEオンザスポット
 - [ ] Undo/Redo
 - [ ] 選択文字削除（Del, BackSpace）
 
@@ -37,46 +42,5 @@
 - [X] タイプ設定ダイアログ
 - [ ] 全体設定ダイアログ
 
-# メニュー
-- [ ] File  
-  - [ ] New  
-  - [ ] Open  
-  - [ ] Close
-  - [ ] CloseAll
-  - [ ] Save
-  - [ ] SaveAs
-  - [ ] SaveAll
-  - [ ] SaveCloseAll
-  - [ ] ReLoad
-  - [ ] .h/.cpp
-  - [ ] RecentFiles
-  - [ ] FavoriteFiles
-  - [ ] eXit
-- [ ] Edit
-  - [ ] Undo
-  - [ ] Redo
-  - [ ] Cut
-  - [ ] Copy
-  - [ ] Paste
-  - [ ] ClipboardHist
-  - [ ] SelectAll
-  - [ ] Input
-  - [ ] Conversion
-  - [ ] ZenCoding
-  - [ ] DynamicCompletion
-  - [ ] KeywordCompletion
-- [ ] Search
-- [ ] View
-  - [ ] LineNumber
-  - [ ] Collapse
-  - [ ] CollapseAll
-  - [ ] Expand
-  - [ ] Output
-  - [ ] Outline
-  - [ ] FileSystem
-- [ ] Window
-  - [ ] SplitVertical
-  - [ ] SplitHorizontal
-- [ ] Tool
-- [ ] Settings
-- [ ] Other
+## その他
+- [ ] About
