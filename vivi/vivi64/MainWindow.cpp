@@ -407,6 +407,7 @@ EditView *MainWindow::createView(QString pathName)
 		title = tr("Untitled-%1").arg(++g_docNumber);
 	}
 	Document *doc = new Document(typeName);
+	doc->setTitle(title);
 	//Buffer* buffer = doc->buffer();
 	//auto* typeSettings = new TypeSettings(typeName);
 	EditView* view = new EditView(doc /*, typeSettings*/);	//QPlainTextEdit();	//createView();
