@@ -519,8 +519,17 @@ void EditView::inputMethodEvent(QInputMethodEvent * event)
 {
 	const QString &text = event->commitString();
 	if( !text.isEmpty() ) {		//	■ IME入力が確定した場合
+		m_preeditString.clear();
 		m_textCursor->insertText(text);
 	}
+	m_preeditString = event->preeditString();
+	if( !m_preeditString.isEmpty() ) {		//	■ 変換候補ありの場合
+		qDebug() << "  start = " << event->replacementStart () <<
+					", len = " << event->replacementLength ();
+		qDebug() << "  insertText " << m_preeditString;
+		update();
+	}
+	QWidget::inputMethodEvent( event );
 }
 void EditView::paintEvent(QPaintEvent *event)
 {
@@ -540,6 +549,7 @@ void EditView::paintEvent(QPaintEvent *event)
 	pt.drawRect(rct);
 	//
 	drawLineNumberArea(pt);		//	行番号エリア描画
+	drawPreeditString(pt);
 	drawTextArea(pt);			//	テキストエイア描画
 	drawMinMap(pt);				//	ミニマップ描画
 	drawCursor(pt);				//	テキストカーソル表示
@@ -563,6 +573,7 @@ void EditView::drawLineNumbers()
 #endif
 void EditView::drawTextArea(QPainter& pt)
 {
+	if( m_preeditString.isEmpty() ) m_preeditWidth = 0;
 	auto rct = rect();
 	pt.setPen(Qt::black);
 	int px, py = 0 /*DRAW_Y_OFFSET*2*/;
@@ -582,7 +593,10 @@ void EditView::drawTextArea(QPainter& pt)
 	}
 	if( buffer()->isBlankEOFLine() ) {
 		pt.setPen(typeSettings()->color(TypeSettings::EOF_MARK));
-		pt.drawText(m_lineNumAreaWidth, py+m_fontHeight, "[EOF]");
+		auto px = m_lineNumAreaWidth;
+		if( m_textCursor->viewLine() == EOFLine() && !m_preeditString.isEmpty() )
+			px += m_preeditWidth;
+		pt.drawText(px, py+m_fontHeight, "[EOF]");
 	}
 }
 //	１行表示
@@ -613,7 +627,10 @@ void EditView::drawLineText(QPainter &pt,
 	tkn.setInLineComment(inLineComment);
 	tkn.setInBlockComment(inBlockComment);
 	QString token = tkn.nextToken();
+	int peDX = 0;
 	while( !token.isEmpty() ) {
+		if( !m_preeditString.isEmpty() && ln == m_textCursor->viewLine() && tkn.tokenix() >= m_textCursor->position() )
+			peDX = m_preeditWidth;
 		if( tkn.tokenix() + token.size() > last )
 			token = token.left(last - tkn.tokenix());
 		//qDebug() << "type = " << tkn.tokenType() << ", token = " << token;
@@ -634,31 +651,18 @@ void EditView::drawLineText(QPainter &pt,
 				if( typeSettings()->isKeyWord1(token) ) {
 					col = typeSettings()->color(TypeSettings::KEYWORD1);
 					bold = typeSettings()->boolValue(TypeSettings::KEYWORD1_BOLD);
-					//if( typeSettings()->boolValue(TypeSettings::KEYWORD1_BOLD) )
-					//	pt.setFont(m_fontBold);
 				} else if( typeSettings()->isKeyWord2(token) ) {
 					col = typeSettings()->color(TypeSettings::KEYWORD2);
 					bold = typeSettings()->boolValue(TypeSettings::KEYWORD2_BOLD);
-					//if( typeSettings()->boolValue(TypeSettings::KEYWORD2_BOLD) )
-					//	pt.setFont(m_fontBold);
 				}
-				//pt.setPen(typeSettings()->color(TypeSettings::TEXT));
-				//pt.drawText(px, py, token);
-				//px += fm.width(token);
 				break;
 			case ViewTokenizer::DIGITS:
 				if( !inLineComment && !inBlockComment )
 					col = typeSettings()->color(TypeSettings::DIGITS);
-				//pt.setPen(typeSettings()->color(TypeSettings::DIGITS));
-				//pt.drawText(px, py, token);
-				//px += fm.width(token);
 				break;
 			case ViewTokenizer::QUOTED:
 				if( !inLineComment && !inBlockComment )
 					col = typeSettings()->color(TypeSettings::STRING);
-				//pt.setPen(typeSettings()->color(TypeSettings::STRING));
-				//pt.drawText(px, py, token);
-				//px += fm.width(token);
 				break;
 			case ViewTokenizer::ZEN_SPACE:
 				token = QChar(L'□');
@@ -668,16 +672,9 @@ void EditView::drawLineText(QPainter &pt,
 				if( token == "\t" ) {
 					token = ">";
 					col = typeSettings()->color(TypeSettings::TAB);
-					//pt.setPen(typeSettings()->color(TypeSettings::TAB));
-					//pt.drawText(px, py, ">");
 					int clmn = (px - m_lineNumAreaWidth) / chWidth;
 					wd = (nTab - (clmn % nTab)) * chWidth;
-					//clmn += nTab - (clmn % nTab);
-					//px = m_lineNumAreaWidth + clmn * chWidth;
 				} else {
-					//pt.setPen(typeSettings()->color(TypeSettings::TEXT));
-					//pt.drawText(px, py, token);
-					//px += fm.width(token);
 				}
 				break;
 			case ViewTokenizer::NEWLINE:
@@ -700,12 +697,12 @@ void EditView::drawLineText(QPainter &pt,
 			pt.setPen(col);
 			if( bold ) {
 				pt.setFont(m_fontBold);
-				pt.drawText(px, py, token);
+				pt.drawText(px+peDX, py, token);
 			} else if( token[0] < 0x100 ) {
 				pt.setFont(m_font);
-				pt.drawText(px, py, token);
+				pt.drawText(px+peDX, py, token);
 			} else {
-				auto x = px;
+				auto x = px+peDX;
 				wd = 0;
 				for (int i = 0; i != token.size(); ++i) {
 					QString txt = token[i];
@@ -773,6 +770,27 @@ void EditView::drawMinMap(QPainter& pt)
 	pt.setPen(Qt::red);
 	pt.drawRect(rct);				//	現エリアに赤枠描画
 }
+void EditView::drawPreeditString(QPainter&pt)
+{
+	if( m_preeditString.isEmpty() ) return;
+	QFontMetrics fm(m_font);
+	pt.setOpacity(1.0);
+	pt.setPen(typeSettings()->color(TypeSettings::TEXT));
+	pos_t pos = m_textCursor->position();
+	int vln = m_textCursor->viewLine();
+	int offset;
+	int dln = viewLineToDocLine(vln, offset);
+	int py = (vln - m_scrollY0) * lineHeight() + DRAW_Y_OFFSET*2;
+	QRect rct = rect();
+	if( py < 0 || py >= rct.height() )
+		return;		//	画面外の場合
+	int hv = 0;		//horizontalScrollBar()->value();
+	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth;
+	int ht = fm.ascent();
+	const auto descent = fm.descent();
+	pt.drawText(px, py+m_fontHeight-descent, m_preeditString);
+	m_preeditWidth = fm.width(m_preeditString);
+}
 void EditView::drawCursor(QPainter& pt)
 {
 	if( !m_dispCursor ) return;
@@ -781,13 +799,13 @@ void EditView::drawCursor(QPainter& pt)
 	int vln = m_textCursor->viewLine();
 	int offset;
 	int dln = viewLineToDocLine(vln, offset);
-	//int py = (vln - verticalScrollBar()->value()) * lineHeight() + DRAW_Y_OFFSET*2;
 	int py = (vln - m_scrollY0) * lineHeight() + DRAW_Y_OFFSET*2;
 	QRect rct = rect();
 	if( py < 0 || py >= rct.height() )
 		return;		//	画面外の場合
 	int hv = 0;		//horizontalScrollBar()->value();
 	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth;
+	if( !m_preeditString.isEmpty() ) px += m_preeditWidth;
 	int ht = QFontMetrics(m_font).ascent();
 	pt.fillRect(QRect(px /*- hv*/, py, CURSOR_WD, ht),
 						typeSettings()->color(TypeSettings::CURSOR));

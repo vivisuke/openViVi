@@ -31,7 +31,6 @@ public:
 	//const TypeSettings* cTypeSettings() { return (const TypeSettings*)m_typeSettings; }
 	int	viewLineOffsetToPx(int vln, int offset) const;
 	void	setLineNumberVisible(bool);
-	void	updateFont();
 	void	setPlainText(const QString&);
 	//void	setTypeSettings(TypeSettings *);
 	Document*	document() { return m_document; }
@@ -53,17 +52,19 @@ public:
 	void	pointToLineOffset(const QPoint &, int &, int &) const;
 public:
 	bool	makeCursorInView(bool bQuarter = false);
-	void	onCursorPosChanged();
 	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
+	void	onCursorPosChanged();
 	void	insertTextRaw(pos_t pos, const QString &);
+	void	updateFont();
 protected:
 	void	resetCursorBlinking();
 	void	drawLineNumbers();
 	void	drawLineNumberArea(QPainter&);
 	void	drawTextArea(QPainter&);
 	void	drawLineText(QPainter &, int &, int, int, pos_t, int, pos_t, bool&, bool&, QString&);
-	void	drawMinMap(QPainter&);
+	void	drawPreeditString(QPainter&);
 	void	drawCursor(QPainter&);
+	void	drawMinMap(QPainter&);
 	void	updateLineNumberInfo();
 	void	onResized();
 	void	insertTextSub(QString, bool ctrl, bool shift, bool alt);
@@ -98,8 +99,12 @@ private:
 	int		m_lineNumWidth;		//	行番号表示幅
 	int		m_lineNumAreaWidth;
 	int		m_nViewLine;
-	int		m_preeditPos;			//	変換位置
 	int		m_tmCounter;
+	int		m_preeditWidth;			//	変換中文字列表示幅
+	int		m_preeditPos;			//	変換位置
+	//int		m_preeditLine;			//	変換行（論理行番号）
+	QString	m_selectedString;		//	変換開始時に選択されていた文字列
+	QString	m_preeditString;		//	変換中文字列
 	QTimer	m_timer;
 	//TypeSettings	*m_typeSettings;		//	タイプ設定へのウィークポインタ
 	//##TypeSettings	*m_jsTypeSettings;		//	JavaScriptタイプ設定へのウィークポインタ
