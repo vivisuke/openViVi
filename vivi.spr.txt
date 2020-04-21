@@ -287,7 +287,7 @@
 ○ C 04/21             ToDo ViewTokenizer：コンストラクタにカーソル位置を渡すようにし、カーソル位置でトークンを分ける
 ◎ C 04/21 04/22 0.002 ToDo File > Save 機能実装
 ◎ C 04/22 04/22 0.002 ToDo File > SaveAs メニュー追加
-● C 04/22             ToDo File > SaveAs 機能実装
+◎ C 04/22 04/22 0.002 ToDo File > SaveAs 機能実装
 ● C 04/22             ToDo タイプ設定：行間（行ピッチ？）追加？
 ● C 04/22             問題 タイプ設定 > 行カーソル をOFFにしても行カーソルが表示されたまま
 ● C 04/22             問題 pathName と fullPathName が混在しているのでどちらかに統一

@@ -575,6 +575,10 @@ void MainWindow::on_action_Save_triggered()
 void MainWindow::on_action_SaveAs_triggered()
 {
 	qDebug() << "on_action_SaveAs_triggered()";
+	EditView *view = currentWidget();
+	if( !isEditView(view) ) return;
+	doSaveAs(view);
+	//##updateWindowTitle();
 }
 bool MainWindow::doSave(EditView *view)
 {
