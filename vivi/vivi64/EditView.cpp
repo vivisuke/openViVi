@@ -551,6 +551,7 @@ void EditView::paintEvent(QPaintEvent *event)
 	drawTextArea(pt);			//	テキストエイア描画
 	drawMinMap(pt);				//	ミニマップ描画
 	drawCursor(pt);				//	テキストカーソル表示
+	drawLineCursor(pt);			//	行カーソル表示
 }
 void EditView::drawLineNumberArea(QPainter& pt)
 {
@@ -802,6 +803,23 @@ void EditView::drawPreeditString(QPainter&pt)
 	const auto descent = fm.descent();
 	pt.drawText(px, py+m_fontHeight-descent, m_preeditString);
 	m_preeditWidth = fm.width(m_preeditString);
+}
+//	行カーソル表示
+void EditView::drawLineCursor(QPainter &pt)
+{
+	if( !typeSettings()->boolValue(TypeSettings::LINE_CURSOR) ) return;
+	int vln = m_textCursor->viewLine();
+	int py = (vln - m_scrollY0) * lineHeight() + DRAW_Y_OFFSET*2;
+	py += fontHeight();
+	QRect rct = rect();
+	if( py >= 0 && py < rct.height() ) {
+		//QPixmap wholeMap = document()->wholeMap();
+		pt.setPen(typeSettings()->color(TypeSettings::LINE_CURSOR));
+		int wd = rct.width();
+		//if( globSettings()->boolValue(GlobalSettings::WHOLE_MAP) && py <= wholeMap.height() )
+			wd -= MINMAP_WIDTH;
+		pt.drawLine(0, py, wd, py);
+	}
 }
 void EditView::drawCursor(QPainter& pt)
 {

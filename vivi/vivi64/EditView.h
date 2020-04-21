@@ -66,6 +66,7 @@ protected:
 	void	drawLineText(QPainter &, int &, int, int, pos_t, int, pos_t, bool&, bool&, QString&);
 	void	drawPreeditString(QPainter&);
 	void	drawCursor(QPainter&);
+	void	drawLineCursor(QPainter &);
 	void	drawMinMap(QPainter&);
 	void	updateLineNumberInfo();
 	void	onResized();
