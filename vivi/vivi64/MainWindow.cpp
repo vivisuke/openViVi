@@ -565,6 +565,24 @@ void MainWindow::addToRecentFileList(const QString &fullPath)		//	レジスト�
         files.removeLast();
     settings.setValue(KEY_RECENTFILELIST, files);
 }
+void MainWindow::on_action_Save_triggered()
+{
+	qDebug() << "on_action_Save_triggered()";
+	EditView *view = currentWidget();
+	if( !isEditView(view) ) return;
+	doSave(view);
+}
+bool MainWindow::doSave(EditView *view)
+{
+	if( view->fullPathName().isEmpty() ) {
+		return doSaveAs(view);
+	} else
+		return view->saveFile();
+}
+bool MainWindow::doSaveAs(EditView *)
+{
+	return true;
+}
 void MainWindow::on_action_Close_triggered()
 {
 	qDebug() << "on_action_Close_triggered()";

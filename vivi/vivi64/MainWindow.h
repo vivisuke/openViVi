@@ -46,6 +46,8 @@ protected:
 	void	onViewLineNumberChanged(const QString &, bool);
 	QIcon	*typeNameToIcon(const QString&);
 	void	closeNullDocs();			//	空のドキュメントをクローズ
+	bool	doSave(EditView *);
+	bool	doSaveAs(EditView *);
     
 protected:
 	void	dragEnterEvent(QDragEnterEvent *event);
@@ -55,6 +57,7 @@ private slots:
 	void	on_action_NewWindow_triggered();
 	void	on_action_New_triggered();
 	void	on_action_Open_triggered();
+	void	on_action_Save_triggered();
 	void	on_action_Close_triggered();
 	void	on_action_AddCurrentFile_triggered();
 	void	on_action_RemoveFile_triggered();

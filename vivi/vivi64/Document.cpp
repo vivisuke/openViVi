@@ -48,13 +48,42 @@ wchar_t Document::charAt(pos_t pos) const
 {
 	return m_buffer->charAt(pos);
 }
+bool Document::isModified() const		// { return m_modified; }
+{
+	return m_buffer->isModified();
+}
 QString Document::typeName() const
 {
 	return m_typeSettings->name();
 }
 QString Document::fullPathName() const
 {
-	return m_pathName;
+	return m_fullPathName;
+}
+int Document::lineCount() const
+{
+	return m_buffer->lineCount();
+}
+QString Document::text(pos_t pos, ssize_t sz) const
+{
+	Q_ASSERT( sz > 0 );
+	try {
+		QString txt(sz, 0);
+		m_buffer->getText(pos, (wchar_t *)txt.data(), sz);
+		return txt;
+	} catch(...) {
+		QMessageBox::warning(0, "vivi64",
+								tr("because of No Memory, can't build a string."));
+		return QString();
+	}
+}
+QString Document::lineText(int ln) const
+{
+	if( ln < 0 || ln >= lineCount() ) return QString();
+	pos_t pos = m_buffer->lineStartPosition(ln);
+	ssize_t sz = m_buffer->lineSize(ln);
+	if( sz <= 0 ) return QString();
+	return text(pos, sz);
 }
 void Document::setTypeSettings(TypeSettings* typeSettings)
 {
@@ -62,7 +91,7 @@ void Document::setTypeSettings(TypeSettings* typeSettings)
 }
 void Document::setPathName(const QString &pathName)
 {
-	m_pathName = pathName;
+	m_fullPathName = pathName;
 }
 void Document::setTitle(const QString &title)
 {
@@ -144,4 +173,42 @@ void Document::insertText(pos_t pos, const QString &text)
 }
 void Document::updateView(EditView *view)
 {
+}
+bool Document::saveFile() const
+{
+	if( m_fullPathName.isEmpty() ) return false;
+	if( m_codec == 0 )
+		m_codec = QTextCodec::codecForName("UTF-8");
+	QFile file(m_fullPathName);
+	if( !file.open(QFile::WriteOnly) ) {
+		//errorString = file.errorString();
+		return false;
+	}
+	if( m_bomLength != 0 ) {
+		QString name = m_codec->name();
+		QByteArray ba;
+		if( name == "UTF-8" ) {
+			ba += 0xef;
+			ba += 0xbb;
+			ba += 0xbf;
+		} else if( name == "UTF-16LE" ) {
+			ba += 0xff;
+			ba += 0xfe;
+		} else if( name == "UTF-16BE" ) {
+			ba += 0xfe;
+			ba += 0xff;
+		}
+		if( !ba.isEmpty() )
+			file.write(ba);
+	}
+	QTextCodec::ConverterState cs(QTextCodec::IgnoreHeader);
+	for(int ln = 0; ln < m_buffer->lineCount(); ++ln) {
+		QString txt = lineText(ln);
+		QByteArray ba = m_codec->fromUnicode(txt.data(), txt.size(), &cs);
+		file.write(ba);
+	}
+	m_buffer->onSaved();
+	file.close();
+	m_lastModified = QFileInfo(m_fullPathName).lastModified();
+	return true;
 }

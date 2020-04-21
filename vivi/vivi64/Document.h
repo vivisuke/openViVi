@@ -35,6 +35,12 @@ public:
 	wchar_t	charAt(pos_t pos) const;
 	bool	bom() const { return m_bBom; }
 	uchar	charEncoding() const { return m_charEncoding; }
+	bool	isModified() const;		// { return m_modified; }
+	bool	saveFile() const;
+	int		lineCount() const;
+	int		EOFLine() const;
+	QString	text(pos_t pos, ssize_t sz) const;
+	QString	lineText(int) const;
 public:
 	void	setTypeSettings(TypeSettings *typeSettings);
 	void	setPathName(const QString &pathName);
@@ -59,7 +65,7 @@ public:
 	void	insertText(pos_t pos, const QString &);
 	void	updateView(EditView *);
 private:
-	QString	m_pathName;
+	QString	m_fullPathName;
 	QString	m_title;
 	Buffer	*m_buffer;
 	bool	m_bBom;

@@ -98,12 +98,10 @@ const TypeSettings *EditView::typeSettings() const
 {
 	return document()->typeSettings();
 }
-#if	0
-void EditView::setTypeSettings(TypeSettings *typeSettings)
+bool EditView::isModified() const		// { return m_modified; }
 {
-	m_typeSettings = typeSettings;
+	return document()->isModified();
 }
-#endif
 int EditView::viewLineOffsetToPx(int vln, int offset) const
 {
 	auto start = viewLineMgr()->viewLineStartPosition(vln);
@@ -1028,4 +1026,12 @@ void EditView::deleteText(pos_t pos, ssize_t sz, bool BS)
 {
 	document()->deleteText(pos, sz, BS);
 	update();
+}
+bool EditView::saveFile() const
+{
+	bool im = isModified();
+	bool rc = document()->saveFile();
+	if( rc && im )
+		emit modifiedChanged();
+	return rc;
 }

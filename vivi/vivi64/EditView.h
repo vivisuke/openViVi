@@ -29,6 +29,7 @@ public:
 	TypeSettings	*typeSettings();	// { return m_typeSettings; }
 	const TypeSettings	*typeSettings() const;	// { return m_typeSettings; }
 	//const TypeSettings* cTypeSettings() { return (const TypeSettings*)m_typeSettings; }
+	bool	isModified() const;		// { return m_modified; }
 	int	viewLineOffsetToPx(int vln, int offset) const;
 	void	setLineNumberVisible(bool);
 	void	setPlainText(const QString&);
@@ -56,6 +57,7 @@ public:
 	void	onCursorPosChanged();
 	void	insertTextRaw(pos_t pos, const QString &);
 	void	updateFont();
+	bool	saveFile() const;
 protected:
 	void	resetCursorBlinking();
 	void	drawLineNumbers();
@@ -85,7 +87,24 @@ protected:
 private slots:
 	void	onTimer();
 signals:
+	void	modifiedChanged() const;
 	void	cursorPosChanged(int, int);
+	void	doOutput(const QString &) const;
+	void	escPressed();
+	void	showMessage(const QString &, int timeout = 0) const;
+	void	reloadRequest(EditView *);
+	void	textSearched(const QString &);
+	void	openFile(const QString &);
+	void	gameFinished(bool, QString);
+	void	textInserted(const QString &);		//	挿入後の位置
+	void	textBackSpaced();
+	void	textCopied(const QString &);
+	void	boxSelectionModeChanged(bool);
+	void	vertScrolled(int);		//	垂直スクロール
+	void	horzScrolled(int);		//	垂直スクロール
+	void	tagJump(const QString &, int);
+	void	tagsJump(const QString &, const QString &, const QString &);
+	void	outputViewClosed();
 	
 private:
 	bool	m_lineNumberVisible;
