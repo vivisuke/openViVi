@@ -623,14 +623,23 @@ void EditView::drawLineText(QPainter &pt,
 	const int last = ls + vlnsz;
 	const QString lineComment = typeSettings()->textValue(TypeSettings::LINE_COMMENT);
 	//const QString lineComment = "//";		//	暫定コード
-	ViewTokenizer tkn(typeSettings(), buffer(), ls, vlnsz, nxdls);
+	int curpos = 0;
+	if( !m_preeditString.isEmpty() && ln == m_textCursor->viewLine() )
+		curpos = m_textCursor->position();
+	ViewTokenizer tkn(typeSettings(), buffer(), ls, vlnsz, nxdls, curpos);
 	tkn.setInLineComment(inLineComment);
 	tkn.setInBlockComment(inBlockComment);
 	QString token = tkn.nextToken();
 	int peDX = 0;
+	QString nextToken;
 	while( !token.isEmpty() ) {
-		if( !m_preeditString.isEmpty() && ln == m_textCursor->viewLine() && tkn.tokenix() >= m_textCursor->position() )
-			peDX = m_preeditWidth;
+		if( !m_preeditString.isEmpty() && ln == m_textCursor->viewLine() ) {
+			if( tkn.tokenix() < m_textCursor->position() && tkn.ix() > m_textCursor->position() ) {
+				nextToken = token.right(tkn.ix() - m_textCursor->position());
+				token = token.left(m_textCursor->position() - tkn.tokenix());
+			} else if( tkn.tokenix() >= m_textCursor->position() )
+				peDX = m_preeditWidth;
+		}
 		if( tkn.tokenix() + token.size() > last )
 			token = token.left(last - tkn.tokenix());
 		//qDebug() << "type = " << tkn.tokenType() << ", token = " << token;
@@ -725,7 +734,12 @@ void EditView::drawLineText(QPainter &pt,
 		}
 		px += wd;
 		//
-		token = tkn.nextToken();
+		if( !nextToken.isEmpty() ) {
+			token = nextToken;
+			nextToken.clear();
+			tkn.m_tokenix = m_textCursor->position();
+		} else
+			token = tkn.nextToken();
 	}
 }
 void EditView::drawMinMap(QPainter& pt)

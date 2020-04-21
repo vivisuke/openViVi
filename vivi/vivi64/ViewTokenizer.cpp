@@ -16,7 +16,7 @@
 
 typedef const wchar_t cwchar;
 
-ViewTokenizer::ViewTokenizer(const TypeSettings *typeSettings, const Buffer *buffer, int first, int sz, int last)
+ViewTokenizer::ViewTokenizer(const TypeSettings *typeSettings, const Buffer *buffer, int first, int sz, int last, int curpos)
 	: m_buffer(buffer)
 	, m_typeSettings(typeSettings)
 	, m_ix(first)
@@ -37,6 +37,7 @@ ViewTokenizer::ViewTokenizer(const TypeSettings *typeSettings, const Buffer *buf
 	//, m_inString(false)
 	, m_quoteChar('\0')
 	, m_cursorLine(false)
+	, m_curpos(curpos)
 {
 	m_lineCommentText = typeSettings->textValue(TypeSettings::LINE_COMMENT);
 	m_begBlockCommentText = typeSettings->textValue(TypeSettings::BLOCK_COMMENT_BEG);
