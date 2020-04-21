@@ -28,7 +28,7 @@ public:
 		OTHER,		//	その他（マルチバイト文字など）
 	};
 public:
-	ViewTokenizer(const TypeSettings *typeSettings, const Buffer *buffer, int first, int sz, int last, int curpos = 0);
+	ViewTokenizer(const TypeSettings *typeSettings, const Buffer *buffer, int first, int sz, int last /*, int curpos = 0*/);
 	~ViewTokenizer() {}
 
 public:
@@ -70,7 +70,7 @@ public:
 public:
 	QString	m_tokenText;
 	QString m_fullText;		//	カーソル位置以降も含めたテキスト
-	int		m_curpos;		//	カーソル位置
+	//int		m_curpos;		//	カーソル位置
 	int		m_ix;			//	次の文字
 	int		m_tokenix;		//	トークン最初の文字のバッファ内文字位置
 	int		m_quotedTextix;

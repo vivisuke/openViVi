@@ -626,7 +626,7 @@ void EditView::drawLineText(QPainter &pt,
 	int curpos = 0;
 	if( !m_preeditString.isEmpty() && ln == m_textCursor->viewLine() )
 		curpos = m_textCursor->position();
-	ViewTokenizer tkn(typeSettings(), buffer(), ls, vlnsz, nxdls, curpos);
+	ViewTokenizer tkn(typeSettings(), buffer(), ls, vlnsz, nxdls /*, curpos*/);
 	tkn.setInLineComment(inLineComment);
 	tkn.setInBlockComment(inBlockComment);
 	QString token = tkn.nextToken();
