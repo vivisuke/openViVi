@@ -299,6 +299,17 @@ void MainWindow::setupStatusBar()
 	connect(m_typeCB, SIGNAL(currentIndexChanged(const QString &)),
 			this, SLOT(onTypeChanged(const QString &)));
 }
+void MainWindow::showMessage(const QString &mess0, int timeout)
+{
+	QString mess = mess0;
+#if	0
+	if( !m_sbMessage.isEmpty() ) {
+		mess += m_sbMessage;
+		m_sbMessage.clear();
+	}
+#endif
+	statusBar()->showMessage(mess, timeout);
+}
 void MainWindow::onCharEncodingChanged(const QString &)
 {
 }
@@ -412,6 +423,7 @@ EditView *MainWindow::createView(QString pathName)
 	//auto* typeSettings = new TypeSettings(typeName);
 	EditView* view = new EditView(doc /*, typeSettings*/);	//QPlainTextEdit();	//createView();
 	connect(view, SIGNAL(cursorPosChanged(int, int)), this, SLOT(onCursorPosChanged(int, int)));
+	connect(view, SIGNAL(showMessage(const QString &, int)), this, SLOT(showMessage(const QString &, int)));
 	if( !pathName.isEmpty() ) {
 		if( !loadFile(doc, pathName) ) {
 			//	undone: ファイルオープンに失敗した場合の後始末処理

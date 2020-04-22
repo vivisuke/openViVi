@@ -326,40 +326,6 @@ void EditView::onTimer()
 		update();
 	}
 }
-#if	0
-bool EditView::eventFilter(QObject *obj, QEvent *event)
-{
-#if	0
-	if( obj == &m_lineNumAreaWidget ) {
-		if( event->type() == QEvent::Paint ) {
-			drawLineNumbers();
-			return true;
-		}
-		if( event->type() == QEvent::MouseButtonPress) {
-			QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
-			lineNumberMousePressed(mouseEvent);
-			return true;
-		}
-		if( event->type() == QEvent::MouseMove) {
-			QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
-			lineNumberMouseMoved(mouseEvent);
-			return true;
-		}
-		if( event->type() == QEvent::ContextMenu) {
-			QContextMenuEvent *cmEvent = static_cast<QContextMenuEvent*>(event);
-			contextMenuEvent(cmEvent);
-			return true;
-		}
-		if( event->type() == QEvent::Wheel) {
-			QWheelEvent *wEvent = static_cast<QWheelEvent*>(event);
-			wheelEvent(wEvent);
-			return true;
-		}
-	}
-#endif
-	return false;
-}
-#endif
 void EditView::resizeEvent(QResizeEvent *event)
 {
 	onResized();
@@ -406,6 +372,19 @@ void EditView::wheelEvent(QWheelEvent * event)
 	const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
 	const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
 	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
+	if( !alt && ctrl && !shift ) {
+		ssize_t sz = typeSettings()->intValue(TypeSettings::FONT_SIZE);
+		if( event->delta() > 0 ) {
+			++sz;
+		} else {
+			--sz;
+		}
+		if( sz < 1 ) sz = 1;
+		typeSettings()->setIntValue(TypeSettings::FONT_SIZE, sz);
+		updateFont();
+		emit showMessage(tr("fontSize = %1").arg(sz), 5000);
+		return;
+	}
 	QPoint numPixels = event->pixelDelta();
     QPoint numDegrees = event->angleDelta() / 8;
     qDebug() << "numPixels = " << numPixels;

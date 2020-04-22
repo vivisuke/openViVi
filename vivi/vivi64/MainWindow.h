@@ -76,6 +76,7 @@ private slots:
 	void	onTypeChanged(const QString &);
 	void	onNewLineCodeChanged(int);
     void	onCursorPosChanged(int, int);
+	void	showMessage(const QString &, int timeout = 0);
 	
 private:
 	Ui::MainWindowClass ui;
