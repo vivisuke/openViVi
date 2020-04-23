@@ -499,6 +499,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		makeCursorInView();
 		resetCursorBlinking();
 		update();
+		emit updateUndoRedoEnabled();
 		return;
 	}
 	}
