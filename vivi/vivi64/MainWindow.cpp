@@ -769,6 +769,8 @@ void MainWindow::currentChanged(int index)
 	//
 	auto* ts = doc->typeSettings();
 	ui.action_LineNumber->setChecked(ts->boolValue(TypeSettings::VIEW_LINENUM));
+	//
+	updateWindowTitle();
 }
 void MainWindow::on_action_eXit_triggered()
 {
