@@ -418,7 +418,10 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		if( ctrl )
 			m_textCursor->movePosition(TextCursor::NEXT_WORD, mvmd);
 		else {
-			m_textCursor->movePosition(TextCursor::RIGHT, mvmd);
+			if( !shift /*&& !isBoxSelectionMode()*/ && m_textCursor->hasSelection() )
+				m_textCursor->setPosition(m_textCursor->selectionLast());
+			else
+				m_textCursor->movePosition(TextCursor::RIGHT, mvmd);
 		}
 		break;
 	case Qt::Key_Up:
@@ -535,6 +538,7 @@ void EditView::paintEvent(QPaintEvent *event)
 	//
 	drawLineNumberArea(pt);		//	行番号エリア描画
 	drawPreeditString(pt);
+	drawSelection(pt);
 	drawTextArea(pt);			//	テキストエイア描画
 	drawMinMap(pt);				//	ミニマップ描画
 	drawCursor(pt);				//	テキストカーソル表示
@@ -552,11 +556,47 @@ void EditView::drawLineNumberArea(QPainter& pt)
 		pt.drawText(px, py+m_fontHeight, number);
 	}
 }
-#if	0
-void EditView::drawLineNumbers()
+void EditView::drawSelection(QPainter& pt)
 {
+	if( !m_textCursor->hasSelection() ) return;
+	auto rct = rect();
+	const auto nLines = rct.height() / m_lineHeight;
+	auto first = m_textCursor->selectionFirst();
+	auto last = m_textCursor->selectionLast();
+	int firstLn = viewLineMgr()->positionToViewLine(first);
+	int lastLn = viewLineMgr()->positionToViewLine(last);
+	if( firstLn > m_scrollY0 + nLines || lastLn < m_scrollY0 ) return;		//	画面外の場合
+	auto firstLnPos = viewLineMgr()->viewLineStartPosition(firstLn);
+	auto lastLnPos = viewLineMgr()->viewLineStartPosition(lastLn);
+	int px1 = viewLineOffsetToPx(firstLn, first - firstLnPos) + m_lineNumAreaWidth;
+	int px9 = viewLineOffsetToPx(lastLn, last - lastLnPos) + m_lineNumAreaWidth;
+	int py1 = (firstLn - m_scrollY0) * m_lineHeight;		//	行上部座標
+	pt.setBrush(typeSettings()->color(TypeSettings::SEL_BG));
+	pt.setPen(Qt::transparent);
+	if( firstLn == lastLn ) {	//	選択が１行内の場合
+		QRect r(px1, py1, px9 - px1, m_lineHeight);
+		pt.drawRect(r);
+		return;
+	}
+	//	undone: クリッピング処理
+	//	選択開始行
+	int sz = viewLineMgr()->viewLineSize(firstLn);
+	int px2 = viewLineOffsetToPx(firstLn, sz) + m_lineNumAreaWidth;
+	QRect r(px1, py1, px2 - px1, m_lineHeight);
+	pt.drawRect(r);
+	//	途中行
+	py1 += m_lineHeight;
+	for (int vln = firstLn + 1; vln < lastLn; ++vln, py1+=m_lineHeight) {
+		int pos0 = viewLineMgr()->viewLineStartPosition(vln);
+		int sz = viewLineMgr()->viewLineSize(vln);
+		int px2 = viewLineOffsetToPx(vln, sz) + m_lineNumAreaWidth;
+		QRect r(m_lineNumAreaWidth, py1, px2 - m_lineNumAreaWidth, m_lineHeight);
+		pt.drawRect(r);
+	}
+	//	選択修了行
+	QRect r2(m_lineNumAreaWidth, py1, px9 - m_lineNumAreaWidth, m_lineHeight);
+	pt.drawRect(r2);
 }
-#endif
 void EditView::drawTextArea(QPainter& pt)
 {
 	if( m_preeditString.isEmpty() ) m_preeditWidth = 0;
@@ -689,34 +729,7 @@ void EditView::drawLineText(QPainter &pt,
 			}
 		}
 		if( !token.isEmpty() ) {
-			pt.setPen(col);
-			if( bold ) {
-				pt.setFont(m_fontBold);
-				pt.drawText(px+peDX, py, token);
-			} else if( token[0] < 0x100 ) {
-				pt.setFont(m_font);
-				pt.drawText(px+peDX, py, token);
-			} else {
-				auto x = px+peDX;
-				wd = 0;
-				for (int i = 0; i != token.size(); ++i) {
-					QString txt = token[i];
-					if( txt == " " ) {
-						x += chWidth;
-						wd += chWidth;
-					} else {
-						pt.drawText(x, py-m_fontHeight+descent, chWidth*2, m_fontHeight, Qt::AlignHCenter|Qt::AlignBottom, txt);
-						x += chWidth * 2;
-						wd += chWidth * 2;
-					}
-				}
-				//wd = chWidth * 2 * token.size();
-#if	0
-				pt.setFont(m_fontMB);
-				wd = fmMB.width(token);
-#endif
-			}
-			//pt.drawText(px, py, token);
+			drawTokenText(pt, token, px, py, peDX, wd, chWidth, descent, col, bold);
 		}
 		px += wd;
 		//
@@ -727,6 +740,49 @@ void EditView::drawLineText(QPainter &pt,
 		} else
 			token = tkn.nextToken();
 	}
+}
+void EditView::drawTokenText(QPainter& pt,
+								QString& token,
+								int& px,
+								int py,
+								int peDX,
+								int& wd,
+								const int chWidth,
+								const int descent,
+								QColor& col,
+								bool bold)
+{
+	pt.setPen(col);
+	if (bold) {
+		pt.setFont(m_fontBold);
+		pt.drawText(px + peDX, py, token);
+	}
+	else if (token[0] < 0x100) {
+		pt.setFont(m_font);
+		pt.drawText(px + peDX, py, token);
+	}
+	else {
+		auto x = px + peDX;
+		wd = 0;
+		for (int i = 0; i != token.size(); ++i) {
+			QString txt = token[i];
+			if (txt == " ") {
+				x += chWidth;
+				wd += chWidth;
+			}
+			else {
+				pt.drawText(x, py - m_fontHeight + descent, chWidth * 2, m_fontHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
+				x += chWidth * 2;
+				wd += chWidth * 2;
+			}
+		}
+		//wd = chWidth * 2 * token.size();
+#if	0
+		pt.setFont(m_fontMB);
+		wd = fmMB.width(token);
+#endif
+	}
+	//pt.drawText(px, py, token);
 }
 void EditView::drawMinMap(QPainter& pt)
 {
@@ -780,7 +836,7 @@ void EditView::drawPreeditString(QPainter&pt)
 	int vln = m_textCursor->viewLine();
 	int offset;
 	int dln = viewLineToDocLine(vln, offset);
-	int py = (vln - m_scrollY0) * lineHeight() + DRAW_Y_OFFSET*2;
+	int py = (vln - m_scrollY0) * lineHeight() + DRAW_Y_OFFSET*2;	//	ベースライン位置
 	QRect rct = rect();
 	if( py < 0 || py >= rct.height() )
 		return;		//	画面外の場合

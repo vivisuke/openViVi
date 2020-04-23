@@ -267,7 +267,7 @@
 ◎ C 04/20 04/20 0.002 問題 TextCursor：通常移動で m_anchor が更新されていない
 ◎ C 04/20 04/20 0.002 問題 空のビューで改行挿入を行うとクラッシュ
 ◎ C 04/20 04/20 0.002 問題 IMEでの文字入力が出来ない（そもそもIMEONにならない）
-● C 04/20             ToDo 改行を押した場合は、現在の改行種別（CRLF, CR, LF）を挿入
+● B 04/20             ToDo 改行を押した場合は、現在の改行種別（CRLF, CR, LF）を挿入
 ◎ C 04/20 04/20 0.002 ToDo IMEオンザスポット
 ◎ B 04/20 04/22 0.002 ToDo IME変換中文字列表示
 ◎ C 04/20 04/20 0.002 問題 マルチバイト文字表示位置が上にずれている？
@@ -293,9 +293,20 @@
 ● C 04/22             問題 pathName と fullPathName が混在しているのでどちらかに統一
 ◎ C 04/22 04/22 0.002 問題 新規文書を保存するとき、デフォルトのファイル名がタイトル（"Untitled-1"）にならない
 							原因：Document::m_title が設定されていない
-● C 04/22             ToDo 
-● C 04/22             ToDo 
-● C 04/22             ToDo 
-● C 04/22             ToDo 
-● C 04/22             ToDo 
-● C 04/22             ToDo 
+● C 04/22             ToDo Paste 機能実装
+● C 04/22             ToDo S-←：１文字選択
+◎ C 04/22 04/23 0.002 ToDo S-→：１文字選択
+◎ C 04/22 04/23 0.002 ToDo 選択状態：選択範囲背景強調表示
+● C 04/22             ToDo EditView：下部に水平スクロールバー設置？
+● C 04/24             ToDo EditView::drawTokenText() を追加し、EditView::drawLineText() はそれをコール
+● C 04/24             ToDo カーソル位置括弧に対応する括弧強調
+● C 04/24             ToDo 
+● C 04/24             ToDo 
+● C 04/24             ToDo 
+● C 04/24             ToDo 
+● C 04/24             ToDo 
+● C 04/24             ToDo 
+● C 04/24             ToDo 
+● C 04/24             ToDo 
+● C 04/24             ToDo 
+● C 04/24             ToDo 
