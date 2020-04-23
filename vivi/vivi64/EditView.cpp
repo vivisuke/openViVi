@@ -411,7 +411,10 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		if( ctrl )
 			m_textCursor->movePosition(TextCursor::PREV_WORD, mvmd);
 		else {
-			m_textCursor->movePosition(TextCursor::LEFT, mvmd);
+			if( !shift /*&& !isBoxSelectionMode()*/ && m_textCursor->hasSelection() )
+				m_textCursor->setPosition(m_textCursor->selectionFirst());
+			else
+				m_textCursor->movePosition(TextCursor::LEFT, mvmd);
 		}
 		break;
 	case Qt::Key_Right:
