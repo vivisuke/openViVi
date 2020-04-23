@@ -52,6 +52,22 @@ bool Document::isModified() const		// { return m_modified; }
 {
 	return m_buffer->isModified();
 }
+bool Document::canUndo() const
+{
+	return m_buffer->canUndo();
+}
+bool Document::canRedo() const
+{
+	return m_buffer->canRedo();
+}
+int Document::undo()
+{
+	return m_buffer->undo();
+}
+int Document::redo()
+{
+	return m_buffer->redo();
+}
 QString Document::typeName() const
 {
 	return m_typeSettings->name();

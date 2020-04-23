@@ -778,6 +778,20 @@ void MainWindow::on_action_eXit_triggered()
 	//	undone: 修了確認
 	close();
 }
+void MainWindow::on_action_Undo_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		view->undo();
+	}
+}
+void MainWindow::on_action_Redo_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		view->redo();
+	}
+}
 void MainWindow::on_action_Cut_triggered()
 {
 	EditView *view = currentWidget();

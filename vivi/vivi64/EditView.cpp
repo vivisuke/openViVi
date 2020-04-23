@@ -1102,9 +1102,33 @@ void EditView::deleteText(pos_t pos, ssize_t sz, bool BS)
 }
 void EditView::undo()
 {
+	if( !document()->canUndo() ) return;
+	m_delForVarPos.clear();
+	bool im = isModified();
+	pos_t pos = document()->undo();
+	if( isModified() != im )
+		emit modifiedChanged();
+	//##m_textCursor->setBoxSelectionMode(false);
+	m_textCursor->setPosition(pos);
+	//##checkAssocParen();
+	//##updateScrollBarInfo();
+	makeCursorInView();
+	update();
 }
 void EditView::redo()
 {
+	if( !document()->canRedo() ) return;
+	m_delForVarPos.clear();
+	bool im = isModified();
+	pos_t pos = document()->redo();
+	if( isModified() != im )
+		emit modifiedChanged();
+	//##m_textCursor->setBoxSelectionMode(false);
+	m_textCursor->setPosition(pos);
+	//##checkAssocParen();
+	//##updateScrollBarInfo();
+	makeCursorInView();
+	update();
 }
 void EditView::cut(bool append)
 {

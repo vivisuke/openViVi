@@ -36,6 +36,8 @@ public:
 	bool	bom() const { return m_bBom; }
 	uchar	charEncoding() const { return m_charEncoding; }
 	bool	isModified() const;		// { return m_modified; }
+	bool	canUndo() const;
+	bool	canRedo() const;
 	bool	saveFile() const;
 	int		lineCount() const;
 	int		EOFLine() const;

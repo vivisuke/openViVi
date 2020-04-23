@@ -134,6 +134,7 @@ private:
 	int		m_tmCounter;
 	int		m_preeditWidth;			//	変換中文字列表示幅
 	int		m_preeditPos;			//	変換位置
+	std::vector<int>	m_delForVarPos;			//	for 変数削除位置
 	//int		m_preeditLine;			//	変換行（論理行番号）
 	QString	m_selectedString;		//	変換開始時に選択されていた文字列
 	QString	m_preeditString;		//	変換中文字列

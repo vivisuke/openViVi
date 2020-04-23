@@ -64,6 +64,8 @@ private slots:
 	void	on_action_AddCurrentFile_triggered();
 	void	on_action_RemoveFile_triggered();
 	void	on_action_eXit_triggered();
+	void	on_action_Undo_triggered();
+	void	on_action_Redo_triggered();
 	void	on_action_Cut_triggered();
 	void	on_action_Copy_triggered();
 	void	on_action_Paste_triggered();
