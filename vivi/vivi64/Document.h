@@ -69,6 +69,7 @@ public:
 	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
 	void	insertText(pos_t pos, const QString &);
 	void	updateView(EditView *);
+	void	clearUndoMgr();
 	int		undo();
 	int		redo();
 	void	cut(pos_t pos, ssize_t sz);

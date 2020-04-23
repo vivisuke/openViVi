@@ -1102,6 +1102,7 @@ void EditView::deleteText(pos_t pos, ssize_t sz, bool BS)
 {
 	document()->deleteText(pos, sz, BS);
 	update();
+	emit updateUndoRedoEnabled();
 }
 void EditView::undo()
 {
