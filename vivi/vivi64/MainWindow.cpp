@@ -774,6 +774,10 @@ void MainWindow::on_action_Copy_triggered()
 }
 void MainWindow::on_action_Paste_triggered()
 {
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		view->paste();
+	}
 }
 void MainWindow::on_action_LineNumber_triggered()
 {

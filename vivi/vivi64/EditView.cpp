@@ -1112,6 +1112,38 @@ int EditView::copy(bool bCut, bool append)
 }
 void EditView::paste()
 {
+	QClipboard *cb = qApp->clipboard();
+	const QMimeData *md = cb->mimeData();
+	if( md != 0 && md->hasFormat("MT_BOX_SELECT") ) {
+		qDebug() << md->hasText();
+		QString text = md->text();
+		boxPaste(text);
+	} else {
+		QString text = cb->text();
+		if( text.isEmpty() ) return;
+		paste(text);
+	}
+}
+void EditView::paste(const QString &text)
+{
+	if( text.isEmpty() ) return;
+#if	1
+	m_textCursor->insertText(text);
+#else
+	setupParabolicChars();
+	bool im = isModified();
+	m_textCursor->insertText(text);
+	emit textInserted(text);
+	if( !im )
+		emit modifiedChanged();
+	checkAssocParen();
+	updateScrollBarInfo();
+#endif
+	makeCursorInView();
+	update();
+}
+void EditView::boxPaste(const QString &)
+{
 }
 bool EditView::saveFile() const
 {
