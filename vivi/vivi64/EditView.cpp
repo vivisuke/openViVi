@@ -344,6 +344,14 @@ void EditView::mousePressEvent(QMouseEvent *event)
     	m_scrollY0 = qMin(m_scrollY0, buffer()->lineCount());		//	undone: 折返し処理対応
 		update();
 	}
+	if( pnt.x() < m_lineNumAreaWidth ) {
+	} else {
+		pnt.setX(pnt.x() - m_lineNumAreaWidth);
+		int vln, offset;
+		pointToLineOffset(pnt, vln, offset);
+		m_textCursor->setPosition(viewLineStartPosition(vln) + offset);
+		update();
+	}
 }
 void EditView::mouseMoveEvent(QMouseEvent *event)
 {
