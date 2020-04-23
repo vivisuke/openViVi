@@ -118,6 +118,7 @@ signals:
 	void	tagJump(const QString &, int);
 	void	tagsJump(const QString &, const QString &, const QString &);
 	void	outputViewClosed();
+    void	updateUndoRedoEnabled();
 	
 private:
 	bool	m_lineNumberVisible;

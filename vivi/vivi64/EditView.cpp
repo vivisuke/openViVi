@@ -1114,6 +1114,7 @@ void EditView::undo()
 	//##updateScrollBarInfo();
 	makeCursorInView();
 	update();
+	emit updateUndoRedoEnabled();
 }
 void EditView::redo()
 {
@@ -1129,6 +1130,7 @@ void EditView::redo()
 	//##updateScrollBarInfo();
 	makeCursorInView();
 	update();
+	emit updateUndoRedoEnabled();
 }
 void EditView::cut(bool append)
 {

@@ -438,6 +438,7 @@ EditView *MainWindow::createView(QString pathName)
 	//Buffer* buffer = doc->buffer();
 	//auto* typeSettings = new TypeSettings(typeName);
 	EditView* view = new EditView(doc /*, typeSettings*/);	//QPlainTextEdit();	//createView();
+	connect(view, SIGNAL(updateUndoRedoEnabled()), this, SLOT(updateUndoRedoEnabled()));
 	connect(view, SIGNAL(cursorPosChanged(int, int)), this, SLOT(onCursorPosChanged(int, int)));
 	connect(view, SIGNAL(showMessage(const QString &, int)), this, SLOT(showMessage(const QString &, int)));
 	if( !pathName.isEmpty() ) {
