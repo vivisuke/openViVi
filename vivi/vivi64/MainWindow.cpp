@@ -759,6 +759,8 @@ void MainWindow::currentChanged(int index)
 	if (index < 0) return;
 	EditView *view = nthWidget(index);
 	Document* doc = view->document();
+	//	undo/redo
+	updateUndoRedoEnabled();
 	//	ドキュメントタイプ
 	int ix = m_typeCB->findText(view->document()->typeName());
 	if( ix < 0 ) ix = 0;
@@ -771,6 +773,17 @@ void MainWindow::currentChanged(int index)
 	ui.action_LineNumber->setChecked(ts->boolValue(TypeSettings::VIEW_LINENUM));
 	//
 	updateWindowTitle();
+}
+void MainWindow::updateUndoRedoEnabled()
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		ui.action_Undo->setEnabled(view->document()->canUndo());
+		ui.action_Redo->setEnabled(view->document()->canRedo());
+	} else {
+		ui.action_Undo->setEnabled(false);
+		ui.action_Redo->setEnabled(false);
+	}
 }
 void MainWindow::on_action_eXit_triggered()
 {

@@ -33,6 +33,7 @@ protected:
     void	updateRecentFileActions();
     void	updateFavoriteFileActions();
     void	updateWindowTitle();
+    void	updateUndoRedoEnabled();
 	void	setIcon(const QString &fileName, QAction *action);
 	void	setupStatusBar();
 	//EditView	*createView(Document *doc = 0, TypeSettings* = 0);
