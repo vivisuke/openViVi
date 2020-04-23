@@ -84,7 +84,7 @@
 ● D 04/04             ToDo タブバー：右ボタンメニュー（とりあえずクローズのみ）
 ● C 04/04             ToDo タブバー：ホバーでフルパス名表示
 ● D 04/04             ToDo ファイルオープン時：空の無名文書を消す？
-● C 04/04             ToDo MainWindow タイトルバーに現在ファイル名表示
+◎ B 04/04 04/23 0.002 ToDo MainWindow タイトルバーに現在ファイル名表示
 ● C 04/04             ToDo MainWindow タイトルバー左端にアプリアイコン表示
 ◎ C 04/04 04/04 0.001 ToDo MainWindow：左にアウトラインバー表示？
 ◎ C 04/04 04/18 0.002 ToDo File > NewMainWindow 

@@ -100,7 +100,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//g_settingsMgr = new SettingsMgr();
 	//char *ptr = nullptr;
 	//qDebug() << "sizeof(ptr) = " << sizeof(ptr) << "\n";
-	setWindowTitle(QString("ViVi64 ver %1").arg(VERSION_STR));
+	//setWindowTitle(QString("ViVi64 ver %1").arg(VERSION_STR));
 	createActions();
 	createMenus();
 	//connectMenuActions();
@@ -148,6 +148,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui.tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
 	//
 	setupStatusBar();		//	ステータスバーセットアップ
+	updateWindowTitle();
 	//
 		on_action_New_triggered();
 }
@@ -236,6 +237,19 @@ void MainWindow::updateFavoriteFileActions()
     }
     for (int j = numRecentFiles; j < MaxFavoriteFiles; ++j)
         m_favoriteFileActs[j]->setVisible(false);
+}
+void MainWindow::updateWindowTitle()
+{
+	QString text = "ViVi64 ";
+	text += QString(VERSION_STR);
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		if( !view->title().isEmpty() )
+			text = view->title() + " - " + text;
+		if( !view->fullPathName().isEmpty() )
+			text += " - " + view->fullPathName();
+	}
+	setWindowTitle(text);
 }
 void MainWindow::setIcon(const QString &fileName, QAction *action)
 {
@@ -433,6 +447,7 @@ EditView *MainWindow::createView(QString pathName)
 		updateRecentFileActions();
 	}
 	addNewView(view, typeNameToIcon(typeName), title, pathName);
+	updateWindowTitle();
 	return view;
 }
 QIcon *MainWindow::typeNameToIcon(const QString& typeName)
@@ -591,7 +606,7 @@ void MainWindow::on_action_SaveAs_triggered()
 	EditView *view = currentWidget();
 	if( !isEditView(view) ) return;
 	doSaveAs(view);
-	//##updateWindowTitle();
+	updateWindowTitle();
 }
 bool MainWindow::doSave(EditView *view)
 {

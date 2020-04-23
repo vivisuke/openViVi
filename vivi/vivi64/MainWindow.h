@@ -32,6 +32,7 @@ protected:
     void	addToRecentFileList(const QString &);		//	レジストリの "recentFileList" に追加
     void	updateRecentFileActions();
     void	updateFavoriteFileActions();
+    void	updateWindowTitle();
 	void	setIcon(const QString &fileName, QAction *action);
 	void	setupStatusBar();
 	//EditView	*createView(Document *doc = 0, TypeSettings* = 0);
