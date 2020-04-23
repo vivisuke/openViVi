@@ -490,6 +490,8 @@ void EditView::keyPressEvent(QKeyEvent *event)
 			onBackSpace(false, shift, alt);
 			break;
 		}
+		if( text[0].unicode() < 0x20 )
+			return;
 	ins:
 		insertTextSub(text, ctrl, shift, alt);
 		//##if( isModified() != im )
