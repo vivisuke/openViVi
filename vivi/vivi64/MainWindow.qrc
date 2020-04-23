@@ -37,5 +37,7 @@
         <file>Resources/info_black.png</file>
         <file>Resources/power.png</file>
         <file>Resources/SPR.png</file>
+        <file>Resources/redo_lightgray.png</file>
+        <file>Resources/undo_lightgray.png</file>
     </qresource>
 </RCC>

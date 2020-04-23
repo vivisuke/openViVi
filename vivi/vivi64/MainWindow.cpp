@@ -147,6 +147,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(tabCloseRequested(int)));
 	connect(ui.tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
 	//
+	//ui.action_New->setIconText(tr("New"));
+	//
 	setupStatusBar();		//	ステータスバーセットアップ
 	updateWindowTitle();
 	//
@@ -777,12 +779,24 @@ void MainWindow::currentChanged(int index)
 void MainWindow::updateUndoRedoEnabled()
 {
 	EditView *view = currentWidget();
+	bool canUndo = false, canRedo = false;
 	if( isEditView(view) ) {
-		ui.action_Undo->setEnabled(view->document()->canUndo());
-		ui.action_Redo->setEnabled(view->document()->canRedo());
+		canUndo = view->document()->canUndo();
+		canRedo = view->document()->canRedo();
+	}
+	if( canUndo ) {
+		ui.action_Undo->setEnabled(true);
+		ui.action_Undo->setIcon(QIcon(":/MainWindow/Resources/undo_black.png"));
 	} else {
 		ui.action_Undo->setEnabled(false);
+		ui.action_Undo->setIcon(QIcon(":/MainWindow/Resources/undo_lightgray.png"));
+	}
+	if( canRedo ) {
+		ui.action_Redo->setEnabled(true);
+		ui.action_Redo->setIcon(QIcon(":/MainWindow/Resources/redo_black.png"));
+	} else {
 		ui.action_Redo->setEnabled(false);
+		ui.action_Redo->setIcon(QIcon(":/MainWindow/Resources/redo_lightgray.png"));
 	}
 }
 void MainWindow::on_action_eXit_triggered()
