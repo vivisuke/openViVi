@@ -1154,6 +1154,7 @@ void EditView::cut(bool append)
 	//##updateScrollBarInfo();
 	makeCursorInView();
 	update();
+	emit updateUndoRedoEnabled();
 }
 int EditView::copy(bool bCut, bool append)
 {
@@ -1195,6 +1196,7 @@ void EditView::paste(const QString &text)
 #endif
 	makeCursorInView();
 	update();
+	emit updateUndoRedoEnabled();
 }
 void EditView::boxPaste(const QString &)
 {
