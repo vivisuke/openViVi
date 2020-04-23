@@ -1100,6 +1100,22 @@ void EditView::redo()
 }
 void EditView::cut(bool append)
 {
+	bool im = isModified();
+	copy(true, append);
+	if( !m_textCursor->hasSelection() ) {
+		m_textCursor->movePosition(TextCursor::BEG_LINE);
+		m_textCursor->movePosition(TextCursor::DOWN, TextCursor::KEEP_ANCHOR);
+		if( !m_textCursor->hasSelection() )	//	EOF が空行でない場合
+			m_textCursor->movePosition(TextCursor::END_LINE, TextCursor::KEEP_ANCHOR);
+	}
+	if( !m_textCursor->hasSelection() ) return;
+	//##setupParabolicChars();
+	m_textCursor->deleteChar();
+	if( !im )
+		emit modifiedChanged();
+	//##updateScrollBarInfo();
+	makeCursorInView();
+	update();
 }
 int EditView::copy(bool bCut, bool append)
 {

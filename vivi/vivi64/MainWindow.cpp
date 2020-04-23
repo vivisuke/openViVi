@@ -763,6 +763,10 @@ void MainWindow::on_action_eXit_triggered()
 }
 void MainWindow::on_action_Cut_triggered()
 {
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		view->cut();
+	}
 }
 void MainWindow::on_action_Copy_triggered()
 {
