@@ -462,6 +462,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		break;
 	case Qt::Key_Escape:
 		//onEscape(ctrl, shift, alt);
+		m_textCursor->clearSelection();
 		break;
 	case Qt::Key_Backspace:
 			onBackSpace(ctrl, shift, alt);
