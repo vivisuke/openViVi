@@ -444,13 +444,15 @@ void TextCursor::setPosition(pos_t pos, int mode)
 	if( isBoxSelectionMode() ) {
 		updateBoxCur();
 	}
+#endif
 	if( mode == MOVE_ANCHOR && m_mode == NOMAL_MODE ) {
 		m_anchor = pos;
 		m_anchorViewLine = m_viewLine;
+#if	0
 		if( isBoxSelectionMode() )
 			copyBoxCurToAnchor();
-	}
 #endif
+	}
 }
 int TextCursor::selectionSize() const
 {
