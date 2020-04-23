@@ -413,6 +413,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
 	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
 	int mvmd = shift ? TextCursor::KEEP_ANCHOR : TextCursor::MOVE_ANCHOR;
+	bool im = isModified();
 	QString text = event->text();
 	switch( event->key() ) {
 	case Qt::Key_Left:
@@ -494,8 +495,8 @@ void EditView::keyPressEvent(QKeyEvent *event)
 			return;
 	ins:
 		insertTextSub(text, ctrl, shift, alt);
-		//##if( isModified() != im )
-		//##	emit modifiedChanged();
+		if( isModified() != im )
+			emit modifiedChanged();
 		makeCursorInView();
 		resetCursorBlinking();
 		update();

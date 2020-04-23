@@ -30,18 +30,6 @@ GlobalSettings	g_globalSettings;
 
 //----------------------------------------------------------------------
 /*
-		on_action_New_triggered()
-			createView();
-			addNewView(view, title);
-		
-		on_action_Open_triggered()
-			QFileDialog::getOpenFileNames()
-			openFile(pathName)
-				createView(typeName)
-				loadFile(view, pathName)
-				addNewView(view, title)
-
-		↓
 		
 		on_action_New_triggered()
 			createView();
@@ -253,6 +241,19 @@ void MainWindow::updateWindowTitle()
 	}
 	setWindowTitle(text);
 }
+void MainWindow::updateTabText(EditView *view)
+{
+	int ix = ui.tabWidget->indexOf(view);
+	if( ix < 0 )
+		return;
+	QString fullPathName = view->document()->fullPathName();
+	QString fileName = QFileInfo(fullPathName).fileName();	//	ファイル名部分だけゲット
+	if( fullPathName.isEmpty() ) fileName = view->title();
+	if( view->isModified() )
+		fileName += " *";
+	ui.tabWidget->setTabText(ix, fileName);
+	ui.tabWidget->setTabToolTip(ix, fullPathName);
+}
 void MainWindow::setIcon(const QString &fileName, QAction *action)
 {
 }
@@ -438,6 +439,7 @@ EditView *MainWindow::createView(QString pathName)
 	//Buffer* buffer = doc->buffer();
 	//auto* typeSettings = new TypeSettings(typeName);
 	EditView* view = new EditView(doc /*, typeSettings*/);	//QPlainTextEdit();	//createView();
+	connect(view, SIGNAL(modifiedChanged()), this, SLOT(modifiedChanged()));
 	connect(view, SIGNAL(updateUndoRedoEnabled()), this, SLOT(updateUndoRedoEnabled()));
 	connect(view, SIGNAL(cursorPosChanged(int, int)), this, SLOT(onCursorPosChanged(int, int)));
 	connect(view, SIGNAL(showMessage(const QString &, int)), this, SLOT(showMessage(const QString &, int)));
@@ -719,7 +721,7 @@ bool MainWindow::doSaveAs(EditView *view)
 	view->saveFile();
 	addToRecentFileList(fileName);
 	updateRecentFileActions();
-	//##updateTabText(view);
+	updateTabText(view);
 	return true;
 }
 void MainWindow::on_action_Close_triggered()
@@ -799,6 +801,12 @@ void MainWindow::updateUndoRedoEnabled()
 		ui.action_Redo->setEnabled(false);
 		ui.action_Redo->setIcon(QIcon(":/MainWindow/Resources/redo_lightgray.png"));
 	}
+}
+void MainWindow::modifiedChanged()
+{
+	EditView *view = (EditView *)sender();
+	if( !isEditView(view) ) return;
+	updateTabText(view);
 }
 void MainWindow::on_action_eXit_triggered()
 {

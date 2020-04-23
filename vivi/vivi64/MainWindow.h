@@ -33,6 +33,7 @@ protected:
     void	updateRecentFileActions();
     void	updateFavoriteFileActions();
     void	updateWindowTitle();
+	void	updateTabText(EditView *);
 	void	setIcon(const QString &fileName, QAction *action);
 	void	setupStatusBar();
 	//EditView	*createView(Document *doc = 0, TypeSettings* = 0);
@@ -84,6 +85,7 @@ private slots:
     void	onCursorPosChanged(int, int);
 	void	showMessage(const QString &, int timeout = 0);
     void	updateUndoRedoEnabled();
+    void	modifiedChanged();
 	
 private:
 	Ui::MainWindowClass ui;
