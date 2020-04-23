@@ -761,6 +761,20 @@ void MainWindow::on_action_eXit_triggered()
 	//	undone: 修了確認
 	close();
 }
+void MainWindow::on_action_Cut_triggered()
+{
+}
+void MainWindow::on_action_Copy_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		auto sz = view->copy();
+		statusBar()->showMessage(QString(tr("%1 chars copyed")).arg(sz));
+	}
+}
+void MainWindow::on_action_Paste_triggered()
+{
+}
 void MainWindow::on_action_LineNumber_triggered()
 {
 	bool b = ui.action_LineNumber->isChecked();

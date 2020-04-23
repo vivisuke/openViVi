@@ -167,6 +167,16 @@ void Document::insertText(pos_t pos, const QString &text)
 								tr("because of No Memory, can't insert text."));
 	}
 }
+void Document::copy(pos_t pos, ssize_t sz, bool append)
+{
+	QClipboard *cb = qApp->clipboard();
+	QString txt = text(pos, sz);
+	if( !txt.isEmpty() ) {
+		if( append )
+			txt = cb->text() + txt;
+		cb->setText(txt);
+	}
+}
 void Document::updateView(EditView *view)
 {
 }

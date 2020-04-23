@@ -1092,6 +1092,27 @@ void EditView::deleteText(pos_t pos, ssize_t sz, bool BS)
 	document()->deleteText(pos, sz, BS);
 	update();
 }
+void EditView::undo()
+{
+}
+void EditView::redo()
+{
+}
+void EditView::cut(bool append)
+{
+}
+int EditView::copy(bool bCut, bool append)
+{
+	if( !m_textCursor->hasSelection() ) return 0;
+	auto first = m_textCursor->selectionFirst();
+	auto last = m_textCursor->selectionLast();
+	auto sz = last - first;
+	document()->copy(first, sz);
+	return sz;
+}
+void EditView::paste()
+{
+}
 bool EditView::saveFile() const
 {
 	bool im = isModified();

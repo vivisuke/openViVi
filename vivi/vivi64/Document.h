@@ -67,6 +67,11 @@ public:
 	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
 	void	insertText(pos_t pos, const QString &);
 	void	updateView(EditView *);
+	int		undo();
+	int		redo();
+	void	cut(pos_t pos, ssize_t sz);
+	void	copy(pos_t pos, ssize_t sz, bool append = false);
+	int		paste(pos_t pos);	//	ペースト後のカーソル位置を返す
 private:
 	QString	m_fullPathName;
 	QString	m_title;

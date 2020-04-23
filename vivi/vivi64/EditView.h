@@ -89,6 +89,12 @@ protected:
 	void	inputMethodEvent(QInputMethodEvent * event);
 	void	resizeEvent(QResizeEvent *event);
 	//bool	eventFilter(QObject *obj, QEvent *event);
+public slots:
+	void	undo();
+	void	redo();
+	void	cut(bool append = false);
+	int		copy(bool bCut = false, bool append = false);
+	void	paste();
 private slots:
 	void	onTimer();
 signals:

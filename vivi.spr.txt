@@ -298,13 +298,13 @@
 ◎ C 04/22 04/23 0.002 ToDo S-→：１文字選択
 ◎ C 04/22 04/23 0.002 ToDo 選択状態：選択範囲背景強調表示
 ● C 04/22             ToDo EditView：下部に水平スクロールバー設置？
-● C 04/24             ToDo EditView::drawTokenText() を追加し、EditView::drawLineText() はそれをコール
+◎ C 04/24 04/23 0.002 ToDo EditView::drawTokenText() を追加し、EditView::drawLineText() はそれをコール
 ● C 04/24             ToDo カーソル位置括弧に対応する括弧強調
 ◎ C 04/24 04/23 0.002 ToDo Escape：選択解除
 ● C 04/24             問題 選択状態で ←、→ を押しても選択解除されない
 ● C 04/24             ToDo ドキュメント修正＆未保存の場合は、タイトルに「*」付加
 ● C 04/24             ToDo 修正＆未保存ドキュメントをクローズする場合は、保存確認
-● C 04/24             ToDo Copy 機能実装
+◎ C 04/24 04/23 0.002 ToDo Copy 機能実装
 ● C 04/24             ToDo Cut 機能実装
 ● C 04/24             ToDo 
 ● C 04/24             ToDo 
