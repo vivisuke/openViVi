@@ -491,7 +491,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 			onBackSpace(false, shift, alt);
 			break;
 		}
-		if( text[0].unicode() < 0x20 )
+		if( text[0] != '\n' && text[0] != '\r' && text[0].unicode() < 0x20 )
 			return;
 	ins:
 		insertTextSub(text, ctrl, shift, alt);
@@ -564,9 +564,24 @@ void EditView::drawLineNumberArea(QPainter& pt)
 {
 	auto rct = rect();
 	pt.setPen(Qt::black);
+    int mg = m_fontWidth*2;		//.width("88");
+    int mg4 = mg / 4;
 	int py = 0 /*DRAW_Y_OFFSET*/;
 	int limit = buffer()->lineCount() + (buffer()->isBlankEOFLine() ? 1 : 0);
 	for (int ln = 1 + m_scrollY0; ln <= limit && py < rct.height(); ++ln, py+=m_lineHeight) {
+		//	行番号、行編集・保存済みフラグ表示
+		uint flags = buffer()->lineFlags(ln-1);
+		if( (flags & Buffer::LINEFLAG_MODIFIED) != 0 ) {
+			if( (flags & Buffer::LINEFLAG_SAVED) != 0 ) {
+				pt.fillRect(QRect(m_lineNumAreaWidth - mg + mg4, py, mg4, lineHeight()),
+									typeSettings()->color(TypeSettings::LINENUM_SAVED));
+			} else {
+				pt.fillRect(QRect(m_lineNumAreaWidth - mg + mg4, py, mg4, lineHeight()),
+									typeSettings()->color(TypeSettings::LINENUM_MODIFIED));
+			}
+		}
+		//qDebug() << "line flags = " << flags;
+		//
 		QString number = QString::number(ln);
 		int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
 		pt.drawText(px, py+m_fontHeight, number);
