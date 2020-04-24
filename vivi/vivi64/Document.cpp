@@ -132,6 +132,7 @@ void Document::setPlainText(const QString& txt)
 {
 	buffer()->clear();
 	buffer()->insertText(0, (cwchar_t*)txt.data(), txt.size());
+	buffer()->clearLineFlags();
 	buffer()->clearUndoMgr();
 	buildMinMap();
 }
