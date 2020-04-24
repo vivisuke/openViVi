@@ -6,6 +6,7 @@
 #include "../buffer/Buffer.h"
 //#include "typeSettings.h"
 //#include "globalSettings.h"
+class MainWindow;
 class TypeSettings;
 class GlobalSettings;
 class Buffer;
@@ -17,7 +18,7 @@ class EditView : public QWidget		//QScrollArea
 {
 	Q_OBJECT
 public:
-	EditView(Document *doc /*, TypeSettings* = nullptr*/);
+	EditView(MainWindow*, Document *doc /*, TypeSettings* = nullptr*/);
 	~EditView();
 public:
 	wchar_t	charAt(pos_t pos) const;
@@ -53,6 +54,7 @@ public:
 	int		pxToOffset(int vln, int px) const;
 	void	pointToLineOffset(const QPoint &, int &, int &) const;
 public:
+	MainWindow	*mainWindow() { return m_mainWindow; }
 	void	setLineNumberVisible(bool);
 	void	setPlainText(const QString&);
 	Document*	document() { return m_document; }
@@ -66,6 +68,9 @@ public:
 	void	updateFont();
 	void	setFullPathName(const QString &);
 	bool	saveFile() const;
+	bool	searchCurWord(QString &);
+	bool	findForward(const QString &, uint opt = 0, bool loop = false, bool next = true, bool vi = false);
+	bool	findBackward(const QString &, uint opt = 0, bool loop = false, bool vi = false);
 protected:
 	void	resetCursorBlinking();
 	void	drawLineNumbers();
@@ -140,6 +145,7 @@ private:
 	int		m_preeditWidth;			//	変換中文字列表示幅
 	int		m_preeditPos;			//	変換位置
 	std::vector<int>	m_delForVarPos;			//	for 変数削除位置
+	MainWindow	*m_mainWindow;
 	//int		m_preeditLine;			//	変換行（論理行番号）
 	QString	m_selectedString;		//	変換開始時に選択されていた文字列
 	QString	m_preeditString;		//	変換中文字列

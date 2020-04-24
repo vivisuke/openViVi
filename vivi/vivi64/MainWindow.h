@@ -15,6 +15,9 @@ typedef const char cchar;
 //class SettingsMgr;
 class TypeSettings;
 class GlobalSettings;
+class SSSearch;
+
+extern GlobalSettings	g_globSettings;
 
 class MainWindow : public QMainWindow
 {
@@ -23,7 +26,11 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow(QWidget *parent = Q_NULLPTR);
 	~MainWindow();
-
+	
+public:
+	byte	searchAlgorithm() const;	// { return m_searchAlgorithm; }
+	SSSearch	&sssrc() { return *m_sssrc; }
+	SSSearch	&sssrc2() { return *m_sssrc2; }		//	カーソル位置単語検索用
 protected:
 	void	createActions();
 	void	createMenus();
@@ -34,6 +41,7 @@ protected:
     void	updateFavoriteFileActions();
     void	updateWindowTitle();
 	void	updateTabText(EditView *);
+	void	updateFindStringCB();
 	void	setIcon(const QString &fileName, QAction *action);
 	void	setupStatusBar();
 	//EditView	*createView(Document *doc = 0, TypeSettings* = 0);
@@ -78,6 +86,7 @@ private slots:
 	void	on_action_GlobalSettings_triggered();
 	void	on_action_About_ViVi_triggered();
 	//
+public slots:
     void	openRecentFile();
     void	openFavoriteFile();
 	void	tabCloseRequested(int index);
@@ -90,6 +99,12 @@ private slots:
 	void	showMessage(const QString &, int timeout = 0);
     void	updateUndoRedoEnabled();
     void	modifiedChanged();
+    void	doFindString();
+    void	findStringChanged(const QString &);
+    void	findStringChanged(int);
+    void	onFocusInFindLineEdit();
+    void	onEscFindLineEdit();
+    void	setFindString(const QString &txt);
 	
 private:
 	Ui::MainWindowClass ui;
@@ -97,6 +112,9 @@ private:
 	//SettingsMgr		*m_settingsMgr;
 	//GlobalSettings		*m_globSettings;
 	
+	bool	m_searching;			//	検索中
+	bool	m_incSearched;		//	インクリメンタルサーチ済み
+	byte	m_searchAlgorithm;
 	int		m_curTabIndex;
 	int		m_formerTabIndex;
 	//int		m_docNumber;
@@ -107,6 +125,8 @@ private:
 	int				m_findStringHistIndex;
 	FindLineEdit	*m_findLineEdit;
 	//
+	SSSearch		*m_sssrc;
+	SSSearch		*m_sssrc2;
 	QDockWidget	*m_outlineDock;
 	
 	QLabel		*m_lineOffsetLabel;

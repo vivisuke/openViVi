@@ -1,15 +1,18 @@
 ﻿#include <QtGui>
 //#include <QPainter>
 #include <QDebug>
+#include "MainWindow.h"
 #include "Document.h"
 #include "EditView.h"
 #include "ViewTokenizer.h"
 #include "typeSettings.h"
+#include "globalSettings.h"
 #include "TextCursor.h"
 #include "viewLineMgr.h"
 #include "../buffer/Buffer.h"
 #include "../buffer/bufferUtl.h"
 #include "../buffer/UTF16.h"
+#include "../buffer/sssearch.h"
 
 #define		DRAW_Y_OFFSET		2
 #define		MINMAP_LN_WD		4			//	行番号部分幅
@@ -38,8 +41,9 @@ QString getText(const Buffer &buffer, int pos, int sz)
 }
 #endif
 //----------------------------------------------------------------------
-EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
-	: m_document(doc)
+EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeSettings*/)
+	: m_mainWindow(mainWindow)
+	, m_document(doc)
 	, m_buffer(doc->buffer())
 	//, m_buffer(buffer)
 	//, m_typeSettings(nullptr)
@@ -1256,4 +1260,40 @@ bool EditView::saveFile() const
 	if( rc && im )
 		emit modifiedChanged();
 	return rc;
+}
+bool EditView::findForward(const QString &text, uint opt, bool loop, bool next, bool vi)
+{
+	pos_t pos0;
+	if( !m_textCursor->hasSelection() )
+		pos0 = m_textCursor->position();
+	else
+		pos0 = m_textCursor->selectionFirst();
+	if( next )
+		++pos0;
+	int algorithm = mainWindow()->searchAlgorithm();
+	SSSearch &sssrc = mainWindow()->sssrc();
+	if( g_globSettings.boolValue(GlobalSettings::REGEXP)
+		|| (opt & SSSearch::REGEXP) != 0 )
+	{
+		algorithm = SSSearch::STD_REGEX;
+	}
+	int ln = positionToLine(pos0);
+	int lineStart = lineStartPosition(ln);
+	pos_t pos = buffer()->indexOf(sssrc, (wchar_t *)text.data(), text.size(), pos0, opt, -1, algorithm);
+	//pos_t pos = m_doc->indexOf(sssrc, text, pos0, opt, -1, algorithm);
+	if( pos < 0 ) {
+		if( !loop ) return false;
+		pos = buffer()->indexOf(sssrc, (wchar_t *)text.data(), text.size(), 0, opt, pos0+1, algorithm);
+		//pos = m_doc->indexOf(sssrc, text, 0, opt, -1, algorithm);
+		if( pos < 0 ) return false;
+	}
+	m_textCursor->setPosition(pos);
+	if( !vi ) {
+		const int matchLength = sssrc.matchLength();
+		m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR, matchLength);
+	}
+	makeCursorInView(true);
+	//onCursorPosChanged();
+	update();
+	return true;
 }

@@ -1,3 +1,10 @@
+#include <QDockWidget>
+#include <QFileDialog>
+#include <QMimeData>
+#include <QSettings>
+#include <QComboBox>
+#include <QMessageBox>
+#include <QDebug>
 #include "version.h"
 #include "MainWindow.h"
 #include "CTabWidget.h"
@@ -9,13 +16,7 @@
 #include "globalSettings.h"
 #include "charEncoding.h"
 #include "FindLineEdit.h"
-#include <QDockWidget>
-#include <QFileDialog>
-#include <QMimeData>
-#include <QSettings>
-#include <QComboBox>
-#include <QMessageBox>
-#include <QDebug>
+#include "../buffer/sssearch.h"
 
 #define		KEY_RECENTFILELIST			"recentFileList"
 #define		KEY_FAVORITEFILELIST		"favoriteFileList"
@@ -27,7 +28,7 @@
 
 int	g_docNumber = 0;
 SettingsMgr	g_settingsMgr;
-GlobalSettings	g_globalSettings;
+GlobalSettings	g_globSettings;
 
 //----------------------------------------------------------------------
 /*
@@ -83,9 +84,14 @@ MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 	, m_curTabIndex(-1)
 	, m_formerTabIndex(-1)
+	, m_incSearched(false)
+	, m_searching(false)
+	, m_searchAlgorithm(SSSearch::SAKUSAKU)
 	//, m_docNumber(0)
 {
 	ui.setupUi(this);
+	m_sssrc = new SSSearch();
+	m_sssrc2 = new SSSearch();
 	//g_settingsMgr = new SettingsMgr();
 	//char *ptr = nullptr;
 	//qDebug() << "sizeof(ptr) = " << sizeof(ptr) << "\n";
@@ -111,9 +117,9 @@ MainWindow::MainWindow(QWidget *parent)
 	m_findStringCB->setMaximumWidth(160);m_findStringCB->setEditable(true);
 	m_findStringCB->setCompleter(0);
 	m_findStringCB->setInsertPolicy(QComboBox::InsertAtTop);
-#if	0
 	updateFindStringCB();
 	connect(m_findStringCB->lineEdit(), SIGNAL(returnPressed()), this, SLOT(doFindString()));
+#if	0
 	connect(m_findStringCB, SIGNAL(editTextChanged(const QString &)),
 					this, SLOT(findStringChanged(const QString &)));
 	connect(m_findLineEdit, SIGNAL(escPressed()), this, SLOT(onEscFindLineEdit()));
@@ -444,7 +450,7 @@ EditView *MainWindow::createView(QString pathName)
 	doc->setTitle(title);
 	//Buffer* buffer = doc->buffer();
 	//auto* typeSettings = new TypeSettings(typeName);
-	EditView* view = new EditView(doc /*, typeSettings*/);	//QPlainTextEdit();	//createView();
+	EditView* view = new EditView(this, doc /*, typeSettings*/);	//QPlainTextEdit();	//createView();
 	connect(view, SIGNAL(modifiedChanged()), this, SLOT(modifiedChanged()));
 	connect(view, SIGNAL(updateUndoRedoEnabled()), this, SLOT(updateUndoRedoEnabled()));
 	connect(view, SIGNAL(cursorPosChanged(int, int)), this, SLOT(onCursorPosChanged(int, int)));
@@ -909,6 +915,73 @@ void MainWindow::on_action_Search_triggered()
 	} else
 		txt = m_findStringCB->lineEdit()->text();
 	m_findStringCB->lineEdit()->setFocus();
+}
+void MainWindow::doFindString()
+{
+	m_searching = true;
+	statusBar()->clearMessage();
+	if( m_incSearched ) {		//	インクリメンタルサーチ済み
+		EditView *view = currentWidget();
+		if( view != 0 )
+			view->setFocus();
+	} else {
+		QString pat = m_findStringCB->lineEdit()->text();
+		EditView *view = currentWidget();
+		if( isEditView(view) && !pat.isEmpty() ) {
+			uint opt = 0;
+			if( g_globSettings.boolValue(GlobalSettings::IGNORE_CASE) )
+				opt |= SSSearch::IGNORE_CASE;
+			if( g_globSettings.boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
+				opt |= SSSearch::WHOLE_WORD_ONLY;
+			if( !view->findForward(m_findString = pat, opt, g_globSettings.boolValue(GlobalSettings::LOOP_SEARCH)) )
+				statusBar()->showMessage(tr("'%1' was not found.").arg(pat), 3000);
+			//else
+			setFindString(pat);
+			view->setFocus();
+		}
+	}
+	m_searching = false;
+}
+void MainWindow::findStringChanged(const QString &)
+{
+}
+void MainWindow::findStringChanged(int)
+{
+}
+void MainWindow::onFocusInFindLineEdit()
+{
+}
+void MainWindow::onEscFindLineEdit()
+{
+}
+void MainWindow::setFindString(const QString &txt)
+{
+    QSettings settings;
+    QStringList strList = settings.value("findStringList").toStringList();
+    strList.removeAll(txt);
+    strList.push_front(txt);
+	while( strList.size() > MAX_FIND_STR_HIST )
+		strList.pop_back();
+    settings.setValue("findStringList", strList);
+	updateFindStringCB();
+	m_findString = txt;
+}
+void MainWindow::updateFindStringCB()
+{
+	m_searching = true;
+    QSettings settings;
+    QStringList strList = settings.value("findStringList").toStringList();
+    while( m_findStringCB->count() )
+	    m_findStringCB->removeItem(0);
+	m_findStringCB->addItems(strList);
+	m_searching = false;
+}
+byte MainWindow::searchAlgorithm() const	// { return m_searchAlgorithm; }
+{
+	if( g_globSettings.boolValue(GlobalSettings::REGEXP) )
+		return SSSearch::STD_REGEX;
+	else
+		return m_searchAlgorithm;
 }
 void MainWindow::on_action_LineNumber_triggered()
 {
