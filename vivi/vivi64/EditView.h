@@ -31,13 +31,13 @@ public:
 	const TypeSettings	*typeSettings() const;	// { return m_typeSettings; }
 	//const TypeSettings* cTypeSettings() { return (const TypeSettings*)m_typeSettings; }
 	bool	isModified() const;		// { return m_modified; }
+	bool	hasSelection() const;
+	bool	hasSelectionInALine() const;
+	QString	text(pos_t pos, ssize_t sz) const;
+	QString	selectedText() const;
+	QString	newLineText() const;
 	int	viewLineOffsetToPx(int vln, int offset) const;
-	void	setLineNumberVisible(bool);
-	void	setPlainText(const QString&);
-	//void	setTypeSettings(TypeSettings *);
-	Document*	document() { return m_document; }
 	const Document*	document() const { return m_document; }
-	Buffer	*buffer() { return m_buffer; }
 	const Buffer	*buffer() const { return m_buffer; }
 	int		positionToLine(pos_t pos) const;
 	int		docLineToViewLine(int dln) const;
@@ -53,6 +53,10 @@ public:
 	int		pxToOffset(int vln, int px) const;
 	void	pointToLineOffset(const QPoint &, int &, int &) const;
 public:
+	void	setLineNumberVisible(bool);
+	void	setPlainText(const QString&);
+	Document*	document() { return m_document; }
+	Buffer	*buffer() { return m_buffer; }
 	bool	makeCursorInView(bool bQuarter = false);
 	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
 	void	onCursorPosChanged();

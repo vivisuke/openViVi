@@ -70,6 +70,7 @@ public:
 	int		selectionFirst() const;
 	int		selectionLast() const;
 	bool	hasSelection() const { return m_mode != NOMAL_MODE || m_anchor != m_pos; }
+	QString	selectedText() const;
 public:
 	void	clearSelection();
 	void	setPosition(pos_t pos, int mode = MOVE_ANCHOR);

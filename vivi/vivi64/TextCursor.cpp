@@ -481,6 +481,13 @@ int TextCursor::selectionLast() const
 	int dln = m_view->viewLineToDocLine(vln);
 	return m_view->lineStartPosition(dln+1);
 }
+QString TextCursor::selectedText() const
+{
+	if( !hasSelection() ) return QString();
+	int first = selectionFirst();
+	int last = selectionLast();
+	return m_view->text(first, last - first);
+}
 void TextCursor::deleteChar(bool BS, bool vi)
 {
 	pos_t pos = selectionFirst();

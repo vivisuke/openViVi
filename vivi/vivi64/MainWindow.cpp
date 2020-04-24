@@ -900,6 +900,14 @@ void MainWindow::on_action_Paste_triggered()
 }
 void MainWindow::on_action_Search_triggered()
 {
+	EditView *view = currentWidget();
+	if( !isEditView(view) ) return;
+	QString txt;
+	if( view->hasSelectionInALine() ) {
+		txt = view->selectedText();
+		m_findStringCB->lineEdit()->setText(txt);
+	} else
+		txt = m_findStringCB->lineEdit()->text();
 	m_findStringCB->lineEdit()->setFocus();
 }
 void MainWindow::on_action_LineNumber_triggered()

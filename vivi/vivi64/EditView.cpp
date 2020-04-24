@@ -8,6 +8,7 @@
 #include "TextCursor.h"
 #include "viewLineMgr.h"
 #include "../buffer/Buffer.h"
+#include "../buffer/bufferUtl.h"
 #include "../buffer/UTF16.h"
 
 #define		DRAW_Y_OFFSET		2
@@ -27,6 +28,15 @@ inline bool isNewLine(wchar_t ch)
 {
 	return ch == '\r' || ch == '\n';
 }
+#if	0
+QString getText(const Buffer &buffer, int pos, int sz)
+{
+	QString text;
+	while( --sz >= 0 )
+		text += QChar(buffer.charAt(pos++));
+	return text;
+}
+#endif
 //----------------------------------------------------------------------
 EditView::EditView(Document *doc /*, TypeSettings* typeSettings*/)
 	: m_document(doc)
@@ -105,6 +115,28 @@ const TypeSettings *EditView::typeSettings() const
 bool EditView::isModified() const		// { return m_modified; }
 {
 	return document()->isModified();
+}
+bool EditView::hasSelection() const
+{
+	return m_textCursor->hasSelection();
+}
+bool EditView::hasSelectionInALine() const
+{
+	if( !m_textCursor->hasSelection() ) return false;
+	pos_t first = m_textCursor->selectionFirst();
+	pos_t last = m_textCursor->selectionLast();
+	int ln1 = document()->positionToLine(first);
+	int ln2 = document()->positionToLine(last);
+	return ln1 == ln2;
+}
+QString EditView::text(pos_t pos, ssize_t sz) const
+{
+	//return getText(*buffer(), 0, bufferSize());
+	return document()->text(pos, sz);
+}
+QString EditView::selectedText() const
+{
+	return m_textCursor->selectedText();
 }
 int EditView::viewLineOffsetToPx(int vln, int offset) const
 {
