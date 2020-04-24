@@ -72,6 +72,7 @@ private slots:
 	void	on_action_Cut_triggered();
 	void	on_action_Copy_triggered();
 	void	on_action_Paste_triggered();
+	void	on_action_Search_triggered();
 	void	on_action_LineNumber_triggered();
 	void	on_action_TypeSettings_triggered();
 	void	on_action_GlobalSettings_triggered();

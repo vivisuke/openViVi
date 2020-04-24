@@ -90,6 +90,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//char *ptr = nullptr;
 	//qDebug() << "sizeof(ptr) = " << sizeof(ptr) << "\n";
 	//setWindowTitle(QString("ViVi64 ver %1").arg(VERSION_STR));
+	setWindowIcon(QIcon(":/MainWindow/Resources/pencil_orange.png"));
 	createActions();
 	createMenus();
 	//connectMenuActions();
@@ -897,6 +898,10 @@ void MainWindow::on_action_Paste_triggered()
 		view->paste();
 	}
 }
+void MainWindow::on_action_Search_triggered()
+{
+	m_findStringCB->lineEdit()->setFocus();
+}
 void MainWindow::on_action_LineNumber_triggered()
 {
 	bool b = ui.action_LineNumber->isChecked();
@@ -928,8 +933,8 @@ void MainWindow::on_action_GlobalSettings_triggered()
 }
 void MainWindow::on_action_About_ViVi_triggered()
 {
-	QMessageBox::about(this, "open source version ViVi text editor",
-						tr("<p><a href=\"https://github.com/vivisuke/openViVi\">ViVi</a> version ") + QString(VERSION_STR)
-						+ tr("<br>Copyright (C) 2020-2020 by N.Tsuda")
+	QMessageBox::about(this, "about ViVi",
+						tr("<p><a href=\"https://github.com/vivisuke/openViVi\">openViVi</a> version ") + QString(VERSION_STR)
+						+ tr("<br>Copyright (C) 2020 by N.Tsuda")
 						+ tr("<br>Powered by <a href=\"https://www.qt.io/\">Qt</a> ") + QT_VERSION_STR);
 }
