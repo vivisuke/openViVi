@@ -18,6 +18,7 @@ class GlobalSettings;
 class SSSearch;
 
 extern GlobalSettings	g_globSettings;
+GlobalSettings *globSettings();
 
 class MainWindow : public QMainWindow
 {
@@ -81,6 +82,8 @@ private slots:
 	void	on_action_Copy_triggered();
 	void	on_action_Paste_triggered();
 	void	on_action_Search_triggered();
+	void	on_action_SearchBackward_triggered();
+	void	on_action_SearchForward_triggered();
 	void	on_action_LineNumber_triggered();
 	void	on_action_TypeSettings_triggered();
 	void	on_action_GlobalSettings_triggered();

@@ -29,6 +29,7 @@
 int	g_docNumber = 0;
 SettingsMgr	g_settingsMgr;
 GlobalSettings	g_globSettings;
+GlobalSettings* globSettings() { return &g_globSettings; }
 
 //----------------------------------------------------------------------
 /*
@@ -902,6 +903,24 @@ void MainWindow::on_action_Paste_triggered()
 	EditView *view = currentWidget();
 	if( isEditView(view) ) {
 		view->paste();
+	}
+}
+void MainWindow::on_action_SearchBackward_triggered()
+{
+	statusBar()->clearMessage();
+	QString pat = m_findStringCB->lineEdit()->text();
+	EditView *view = currentWidget();
+	if( isEditView(view) && !pat.isEmpty() ) {
+		view->findPrev(pat);
+	}
+}
+void MainWindow::on_action_SearchForward_triggered()
+{
+	statusBar()->clearMessage();
+	QString pat = m_findStringCB->lineEdit()->text();
+	EditView *view = currentWidget();
+	if( isEditView(view) && !pat.isEmpty() ) {
+		view->findNext(pat);
 	}
 }
 void MainWindow::on_action_Search_triggered()

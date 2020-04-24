@@ -71,6 +71,8 @@ public:
 	bool	searchCurWord(QString &);
 	bool	findForward(const QString &, uint opt = 0, bool loop = false, bool next = true, bool vi = false);
 	bool	findBackward(const QString &, uint opt = 0, bool loop = false, bool vi = false);
+	void	findNext(const QString &, bool vi = false);
+	void	findPrev(const QString &, bool vi = false);
 protected:
 	void	resetCursorBlinking();
 	void	drawLineNumbers();

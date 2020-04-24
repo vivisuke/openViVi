@@ -1297,3 +1297,64 @@ bool EditView::findForward(const QString &text, uint opt, bool loop, bool next, 
 	update();
 	return true;
 }
+bool EditView::findBackward(const QString &text, uint opt, bool loop, bool vi)
+{
+	pos_t pos0;
+	if( !m_textCursor->hasSelection() )
+		pos0 = m_textCursor->position();
+	else
+		pos0 = m_textCursor->selectionFirst();
+	int algorithm = mainWindow()->searchAlgorithm();
+	if( globSettings()->boolValue(GlobalSettings::REGEXP) )
+		algorithm = SSSearch::STD_REGEX;
+	SSSearch &sssrc = mainWindow()->sssrc();
+	pos_t pos = buffer()->rIndexOf(sssrc, (wchar_t *)text.data(), text.size(), pos0, opt, 0, algorithm);
+	//pos_t pos = m_doc->rIndexOf(sssrc, text, pos0, opt, /*last=*/-1, algorithm);
+	if( pos < 0 ) {
+		if( !loop ) return false;
+		pos = buffer()->rIndexOf(sssrc, (wchar_t *)text.data(), text.size(), bufferSize(), opt, 0, algorithm);
+		//pos = m_doc->rIndexOf(sssrc, text, bufferSize(), opt, /*last=*/-1, algorithm);
+		if( pos < 0 ) return false;
+	}
+	m_textCursor->setPosition(pos);
+	if( !vi ) {
+		const int matchLength = sssrc.matchLength();
+		m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR, matchLength);
+	}
+	makeCursorInView(true);
+	//onCursorPosChanged();
+	update();
+	return true;
+}
+void EditView::findNext(const QString &pat, bool vi)
+{
+	uint opt = 0;
+	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) ) opt |= SSSearch::IGNORE_CASE;
+	if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) ) opt |= SSSearch::WHOLE_WORD_ONLY;
+	QTime tm;
+	tm.start();
+	bool rc = findForward(pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), true, vi);
+	int ms = tm.elapsed();
+	if( !rc )
+		showMessage(tr("'%1' was not found (%2 msec).").arg(pat).arg(ms), 3000);
+	else {
+		showMessage(tr("(%1 msec).").arg(ms), 3000);
+		mainWindow()->setFindString(pat);
+	}
+	setFocus();
+	update();
+}
+void EditView::findPrev(const QString &pat, bool vi)
+{
+	uint opt = 0;
+	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
+		opt |= SSSearch::IGNORE_CASE;
+	if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
+		opt |= SSSearch::WHOLE_WORD_ONLY;
+	if( !findBackward(pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), vi) )
+		showMessage(tr("'%1' was not found.").arg(pat), 3000);
+	else
+		mainWindow()->setFindString(pat);
+	setFocus();
+	update();
+}
