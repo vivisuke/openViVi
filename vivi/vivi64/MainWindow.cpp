@@ -14,6 +14,7 @@
 #include <QMimeData>
 #include <QSettings>
 #include <QComboBox>
+#include <QMessageBox>
 #include <QDebug>
 
 #define		KEY_RECENTFILELIST			"recentFileList"
@@ -883,4 +884,11 @@ void MainWindow::on_action_TypeSettings_triggered()
 }
 void MainWindow::on_action_GlobalSettings_triggered()
 {
+}
+void MainWindow::on_action_About_ViVi_triggered()
+{
+	QMessageBox::about(this, "open source version ViVi text editor",
+						tr("<p><a href=\"https://github.com/vivisuke/openViVi\">ViVi</a> version ") + QString(VERSION_STR)
+						+ tr("<br>Copyright (C) 2020-2020 by N.Tsuda")
+						+ tr("<br>Powered by <a href=\"https://www.qt.io/\">Qt</a> ") + QT_VERSION_STR);
 }

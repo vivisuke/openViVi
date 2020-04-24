@@ -115,7 +115,7 @@
     <property name="title">
      <string>&amp;Other</string>
     </property>
-    <addaction name="action_Abount_ViVi"/>
+    <addaction name="action_About_ViVi"/>
    </widget>
    <widget class="QMenu" name="menu_Search">
     <property name="title">
@@ -156,7 +156,7 @@
    <addaction name="separator"/>
    <addaction name="action_TypeSettings"/>
    <addaction name="action_GlobalSettings"/>
-   <addaction name="action_Abount_ViVi"/>
+   <addaction name="action_About_ViVi"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_New">
@@ -255,13 +255,13 @@
     <string>Ctrl+V</string>
    </property>
   </action>
-  <action name="action_Abount_ViVi">
+  <action name="action_About_ViVi">
    <property name="icon">
     <iconset resource="MainWindow.qrc">
      <normaloff>:/MainWindow/Resources/info_black.png</normaloff>:/MainWindow/Resources/info_black.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Abount ViVi</string>
+    <string>&amp;About ViVi</string>
    </property>
   </action>
   <action name="action_TypeSettings">

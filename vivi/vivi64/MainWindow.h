@@ -73,6 +73,7 @@ private slots:
 	void	on_action_LineNumber_triggered();
 	void	on_action_TypeSettings_triggered();
 	void	on_action_GlobalSettings_triggered();
+	void	on_action_About_ViVi_triggered();
 	//
     void	openRecentFile();
     void	openFavoriteFile();
