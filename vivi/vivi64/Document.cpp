@@ -138,6 +138,7 @@ void Document::setPlainText(const QString& txt)
 	buffer()->insertText(0, (cwchar_t*)txt.data(), txt.size());
 	buffer()->clearLineFlags();
 	buffer()->clearUndoMgr();
+	buffer()->setModified(false);
 	buildMinMap();
 }
 int Document::positionToLine(pos_t pos) const

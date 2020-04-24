@@ -745,6 +745,7 @@ bool MainWindow::maybeSave()
 bool MainWindow::maybeSave(EditView *view)
 {
 	QString fullPathName = view->fullPathName();
+	//bool b = view->isModified();
     if( view->isModified() && !(view->document()->isEmpty() && fullPathName.isEmpty()) ) {
     	ui.tabWidget->setCurrentWidget(view);
 		QMessageBox::StandardButton ret;
