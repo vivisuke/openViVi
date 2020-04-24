@@ -50,6 +50,8 @@ protected:
 	void	closeNullDocs();			//	空のドキュメントをクローズ
 	bool	doSave(EditView *);
 	bool	doSaveAs(EditView *);
+    bool	maybeSave();
+    bool	maybeSave(EditView *);
     
 protected:
 	void	dragEnterEvent(QDragEnterEvent *event);

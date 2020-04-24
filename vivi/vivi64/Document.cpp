@@ -48,6 +48,10 @@ wchar_t Document::charAt(pos_t pos) const
 {
 	return m_buffer->charAt(pos);
 }
+bool Document::isEmpty() const
+{
+	return m_buffer->isEmpty();
+}
 bool Document::isModified() const		// { return m_modified; }
 {
 	return m_buffer->isModified();

@@ -729,6 +729,37 @@ bool MainWindow::doSaveAs(EditView *view)
 	updateTabText(view);
 	return true;
 }
+bool MainWindow::maybeSave()
+{
+	for(int i = 0; i < ui.tabWidget->count(); ++i) {
+		EditView *view = nthWidget(i);
+		if( isEditView(view) ) {
+			//##updateMapFileLine(view);
+			//##updateMapFileMarks(view);
+			if( !maybeSave(view) )
+				return false;		//	キャンセルが選択された場合
+		}
+	}
+	return true;
+}
+bool MainWindow::maybeSave(EditView *view)
+{
+	QString fullPathName = view->fullPathName();
+    if( view->isModified() && !(view->document()->isEmpty() && fullPathName.isEmpty()) ) {
+    	ui.tabWidget->setCurrentWidget(view);
+		QMessageBox::StandardButton ret;
+        ret = QMessageBox::warning(this, "ViVi64",
+                     tr("The '%1' has been modified.\n"
+                        "Do you want to save your changes ?").arg(view->title()),
+                     QMessageBox::Save | QMessageBox::Discard
+		     | QMessageBox::Cancel);
+        if (ret == QMessageBox::Save)
+            return doSave(view);
+        else if (ret == QMessageBox::Cancel)
+            return false;
+    }
+    return true;
+}
 void MainWindow::on_action_Close_triggered()
 {
 	qDebug() << "on_action_Close_triggered()";
@@ -762,7 +793,16 @@ void MainWindow::addToFavoriteFileList(const QString &fullPathName)		//	レジ�
 void MainWindow::tabCloseRequested(int index)
 {
 	//	undone: 保存確認
+	EditView *view = nthWidget(index);
+	if( view == 0 ) return;
+	if( isEditView(view) ) {
+		if( !maybeSave(view) )
+			return;		//	キャンセルが選択された場合
 		ui.tabWidget->removeTab(index);
+		//##updateMapFileLine(view);
+		//##updateMapFileMarks(view);
+		//??delete view;
+	}
 }
 void MainWindow::currentChanged(int index)
 {
