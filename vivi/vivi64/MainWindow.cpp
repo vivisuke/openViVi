@@ -234,8 +234,12 @@ void MainWindow::updateWindowTitle()
 	text += QString(VERSION_STR);
 	EditView *view = currentWidget();
 	if( isEditView(view) ) {
-		if( !view->title().isEmpty() )
-			text = view->title() + " - " + text;
+		if( !view->title().isEmpty() ) {
+			if( view->isModified() )
+				text = view->title() + "* - " + text;
+			else
+				text = view->title() + " - " + text;
+		}
 		if( !view->fullPathName().isEmpty() )
 			text += " - " + view->fullPathName();
 	}
@@ -250,7 +254,7 @@ void MainWindow::updateTabText(EditView *view)
 	QString fileName = QFileInfo(fullPathName).fileName();	//	ファイル名部分だけゲット
 	if( fullPathName.isEmpty() ) fileName = view->title();
 	if( view->isModified() )
-		fileName += " *";
+		fileName += "*";
 	ui.tabWidget->setTabText(ix, fileName);
 	ui.tabWidget->setTabToolTip(ix, fullPathName);
 }
@@ -807,6 +811,7 @@ void MainWindow::modifiedChanged()
 	EditView *view = (EditView *)sender();
 	if( !isEditView(view) ) return;
 	updateTabText(view);
+	updateWindowTitle();
 }
 void MainWindow::on_action_eXit_triggered()
 {
