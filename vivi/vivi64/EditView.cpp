@@ -379,6 +379,12 @@ void EditView::resizeEvent(QResizeEvent *event)
 {
 	onResized();
 }
+void EditView::focusInEvent( QFocusEvent * event )
+{
+}
+void EditView::focusOutEvent( QFocusEvent * event )
+{
+}
 void EditView::mousePressEvent(QMouseEvent *event)
 {
 	setFocus();
@@ -519,6 +525,15 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		//onEscape(ctrl, shift, alt);
 		m_textCursor->clearSelection();
 		break;
+	case Qt::Key_Return:
+	case Qt::Key_Enter:
+		switch( m_mainWindow->newLineType() ) {
+		default:
+		case NEWLINE_CRLF:	text = "\r\n";	break;
+		case NEWLINE_LF:	text = "\n";	break;
+		case NEWLINE_CR:	text = "\r";	break;
+		}
+		goto ins;
 	case Qt::Key_Tab:
 		text = "\t";
 		goto ins;
@@ -749,6 +764,7 @@ void EditView::drawLineText(QPainter &pt,
 	const auto chWidth = m_fontWidth;		//fm.width(QString("8"));
 	int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
 	int ix = 0;
+	int clmn = 0;
 	const int last = ls + vlnsz;
 	const QString lineComment = typeSettings()->textValue(TypeSettings::LINE_COMMENT);
 	//const QString lineComment = "//";		//	暫定コード
@@ -832,7 +848,7 @@ void EditView::drawLineText(QPainter &pt,
 			}
 		}
 		if( !token.isEmpty() ) {
-			drawTokenText(pt, token, px, py, peDX, wd, chWidth, descent, col, bold);
+			drawTokenText(pt, token, clmn, px, py, peDX, wd, chWidth, descent, col, bold);
 		}
 		px += wd;
 		//
@@ -846,6 +862,7 @@ void EditView::drawLineText(QPainter &pt,
 }
 void EditView::drawTokenText(QPainter& pt,
 								QString& token,
+								int& clmn,
 								int& px,
 								int py,
 								int peDX,
@@ -860,12 +877,12 @@ void EditView::drawTokenText(QPainter& pt,
 	if (bold) {
 		pt.setFont(m_fontBold);
 		pt.drawText(px + peDX - sx, py, token);
-	}
-	else if (token[0] < 0x100) {
+	} else if( token[0] == '\t' ) {
+	} else if (token[0] < 0x100) {
 		pt.setFont(m_font);
 		pt.drawText(px + peDX - sx, py, token);
-	}
-	else {
+		wd = chWidth * token.size();
+	} else {
 		auto x = px + peDX;
 		wd = 0;
 		for (int i = 0; i != token.size(); ++i) {

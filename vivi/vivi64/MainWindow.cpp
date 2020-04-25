@@ -329,6 +329,10 @@ void MainWindow::setupStatusBar()
 	connect(m_typeCB, SIGNAL(currentIndexChanged(const QString &)),
 			this, SLOT(onTypeChanged(const QString &)));
 }
+int MainWindow::newLineType() const
+{
+	return m_newLineCodeCB->currentIndex();
+}
 void MainWindow::showMessage(const QString &mess0, int timeout)
 {
 	QString mess = mess0;

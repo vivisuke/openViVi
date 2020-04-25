@@ -20,6 +20,12 @@ class SSSearch;
 extern GlobalSettings	g_globSettings;
 GlobalSettings *globSettings();
 
+enum {
+	NEWLINE_CRLF = 0,
+	NEWLINE_LF,
+	NEWLINE_CR,
+};
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -32,6 +38,7 @@ public:
 	byte	searchAlgorithm() const;	// { return m_searchAlgorithm; }
 	SSSearch	&sssrc() { return *m_sssrc; }
 	SSSearch	&sssrc2() { return *m_sssrc2; }		//	カーソル位置単語検索用
+	int		newLineType() const;
 protected:
 	void	createActions();
 	void	createMenus();
