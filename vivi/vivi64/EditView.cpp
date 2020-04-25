@@ -48,6 +48,7 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	//, m_buffer(buffer)
 	//, m_typeSettings(nullptr)
 	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
+	,m_scrollX0(0)
 	,m_scrollY0(0)
 	, m_minMapDragging(false)
 	, m_dispCursor(true)
@@ -314,15 +315,15 @@ bool EditView::makeCursorInView(bool bQuarter)
 		}
 	}
 	//qDebug() << verticalScrollBar()->value();
-#if	0
+#if	1
 	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
-	int hpos = horizontalScrollBar()->value();
-	int wd = viewport()->rect().width() /*- m_lineNumAreaWidth*/;
+	int hpos = m_scrollX0 * m_fontWidth;
+	int wd = rect().width() - m_lineNumAreaWidth - MINMAP_WIDTH;
 	if( px < hpos ) {
-		horizontalScrollBar()->setValue(qMax(0, px - HS_MARGIN));
+		m_scrollX0 = qMax(0, px - HS_MARGIN) / m_fontWidth;
 		scrolled = true;
 	} else if( px >= hpos + wd - HS_MARGIN / 2 ) {
-		horizontalScrollBar()->setValue(px - wd + HS_MARGIN);
+		m_scrollX0 = (px - wd + HS_MARGIN) / m_fontWidth;
 		scrolled = true;
 	}
 #endif
@@ -819,14 +820,15 @@ void EditView::drawTokenText(QPainter& pt,
 								QColor& col,
 								bool bold)
 {
+	int sx = m_scrollX0 * m_fontWidth;
 	pt.setPen(col);
 	if (bold) {
 		pt.setFont(m_fontBold);
-		pt.drawText(px + peDX, py, token);
+		pt.drawText(px + peDX - sx, py, token);
 	}
 	else if (token[0] < 0x100) {
 		pt.setFont(m_font);
-		pt.drawText(px + peDX, py, token);
+		pt.drawText(px + peDX - sx, py, token);
 	}
 	else {
 		auto x = px + peDX;
@@ -838,18 +840,12 @@ void EditView::drawTokenText(QPainter& pt,
 				wd += chWidth;
 			}
 			else {
-				pt.drawText(x, py - m_fontHeight + descent, chWidth * 2, m_fontHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
+				pt.drawText(x - sx, py - m_fontHeight + descent, chWidth * 2, m_fontHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
 				x += chWidth * 2;
 				wd += chWidth * 2;
 			}
 		}
-		//wd = chWidth * 2 * token.size();
-#if	0
-		pt.setFont(m_fontMB);
-		wd = fmMB.width(token);
-#endif
 	}
-	//pt.drawText(px, py, token);
 }
 void EditView::drawMinMap(QPainter& pt)
 {
@@ -943,11 +939,11 @@ void EditView::drawCursor(QPainter& pt)
 	QRect rct = rect();
 	if( py < 0 || py >= rct.height() )
 		return;		//	画面外の場合
-	int hv = 0;		//horizontalScrollBar()->value();
+	int hv = m_scrollX0 * m_fontWidth;
 	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth;
 	if( !m_preeditString.isEmpty() ) px += m_preeditWidth;
 	int ht = QFontMetrics(m_font).ascent();
-	pt.fillRect(QRect(px /*- hv*/, py, CURSOR_WD, ht),
+	pt.fillRect(QRect(px - hv, py, CURSOR_WD, ht),
 						typeSettings()->color(TypeSettings::CURSOR));
 }
 int EditView::textWidth(const QString &text) const

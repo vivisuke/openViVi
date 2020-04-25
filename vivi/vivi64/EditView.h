@@ -135,6 +135,7 @@ private:
 	bool	m_lineNumberVisible;
 	bool	m_minMapDragging;
 	bool	m_dispCursor;
+	int		m_scrollX0;			//	水平方向スクロール（0 org カラム位置）
 	int		m_scrollY0;
 	int		m_fontWidth;
 	int		m_fontHeight;
