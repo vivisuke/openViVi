@@ -515,12 +515,15 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		m_scrollY0 = qMin(buffer()->lineCount(), m_scrollY0 + nLines);		//	暫定コード
 		m_textCursor->movePosition(TextCursor::DOWN, mvmd, nLines);
 		break;
-	case Qt::Key_Delete:
-		onDelete(ctrl, shift, alt);
-		break;
 	case Qt::Key_Escape:
 		//onEscape(ctrl, shift, alt);
 		m_textCursor->clearSelection();
+		break;
+	case Qt::Key_Tab:
+		text = "\t";
+		goto ins;
+	case Qt::Key_Delete:
+		onDelete(ctrl, shift, alt);
 		break;
 	case Qt::Key_Backspace:
 			onBackSpace(ctrl, shift, alt);
@@ -540,7 +543,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 			onBackSpace(false, shift, alt);
 			break;
 		}
-		if( text[0] != '\n' && text[0] != '\r' && text[0].unicode() < 0x20 )
+		if( text[0] != '\t' && text[0] != '\n' && text[0] != '\r' && text[0].unicode() < 0x20 )
 			return;
 	ins:
 		insertTextSub(text, ctrl, shift, alt);
@@ -999,15 +1002,20 @@ int EditView::textWidth(pos_t first, ssize_t sz, pos_t last, const Buffer* pbuff
 	auto chWidth = m_fontWidth;		//fm.width(QString("8"));
 	const auto endpos = first + sz;
 	auto pos = first;
+	int col = 0;
 	while( pos != endpos ) {
 		auto ch = pbuffer->operator[](pos);
 		if( ch == '\t' ) {
-			wd += chWidth * (nTab - (pos - first) % nTab);
+			auto n = (nTab - col % nTab);
+			col += n;
+			wd += chWidth * n;
 		} else if( ch == '\r' || ch == '\n' ) {
 			break;
-		} else if( ch < 0x100 )
+		} else if( ch < 0x100 ) {
+			++col;
 			wd += chWidth;
-		else {
+		} else {
+			col += 2;
 			wd += chWidth * 2;
 		}
 		++pos;
@@ -1081,17 +1089,22 @@ int EditView::pxToOffset(int vln, int px) const
 	int pos = viewLineMgr()->viewLineStartPosition(vln);
 	const int nextLinePos = viewLineMgr()->viewLineStartPosition(vln+1);
 	int wd = 0;
+	int col = 0;
 	int offset = 0;
 	const Buffer* buf = buffer();
 	while( wd < px && pos < nextLinePos ) {
 		auto ch = buf->operator[](pos);
 		if( ch == '\t' ) {
-			wd += chWidth * (nTab - offset % nTab);
+			int n = (nTab - col % nTab);
+			col += n;
+			wd += chWidth * n;
 		} else if( ch == '\r' || ch == '\n' ) {
 			break;
-		} else if( ch < 0x100 )
+		} else if( ch < 0x100 ) {
+			col += 1;
 			wd += chWidth;
-		else {
+		} else {
+			col += 2;
 			wd += chWidth * 2;
 		}
 		++offset;
