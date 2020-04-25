@@ -67,6 +67,9 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	m_lineNumAreaWidget.setCursor(Qt::ArrowCursor);
 	//m_lineNumAreaWidget.installEventFiler(this);
 	m_viewLineMgr = new ViewLineMgr(this);
+	//	テキストエリア
+	//m_textAreaWidget.setParent(this);
+	//m_textAreaWidget.setCursor(Qt::IBeamCursor);
 	//	ミニマップ
 	m_minMapWidget.setParent(this);
 	m_minMapWidget.setCursor(Qt::ArrowCursor);
@@ -90,6 +93,8 @@ EditView::~EditView()
 void EditView::onResized()
 {
 	auto rct = rect();
+	auto wd = rct.width();
+	//
 	rct.setX(rct.width() - MINMAP_WIDTH);
 	rct.setWidth(MINMAP_WIDTH);
 	m_minMapWidget.setGeometry(rct);
@@ -97,6 +102,13 @@ void EditView::onResized()
 	rct.setX(0);
 	rct.setWidth(m_lineNumAreaWidth);
 	m_lineNumAreaWidget.setGeometry(rct);
+	//
+	//m_textAreaPixmap = QPixmap(wd - m_lineNumAreaWidth - MINMAP_WIDTH, rct.height());
+#if	0
+	rct.setX(m_lineNumAreaWidth);
+	rct.setWidth(wd - m_lineNumAreaWidth - MINMAP_WIDTH);
+	m_textAreaWidget.setGeometry(rct);
+#endif
 }
 void EditView::setPlainText(const QString& txt)
 {
@@ -576,26 +588,44 @@ void EditView::paintEvent(QPaintEvent *event)
 {
 	//qDebug() << "lineCount = " << buffer()->lineCount();
 	QPainter pt(this);
+	//QPainter pt2(&m_textAreaPixmap);
+	//QPainter pt2(&m_textAreaWidget);
 	auto rct = rect();
+	auto wd = rct.width();
 	//qDebug() << "rect = " << rct;
 	//	全体背景描画
 	pt.setPen(Qt::transparent);
-	QColor col = typeSettings()->color(TypeSettings::BACK_GROUND);
-	pt.setBrush(col);
+	//pt2.setPen(Qt::transparent);
+	QColor bg = typeSettings()->color(TypeSettings::BACK_GROUND);
+	//pt2.setBrush(bg);
+	//pt2.drawRect(m_textAreaPixmap.rect());
+#if	1
+	//QColor col = typeSettings()->color(TypeSettings::BACK_GROUND);
+	pt.setBrush(bg);
 	pt.drawRect(rct);
-	//	行番号部分背景描画
-	col = typeSettings()->color(TypeSettings::LINENUM_BG);
-	pt.setBrush(col);
-	rct.setWidth(m_lineNumAreaWidth);
-	pt.drawRect(rct);
+#endif
 	//
-	drawLineNumberArea(pt);		//	行番号エリア描画
 	drawPreeditString(pt);
 	drawSelection(pt);
 	drawTextArea(pt);			//	テキストエイア描画
 	drawMinMap(pt);				//	ミニマップ描画
 	drawCursor(pt);				//	テキストカーソル表示
 	drawLineCursor(pt);			//	行カーソル表示
+	//	行番号部分背景描画
+	pt.setOpacity(1.0);
+	QColor col = typeSettings()->color(TypeSettings::LINENUM_BG);
+	pt.setPen(Qt::transparent);
+	pt.setBrush(col);
+	rct.setWidth(m_lineNumAreaWidth);
+	pt.drawRect(rct);
+	drawLineNumberArea(pt);		//	行番号エリア描画
+	//
+#if 0
+	pt.setOpacity(1.0);
+	rct.setX(m_lineNumAreaWidth);
+	rct.setWidth(wd - m_lineNumAreaWidth - MINMAP_WIDTH);
+	pt.drawPixmap(rct, m_textAreaPixmap, m_textAreaPixmap.rect());
+#endif
 }
 void EditView::drawLineNumberArea(QPainter& pt)
 {
@@ -670,6 +700,8 @@ void EditView::drawTextArea(QPainter& pt)
 	if( m_preeditString.isEmpty() ) m_preeditWidth = 0;
 	auto rct = rect();
 	pt.setPen(Qt::black);
+	pt.setOpacity(1.0);
+	//pt.drawText(100, 100, "Hello");
 	int px, py = 0 /*DRAW_Y_OFFSET*2*/;
 	bool inBlockComment = false;
 	bool inLineComment = false;
@@ -888,6 +920,7 @@ void EditView::drawMinMap(QPainter& pt)
 	pt.setBrush(Qt::transparent);
 	pt.setPen(Qt::red);
 	pt.drawRect(rct);				//	現エリアに赤枠描画
+	pt.setOpacity(1.0);
 }
 void EditView::drawPreeditString(QPainter&pt)
 {

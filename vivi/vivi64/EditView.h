@@ -166,7 +166,9 @@ private:
 	QFont		m_font;
 	QFont		m_fontBold;
 	QFont		m_fontMB;				//	マルチバイト用フォント
-	QWidget		m_lineNumAreaWidget;
+	QWidget		m_lineNumAreaWidget;	//	行番号表示用ウィジェット？
+	//QWidget		m_textAreaWidget;		//	テキスト表示用ウィジェット
+	//QPixmap		m_textAreaPixmap;		//	テキスト表示用 Pixmap
 	//	ミニマップ関連、undone:そのうち Document に移動
 	QWidget		m_minMapWidget;
 	//double		m_mmScale;				//	1.0 未満であれば縮小されている
