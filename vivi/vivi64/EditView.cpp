@@ -55,6 +55,7 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	//, m_viewLineMgr(new ViewLineMgr(this))
 {
 	Q_ASSERT(doc != nullptr);
+	//setFocusPolicy(Qt::ClickFocus);
 	setAttribute(Qt::WA_InputMethodEnabled);
 	//m_typeSettings = typeSettings == nullptr ? new TypeSettings() : typeSettings;
 	auto typeSettings = doc->typeSettings();
@@ -536,7 +537,6 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		goto ins;
 	case Qt::Key_Tab:
 		text = "\t";
-		goto ins;
 	case Qt::Key_Delete:
 		onDelete(ctrl, shift, alt);
 		break;
@@ -791,7 +791,7 @@ void EditView::drawLineText(QPainter &pt,
 		bool bold = false;
 		//pt.setFont(m_font);
 		QColor col = typeSettings()->color(inBlockComment || inLineComment ? TypeSettings::COMMENT : TypeSettings::TEXT);
-		auto wd = fm.width(token);
+		auto tabwd = 0;	//fm.width(token);
 		if( inLineComment ) {
 			col = typeSettings()->color(TypeSettings::COMMENT);
 		} else if( inBlockComment ) {
@@ -827,7 +827,7 @@ void EditView::drawLineText(QPainter &pt,
 					token = ">";
 					col = typeSettings()->color(TypeSettings::TAB);
 					int clmn = (px - m_lineNumAreaWidth) / chWidth;
-					wd = (nTab - (clmn % nTab)) * chWidth;
+					tabwd = (nTab - (clmn % nTab)) * chWidth;
 				} else {
 				}
 				break;
@@ -848,9 +848,11 @@ void EditView::drawLineText(QPainter &pt,
 			}
 		}
 		if( !token.isEmpty() ) {
-			drawTokenText(pt, token, clmn, px, py, peDX, wd, chWidth, descent, col, bold);
+			if( bold )
+				pt.setFont(m_fontBold);
+			pt.setPen(col);
+			px += drawTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ /*, bold*/);
 		}
-		px += wd;
 		//
 		if( !nextToken.isEmpty() ) {
 			token = nextToken;
@@ -860,25 +862,34 @@ void EditView::drawLineText(QPainter &pt,
 			token = tkn.nextToken();
 	}
 }
-void EditView::drawTokenText(QPainter& pt,
+int EditView::drawTokenText(QPainter& pt,
 								QString& token,
 								int& clmn,
 								int& px,
 								int py,
-								int peDX,
-								int& wd,
+								int peDX,		//	IME変換候補表示のためのX座標差分
+								int tabwd,
 								const int chWidth,
-								const int descent,
-								QColor& col,
-								bool bold)
+								const int descent)		//	フォントのベースライン下高さ
+								//QColor& col)
+								//bool bold)
 {
+	int wd = 0;	 tabwd;
 	int sx = m_scrollX0 * m_fontWidth;
-	pt.setPen(col);
+	//pt.setPen(col);
+#if	0
 	if (bold) {
 		pt.setFont(m_fontBold);
-		pt.drawText(px + peDX - sx, py, token);
-	} else if( token[0] == '\t' ) {
-	} else if (token[0] < 0x100) {
+		//pt.drawText(px + peDX - sx, py, token);
+	} //else
+#endif
+#if	0
+	if( token[0] == '\t' ) {
+		int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
+		
+	} else 
+#endif
+	if (token[0] < 0x100) {
 		pt.setFont(m_font);
 		pt.drawText(px + peDX - sx, py, token);
 		wd = chWidth * token.size();
@@ -898,6 +909,7 @@ void EditView::drawTokenText(QPainter& pt,
 			}
 		}
 	}
+	return !tabwd ? wd : tabwd;
 }
 void EditView::drawMinMap(QPainter& pt)
 {
