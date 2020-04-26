@@ -876,7 +876,7 @@ int EditView::drawTokenText(QPainter& pt,
 								QString& token,
 								int& clmn,
 								int& px,
-								int py,
+								int py,			//	ベースライン位置
 								int peDX,		//	IME変換候補表示のためのX座標差分
 								int tabwd,
 								const int chWidth,
@@ -913,7 +913,7 @@ int EditView::drawTokenText(QPainter& pt,
 				wd += chWidth;
 			}
 			else {
-				pt.drawText(x - sx, py - m_fontHeight + descent, chWidth * 2, m_fontHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
+				pt.drawText(x - sx, py - m_lineHeight + descent, chWidth * 2, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
 				x += chWidth * 2;
 				wd += chWidth * 2;
 			}
