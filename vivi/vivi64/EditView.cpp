@@ -792,59 +792,67 @@ void EditView::drawLineText(QPainter &pt,
 		//pt.setFont(m_font);
 		QColor col = typeSettings()->color(inBlockComment || inLineComment ? TypeSettings::COMMENT : TypeSettings::TEXT);
 		auto tabwd = 0;	//fm.width(token);
-		if( inLineComment ) {
-			col = typeSettings()->color(TypeSettings::COMMENT);
-		} else if( inBlockComment ) {
-			col = typeSettings()->color(TypeSettings::COMMENT);
-			if( token == typeSettings()->textValue(TypeSettings::BLOCK_COMMENT_END) ) {
-				inBlockComment = false;
-			}
+		if( token == "\t" ) {
+			token = ">";
+			col = typeSettings()->color(TypeSettings::TAB);
+			int clmn = (px - m_lineNumAreaWidth) / chWidth;
+			tabwd = (nTab - (clmn % nTab)) * chWidth;
 		} else {
-			switch( tkn.tokenType() ) {
-			case ViewTokenizer::ALNUM:
-				if( typeSettings()->isKeyWord1(token) ) {
-					col = typeSettings()->color(TypeSettings::KEYWORD1);
-					bold = typeSettings()->boolValue(TypeSettings::KEYWORD1_BOLD);
-				} else if( typeSettings()->isKeyWord2(token) ) {
-					col = typeSettings()->color(TypeSettings::KEYWORD2);
-					bold = typeSettings()->boolValue(TypeSettings::KEYWORD2_BOLD);
+			if( inLineComment ) {
+				col = typeSettings()->color(TypeSettings::COMMENT);
+			} else if( inBlockComment ) {
+				col = typeSettings()->color(TypeSettings::COMMENT);
+				if( token == typeSettings()->textValue(TypeSettings::BLOCK_COMMENT_END) ) {
+					inBlockComment = false;
 				}
-				break;
-			case ViewTokenizer::DIGITS:
-				if( !inLineComment && !inBlockComment )
-					col = typeSettings()->color(TypeSettings::DIGITS);
-				break;
-			case ViewTokenizer::QUOTED:
-				if( !inLineComment && !inBlockComment )
-					col = typeSettings()->color(TypeSettings::STRING);
-				break;
-			case ViewTokenizer::ZEN_SPACE:
-				token = QChar(L'□');
-				col = typeSettings()->color(TypeSettings::ZEN_SPACE);
-				break;
-			case ViewTokenizer::CTRL:
-				if( token == "\t" ) {
-					token = ">";
-					col = typeSettings()->color(TypeSettings::TAB);
-					int clmn = (px - m_lineNumAreaWidth) / chWidth;
-					tabwd = (nTab - (clmn % nTab)) * chWidth;
-				} else {
-				}
-				break;
-			case ViewTokenizer::NEWLINE:
-				col = typeSettings()->color(TypeSettings::NEWLINE);
-				break;
-			case ViewTokenizer::COMMENT:
-				//if( !inBlockComment ) {
-					if( token == typeSettings()->textValue(TypeSettings::BLOCK_COMMENT_BEG) ) {
-						col = typeSettings()->color(TypeSettings::COMMENT);
-						inBlockComment = true;
-					} else if( token == typeSettings()->textValue(TypeSettings::LINE_COMMENT) ) {
-						inLineComment = true;
-						col = typeSettings()->color(TypeSettings::COMMENT);
+			} else {
+				switch( tkn.tokenType() ) {
+				case ViewTokenizer::ALNUM:
+					if( typeSettings()->isKeyWord1(token) ) {
+						col = typeSettings()->color(TypeSettings::KEYWORD1);
+						bold = typeSettings()->boolValue(TypeSettings::KEYWORD1_BOLD);
+					} else if( typeSettings()->isKeyWord2(token) ) {
+						col = typeSettings()->color(TypeSettings::KEYWORD2);
+						bold = typeSettings()->boolValue(TypeSettings::KEYWORD2_BOLD);
 					}
-				//}
-				break;
+					break;
+				case ViewTokenizer::DIGITS:
+					if( !inLineComment && !inBlockComment )
+						col = typeSettings()->color(TypeSettings::DIGITS);
+					break;
+				case ViewTokenizer::QUOTED:
+					if( !inLineComment && !inBlockComment )
+						col = typeSettings()->color(TypeSettings::STRING);
+					break;
+				case ViewTokenizer::ZEN_SPACE:
+					token = QChar(L'□');
+					col = typeSettings()->color(TypeSettings::ZEN_SPACE);
+					break;
+				case ViewTokenizer::CTRL:
+#if	0
+					if( token == "\t" ) {
+						token = ">";
+						col = typeSettings()->color(TypeSettings::TAB);
+						int clmn = (px - m_lineNumAreaWidth) / chWidth;
+						tabwd = (nTab - (clmn % nTab)) * chWidth;
+					}
+#endif
+					break;
+				case ViewTokenizer::NEWLINE:
+					col = typeSettings()->color(TypeSettings::NEWLINE);
+					break;
+				case ViewTokenizer::COMMENT:
+					//if( !inBlockComment ) {
+						if( token == typeSettings()->textValue(TypeSettings::BLOCK_COMMENT_BEG) ) {
+							col = typeSettings()->color(TypeSettings::COMMENT);
+							inBlockComment = true;
+						} else if( token == typeSettings()->textValue(TypeSettings::LINE_COMMENT) ) {
+							inLineComment = true;
+							col = typeSettings()->color(TypeSettings::COMMENT);
+						}
+					//}
+					break;
+				}
 			}
 		}
 		if( !token.isEmpty() ) {
