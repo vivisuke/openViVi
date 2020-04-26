@@ -850,6 +850,8 @@ void EditView::drawLineText(QPainter &pt,
 		if( !token.isEmpty() ) {
 			if( bold )
 				pt.setFont(m_fontBold);
+			else
+				pt.setFont(m_font);
 			pt.setPen(col);
 			px += drawTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ /*, bold*/);
 		}
@@ -890,7 +892,7 @@ int EditView::drawTokenText(QPainter& pt,
 	} else 
 #endif
 	if (token[0] < 0x100) {
-		pt.setFont(m_font);
+		//pt.setFont(m_font);
 		pt.drawText(px + peDX - sx, py, token);
 		wd = chWidth * token.size();
 	} else {
