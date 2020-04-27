@@ -181,6 +181,21 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 		}
 		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
 		break;
+	case BEG_WORD:
+		pos = begWord();
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		break;
+	case END_WORD:
+		if( pos == m_view->bufferSize() ) return;
+		pos = endWord(n);
+		if( vi && mode != KEEP_ANCHOR ) {
+			if( vi && pos == pos0 + 1 )
+				pos = endWord(1);
+			--pos;
+		}
+		vln = m_view->viewLineMgr()->positionToViewLine(pos);
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		break;
 	case HOME_LINE:
 		pos = viewLineStartPosition(vln);
 		while( pos < m_view->bufferSize() && isSpace(m_view->charAt(pos)) )
@@ -408,10 +423,68 @@ int TextCursor::prevWord(int n)
 }
 int TextCursor::begWord()
 {
+	if( !m_pos ) return m_pos;
+	int work = m_pos;
+	prevWord(1);			//	前の単語先頭に移動
+	if( m_pos == m_view->bufferSize() ) {
+		//m_pos = work;
+	} else {
+		int beg = m_pos;
+		nextWord(1);			//	次の単語先頭に移動
+		if( work != m_pos )			//	元の位置が単語先頭でない
+			m_pos = beg;
+	}
 	return m_pos;
 }
 int TextCursor::endWord(int n)
 {
+	uchar t;
+	wchar_t ch;
+	uchar type2;
+	//const bool dollarPrefix = m_vwLineMgr->getTypeSettings()->getBoolValue(TYPESTG_DOLLAR_PREFIX_WORD);
+	for (int i = 0; i < n; ++i) {
+		while( (t = getCharType(ch)) == CTSB_SPACE || t == CTDB_SPACE )	//	スペース類をスキップ
+			++m_pos;
+		uchar type = getCharType(ch);
+		bool dollar = true;
+		if( type == CT_EOF ) return true;
+		switch( type ) {
+		case CTSB_SPACE:
+		case CTSB_ALNUM:
+		case CTSB_KANA:
+		case CTSB_SYM:
+		case CTDB_SPACE:
+			do {
+				if( ch != '$' ) dollar = false;
+				++m_pos;
+			} while( (type2 = getCharType(ch)) == type );		//	同じ文字種
+			break;
+		case CTDB_KANJI:
+			do {
+				++m_pos;
+			} while( getCharType(ch) == type );		//	同じ文字種
+			while( getCharType(ch) == CTDB_CONT )		//	継続文字（ヽヾゝゞ〃仝々）
+				++m_pos;
+			break;
+		case CTDB_HIRA:
+		case CTDB_KANA:
+		case CTDB_ALNUM:
+		case CTDB_SYM:
+		case CTDB_CONT:
+	skipAlnum:
+			do {
+				++m_pos;
+			} while( getCharType(ch) == type );		//	同じ文字種
+			break;
+		case CT_NEWLINE:
+		case CTSB_OTHER:
+		case CTDB_OTHER:
+			++m_pos;
+			break;
+		default:
+			Q_ASSERT(0);
+		}
+	}
 	return m_pos;
 }
 int TextCursor::nextSSWord(int n, bool cw)

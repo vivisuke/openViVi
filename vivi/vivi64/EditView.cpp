@@ -51,6 +51,8 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	,m_scrollX0(0)
 	,m_scrollY0(0)
 	, m_minMapDragging(false)
+	, m_mouseDragging(false)
+	, m_mouseDblClkDragging(false)
 	, m_dispCursor(true)
 	//, m_viewLineMgr(new ViewLineMgr(this))
 {
@@ -427,9 +429,28 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 void EditView::mouseReleaseEvent(QMouseEvent *)
 {
 	m_minMapDragging = false;
+	m_mouseDragging = false;
+	m_mouseDblClkDragging = false;
 }
-void EditView::mouseDoubleClickEvent(QMouseEvent *)
+void EditView::mouseDoubleClickEvent(QMouseEvent *event)
 {
+	QPoint pnt = event->pos();
+	if( event->button() == Qt::LeftButton ) {
+		pnt.setX(pnt.x() - m_lineNumAreaWidth);
+		int vln, offset;
+		pointToLineOffset(pnt, vln, offset);
+		m_textCursor->setPosition(viewLineStartPosition(vln) + offset);
+		m_textCursor->movePosition(TextCursor::BEG_WORD);
+		m_textCursor->setWordBegPos();
+		m_textCursor->movePosition(TextCursor::END_WORD, TextCursor::KEEP_ANCHOR);	//	単語末尾の次
+		m_textCursor->setWordEndPos();
+		m_textCursor->setPX(pnt.x());
+		m_mouseDragging = true;
+		m_mouseDblClkDragging = true;
+		makeCursorInView();
+		resetCursorBlinking();
+		update();
+	}
 }
 void EditView::wheelEvent(QWheelEvent * event)
 {
