@@ -394,21 +394,24 @@ void EditView::mousePressEvent(QMouseEvent *event)
 	//	暫定実装
 	auto rct = rect();
 	QPoint pnt = event->pos();
-	if( pnt.x() >= rct.width() - MINMAP_WIDTH ) {
-		m_minMapDragging = true;
-		double scale = qMin(1.0, (double)rct.height() / document()->minMap().height());
-		int nLines = rct.height() / m_lineHeight;
-		m_scrollY0 = qMax(0, (int)(pnt.y() / scale) - nLines / 2);
-    	m_scrollY0 = qMin(m_scrollY0, buffer()->lineCount());		//	undone: 折返し処理対応
-		update();
-	}
-	if( pnt.x() < m_lineNumAreaWidth ) {
-	} else {
-		pnt.setX(pnt.x() - m_lineNumAreaWidth);
-		int vln, offset;
-		pointToLineOffset(pnt, vln, offset);
-		m_textCursor->setPosition(viewLineStartPosition(vln) + offset);
-		update();
+	if( event->button() == Qt::LeftButton ) {
+		m_mouseDragging = true;
+		if( pnt.x() >= rct.width() - MINMAP_WIDTH ) {
+			m_minMapDragging = true;
+			double scale = qMin(1.0, (double)rct.height() / document()->minMap().height());
+			int nLines = rct.height() / m_lineHeight;
+			m_scrollY0 = qMax(0, (int)(pnt.y() / scale) - nLines / 2);
+	    	m_scrollY0 = qMin(m_scrollY0, buffer()->lineCount());		//	undone: 折返し処理対応
+			update();
+		}
+		if( pnt.x() < m_lineNumAreaWidth ) {
+		} else {
+			pnt.setX(pnt.x() - m_lineNumAreaWidth);
+			int vln, offset;
+			pointToLineOffset(pnt, vln, offset);
+			m_textCursor->setPosition(viewLineStartPosition(vln) + offset);
+			update();
+		}
 	}
 }
 void EditView::mouseMoveEvent(QMouseEvent *event)
@@ -417,20 +420,58 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 	auto rct = rect();
 	QPoint pnt = event->pos();
 	//if( pnt.x() >= rct.width() - MINMAP_WIDTH )
-	if( m_minMapDragging )
-	{
-		double scale = qMin(1.0, (double)rct.height() / document()->minMap().height());
-		int nLines = rct.height() / m_lineHeight;
-		m_scrollY0 = qMax(0, (int)(pnt.y()/scale) - nLines / 2);
-    	m_scrollY0 = qMin(m_scrollY0, buffer()->lineCount());		//	undone: 折返し処理対応
+	if( m_mouseDragging ) {
+		if( m_minMapDragging )
+		{
+			double scale = qMin(1.0, (double)rct.height() / document()->minMap().height());
+			int nLines = rct.height() / m_lineHeight;
+			m_scrollY0 = qMax(0, (int)(pnt.y()/scale) - nLines / 2);
+	    	m_scrollY0 = qMin(m_scrollY0, buffer()->lineCount());		//	undone: 折返し処理対応
+			update();
+		} else {
+			int hv = m_scrollX0 * m_fontWidth;
+			pnt.setX(pnt.x() + hv - m_lineNumAreaWidth);
+			//qDebug() << pnt;
+			int vln, offset;
+			pointToLineOffset(pnt, vln, offset);
+			int ln = viewLineToDocLine(vln);
+			//##if( !alt && !m_textCursor->isBoxSelectionMode() )
+			{
+				m_textCursor->setPosition(viewLineStartPosition(vln) + offset, TextCursor::KEEP_ANCHOR);
+				if( m_mouseDblClkDragging ) {
+					if( m_textCursor->position() >= m_textCursor->anchor() ) {
+						m_textCursor->setAnchorWordBeg();
+						m_textCursor->movePosition(TextCursor::END_WORD, TextCursor::KEEP_ANCHOR);
+					} else {
+						m_textCursor->setAnchorWordEnd();
+						m_textCursor->movePosition(TextCursor::BEG_WORD, TextCursor::KEEP_ANCHOR);
+					}
+				}
+				//##checkAssocParen();
+			}
+#if	0
+			else {
+				int px1 = offsetToPx(ln, offset);
+				int px2 = offsetToPx(ln, offset+1);
+				if( px2 < pnt.x() ) {
+					px1 = px2 = pnt.x();
+				}
+				m_textCursor->setBoxSelPosition(m_doc->lineStartPosition(ln) + offset,
+											vln, px1, px2, TextCursor::KEEP_ANCHOR);
+			}
+#endif
+			m_textCursor->setPX(pnt.x());
+			resetCursorBlinking();
+			makeCursorInView();
+		}
 		update();
 	}
 }
 void EditView::mouseReleaseEvent(QMouseEvent *)
 {
-	m_minMapDragging = false;
 	m_mouseDragging = false;
 	m_mouseDblClkDragging = false;
+	m_minMapDragging = false;
 }
 void EditView::mouseDoubleClickEvent(QMouseEvent *event)
 {

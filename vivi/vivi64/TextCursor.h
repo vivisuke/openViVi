@@ -77,6 +77,8 @@ public:
 	void	setLineAndPosition(int vln, pos_t pos, int mode = MOVE_ANCHOR);
 	void	setWordBegPos() { m_wordBegPos = m_pos; }
 	void	setWordEndPos() { m_wordEndPos = m_pos; }
+	void	setAnchorWordBeg() { m_anchor = m_wordBegPos; }
+	void	setAnchorWordEnd() { m_anchor = m_wordEndPos; }
 	void	setPX(int px) { m_px = px; }
 	void	deleteChar(bool BS = false, bool vi = false);
 	void	deletePrevChar(bool vi = false);
