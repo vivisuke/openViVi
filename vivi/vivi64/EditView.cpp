@@ -757,6 +757,7 @@ void EditView::drawLineText(QPainter &pt,
 							bool &inLineComment,
 							QString &quotedText)
 {
+	int pxLimit = rect().width() - MINMAP_WIDTH + m_scrollX0*m_fontWidth;
 	QFontMetrics fm(m_font);
 	QFontMetrics fmBold(m_fontBold);
 	QFontMetrics fmMB(m_fontMB);
@@ -778,6 +779,8 @@ void EditView::drawLineText(QPainter &pt,
 	int peDX = 0;
 	QString nextToken;
 	while( !token.isEmpty() ) {
+		if( px >= pxLimit )
+			break;
 		if( !m_preeditString.isEmpty() && ln == m_textCursor->viewLine() ) {
 			if( tkn.tokenix() < m_textCursor->position() && tkn.ix() > m_textCursor->position() ) {
 				nextToken = token.right(tkn.ix() - m_textCursor->position());
