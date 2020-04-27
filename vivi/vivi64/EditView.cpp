@@ -575,6 +575,17 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	makeCursorInView();
 	update();
 }
+void EditView::doInsertText(const QString &text, bool ctrl, bool shift, bool alt)
+{
+	bool im = isModified();
+	insertTextSub(text, ctrl, shift, alt);
+	if( isModified() != im )
+		emit modifiedChanged();
+	makeCursorInView();
+	resetCursorBlinking();
+	update();
+	emit updateUndoRedoEnabled();
+}
 QVariant EditView::inputMethodQuery( Qt::InputMethodQuery query ) const
 {
 	if( query == Qt::ImMicroFocus ) {

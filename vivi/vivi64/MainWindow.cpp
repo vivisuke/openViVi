@@ -1043,3 +1043,21 @@ void MainWindow::on_action_About_ViVi_triggered()
 						+ tr("<br>Copyright (C) 2020 by N.Tsuda")
 						+ tr("<br>Powered by <a href=\"https://www.qt.io/\">Qt</a> ") + QT_VERSION_STR);
 }
+bool MainWindow::focusNextPrevChild(bool next)
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+#if	1
+		const bool ctrl = false;
+		const bool shift = false;
+		const bool alt = false;
+#else
+		const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
+		const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
+		const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
+#endif
+		view->doInsertText("\t", ctrl, shift, alt);
+		return false;
+	} else
+		return QMainWindow::focusNextPrevChild(next);
+}

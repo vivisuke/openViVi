@@ -62,6 +62,7 @@ public:
 	bool	makeCursorInView(bool bQuarter = false);
 	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
 	void	onCursorPosChanged();
+	void	doInsertText(const QString &, bool, bool, bool);
 	void	insertTextRaw(pos_t pos, const QString &);
 	void	paste(const QString &);
 	void	boxPaste(const QString &);

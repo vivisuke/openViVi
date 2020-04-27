@@ -40,6 +40,7 @@ public:
 	SSSearch	&sssrc2() { return *m_sssrc2; }		//	カーソル位置単語検索用
 	int		newLineType() const;
 protected:
+	bool	focusNextPrevChild(bool next);
 	void	createActions();
 	void	createMenus();
 	void	connectMenuActions();
