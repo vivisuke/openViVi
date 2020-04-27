@@ -537,6 +537,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		goto ins;
 	case Qt::Key_Tab:
 		text = "\t";
+		goto ins;
 	case Qt::Key_Delete:
 		onDelete(ctrl, shift, alt);
 		break;
@@ -1452,4 +1453,8 @@ void EditView::findPrev(const QString &pat, bool vi)
 		mainWindow()->setFindString(pat);
 	setFocus();
 	update();
+}
+bool EditView::focusNextPrevChild(bool next)
+{
+	return false;
 }

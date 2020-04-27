@@ -75,6 +75,7 @@ public:
 	void	findNext(const QString &, bool vi = false);
 	void	findPrev(const QString &, bool vi = false);
 protected:
+	bool	focusNextPrevChild(bool next);
 	void	resetCursorBlinking();
 	void	drawLineNumbers();
 	void	drawLineNumberArea(QPainter&);

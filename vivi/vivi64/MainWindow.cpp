@@ -1043,6 +1043,7 @@ void MainWindow::on_action_About_ViVi_triggered()
 						+ tr("<br>Copyright (C) 2020 by N.Tsuda")
 						+ tr("<br>Powered by <a href=\"https://www.qt.io/\">Qt</a> ") + QT_VERSION_STR);
 }
+#if	0
 bool MainWindow::focusNextPrevChild(bool next)
 {
 	EditView *view = currentWidget();
@@ -1061,3 +1062,4 @@ bool MainWindow::focusNextPrevChild(bool next)
 	} else
 		return QMainWindow::focusNextPrevChild(next);
 }
+#endif
