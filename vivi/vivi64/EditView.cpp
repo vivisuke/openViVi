@@ -50,9 +50,10 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
 	,m_scrollX0(0)
 	,m_scrollY0(0)
-	, m_minMapDragging(false)
 	, m_mouseDragging(false)
+	, m_mouseLineDragging(false)
 	, m_mouseDblClkDragging(false)
+	, m_minMapDragging(false)
 	, m_dispCursor(true)
 	//, m_viewLineMgr(new ViewLineMgr(this))
 {
@@ -396,7 +397,7 @@ void EditView::mousePressEvent(QMouseEvent *event)
 	QPoint pnt = event->pos();
 	if( event->button() == Qt::LeftButton ) {
 		m_mouseDragging = true;
-		if( pnt.x() >= rct.width() - MINMAP_WIDTH ) {
+		if( pnt.x() >= rct.width() - MINMAP_WIDTH ) {		//	ミニマップエリアの場合
 			m_minMapDragging = true;
 			double scale = qMin(1.0, (double)rct.height() / document()->minMap().height());
 			int nLines = rct.height() / m_lineHeight;
@@ -404,9 +405,9 @@ void EditView::mousePressEvent(QMouseEvent *event)
 	    	m_scrollY0 = qMin(m_scrollY0, buffer()->lineCount());		//	undone: 折返し処理対応
 			update();
 		}
-		if( pnt.x() < m_lineNumAreaWidth ) {
-		} else {
-			pnt.setX(pnt.x() - m_lineNumAreaWidth);
+		if( pnt.x() < m_lineNumAreaWidth ) {		//	行番号エリアの場合
+		} else {		//	通常テキストエリアの場合
+			pnt.setX(pnt.x() - m_lineNumAreaWidth + m_scrollX0*m_fontWidth);
 			int vln, offset;
 			pointToLineOffset(pnt, vln, offset);
 			m_textCursor->setPosition(viewLineStartPosition(vln) + offset);
@@ -477,7 +478,8 @@ void EditView::mouseDoubleClickEvent(QMouseEvent *event)
 {
 	QPoint pnt = event->pos();
 	if( event->button() == Qt::LeftButton ) {
-		pnt.setX(pnt.x() - m_lineNumAreaWidth);
+		//	undone: テキストエリア内チェック
+		pnt.setX(pnt.x() - m_lineNumAreaWidth + m_scrollX0*m_fontWidth);
 		int vln, offset;
 		pointToLineOffset(pnt, vln, offset);
 		m_textCursor->setPosition(viewLineStartPosition(vln) + offset);
@@ -758,8 +760,8 @@ void EditView::drawSelection(QPainter& pt)
 	if( firstLn > m_scrollY0 + nLines || lastLn < m_scrollY0 ) return;		//	画面外の場合
 	auto firstLnPos = viewLineMgr()->viewLineStartPosition(firstLn);
 	auto lastLnPos = viewLineMgr()->viewLineStartPosition(lastLn);
-	int px1 = viewLineOffsetToPx(firstLn, first - firstLnPos) + m_lineNumAreaWidth;
-	int px9 = viewLineOffsetToPx(lastLn, last - lastLnPos) + m_lineNumAreaWidth;
+	int px1 = viewLineOffsetToPx(firstLn, first - firstLnPos) + m_lineNumAreaWidth - m_scrollX0*m_fontWidth;
+	int px9 = viewLineOffsetToPx(lastLn, last - lastLnPos) + m_lineNumAreaWidth - m_scrollX0*m_fontWidth;
 	int py1 = (firstLn - m_scrollY0) * m_lineHeight;		//	行上部座標
 	pt.setBrush(typeSettings()->color(TypeSettings::SEL_BG));
 	pt.setPen(Qt::transparent);
@@ -771,7 +773,7 @@ void EditView::drawSelection(QPainter& pt)
 	//	undone: クリッピング処理
 	//	選択開始行
 	int sz = viewLineMgr()->viewLineSize(firstLn);
-	int px2 = viewLineOffsetToPx(firstLn, sz) + m_lineNumAreaWidth;
+	int px2 = viewLineOffsetToPx(firstLn, sz) + m_lineNumAreaWidth - m_scrollX0*m_fontWidth;
 	QRect r(px1, py1, px2 - px1, m_lineHeight);
 	pt.drawRect(r);
 	//	途中行
@@ -779,12 +781,12 @@ void EditView::drawSelection(QPainter& pt)
 	for (int vln = firstLn + 1; vln < lastLn; ++vln, py1+=m_lineHeight) {
 		int pos0 = viewLineMgr()->viewLineStartPosition(vln);
 		int sz = viewLineMgr()->viewLineSize(vln);
-		int px2 = viewLineOffsetToPx(vln, sz) + m_lineNumAreaWidth;
-		QRect r(m_lineNumAreaWidth, py1, px2 - m_lineNumAreaWidth, m_lineHeight);
+		int px2 = viewLineOffsetToPx(vln, sz) + m_lineNumAreaWidth - m_scrollX0*m_fontWidth;
+		QRect r(m_lineNumAreaWidth, py1, px2 - m_lineNumAreaWidth /*- m_scrollX0*m_fontWidth*/, m_lineHeight);
 		pt.drawRect(r);
 	}
 	//	選択修了行
-	QRect r2(m_lineNumAreaWidth, py1, px9 - m_lineNumAreaWidth, m_lineHeight);
+	QRect r2(m_lineNumAreaWidth, py1, px9 - m_lineNumAreaWidth /*- m_scrollX0*m_fontWidth*/, m_lineHeight);
 	pt.drawRect(r2);
 }
 void EditView::drawTextArea(QPainter& pt)

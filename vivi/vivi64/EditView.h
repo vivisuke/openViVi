@@ -138,9 +138,10 @@ signals:
 	
 private:
 	bool	m_lineNumberVisible;
-	bool	m_mouseDragging;
-	bool	m_mouseDblClkDragging;
-	bool	m_minMapDragging;
+	bool	m_mouseDragging;			//	マウスボタン押下状態
+	bool	m_mouseLineDragging;		//	行選択中
+	bool	m_mouseDblClkDragging;		//	単語選択中
+	bool	m_minMapDragging;			//	ミニマップ窓ドラッグ移動中
 	bool	m_dispCursor;
 	int		m_scrollX0;			//	水平方向スクロール（0 org カラム位置）
 	int		m_scrollY0;
