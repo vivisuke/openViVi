@@ -391,6 +391,9 @@ void EditView::focusOutEvent( QFocusEvent * event )
 }
 void EditView::mousePressEvent(QMouseEvent *event)
 {
+	const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
+	const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
+	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
 	setFocus();
 	//	暫定実装
 	auto rct = rect();
@@ -406,11 +409,18 @@ void EditView::mousePressEvent(QMouseEvent *event)
 			update();
 		}
 		if( pnt.x() < m_lineNumAreaWidth ) {		//	行番号エリアの場合
+			m_mouseLineDragging = true;
+			pnt.setX(pnt.x() - m_lineNumAreaWidth + m_scrollX0*m_fontWidth);
+			int vln, offset;
+			pointToLineOffset(pnt, vln, offset);
+			//qDebug() << vln;
+			m_textCursor->setPosition(viewLineStartPosition(vln));
+			m_textCursor->setPosition(viewLineStartPosition(vln+1), TextCursor::KEEP_ANCHOR);
 		} else {		//	通常テキストエリアの場合
 			pnt.setX(pnt.x() - m_lineNumAreaWidth + m_scrollX0*m_fontWidth);
 			int vln, offset;
 			pointToLineOffset(pnt, vln, offset);
-			m_textCursor->setPosition(viewLineStartPosition(vln) + offset);
+			m_textCursor->setPosition(viewLineStartPosition(vln) + offset, shift ? TextCursor::KEEP_ANCHOR : TextCursor::MOVE_ANCHOR);
 			update();
 		}
 	}
