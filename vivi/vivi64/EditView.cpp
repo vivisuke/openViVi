@@ -841,6 +841,8 @@ void EditView::drawTextArea(QPainter& pt)
 		else
 			document()->resetLineFlag(ln+1, Buffer::LINEFLAG_IN_BLOCK_COMMENT);
 		if( !buffer()->isBlankEOFLine() && ln == buffer()->lineCount() - 1 ) {
+			if( !m_preeditString.isEmpty() && ln == m_textCursor->viewLine() )
+				px += m_preeditWidth;
 			pt.setPen(typeSettings()->color(TypeSettings::EOF_MARK));
 			pt.drawText(px, py+m_fontHeight, "[EOF]");
 		}
