@@ -1450,6 +1450,40 @@ bool EditView::saveFile() const
 		emit modifiedChanged();
 	return rc;
 }
+bool EditView::searchCurWord(QString &txt)
+{
+	if( m_textCursor->hasSelection() ) {
+		int ln1 = positionToLine(m_textCursor->selectionFirst());
+		int ln2 = positionToLine(m_textCursor->selectionLast());
+		if( ln1 != ln2 ) m_textCursor->clearSelection();
+	}
+	if( !m_textCursor->hasSelection() ) {
+		m_textCursor->movePosition(TextCursor::BEG_WORD);
+		m_textCursor->movePosition(TextCursor::END_WORD, TextCursor::KEEP_ANCHOR);
+	}
+	if( !m_textCursor->hasSelection() ) return false;
+	pos_t first, last;
+	int ln1 = positionToLine(first = m_textCursor->selectionFirst());
+	int ln2 = positionToLine(last = m_textCursor->selectionLast());
+	if( ln1 != ln2 ) return false;
+	txt = document()->text(first, last - first);
+	if( txt.isEmpty() ) return false;
+	uint opt = 0;
+#if	0	//##
+	if( mainWindow()->globSettings()->boolValue(GlobalSettings::REGEXP) ) {
+		txt = escapeRegExpSpecialChars(txt);
+	}
+	if( mainWindow()->globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
+		opt |= SSSearch::IGNORE_CASE;
+	if( mainWindow()->globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
+		opt |= SSSearch::WHOLE_WORD_ONLY;
+#endif
+	bool rc = findForward(txt, opt);
+	emit textSearched(txt);
+	resetCursorBlinking();
+	update();
+	return rc;
+}
 bool EditView::findForward(const QString &text, uint opt, bool loop, bool next, bool vi)
 {
 	pos_t pos0;
