@@ -130,9 +130,12 @@ void Buffer::resetLineFlag(line_t ln, uint flag)
 }
 void Buffer::clearLineFlags()
 {
+	m_lineMgr->clearLineFlags();
+#if	0
 	for (line_t ln = 0; ln < lineCount(); ++ln) {
 		m_lineMgr->clearLineFlag(ln);
 	}
+#endif
 }
 //	行の LINEFLAG_GLOBAL をセット/アンセット
 bool Buffer::setGlobalFlag(const wchar_t *pat, ssize_t sz)

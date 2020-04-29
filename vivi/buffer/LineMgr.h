@@ -52,7 +52,7 @@ public:
 	bool	isEmpty() const { return m_lv.isEmpty(); }
 	int		lineCount() const { return m_lv.size(); }
 	int		lineStartRaw(int ln) const { return m_lv[ln].m_lineStart; }
-	uint	lineFlags(int ln) const { return m_lv[ln].m_flags; }
+	uint	lineFlags(int ln) const { return ln < m_lv.size() ? m_lv[ln].m_flags : 0; }
 	//	ポジション → （ポジションを含む行の）行インデックス変換
 	int	positionToLine(int pos) const
 	{
@@ -154,6 +154,7 @@ public:
 	void setLineFlag(int ln, uint flag) { m_lv.ref(ln).m_flags |= flag; }
 	void resetLineFlag(int ln, uint flag) { m_lv.ref(ln).m_flags &= ~flag; }
 	void clearLineFlag(int ln) { m_lv.ref(ln).m_flags = 0; }
+	void clearLineFlags() { for (int i = 0; i != m_lv.size(); ++i) m_lv[i].m_flags = 0; }
 	void setSavedFlag()
 	{
 		//for(auto itr = m_lv.begin(); itr != m_lv.end(); ++itr)
