@@ -8,6 +8,7 @@
 typedef unsigned char uchar;
 typedef const char cchar;
 typedef unsigned char byte;
+typedef unsigned int uint;
 #ifdef	_WIN64
 	typedef __int64 ssize_t;
 	typedef __int64 pos_t;
@@ -42,6 +43,7 @@ public:
 	bool	saveFile() const;
 	int		lineCount() const;
 	int		EOFLine() const;
+	uint	lineFlags(int ln) const;
 	QString	fullPathName() const { return m_fullPathName; }
 	QString	title() const { return m_title; }
 	QString	typeName() const;
@@ -59,6 +61,8 @@ public:
 	void	buildMinMap();
 	QPixmap&	minMap() { return m_minMap; }
 	int		lineStartPosition(pos_t pos) const;
+	void	setLineFlag(line_t, uint);
+	void	resetLineFlag(line_t, uint);
 	
 	//QString	fullPathName() const;
 	//QString	typeName() const;

@@ -183,6 +183,18 @@ int Document::lineStartPosition(pos_t pos) const
 {
 	return buffer()->lineStartPosition(pos);
 }
+uint Document::lineFlags(int ln) const
+{
+	return buffer()->lineFlags(ln);
+}
+void Document::setLineFlag(line_t ln, uint flags)
+{
+	buffer()->setLineFlag(ln, flags);
+}
+void Document::resetLineFlag(line_t ln, uint flags)
+{
+	buffer()->resetLineFlag(ln, flags);
+}
 void Document::deleteText(pos_t pos, ssize_t sz, bool BS)
 {
 	m_buffer->deleteText(pos, sz, BS);

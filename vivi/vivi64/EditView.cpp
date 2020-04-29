@@ -826,15 +826,20 @@ void EditView::drawTextArea(QPainter& pt)
 	pt.setOpacity(1.0);
 	//pt.drawText(100, 100, "Hello");
 	int px, py = 0 /*DRAW_Y_OFFSET*2*/;
-	bool inBlockComment = false;
-	bool inLineComment = false;
+	//bool inBlockComment = false;
+	bool inBlockComment = (document()->lineFlags(m_scrollY0) & Buffer::LINEFLAG_IN_BLOCK_COMMENT) != 0;
+	//bool inLineComment = false;
 	QString quotedText;
 	for (int ln = m_scrollY0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
-		inLineComment = false;		//	undone: 折返し行対応
+		bool inLineComment = false;		//	undone: 折返し行対応
 		px = m_lineNumAreaWidth;
 		auto startIX = buffer()->lineStartPosition(ln);
 		auto lnsz = buffer()->lineSize(ln);
 		drawLineText(pt, px, py+m_fontHeight, ln, startIX, lnsz, startIX+lnsz, inBlockComment, inLineComment, quotedText);
+		if( inBlockComment )
+			document()->setLineFlag(ln+1, Buffer::LINEFLAG_IN_BLOCK_COMMENT);
+		else
+			document()->resetLineFlag(ln+1, Buffer::LINEFLAG_IN_BLOCK_COMMENT);
 		if( !buffer()->isBlankEOFLine() && ln == buffer()->lineCount() - 1 ) {
 			pt.setPen(typeSettings()->color(TypeSettings::EOF_MARK));
 			pt.drawText(px, py+m_fontHeight, "[EOF]");
