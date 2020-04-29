@@ -309,7 +309,7 @@ bool EditView::makeCursorInView(bool bQuarter)
 			return true;
 		} else if( bQuarter ) {
 			//verticalScrollBar()->setValue(vln - nLine / 4);
-			m_scrollY0 = vln - nLine / 4;
+			m_scrollY0 = qMax(0, vln - nLine / 4);
 			scrolled = true;
 		} else {
 			if( vln < vpos ) {
