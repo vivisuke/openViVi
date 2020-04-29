@@ -152,6 +152,8 @@ private:
 	int		m_lineNumWidth;		//	行番号表示幅
 	int		m_lineNumAreaWidth;
 	int		m_nViewLine;
+	int		m_curLineNum;				//	0 org
+	int		m_curLineNumAnchor;		//	0 org
 	int		m_tmCounter;
 	int		m_preeditWidth;			//	変換中文字列表示幅
 	int		m_preeditPos;			//	変換位置

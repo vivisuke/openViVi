@@ -412,6 +412,7 @@ void EditView::mousePressEvent(QMouseEvent *event)
 			pnt.setX(pnt.x() - m_lineNumAreaWidth + m_scrollX0*m_fontWidth);
 			int vln, offset;
 			pointToLineOffset(pnt, vln, offset);
+			m_curLineNumAnchor = vln;
 			//qDebug() << vln;
 			m_textCursor->setPosition(viewLineStartPosition(vln));
 			m_textCursor->setPosition(viewLineStartPosition(vln+1), TextCursor::KEEP_ANCHOR);
@@ -438,6 +439,22 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 			m_scrollY0 = qMax(0, (int)(pnt.y()/scale) - nLines / 2);
 	    	m_scrollY0 = qMin(m_scrollY0, buffer()->lineCount());		//	undone: 折返し処理対応
 			update();
+		} else if( m_mouseLineDragging ) {
+			int vln, offset;
+			pointToLineOffset(pnt, vln, offset);
+			m_curLineNum = viewLineToDocLine(vln, offset);
+			int n;
+			if( m_curLineNum >= m_curLineNumAnchor ) {
+				m_textCursor->setPosition(lineStartPosition(m_curLineNumAnchor));
+				m_textCursor->setPosition(lineStartPosition(m_curLineNum + 1), TextCursor::KEEP_ANCHOR);
+				n = m_curLineNum - m_curLineNumAnchor + 1;
+			} else {
+				m_textCursor->setPosition(lineStartPosition(m_curLineNumAnchor + 1));
+				m_textCursor->setPosition(lineStartPosition(m_curLineNum), TextCursor::KEEP_ANCHOR);
+				n = m_curLineNumAnchor - m_curLineNum + 1;
+			}
+			makeCursorInView();
+			showMessage(tr("%1 lines selected.").arg(n));
 		} else {
 			int hv = m_scrollX0 * m_fontWidth;
 			pnt.setX(pnt.x() + hv - m_lineNumAreaWidth);
@@ -480,6 +497,7 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 void EditView::mouseReleaseEvent(QMouseEvent *)
 {
 	m_mouseDragging = false;
+	m_mouseLineDragging = false;
 	m_mouseDblClkDragging = false;
 	m_minMapDragging = false;
 }
