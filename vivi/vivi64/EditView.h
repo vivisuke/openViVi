@@ -86,6 +86,8 @@ protected:
 	void	drawPreeditString(QPainter&);
 	void	drawCursor(QPainter&);
 	void	drawLineCursor(QPainter&);
+	void	drawMatchedBG(QPainter&);
+	void	drawMatchedBG(QPainter &, int ln, int py);
 	void	drawSelection(QPainter&);
 	void	drawMinMap(QPainter&);
 	void	updateLineNumberInfo();

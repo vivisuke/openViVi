@@ -729,6 +729,7 @@ void EditView::paintEvent(QPaintEvent *event)
 #endif
 	//
 	drawPreeditString(pt);
+	drawMatchedBG(pt);
 	drawSelection(pt);
 	drawTextArea(pt);			//	テキストエイア描画
 	drawMinMap(pt);				//	ミニマップ描画
@@ -775,6 +776,34 @@ void EditView::drawLineNumberArea(QPainter& pt)
 		QString number = QString::number(ln);
 		int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
 		pt.drawText(px, py+m_fontHeight, number);
+	}
+}
+void EditView::drawMatchedBG(QPainter&pt)
+{
+	const auto rct = rect();
+	int px, py = 0;
+	for (int ln = m_scrollY0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
+		px = m_lineNumAreaWidth;
+		auto startIX = buffer()->lineStartPosition(ln);
+		drawMatchedBG(pt, ln, py);
+	}
+}
+void EditView::drawMatchedBG(QPainter &pt, int vln, int py)
+{
+	SSSearch &sssrc = mainWindow()->sssrc();
+	const int hv = m_scrollX0 * m_fontWidth;
+	const int lineStart = viewLineStartPosition(vln);
+	pos_t pos = lineStart;
+	const int last = lineStart + m_viewLineMgr->viewLineSize(vln);
+	//const int last = viewLineStartPosition(vln + 1);
+	while( (pos = sssrc.strstr(*buffer(), pos, last)) >= 0 ) {
+		const int plen = sssrc.patSize();
+		const int matchLength = sssrc.matchLength();
+		const int px1 = textWidth(lineStart, pos - lineStart, last) + m_lineNumAreaWidth;
+		const int px2 = textWidth(lineStart, pos + matchLength - lineStart, last) + m_lineNumAreaWidth;
+		pt.fillRect(QRect(px1 - hv, py, px2 - px1, lineHeight()),
+							typeSettings()->color(TypeSettings::MATCHED_BG));
+		++pos;
 	}
 }
 void EditView::drawSelection(QPainter& pt)
@@ -1535,6 +1564,7 @@ bool EditView::findForward(const QString &text, uint opt, bool loop, bool next, 
 	}
 	makeCursorInView(true);
 	//onCursorPosChanged();
+	sssrc.setup((wchar_t *)text.data(), text.size());
 	update();
 	return true;
 }
