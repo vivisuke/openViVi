@@ -889,8 +889,19 @@ void EditView::drawLineText(QPainter &pt,
 	int peDX = 0;
 	QString nextToken;
 	while( !token.isEmpty() ) {
-		if( px >= pxLimit )
+		if( px >= pxLimit ) {		//	画面右に出た場合
+			while( !token.isEmpty() ) {
+				if( inBlockComment ) {
+					if( token == typeSettings()->textValue(TypeSettings::BLOCK_COMMENT_END) )
+						inBlockComment = false;
+				} else {
+					if( token == typeSettings()->textValue(TypeSettings::BLOCK_COMMENT_BEG) )
+						inBlockComment = true;
+				}
+				token = tkn.nextToken();
+			}
 			break;
+		}
 		if( !m_preeditString.isEmpty() && ln == m_textCursor->viewLine() ) {
 			if( tkn.tokenix() < m_textCursor->position() && tkn.ix() > m_textCursor->position() ) {
 				nextToken = token.right(tkn.ix() - m_textCursor->position());
