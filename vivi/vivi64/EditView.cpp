@@ -370,12 +370,68 @@ void EditView::resetCursorBlinking()
 	m_tmCounter = TM_FPS / 2;
 	m_timer.start(1000/TM_FPS);
 }
+void EditView::setupFallingChars()
+{
+	pos_t first = m_textCursor->selectionFirst();
+	int vlnFirst = m_textCursor->selectionFirstLine();
+	pos_t last = m_textCursor->selectionLast();
+	int vlnLast = m_textCursor->selectionLastLine();
+	QRect rct = rect();
+	int ln = viewLineToDocLine(vlnFirst);
+	int offset = first - viewLineStartPosition(vlnFirst);
+	int px = viewLineOffsetToPx(vlnFirst, offset);
+	int py = (vlnFirst - m_scrollY0) * lineHeight();
+	while( py < 0 ) {
+		ln = viewLineToDocLine(++vlnFirst, offset);
+		first = viewLineStartPosition(vlnFirst);
+		py += lineHeight();
+	}
+	//pos_t last = first + sz;
+	while( py < rct.height() ) {
+		if( buffer()->charAt(first) == '\r' || buffer()->charAt(first) == '\n' ) {
+			if( buffer()->charAt(first) == '\r'
+				&& first + 1 < last && buffer()->charAt(first+1) == '\n' )
+			{
+				++first;
+			}
+			py += lineHeight();
+			px = 0;
+			if( ++first >= last ) break;
+		} else {
+			QPointF pnt(px+m_lineNumAreaWidth, py);
+			qreal theta = 3.1415926535 * 2 * (qrand() % 65536) / 65536;
+			QPointF v(2*qCos(theta), 2*qSin(theta));
+			m_fallingChars.push_back(FallingChar(QChar(buffer()->charAt(first)), pnt, v));
+			if( ++first >= last ) break;
+			px += textWidth(first, 1 /*, last*/);
+		}
+	}
+}
+void EditView::setupFallingCharsBoxSelected()
+{
+}
 void EditView::onTimer()
 {
 	//qDebug() << "onTimer()";
 	if( hasFocus() && --m_tmCounter < 0 ) {
 		m_dispCursor = !m_dispCursor;
 		m_tmCounter = TM_FPS / 2;
+		update();
+	}
+	int hv = m_scrollX0 * m_fontWidth;
+	if( !m_fallingChars.empty() ) {
+		QRect rct = rect();
+		for(int i = 0; i < m_fallingChars.size(); ) {
+			m_fallingChars[i].m_pnt += m_fallingChars[i].m_v;
+			m_fallingChars[i].m_v.ry() += 0.1;
+			if( m_fallingChars[i].m_pnt.x() - hv < 0
+				|| m_fallingChars[i].m_pnt.x() - hv >= rct.width()
+				|| m_fallingChars[i].m_pnt.y() >= rct.height() )
+			{
+				m_fallingChars.erase(m_fallingChars.begin() + i);
+			} else
+				++i;
+		}
 		update();
 	}
 }
@@ -750,6 +806,15 @@ void EditView::paintEvent(QPaintEvent *event)
 	rct.setWidth(wd - m_lineNumAreaWidth - MINMAP_WIDTH);
 	pt.drawPixmap(rct, m_textAreaPixmap, m_textAreaPixmap.rect());
 #endif
+	//	削除された落下文字描画
+	if( !m_fallingChars.empty() ) {
+		QPoint hp(m_scrollX0*m_fontWidth, 0);
+		pt.setPen(typeSettings()->color(TypeSettings::DEL_TEXT));
+		for(int i = 0; i < m_fallingChars.size(); ++i) {
+			pt.drawText(m_fallingChars[i].m_pnt - hp, QString(m_fallingChars[i].m_ch));
+			//qDebug() << m_fallingChars[i].m_pnt - hp;
+		}
+	}
 }
 void EditView::drawLineNumberArea(QPainter& pt)
 {
@@ -1404,6 +1469,7 @@ void EditView::onDelete(bool ctrl, bool shift, bool alt)
 }
 void EditView::deleteText(pos_t pos, ssize_t sz, bool BS)
 {
+	setupFallingChars();
 	document()->deleteText(pos, sz, BS);
 	update();
 	emit updateUndoRedoEnabled();
@@ -1451,7 +1517,7 @@ void EditView::cut(bool append)
 			m_textCursor->movePosition(TextCursor::END_LINE, TextCursor::KEEP_ANCHOR);
 	}
 	if( !m_textCursor->hasSelection() ) return;
-	//##setupParabolicChars();
+	setupFallingChars();
 	m_textCursor->deleteChar();
 	if( !im )
 		emit modifiedChanged();
@@ -1486,6 +1552,7 @@ void EditView::paste()
 void EditView::paste(const QString &text)
 {
 	if( text.isEmpty() ) return;
+	setupFallingChars();
 #if	1
 	m_textCursor->insertText(text);
 #else

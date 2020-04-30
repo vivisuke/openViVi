@@ -554,6 +554,14 @@ int TextCursor::selectionLast() const
 	int dln = m_view->viewLineToDocLine(vln);
 	return m_view->lineStartPosition(dln+1);
 }
+int TextCursor::selectionFirstLine() const
+{
+	return qMin(m_viewLine, m_anchorViewLine);
+}
+int TextCursor::selectionLastLine() const
+{
+	return qMax(m_viewLine, m_anchorViewLine);
+}
 QString TextCursor::selectedText() const
 {
 	if( !hasSelection() ) return QString();

@@ -14,6 +14,21 @@ class Document;
 class TextCursor;
 class ViewLineMgr;
 
+struct FallingChar		//	落下中文字
+{
+public:
+	FallingChar(QChar ch, QPointF pnt, QPointF v)
+		: m_ch(ch)
+		, m_pnt(pnt)
+		, m_v(v)
+		{}
+
+public:
+	QChar	m_ch;
+	QPointF	m_pnt;		//	位置
+	QPointF	m_v;		//	速度ベクター
+};
+
 class EditView : public QWidget		//QScrollArea
 {
 	Q_OBJECT
@@ -95,6 +110,8 @@ protected:
 	void	insertTextSub(QString, bool ctrl, bool shift, bool alt);
 	void	onBackSpace(bool ctrl, bool shift, bool alt);
 	void	onDelete(bool ctrl, bool shift, bool alt);
+	void	setupFallingChars();
+	void	setupFallingCharsBoxSelected();
 protected:
 	void	paintEvent(QPaintEvent *);
 	void	mousePressEvent(QMouseEvent *);
@@ -186,4 +203,5 @@ private:
 	//double		m_mmScale;				//	1.0 未満であれば縮小されている
 	//QPixmap		m_minMap;
 	//
+	std::vector<FallingChar>	m_fallingChars;	//	落下文字たち
 };

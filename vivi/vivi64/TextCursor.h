@@ -69,6 +69,8 @@ public:
 	int		selectionSize() const;
 	int		selectionFirst() const;
 	int		selectionLast() const;
+	int		selectionFirstLine() const;
+	int		selectionLastLine() const;
 	bool	hasSelection() const { return m_mode != NOMAL_MODE || m_anchor != m_pos; }
 	QString	selectedText() const;
 public:
