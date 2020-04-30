@@ -10,6 +10,7 @@ open source version of ViVi text editor, which supports standard text editor fea
   - ５月中旬頃から基本viコマンド実装予定
 - スポンサーが多いほど開発に時間をかけます
 - ViVi 1.x 相当をまず実装予定（期間：1～2年？）→ ViVi 7.0.xxx としてリリース？
+  - 基本、作者がソース・ドキュメント編集をするために必要な機能から実装していきます
   - （暫定）優先順位：
     1. エディットバッファ（非GUI）
     1. テキストエディタ基本機能（GUI、[1] ビューワ機能, [2] 基本編集機能）
@@ -23,6 +24,7 @@ open source version of ViVi text editor, which supports standard text editor fea
 - ViVi 7.1.xxx
   - バイナリモード
   - CSVモード
+  - 巨大ファイル（１GB超）対応
 
 ## 開発環境
 - Windows 10, Visual Studio 2019, C++, ~~当面は32~~ 64bitモード only
