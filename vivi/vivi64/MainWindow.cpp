@@ -461,6 +461,7 @@ EditView *MainWindow::createView(QString pathName)
 	connect(view, SIGNAL(modifiedChanged()), this, SLOT(modifiedChanged()));
 	connect(view, SIGNAL(updateUndoRedoEnabled()), this, SLOT(updateUndoRedoEnabled()));
 	connect(view, SIGNAL(cursorPosChanged(int, int)), this, SLOT(onCursorPosChanged(int, int)));
+	connect(view, SIGNAL(reloadRequest(EditView *)), this, SLOT(reloadRequested(EditView *)));
 	connect(view, SIGNAL(showMessage(const QString &, int)), this, SLOT(showMessage(const QString &, int)));
 	if( !pathName.isEmpty() ) {
 		if( !loadFile(doc, pathName) ) {

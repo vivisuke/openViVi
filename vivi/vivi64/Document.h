@@ -50,6 +50,7 @@ public:
 	QString	typeName() const;
 	QString	text(pos_t pos, ssize_t sz) const;
 	QString	lineText(int) const;
+	QDateTime	lastModified() const { return m_lastModified; }
 public:
 	void	setTypeSettings(TypeSettings *typeSettings);
 	void	setPathName(const QString &pathName);

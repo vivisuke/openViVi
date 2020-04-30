@@ -452,6 +452,22 @@ void EditView::resizeEvent(QResizeEvent *event)
 }
 void EditView::focusInEvent( QFocusEvent * event )
 {
+	qDebug() << "EditView::focusInEvent()";
+	//QScrollArea::focusInEvent(event);
+	resetCursorBlinking();
+	update();
+	static bool reloading = false;
+	if( fullPathName().isEmpty() || reloading )
+		return;
+	QFileInfo fi(fullPathName());
+	if( !fi.exists() ) return;
+	if( fi.lastModified() > document()->lastModified() ) {
+		qDebug() << "file: " << QFileInfo(fullPathName()).lastModified();
+		qDebug() << "doc: " << document()->lastModified();
+		reloading = true;
+		emit reloadRequest(this);
+		reloading = false;
+	}
 }
 void EditView::focusOutEvent( QFocusEvent * event )
 {
