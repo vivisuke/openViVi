@@ -23,6 +23,7 @@ open source version of ViVi text editor, which supports standard text editor fea
 - ViVi 7.1.xxx
   - バイナリモード
   - CSVモード
+  - 巨大ファイル（１GB超）対応
 
 ## 開発環境
 - Windows 10, Visual Studio 2019, C++, ~~当面は32~~ 64bitモード only
