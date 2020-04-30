@@ -50,7 +50,7 @@ public:
 	int		fontHeight() const { return m_fontHeight; }
 	int		lineHeight() const { return m_lineHeight; }
 	int		textWidth(const QString &) const;
-	int		textWidth(pos_t, ssize_t, pos_t, const Buffer* = 0) const;
+	int		textWidth(pos_t, ssize_t, /*pos_t,*/ const Buffer* = 0) const;
 	int		pxToOffset(int vln, int px) const;
 	void	pointToLineOffset(const QPoint &, int &, int &) const;
 public:

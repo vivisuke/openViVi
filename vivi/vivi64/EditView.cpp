@@ -162,8 +162,8 @@ QString EditView::selectedText() const
 int EditView::viewLineOffsetToPx(int vln, int offset) const
 {
 	auto start = viewLineMgr()->viewLineStartPosition(vln);
-	auto next = viewLineMgr()->viewLineStartPosition(vln + 1);
-	return textWidth(start, offset, next);
+	//auto next = viewLineMgr()->viewLineStartPosition(vln + 1);
+	return textWidth(start, offset /*, next*/);
 	//Q_ASSERT(0);
 	//return 0;
 }
@@ -794,13 +794,13 @@ void EditView::drawMatchedBG(QPainter &pt, int vln, int py)
 	const int hv = m_scrollX0 * m_fontWidth;
 	const int lineStart = viewLineStartPosition(vln);
 	pos_t pos = lineStart;
-	const int last = lineStart + m_viewLineMgr->viewLineSize(vln);
-	//const int last = viewLineStartPosition(vln + 1);
+	//const int last = lineStart + m_viewLineMgr->viewLineSize(vln);
+	const int last = viewLineStartPosition(vln + 1);
 	while( (pos = sssrc.strstr(*buffer(), pos, last)) >= 0 ) {
-		const int plen = sssrc.patSize();
+		//const int plen = sssrc.patSize();
 		const int matchLength = sssrc.matchLength();
-		const int px1 = textWidth(lineStart, pos - lineStart, last) + m_lineNumAreaWidth;
-		const int px2 = textWidth(lineStart, pos + matchLength - lineStart, last) + m_lineNumAreaWidth;
+		const int px1 = textWidth(lineStart, pos - lineStart /*, last*/) + m_lineNumAreaWidth;
+		const int px2 = textWidth(lineStart, pos + matchLength - lineStart /*, last*/) + m_lineNumAreaWidth;
 		pt.fillRect(QRect(px1 - hv, py, px2 - px1, lineHeight()),
 							typeSettings()->color(TypeSettings::MATCHED_BG));
 		++pos;
@@ -1094,9 +1094,9 @@ void EditView::drawMinMap(QPainter& pt)
 	pt.setOpacity(0.5);
 	//	undone: minMap 高さがビュー高さより高い場合は、縮小表示
 	double scale = 1.0;
-	if( minMap.height() <= rct.height() )	//	ミニマップが全部表示できる場合
+	if( minMap.height() <= rct.height() ) {	//	ミニマップが全部表示できる場合
 		pt.drawPixmap(px, py, minMap);		//	テキストPixmap描画
-	else {
+	} else {
 		scale = (double)rct.height() / minMap.height();
 		pt.drawPixmap(rct, minMap, minMap.rect());
 	}
@@ -1105,19 +1105,35 @@ void EditView::drawMinMap(QPainter& pt)
 	pt.setBrush(Qt::black);
 	if( m_scrollY0 != 0 ) {
 		rct.setHeight(m_scrollY0*scale);
-		pt.drawRect(rct);			//	現エリアより上部（前）描画
+		pt.drawRect(rct);			//	現エリアより上部（前）背景描画
 	}
 	if( minMap.height() - (m_scrollY0+nLines) > 0 ) {
 		rct.setY((m_scrollY0+nLines)*scale);
 		rct.setHeight((minMap.height() - (m_scrollY0+nLines))*scale);
-		pt.drawRect(rct);			//	現エリアより下部（後）描画
+		pt.drawRect(rct);			//	現エリアより下部（後）背景描画
 	}
+	pt.setOpacity(1.0);
+	//	検索マッチ部分強調
+	pt.setPen(typeSettings()->color(TypeSettings::MATCHED_BG));
+	SSSearch &sssrc = mainWindow()->sssrc();
+	pos_t pos = 0;
+	const int last = document()->size();
+	while( (pos = sssrc.strstr(*buffer(), pos, last)) >= 0 ) {
+		const int matchLength = sssrc.matchLength();
+		int ln = document()->positionToLine(pos);
+		auto lineStartPos = document()->lineStartPosition(ln);
+		auto px1 = px + textWidth(lineStartPos, pos - lineStartPos) / m_fontWidth;
+		auto px2 = px + textWidth(lineStartPos, pos - lineStartPos + matchLength) / m_fontWidth;
+		int py = ln * scale;
+		pt.drawLine(px1, py, px2, py);
+		pos += matchLength;
+	}
+	//
 	rct.setY(m_scrollY0*scale);
 	rct.setHeight(nLines*scale);
 	pt.setBrush(Qt::transparent);
 	pt.setPen(Qt::red);
 	pt.drawRect(rct);				//	現エリアに赤枠描画
-	pt.setOpacity(1.0);
 }
 void EditView::drawPreeditString(QPainter&pt)
 {
@@ -1181,9 +1197,9 @@ int EditView::textWidth(const QString &text) const
 	if( text.isEmpty() ) return 0;
 	Buffer b;
 	b.basicInsertText(0, (wchar_t *)text.data(), text.size());
-	return textWidth(0, b.size(), b.size(), &b);
+	return textWidth(0, b.size(), /*b.size(),*/ &b);
 }
-int EditView::textWidth(pos_t first, ssize_t sz, pos_t last, const Buffer* pbuffer) const
+int EditView::textWidth(pos_t first, ssize_t sz, /*pos_t last,*/ const Buffer* pbuffer) const
 {
 	if( !sz ) return 0;
 	if( pbuffer == 0 ) pbuffer = buffer();
