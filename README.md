@@ -42,6 +42,7 @@ open source version of ViVi text editor, which supports standard text editor fea
 ※問題報告はどなたでも行うことができます。
 
 本プロジェクトは下記スポンサー様のご支援を受けています。ありがとうございます。
+- J.N 様 （2020年4月 ￥5,000)
 - YS INC 様 （2020年4月 ￥1,000)
 - amnesia828 様 （2020年4月 ￥10,000)
 - N.W 様 （2020年4月 ￥5,000)
