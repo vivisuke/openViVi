@@ -36,6 +36,7 @@ public:
 	wchar_t	charAt(pos_t pos) const;
 	bool	bom() const { return m_bBom; }
 	uchar	charEncoding() const { return m_charEncoding; }
+	QByteArray	codecName() const;
 	bool	isEmpty() const;
 	bool	isModified() const;		// { return m_modified; }
 	bool	canUndo() const;
@@ -56,6 +57,7 @@ public:
 	void	setCodecName(const QByteArray &);
 	void	setBOM(bool bBom);
 	void	setCharEncoding(uchar charEncoding);
+	void	setModified(bool = true);
 	void	setLastModified(const QDateTime&);
 	void	setPlainText(const QString&);
 	void	buildMinMap();

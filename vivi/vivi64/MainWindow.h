@@ -69,6 +69,7 @@ protected:
 	bool	doSaveAs(EditView *);
     bool	maybeSave();
     bool	maybeSave(EditView *);
+	void	reload(cchar *codecName = 0);
     
 protected:
 	void	dragEnterEvent(QDragEnterEvent *event);
@@ -81,6 +82,7 @@ private slots:
 	void	on_action_Save_triggered();
 	void	on_action_SaveAs_triggered();
 	void	on_action_Close_triggered();
+	void	on_action_Reload_triggered();
 	void	on_action_AddCurrentFile_triggered();
 	void	on_action_RemoveFile_triggered();
 	void	on_action_eXit_triggered();
@@ -99,6 +101,7 @@ private slots:
 	void	on_action_About_ViVi_triggered();
 	//
 public slots:
+    void	reloadRequested(EditView *, cchar *codecName = 0);
     void	openRecentFile();
     void	openFavoriteFile();
 	void	tabCloseRequested(int index);

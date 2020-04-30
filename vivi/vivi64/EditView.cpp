@@ -246,6 +246,10 @@ pos_t EditView::cursorPosition() const
 {
 	return m_textCursor->position();
 }
+int EditView::cursorLine() const		//	[0, EOFLine]
+{
+	return positionToLine(m_textCursor->position());
+}
 int EditView::EOFLine() const
 {
 	return m_viewLineMgr->EOFLine();
@@ -262,6 +266,9 @@ void EditView::onCursorPosChanged()
 	pos_t pos = m_textCursor->position();
 	int ln = document()->positionToLine(pos);
 	emit cursorPosChanged(ln+1, pos - lineStartPosition(ln));
+}
+void EditView::jumpToLine(int ln, bool vi)		//	ln [0, EOFLine) ドキュメント行番号
+{
 }
 //	return:	スクロールしたかどうか
 bool EditView::makeCursorInView(bool bQuarter)
@@ -344,6 +351,10 @@ bool EditView::makeCursorInView(bool bQuarter)
 	}
 #endif
 	return scrolled;
+}
+QByteArray EditView::codecName() const
+{
+	return document()->codecName();
 }
 QString EditView::typeName() const
 {
@@ -1715,4 +1726,10 @@ void EditView::findPrev(const QString &pat, bool vi)
 bool EditView::focusNextPrevChild(bool next)
 {
 	return false;
+}
+void EditView::setModified(bool b)
+{
+	if( b == isModified() ) return;
+	document()->setModified(b);
+	emit modifiedChanged();
 }

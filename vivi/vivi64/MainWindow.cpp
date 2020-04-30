@@ -18,6 +18,8 @@
 #include "FindLineEdit.h"
 #include "../buffer/sssearch.h"
 
+#define		APP_NAME					"ViVi64"
+
 #define		KEY_RECENTFILELIST			"recentFileList"
 #define		KEY_FAVORITEFILELIST		"favoriteFileList"
 #define		KEY_RECENTDIRLIST			"recentDirList"
@@ -761,7 +763,7 @@ bool MainWindow::maybeSave(EditView *view)
     if( view->isModified() && !(view->document()->isEmpty() && fullPathName.isEmpty()) ) {
     	ui.tabWidget->setCurrentWidget(view);
 		QMessageBox::StandardButton ret;
-        ret = QMessageBox::warning(this, "ViVi64",
+        ret = QMessageBox::warning(this, APP_NAME,
                      tr("The '%1' has been modified.\n"
                         "Do you want to save your changes ?").arg(view->title()),
                      QMessageBox::Save | QMessageBox::Discard
@@ -777,6 +779,41 @@ void MainWindow::on_action_Close_triggered()
 {
 	qDebug() << "on_action_Close_triggered()";
 	tabCloseRequested(ui.tabWidget->currentIndex());
+}
+void MainWindow::on_action_Reload_triggered()
+{
+	qDebug() << "on_action_Reload_triggered()";
+	EditView *view = currentWidget();
+	if( !isEditView(view) ) return;
+	QTextCodec *tc = QTextCodec::codecForName("UTF-8");
+	reload(tc->fromUnicode(view->codecName()));
+}
+void MainWindow::reload(cchar *codecName)
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) && !view->fullPathName().isEmpty() ) {
+		reloadRequested(view, codecName);
+	}
+}
+void MainWindow::reloadRequested(EditView *view, cchar *codecName)
+{
+	if( view->isModified() ) {
+		QMessageBox::StandardButton ret;
+        ret = QMessageBox::warning(this, APP_NAME,
+                     tr("The '%1' has been modified.\n"
+                        "Do you want to reload ?").arg(view->title()),
+                     QMessageBox::Yes | QMessageBox::Cancel);
+        if( ret != QMessageBox::Yes ) return;
+	}
+	int curLine = view->cursorLine();
+	if( loadFile(view->document(), view->fullPathName(), /*codecName,*/ false) ) {
+		//m_encodingLabel->setText(view->codecName());
+		int ix = m_encodingCB->findText(view->codecName());
+		if( ix >= 0 ) m_encodingCB->setCurrentIndex(ix);
+		view->jumpToLine(curLine);
+		view->makeCursorInView();
+		view->setModified(false);
+	}
 }
 void MainWindow::on_action_RemoveFile_triggered()
 {

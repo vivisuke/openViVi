@@ -39,10 +39,12 @@ public:
 	wchar_t	charAt(pos_t pos) const;
 	size_t	bufferSize() const;
 	pos_t	cursorPosition() const;
+	int		cursorLine() const;		//	[0, EOFLine]
 	int		EOFLine() const;
 	QString	fullPathName() const;
 	QString	title() const;
 	QString	typeName() const;
+	QByteArray	codecName() const;
 	TypeSettings	*typeSettings();	// { return m_typeSettings; }
 	const TypeSettings	*typeSettings() const;	// { return m_typeSettings; }
 	//const TypeSettings* cTypeSettings() { return (const TypeSettings*)m_typeSettings; }
@@ -70,11 +72,13 @@ public:
 	void	pointToLineOffset(const QPoint &, int &, int &) const;
 public:
 	MainWindow	*mainWindow() { return m_mainWindow; }
+	void	setModified(bool = true);
 	void	setLineNumberVisible(bool);
 	void	setPlainText(const QString&);
 	Document*	document() { return m_document; }
 	Buffer	*buffer() { return m_buffer; }
 	bool	makeCursorInView(bool bQuarter = false);
+	void	jumpToLine(int ln, bool vi = false);		//	ln [0, EOFLine) ドキュメント行番号
 	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
 	void	onCursorPosChanged();
 	void	doInsertText(const QString &, bool, bool, bool);

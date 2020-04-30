@@ -56,6 +56,13 @@ bool Document::isModified() const		// { return m_modified; }
 {
 	return m_buffer->isModified();
 }
+QByteArray Document::codecName() const
+{
+	if( m_codec == 0 )
+		return QByteArray("UTF-8");
+	else
+		return m_codec->name();
+}
 bool Document::canUndo() const
 {
 	return m_buffer->canUndo();
@@ -127,6 +134,10 @@ void Document::setBOM(bool bBom)
 void Document::setCharEncoding(uchar charEncoding)
 {
 	m_charEncoding = charEncoding;
+}
+void Document::setModified(bool b)
+{
+	m_buffer->setModified(b);
 }
 void Document::setLastModified(const QDateTime& lastModified)
 {
