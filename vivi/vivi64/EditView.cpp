@@ -1229,17 +1229,21 @@ void EditView::drawMinMap(QPainter& pt)
 	pt.setPen(Qt::red);
 	pt.drawRect(rct);				//	現エリアに赤枠描画
 }
+#if	0
+void EditView::drawPreeditBG(QPainter&)
+{
+}
+#endif
 void EditView::drawPreeditString(QPainter&pt)
 {
 	if( m_preeditString.isEmpty() ) return;
 	QFontMetrics fm(m_font);
 	pt.setOpacity(1.0);
-	pt.setPen(typeSettings()->color(TypeSettings::TEXT));
 	pos_t pos = m_textCursor->position();
 	int vln = m_textCursor->viewLine();
 	int offset;
 	int dln = viewLineToDocLine(vln, offset);
-	int py = (vln - m_scrollY0) * lineHeight() + DRAW_Y_OFFSET*2;	//	ベースライン位置
+	int py = (vln - m_scrollY0) * lineHeight() + DRAW_Y_OFFSET;		//	行上部位置
 	QRect rct = rect();
 	if( py < 0 || py >= rct.height() )
 		return;		//	画面外の場合
@@ -1247,8 +1251,15 @@ void EditView::drawPreeditString(QPainter&pt)
 	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth;
 	int ht = fm.ascent();
 	const auto descent = fm.descent();
-	pt.drawText(px, py+m_fontHeight-descent, m_preeditString);
 	m_preeditWidth = fm.width(m_preeditString);
+	//	背景描画
+	QRect r(px, py, m_preeditWidth, m_lineHeight);
+	pt.setPen(Qt::transparent);
+	pt.setBrush(typeSettings()->color(TypeSettings::PREEDIT_BG));
+	pt.drawRect(r);
+	//	変換中テキスト描画
+	pt.setPen(typeSettings()->color(TypeSettings::TEXT));
+	pt.drawText(px, py+m_fontHeight-descent, m_preeditString);
 }
 //	行カーソル表示
 void EditView::drawLineCursor(QPainter &pt)

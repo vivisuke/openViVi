@@ -103,6 +103,7 @@ protected:
 	int		drawTokenText(QPainter& pt, QString& token, int& clmn, int& px, int py, int peDX, int wd,
 							const int chWidth, const int descent /*, QColor& col*/ /*, bool bold*/);
 	void	drawPreeditString(QPainter&);
+	//void	drawPreeditBG(QPainter&);
 	void	drawCursor(QPainter&);
 	void	drawLineCursor(QPainter&);
 	void	drawMatchedBG(QPainter&);
