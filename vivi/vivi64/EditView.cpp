@@ -409,7 +409,7 @@ void EditView::setupFallingChars()
 			px = 0;
 			if( ++first >= last ) break;
 		} else {
-			QPointF pnt(px+m_lineNumAreaWidth, py);
+			QPointF pnt(px+m_lineNumAreaWidth, py+m_fontHeight);
 			qreal theta = 3.1415926535 * 2 * (qrand() % 65536) / 65536;
 			QPointF v(2*qCos(theta), 2*qSin(theta));
 			m_fallingChars.push_back(FallingChar(QChar(buffer()->charAt(first)), pnt, v));
