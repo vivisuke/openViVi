@@ -1596,7 +1596,10 @@ void EditView::paste(const QString &text)
 	if( text.isEmpty() ) return;
 	setupFallingChars();
 #if	1
+	bool im = isModified();
 	m_textCursor->insertText(text);
+	if( !im )
+		emit modifiedChanged();
 #else
 	setupParabolicChars();
 	bool im = isModified();
