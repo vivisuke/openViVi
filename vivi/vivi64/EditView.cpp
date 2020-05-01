@@ -786,6 +786,8 @@ void EditView::inputMethodEvent(QInputMethodEvent * event)
 		qDebug() << "  start = " << event->replacementStart () <<
 					", len = " << event->replacementLength ();
 		qDebug() << "  insertText " << m_preeditString;
+		if( m_textCursor->hasSelection() )
+			m_textCursor->deleteChar();
 		update();
 	}
 	QWidget::inputMethodEvent( event );
