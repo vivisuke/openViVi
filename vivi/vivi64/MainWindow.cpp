@@ -462,7 +462,8 @@ EditView *MainWindow::createView(QString pathName)
 	connect(view, SIGNAL(updateUndoRedoEnabled()), this, SLOT(updateUndoRedoEnabled()));
 	connect(view, SIGNAL(cursorPosChanged(int, int)), this, SLOT(onCursorPosChanged(int, int)));
 	connect(view, SIGNAL(reloadRequest(EditView *)), this, SLOT(reloadRequested(EditView *)));
-	connect(view, SIGNAL(showMessage(const QString &, int)), this, SLOT(showMessage(const QString &, int)));
+	connect(view, SIGNAL(textSearched(const QString&, bool)), this, SLOT(textSearched(const QString&, bool)));
+	connect(view, SIGNAL(showMessage(const QString&, int)), this, SLOT(showMessage(const QString&, int)));
 	if( !pathName.isEmpty() ) {
 		if( !loadFile(doc, pathName) ) {
 			//	undone: ファイルオープンに失敗した場合の後始末処理
@@ -947,13 +948,21 @@ void MainWindow::on_action_Paste_triggered()
 		view->paste();
 	}
 }
+void MainWindow::on_action_SelectAll_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		view->selectAll();
+	}
+}
 void MainWindow::on_action_SearchBackward_triggered()
 {
 	statusBar()->clearMessage();
 	QString pat = m_findStringCB->lineEdit()->text();
 	EditView *view = currentWidget();
 	if( isEditView(view) && !pat.isEmpty() ) {
-		view->findPrev(pat);
+		bool word = ui.action_WordSearch->isChecked();
+		view->findPrev(pat, word);
 	}
 }
 void MainWindow::on_action_SearchForward_triggered()
@@ -962,7 +971,8 @@ void MainWindow::on_action_SearchForward_triggered()
 	QString pat = m_findStringCB->lineEdit()->text();
 	EditView *view = currentWidget();
 	if( isEditView(view) && !pat.isEmpty() ) {
-		view->findNext(pat);
+		bool word = ui.action_WordSearch->isChecked();
+		view->findNext(pat, word);
 	}
 }
 void MainWindow::on_action_Search_triggered()
@@ -1023,6 +1033,10 @@ void MainWindow::onFocusInFindLineEdit()
 }
 void MainWindow::onEscFindLineEdit()
 {
+}
+void MainWindow::textSearched(const QString&txt, bool word)
+{
+	ui.action_WordSearch->setChecked(word);
 }
 void MainWindow::setFindString(const QString &txt)
 {

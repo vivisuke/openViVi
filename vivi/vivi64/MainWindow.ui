@@ -99,6 +99,7 @@
     <addaction name="action_Cut"/>
     <addaction name="action_Copy"/>
     <addaction name="action_Paste"/>
+    <addaction name="action_SelectAll"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -132,6 +133,7 @@
     <addaction name="action_SearchCurWord"/>
     <addaction name="action_SearchForward"/>
     <addaction name="action_SearchBackward"/>
+    <addaction name="action_WordSearch"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
@@ -159,6 +161,7 @@
    <addaction name="action_Copy"/>
    <addaction name="action_Paste"/>
    <addaction name="separator"/>
+   <addaction name="action_WordSearch"/>
    <addaction name="action_SearchForward"/>
    <addaction name="action_SearchBackward"/>
    <addaction name="separator"/>
@@ -402,6 +405,26 @@
   <action name="action_Reload">
    <property name="text">
     <string>&amp;Reload</string>
+   </property>
+  </action>
+  <action name="action_WordSearch">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/opt_word.png</normaloff>:/MainWindow/Resources/opt_word.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;WordSearch</string>
+   </property>
+  </action>
+  <action name="action_SelectAll">
+   <property name="text">
+    <string>Select&amp;All</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
    </property>
   </action>
  </widget>

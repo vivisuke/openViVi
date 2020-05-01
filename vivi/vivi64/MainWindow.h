@@ -91,6 +91,7 @@ private slots:
 	void	on_action_Cut_triggered();
 	void	on_action_Copy_triggered();
 	void	on_action_Paste_triggered();
+	void	on_action_SelectAll_triggered();
 	void	on_action_Search_triggered();
 	void	on_action_SearchCurWord_triggered();
 	void	on_action_SearchBackward_triggered();
@@ -106,20 +107,21 @@ public slots:
     void	openFavoriteFile();
 	void	tabCloseRequested(int index);
 	void	currentChanged(int index);
-    void	onCharEncodingChanged(const QString &);
+    void	onCharEncodingChanged(const QString&);
     void	onBomChanged(bool);
-	void	onTypeChanged(const QString &);
+	void	onTypeChanged(const QString&);
 	void	onNewLineCodeChanged(int);
     void	onCursorPosChanged(int, int);
-	void	showMessage(const QString &, int timeout = 0);
+	void	showMessage(const QString&, int timeout = 0);
     void	updateUndoRedoEnabled();
     void	modifiedChanged();
     void	doFindString();
-    void	findStringChanged(const QString &);
+    void	findStringChanged(const QString&);
     void	findStringChanged(int);
     void	onFocusInFindLineEdit();
     void	onEscFindLineEdit();
     void	setFindString(const QString &txt);
+    void	textSearched(const QString&txt, bool word);
 	
 private:
 	Ui::MainWindowClass ui;

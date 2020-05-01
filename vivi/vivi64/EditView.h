@@ -85,14 +85,15 @@ public:
 	void	insertTextRaw(pos_t pos, const QString &);
 	void	paste(const QString &);
 	void	boxPaste(const QString &);
+	void	selectAll();
 	void	updateFont();
 	void	setFullPathName(const QString &);
 	bool	saveFile() const;
 	bool	searchCurWord(QString &);
 	bool	findForward(const QString &, uint opt = 0, bool loop = false, bool next = true, bool vi = false);
 	bool	findBackward(const QString &, uint opt = 0, bool loop = false, bool vi = false);
-	void	findNext(const QString &, bool vi = false);
-	void	findPrev(const QString &, bool vi = false);
+	void	findNext(const QString&, bool word = false, bool vi = false);
+	void	findPrev(const QString&, bool word = false, bool vi = false);
 protected:
 	bool	focusNextPrevChild(bool next);
 	void	resetCursorBlinking();
@@ -146,7 +147,7 @@ signals:
 	void	escPressed();
 	void	showMessage(const QString &, int timeout = 0) const;
 	void	reloadRequest(EditView *);
-	void	textSearched(const QString &);
+	void	textSearched(const QString&, bool word = false);
 	void	openFile(const QString &);
 	void	gameFinished(bool, QString);
 	void	textInserted(const QString &);		//	挿入後の位置

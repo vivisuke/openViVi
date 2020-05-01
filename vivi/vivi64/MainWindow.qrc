@@ -40,5 +40,6 @@
         <file>Resources/redo_lightgray.png</file>
         <file>Resources/undo_lightgray.png</file>
         <file>Resources/pencil_orange.png</file>
+        <file>Resources/opt_word.png</file>
     </qresource>
 </RCC>

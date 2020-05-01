@@ -1,4 +1,5 @@
 ﻿#include <QtGui>
+#include <QTransform>
 //#include <QPainter>
 #include <QDebug>
 #include "MainWindow.h"
@@ -839,10 +840,15 @@ void EditView::paintEvent(QPaintEvent *event)
 	if( !m_fallingChars.empty() ) {
 		QPoint hp(m_scrollX0*m_fontWidth, 0);
 		pt.setPen(typeSettings()->color(TypeSettings::DEL_TEXT));
+		QTransform t;
 		for(int i = 0; i < m_fallingChars.size(); ++i) {
+			//##t.translate(-(m_fallingChars[i].m_pnt.x() - hp.x() + m_fontWidth/2), -(m_fallingChars[i].m_pnt.y() - m_fontHeight/2));
+			//##t.rotateRadians(3.1415926535/6);
+			//##pt.setTransform(t);
 			pt.drawText(m_fallingChars[i].m_pnt - hp, QString(m_fallingChars[i].m_ch));
 			//qDebug() << m_fallingChars[i].m_pnt - hp;
 		}
+		pt.setTransform(QTransform());	//	回転リセット
 	}
 }
 void EditView::drawLineNumberArea(QPainter& pt)
@@ -1617,6 +1623,13 @@ void EditView::paste(const QString &text)
 void EditView::boxPaste(const QString &)
 {
 }
+void EditView::selectAll()
+{
+	m_textCursor->setPosition(0);
+	m_textCursor->setPosition(bufferSize(), TextCursor::KEEP_ANCHOR);
+	makeCursorInView();
+	update();
+}
 bool EditView::saveFile() const
 {
 	bool im = isModified();
@@ -1653,8 +1666,9 @@ bool EditView::searchCurWord(QString &txt)
 	if( mainWindow()->globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
 		opt |= SSSearch::WHOLE_WORD_ONLY;
 #endif
+	opt |= SSSearch::WHOLE_WORD_ONLY;
 	bool rc = findForward(txt, opt);
-	emit textSearched(txt);
+	emit textSearched(txt, true);
 	resetCursorBlinking();
 	update();
 	return rc;
@@ -1725,11 +1739,13 @@ bool EditView::findBackward(const QString &text, uint opt, bool loop, bool vi)
 	update();
 	return true;
 }
-void EditView::findNext(const QString &pat, bool vi)
+void EditView::findNext(const QString &pat, bool word, bool vi)
 {
 	uint opt = 0;
 	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) ) opt |= SSSearch::IGNORE_CASE;
-	if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) ) opt |= SSSearch::WHOLE_WORD_ONLY;
+	//if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
+	if( word )
+		opt |= SSSearch::WHOLE_WORD_ONLY;
 	QTime tm;
 	tm.start();
 	bool rc = findForward(pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), true, vi);
@@ -1743,12 +1759,13 @@ void EditView::findNext(const QString &pat, bool vi)
 	setFocus();
 	update();
 }
-void EditView::findPrev(const QString &pat, bool vi)
+void EditView::findPrev(const QString &pat, bool word, bool vi)
 {
 	uint opt = 0;
 	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
 		opt |= SSSearch::IGNORE_CASE;
-	if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
+	//if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
+	if( word )
 		opt |= SSSearch::WHOLE_WORD_ONLY;
 	if( !findBackward(pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), vi) )
 		showMessage(tr("'%1' was not found.").arg(pat), 3000);
