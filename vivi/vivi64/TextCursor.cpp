@@ -351,7 +351,7 @@ int TextCursor::prevWord(int n)
 	while( --n >= 0 ) {
 		if( !m_pos ) break;
 		--m_pos;
-		if( m_view->charAt(m_pos-1) == '\r' && m_view->charAt(m_pos) == '\n' )
+		if( m_pos != 0 && m_view->charAt(m_pos-1) == '\r' && m_view->charAt(m_pos) == '\n' )
 			--m_pos;
 		while( (type = getCharType(ch)) == CTSB_SPACE || type == CTDB_SPACE ||		//	継続スペース
 				vi && type == CT_NEWLINE )		//	vi モードでは改行は空白扱い
