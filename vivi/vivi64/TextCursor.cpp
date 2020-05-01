@@ -176,7 +176,7 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 	case NEXT_WORD:
 		if( pos == m_view->bufferSize() ) return;
 		pos = nextWord(n);
-		while( pos < m_view->bufferSize() && pos >= viewLineStartPosition(vln+1) ) {
+		while( pos <= m_view->bufferSize() && vln != m_view->EOFLine() && pos >= viewLineStartPosition(vln+1) ) {
 			++vln;
 		}
 		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));

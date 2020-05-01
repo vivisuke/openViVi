@@ -1486,7 +1486,9 @@ void EditView::insertTextRaw(pos_t pos, const QString &text)
 }
 void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
 {
+	if( !m_textCursor->hasSelection() ) {
 			m_textCursor->movePosition(TextCursor::LEFT /*, TextCursor::KEEP_ANCHOR*/);
+	}
 	//if( !editForVar(QString()) )
 		m_textCursor->deleteChar(/*BS=*/true);
 }
