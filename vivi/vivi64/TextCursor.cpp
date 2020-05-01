@@ -569,6 +569,15 @@ QString TextCursor::selectedText() const
 	int last = selectionLast();
 	return m_view->text(first, last - first);
 }
+bool TextCursor::getSelectedLineRange(int &dln1, int &dln2) const
+{
+	if( !hasSelection() ) return false;
+	dln1 = m_view->viewLineToDocLine(selectionFirstLine());
+	dln2 = m_view->viewLineToDocLine(selectionLastLine());
+	if( selectionLast() == m_view->lineStartPosition(dln2) )
+		--dln2;
+	return true;
+}
 void TextCursor::deleteChar(bool BS, bool vi)
 {
 	pos_t pos = selectionFirst();

@@ -73,6 +73,7 @@ public:
 	int		selectionLastLine() const;
 	bool	hasSelection() const { return m_mode != NOMAL_MODE || m_anchor != m_pos; }
 	QString	selectedText() const;
+	bool	getSelectedLineRange(int &dln1, int &dln2) const;
 public:
 	void	clearSelection();
 	void	setPosition(pos_t pos, int mode = MOVE_ANCHOR);

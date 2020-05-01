@@ -1494,9 +1494,71 @@ int EditView::pxToOffset(int vln, int px) const
 	}
 #endif
 }
+bool  EditView::getSelectedLineRange(int &ln1, int &ln2) const
+{
+	if( !m_textCursor->hasSelection() )
+		return false;
+	else
+		return m_textCursor->getSelectedLineRange(ln1, ln2);
+}
 void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 {
+	if( text == "\t" ) {
+		if( m_textCursor->hasSelection() ) {
+			int ln1, ln2;
+			getSelectedLineRange(ln1, ln2);
+			if( !shift )
+				indent(ln1, ln2);
+			else
+				revIndent(ln1, ln2);
+			return;
+		}
+	}
 			m_textCursor->insertText(text);		//	文字挿入
+}
+void EditView::indent(int ln1, int ln2, bool vi)
+{
+	//##if( !mainWindow()->viEngine()->isUndoBlockOpened() )
+		openUndoBlock();
+	for(int ln = ln1; ln <= ln2; ++ln) {
+		pos_t pos = lineStartPosition(ln);
+		document()->insertText(pos, QString((QChar *)L"\t"));
+	}
+	//##if( !mainWindow()->viEngine()->isUndoBlockOpened() )
+		closeUndoBlock();
+	if( !vi ) {
+		//##m_textCursor->setMode(TextCursor::NOMAL_MODE);
+		m_textCursor->setPosition(lineStartPosition(ln1));
+		m_textCursor->setPosition(lineStartPosition(ln2+1), TextCursor::KEEP_ANCHOR);
+	}
+	update();
+}
+void EditView::revIndent(int ln1, int ln2, bool vi)
+{
+	int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
+	//##if( !mainWindow()->viEngine()->isUndoBlockOpened() )
+		openUndoBlock();
+	for(int ln = ln1; ln <= ln2; ++ln) {
+		const pos_t ls = lineStartPosition(ln);
+		pos_t pos = ls;
+		if( charAt(pos) == '\t' )
+			document()->deleteText(pos);
+		else {
+			int nsp = 0;	//	行頭空白数
+			while( nsp < nTab && charAt(pos+nsp) == ' ' )
+				++nsp;
+			if( nsp != 0 )
+				document()->deleteText(ls, nsp);
+		}
+	}
+	//##if( !mainWindow()->viEngine()->isUndoBlockOpened() )
+		closeUndoBlock();
+	if( !vi ) {
+		//##m_textCursor->setMode(TextCursor::NOMAL_MODE);
+		m_textCursor->setPosition(lineStartPosition(ln1));
+		m_textCursor->setPosition(lineStartPosition(ln2+1), TextCursor::KEEP_ANCHOR);
+	}
+	update();
 }
 void EditView::insertTextRaw(pos_t pos, const QString &text)
 {
@@ -1622,6 +1684,14 @@ void EditView::paste(const QString &text)
 }
 void EditView::boxPaste(const QString &)
 {
+}
+void EditView::openUndoBlock()
+{
+	buffer()->openUndoBlock();
+}
+void EditView::closeUndoBlock()
+{
+	buffer()->closeUndoBlock();
 }
 void EditView::selectAll()
 {

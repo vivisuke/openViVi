@@ -70,6 +70,7 @@ public:
 	int		textWidth(pos_t, ssize_t, /*pos_t,*/ const Buffer* = 0) const;
 	int		pxToOffset(int vln, int px) const;
 	void	pointToLineOffset(const QPoint &, int &, int &) const;
+	bool 	getSelectedLineRange(int &dln1, int &dln2) const;
 public:
 	MainWindow	*mainWindow() { return m_mainWindow; }
 	void	setModified(bool = true);
@@ -85,6 +86,12 @@ public:
 	void	insertTextRaw(pos_t pos, const QString &);
 	void	paste(const QString &);
 	void	boxPaste(const QString &);
+	void	openUndoBlock();
+	void	closeUndoBlock();
+	void	closeAllUndoBlock();
+	void	clearUndoMgr();
+	void	indent(int, int, bool vi = false);
+	void	revIndent(int, int, bool vi = false);
 	void	selectAll();
 	void	updateFont();
 	void	setFullPathName(const QString &);
