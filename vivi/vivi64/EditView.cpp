@@ -1179,7 +1179,7 @@ int EditView::drawTokenText(QPainter& pt,
 				wd += chWidth;
 			}
 			else {
-				pt.drawText(x - sx, py - m_fontHeight + descent, chWidth * 2, m_fontHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
+				pt.drawText(x - sx, py + descent - m_lineHeight, chWidth * 2, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
 				x += chWidth * 2;
 				wd += chWidth * 2;
 			}
@@ -1303,15 +1303,15 @@ void EditView::drawCursor(QPainter& pt)
 	int vln = m_textCursor->viewLine();
 	int offset;
 	int dln = viewLineToDocLine(vln, offset);
-	int py = (vln - m_scrollY0) * lineHeight() + DRAW_Y_OFFSET*2;
+	int py = (vln - m_scrollY0) * lineHeight() + m_baseLineDY + m_fontDescent - m_fontHeight;
 	QRect rct = rect();
 	if( py < 0 || py >= rct.height() )
 		return;		//	画面外の場合
 	int hv = m_scrollX0 * m_fontWidth;
 	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth;
 	if( !m_preeditString.isEmpty() ) px += m_preeditWidth;
-	int ht = QFontMetrics(m_font).ascent();
-	pt.fillRect(QRect(px - hv, py, CURSOR_WD, ht),
+	//int ht = QFontMetrics(m_font).ascent();
+	pt.fillRect(QRect(px - hv, py, CURSOR_WD, m_fontHeight),
 						typeSettings()->color(TypeSettings::CURSOR));
 }
 int EditView::textWidth(const QString &text) const
