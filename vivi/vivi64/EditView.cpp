@@ -212,9 +212,12 @@ void EditView::updateFont()
 					QFont::Bold);
 	m_fontBold.setKerning(false);
 	//
-	m_fontWidth = QFontMetrics(m_font).width('8');
+	QFontMetrics fm(m_font);
+	m_fontWidth = fm.width('8');
+	m_fontDescent = fm.descent();
 	m_fontHeight = QFontInfo(m_font).pixelSize();
 	m_lineHeight = (int)(m_fontHeight * 1.2);
+	m_baseLineDY = (m_lineHeight - m_fontHeight) / 2 + m_fontHeight - m_fontDescent;
 	//
 	updateLineNumberInfo();
 }
@@ -795,6 +798,14 @@ void EditView::inputMethodEvent(QInputMethodEvent * event)
 }
 void EditView::paintEvent(QPaintEvent *event)
 {
+	
+#if	0	//def	_DEBUG
+	qDebug() << "m_lineHeight = " << m_lineHeight;
+	qDebug() << "m_fontHeight = " << m_fontHeight;
+	QFontMetrics fm(m_font);
+	const auto descent = fm.descent();
+	qDebug() << "descent = " << descent;
+#endif
 	//qDebug() << "lineCount = " << buffer()->lineCount();
 	QPainter pt(this);
 	//QPainter pt2(&m_textAreaPixmap);
@@ -875,7 +886,7 @@ void EditView::drawLineNumberArea(QPainter& pt)
 		//
 		QString number = QString::number(ln);
 		int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
-		pt.drawText(px, py+m_fontHeight, number);
+		pt.drawText(px, py+m_baseLineDY, number);
 	}
 }
 void EditView::drawMatchedBG(QPainter&pt)
@@ -964,7 +975,7 @@ void EditView::drawTextArea(QPainter& pt)
 		px = m_lineNumAreaWidth;
 		auto startIX = buffer()->lineStartPosition(ln);
 		auto lnsz = buffer()->lineSize(ln);
-		drawLineText(pt, px, py+m_fontHeight, ln, startIX, lnsz, startIX+lnsz, inBlockComment, inLineComment, quotedText);
+		drawLineText(pt, px, py+m_baseLineDY, ln, startIX, lnsz, startIX+lnsz, inBlockComment, inLineComment, quotedText);
 		if( inBlockComment )
 			document()->setLineFlag(ln+1, Buffer::LINEFLAG_IN_BLOCK_COMMENT);
 		else
@@ -973,7 +984,7 @@ void EditView::drawTextArea(QPainter& pt)
 			if( !m_preeditString.isEmpty() && ln == m_textCursor->viewLine() )
 				px += m_preeditWidth;
 			pt.setPen(typeSettings()->color(TypeSettings::EOF_MARK));
-			pt.drawText(px, py+m_fontHeight, "[EOF]");
+			pt.drawText(px, py+m_baseLineDY, "[EOF]");
 		}
 	}
 	if( buffer()->isBlankEOFLine() ) {
@@ -981,7 +992,7 @@ void EditView::drawTextArea(QPainter& pt)
 		auto px = m_lineNumAreaWidth;
 		if( m_textCursor->viewLine() == EOFLine() && !m_preeditString.isEmpty() )
 			px += m_preeditWidth;
-		pt.drawText(px, py+m_fontHeight, "[EOF]");
+		pt.drawText(px, py+m_baseLineDY, "[EOF]");
 	}
 }
 //	１行表示
@@ -989,7 +1000,7 @@ void EditView::drawTextArea(QPainter& pt)
 //			
 void EditView::drawLineText(QPainter &pt,
 							int &px,
-							int py,			//	ベースライン位置
+							int py,			//	ベースライン位置（行Top + m_fontHeight）
 							int ln,			//	論理行番号, 0 org
 							pos_t ls,			//	表示行先頭位置
 							int vlnsz,		//	表示行サイズ
@@ -1168,7 +1179,7 @@ int EditView::drawTokenText(QPainter& pt,
 				wd += chWidth;
 			}
 			else {
-				pt.drawText(x - sx, py - m_lineHeight + descent, chWidth * 2, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
+				pt.drawText(x - sx, py - m_fontHeight + descent, chWidth * 2, m_fontHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
 				x += chWidth * 2;
 				wd += chWidth * 2;
 			}
@@ -1249,14 +1260,14 @@ void EditView::drawPreeditString(QPainter&pt)
 	int vln = m_textCursor->viewLine();
 	int offset;
 	int dln = viewLineToDocLine(vln, offset);
-	int py = (vln - m_scrollY0) * lineHeight() + DRAW_Y_OFFSET;		//	行上部位置
+	int py = (vln - m_scrollY0) * lineHeight() /*+ DRAW_Y_OFFSET*/;		//	行上部位置
 	QRect rct = rect();
 	if( py < 0 || py >= rct.height() )
 		return;		//	画面外の場合
 	int hv = 0;		//horizontalScrollBar()->value();
 	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth;
 	int ht = fm.ascent();
-	const auto descent = fm.descent();
+	//const auto descent = fm.descent();
 	m_preeditWidth = fm.width(m_preeditString);
 	//	背景描画
 	QRect r(px, py, m_preeditWidth, m_lineHeight);
@@ -1265,15 +1276,15 @@ void EditView::drawPreeditString(QPainter&pt)
 	pt.drawRect(r);
 	//	変換中テキスト描画
 	pt.setPen(typeSettings()->color(TypeSettings::TEXT));
-	pt.drawText(px, py+m_fontHeight-descent, m_preeditString);
+	pt.drawText(px, py+m_baseLineDY /*-m_descent*/, m_preeditString);
 }
 //	行カーソル表示
 void EditView::drawLineCursor(QPainter &pt)
 {
 	if( !typeSettings()->boolValue(TypeSettings::LINE_CURSOR) ) return;
 	int vln = m_textCursor->viewLine();
-	int py = (vln - m_scrollY0) * lineHeight() + DRAW_Y_OFFSET*2;
-	py += fontHeight();
+	int py = (vln - m_scrollY0) * lineHeight() + m_baseLineDY + m_fontDescent /*+ DRAW_Y_OFFSET*2*/;
+	//py += fontHeight();
 	QRect rct = rect();
 	if( py >= 0 && py < rct.height() ) {
 		//QPixmap wholeMap = document()->wholeMap();
@@ -1638,6 +1649,14 @@ void EditView::cut(bool append)
 }
 int EditView::copy(bool bCut, bool append)
 {
+#if	0
+	qDebug() << "m_lineHeight = " << m_lineHeight;
+	qDebug() << "m_fontHeight = " << m_fontHeight;
+	QFontMetrics fm(m_font);
+	const auto descent = fm.descent();
+	qDebug() << "descent = " << descent;
+#endif
+	//
 	if( !m_textCursor->hasSelection() ) return 0;
 	auto first = m_textCursor->selectionFirst();
 	auto last = m_textCursor->selectionLast();

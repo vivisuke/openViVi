@@ -121,6 +121,7 @@
     <QtMoc Include="FindLineEdit.h" />
     <ClInclude Include="CTabBar.h" />
     <ClInclude Include="CTabWidget.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="settingsMgr.h" />
     <QtMoc Include="TypeStgDlg.h" />
     <ClInclude Include="TextCursor.h" />
@@ -141,6 +142,12 @@
     <ClInclude Include="globalSettings.h" />
     <ClInclude Include="typeSettings.h" />
     <ClInclude Include="version.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="vivi64.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

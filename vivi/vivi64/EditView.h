@@ -179,6 +179,8 @@ private:
 	int		m_scrollY0;
 	int		m_fontWidth;
 	int		m_fontHeight;
+	int		m_fontDescent;		//	ベースライン下ピクセル数
+	int		m_baseLineDY;		//	行上部からベースラインまでのピクセル数
 	int		m_lineHeight;		//	行高（in Pixel）
 	int		m_lineNumDigits;	//	log EOF行番号
 	int		m_lineNumWidth;		//	行番号表示幅
