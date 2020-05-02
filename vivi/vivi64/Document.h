@@ -45,6 +45,7 @@ public:
 	int		lineCount() const;
 	int		EOFLine() const;
 	uint	lineFlags(int ln) const;
+	int		mmSeqNumber() const { return m_mmSeqNumber; }
 	QString	fullPathName() const { return m_fullPathName; }
 	QString	title() const { return m_title; }
 	QString	typeName() const;

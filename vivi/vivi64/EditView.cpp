@@ -798,7 +798,9 @@ void EditView::inputMethodEvent(QInputMethodEvent * event)
 }
 void EditView::paintEvent(QPaintEvent *event)
 {
-	
+	QFontMetrics fm(m_font);
+	if( m_fontHeight != QFontInfo(m_font).pixelSize() )
+		updateFont();
 #if	0	//def	_DEBUG
 	qDebug() << "m_lineHeight = " << m_lineHeight;
 	qDebug() << "m_fontHeight = " << m_fontHeight;
@@ -1189,6 +1191,10 @@ int EditView::drawTokenText(QPainter& pt,
 }
 void EditView::drawMinMap(QPainter& pt)
 {
+	//	全体マップ QPixmap 作成後に編集されている場合
+	if( buffer()->seqNumber() > document()->mmSeqNumber() )
+		document()->buildMinMap();
+	//
 	QPixmap& minMap = document()->minMap();
 	auto rct = rect();
 	int nLines = rct.height() / m_lineHeight;
