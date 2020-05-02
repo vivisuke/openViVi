@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include <QPlainTextEdit>
+#include <QTreeWidget>
 #include <QCheckBox>
 #include <QLabel>
 #include "ui_MainWindow.h"
@@ -145,7 +146,8 @@ private:
 	//
 	SSSearch		*m_sssrc;
 	SSSearch		*m_sssrc2;
-	QDockWidget	*m_outlineDock;
+	QDockWidget		*m_outlineDock;
+	QTreeWidget		*m_treeWidget;
 	
 	QLabel		*m_lineOffsetLabel;
 	QLabel		*m_curCharCode;			//	カーソル位置文字コード

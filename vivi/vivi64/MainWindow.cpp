@@ -134,7 +134,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//
 	m_outlineDock = new QDockWidget(tr("Outline"));
 	m_outlineDock->setObjectName("Outline");
-	m_outlineDock->setWidget(new QPlainTextEdit());
+	m_outlineDock->setWidget(m_treeWidget = new QTreeWidget());
 	m_outlineDock->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::LeftDockWidgetArea, m_outlineDock);
 	//	デザイナでタブの消し方がわからないので、ここで消しておく
