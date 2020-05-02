@@ -52,6 +52,7 @@ protected:
 	void	updateTabText(EditView *);
 	void	updateFindStringCB();
 	void	setIcon(const QString &fileName, QAction *action);
+	void	setupIcons();
 	void	setupStatusBar();
 	//EditView	*createView(Document *doc = 0, TypeSettings* = 0);
 	//EditView	*createView(TypeSettings* = nullptr);

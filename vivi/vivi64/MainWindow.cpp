@@ -100,10 +100,11 @@ MainWindow::MainWindow(QWidget *parent)
 	//qDebug() << "sizeof(ptr) = " << sizeof(ptr) << "\n";
 	//setWindowTitle(QString("ViVi64 ver %1").arg(VERSION_STR));
 	setWindowIcon(QIcon(":/MainWindow/Resources/pencil_orange.png"));
+	setupIcons();				//	各タイプアイコン設定
 	createActions();
 	createMenus();
 	//connectMenuActions();
-	setAcceptDrops(true);		//ドロップを有効化
+	setAcceptDrops(true);		//	ドロップを有効化
 	//
 	ui.mainToolBar->setAttribute( Qt::WA_AlwaysShowToolTips );
 	ui.mainToolBar->insertWidget(ui.action_SearchForward, m_findStringCB = new QComboBox());
@@ -271,8 +272,43 @@ void MainWindow::updateTabText(EditView *view)
 }
 void MainWindow::setIcon(const QString &fileName, QAction *action)
 {
+    QString typeName = g_settingsMgr.typeNameForExt(getExtension(fileName));
+    if( typeName == "CPP" )
+    	action->setIcon(*m_iconCPP);
+    else if( typeName == "CSS" )
+    	action->setIcon(*m_iconCSS);
+    else if( typeName == "C#" )
+    	action->setIcon(*m_iconCS);
+    else if( typeName == "F#" )
+    	action->setIcon(*m_iconFS);
+    else if( typeName == "HLSL" )
+    	action->setIcon(*m_iconHLSL);
+    else if( typeName == "HTML" )
+    	action->setIcon(*m_iconHTML);
+    else if( typeName == "JAVA" )
+    	action->setIcon(*m_iconJAVA);
+    else if( typeName == "JS" )
+    	action->setIcon(*m_iconJS);
+    else if( typeName == "PASCAL" )
+    	action->setIcon(*m_iconPASCAL);
+    else if( typeName == "PERL" )
+    	action->setIcon(*m_iconPERL);
+    else if( typeName == "PHP" )
+    	action->setIcon(*m_iconPHP);
+    else if( typeName == "PYTHON" )
+    	action->setIcon(*m_iconPYTHON);
+    else if( typeName == "RUBY" )
+    	action->setIcon(*m_iconRUBY);
+    else if( typeName == "SQL" )
+    	action->setIcon(*m_iconSQL);
+    else if( typeName == "MARKDN" )
+    	action->setIcon(*m_iconMARKDN);
+    else if( typeName == "LOG" )
+    	action->setIcon(*m_iconLOG);
+    else if( typeName == "TXT" )
+    	action->setIcon(*m_iconTXT);
 }
-void MainWindow::setupStatusBar()
+void MainWindow::setupIcons()
 {
 	m_iconCPP = new QIcon(":/MainWindow/Resources/CPP.png");
 	m_iconCS = new QIcon(":/MainWindow/Resources/CS.png");
@@ -292,6 +328,9 @@ void MainWindow::setupStatusBar()
 	m_iconSQL = new QIcon(":/MainWindow/Resources/SQL.png");
 	m_iconSPR = new QIcon(":/MainWindow/Resources/SPR.png");
 	m_iconTXT = new QIcon(":/MainWindow/Resources/TXT.png");
+}
+void MainWindow::setupStatusBar()
+{
 	//
 	statusBar()->addPermanentWidget(m_curCharCode = new QLabel());			//	カーソル位置文字コード
 	statusBar()->addPermanentWidget(m_lineOffsetLabel = new QLabel());		//	カーソル位置

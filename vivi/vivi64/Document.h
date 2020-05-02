@@ -36,6 +36,7 @@ public:
 	wchar_t	charAt(pos_t pos) const;
 	bool	bom() const { return m_bBom; }
 	uchar	charEncoding() const { return m_charEncoding; }
+	byte	newLineCode() const { return m_newLineCode; }
 	QByteArray	codecName() const;
 	bool	isEmpty() const;
 	bool	isModified() const;		// { return m_modified; }

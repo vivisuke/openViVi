@@ -84,6 +84,8 @@ public:
 	void	onCursorPosChanged();
 	void	doInsertText(const QString &, bool, bool, bool);
 	void	insertTextRaw(pos_t pos, const QString &);
+	QString	indentText(int ln);
+	QString	autoIndentText(/*bool,*/ bool nxline = true);
 	void	paste(const QString &);
 	void	boxPaste(const QString &);
 	void	openUndoBlock();

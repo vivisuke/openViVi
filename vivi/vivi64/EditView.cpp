@@ -10,6 +10,7 @@
 #include "globalSettings.h"
 #include "TextCursor.h"
 #include "viewLineMgr.h"
+#include "charEncoding.h"
 #include "../buffer/Buffer.h"
 #include "../buffer/bufferUtl.h"
 #include "../buffer/UTF16.h"
@@ -28,10 +29,47 @@
 #define		CURSOR_WD		2
 
 //----------------------------------------------------------------------
+inline bool isSpaceChar(wchar_t ch)
+{
+	return ch == ' ' || ch == '\t';
+}
+inline bool isNewLineChar(wchar_t ch)
+{
+	return ch == '\r' || ch == '\n';
+}
+inline bool isSpaceOrNewLine(wchar_t ch)
+{
+	return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n';
+}
+inline bool isLetterOrNumberOrUnderbar(const QChar &ch)
+{
+	return ch.isLetterOrNumber() || ch == QChar('_');
+}
+inline bool isLetterOrUnderbar(const QChar &ch)
+{
+	return ch.isLetter() || ch == QChar('_');
+}
+inline bool isDigit(wchar_t ch)
+{
+	return ch < 0x100 && isdigit(ch);
+}
+inline bool isAlpha(wchar_t ch)
+{
+	return ch < 0x100 && isalpha(ch);
+}
+QString autoIndentText(TypeSettings *typeSettings,
+							const Buffer &buffer,
+							pos_t pos0,				//	カーソル位置
+							cwchar *newLineText,		//	改行文字列
+							bool nxln);				//	次に行を挿入
+							//bool bCPP);
+							//bool &delPrevSpace);	//	カーソル直前の空白類をすべて削除
+#if	0
 inline bool isNewLine(wchar_t ch)
 {
 	return ch == '\r' || ch == '\n';
 }
+#endif
 #if	0
 QString getText(const Buffer &buffer, int pos, int sz)
 {
@@ -159,6 +197,15 @@ QString EditView::text(pos_t pos, ssize_t sz) const
 QString EditView::selectedText() const
 {
 	return m_textCursor->selectedText();
+}
+QString EditView::newLineText() const
+{
+	switch( document()->newLineCode() ) {
+	case CharEncoding::CR:	return QString("\r");
+	case CharEncoding::LF:		return QString("\n");
+	default:
+	case CharEncoding::CRLF:	return QString("\r\n");
+	}
 }
 int EditView::viewLineOffsetToPx(int vln, int offset) const
 {
@@ -1520,6 +1567,9 @@ bool  EditView::getSelectedLineRange(int &ln1, int &ln2) const
 }
 void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 {
+	if( text.isEmpty() ) return;
+	bool ai = false;
+	int ln = positionToLine(m_textCursor->position());
 	if( text == "\t" ) {
 		if( m_textCursor->hasSelection() ) {
 			int ln1, ln2;
@@ -1530,8 +1580,30 @@ void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 				revIndent(ln1, ln2);
 			return;
 		}
+	} else if( text[0] == '\n' || text[0] == '\r' ) {
+		//	auto-indent テキスト取得
+		ai = true;
+		text = autoIndentText(/*isCPPType*/);
+		if( !m_textCursor->hasSelection() && lineStartPosition(ln) != m_textCursor->position() ) {
+			//	カーソル以降の空白類削除
+			while( isSpaceChar(charAt(m_textCursor->position())) )
+				m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);
+		}
 	}
 			m_textCursor->insertText(text);		//	文字挿入
+}
+QString EditView::indentText(int ln)
+{
+	return "";
+}
+QString EditView::autoIndentText(/*bool,*/ bool nxline)
+{
+	QString text = ::autoIndentText(typeSettings(),
+							*buffer(),
+							m_textCursor->position(),
+							(cwchar *)newLineText().data(),
+							nxline /*, bCPP*/);
+	return text;
 }
 void EditView::indent(int ln1, int ln2, bool vi)
 {

@@ -87,6 +87,8 @@
     <ClCompile Include="..\buffer\sssearch.cpp" />
     <ClCompile Include="..\buffer\undoMgr.cpp" />
     <ClCompile Include="..\buffer\UTF16.cpp" />
+    <ClCompile Include="assocParen.cpp" />
+    <ClCompile Include="autoIndent.cpp" />
     <ClCompile Include="charEncoding.cpp" />
     <ClCompile Include="CTabBar.cpp" />
     <ClCompile Include="CTabWidget.cpp" />
@@ -99,6 +101,7 @@
     <ClCompile Include="NamedColorDlg.cpp" />
     <ClCompile Include="settingsMgr.cpp" />
     <ClCompile Include="TextCursor.cpp" />
+    <ClCompile Include="tokenizer.cpp" />
     <ClCompile Include="typeSettings.cpp" />
     <ClCompile Include="TypeStgDlg.cpp" />
     <ClCompile Include="viewLineMgr.cpp" />
@@ -116,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="NamedColorDlg.h" />
+    <ClInclude Include="assocParen.h" />
     <ClInclude Include="charEncoding.h" />
     <QtMoc Include="Document.h" />
     <QtMoc Include="FindLineEdit.h" />
@@ -126,6 +130,7 @@
     <QtMoc Include="TypeStgDlg.h" />
     <ClInclude Include="TextCursor.h" />
     <QtMoc Include="viewLineMgr.h" />
+    <ClInclude Include="tokenizer.h" />
     <ClInclude Include="ViewTokenizer.h" />
     <QtMoc Include="EditView.h" />
     <QtMoc Include="..\buffer\Buffer.h" />
