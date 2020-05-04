@@ -124,6 +124,8 @@ public slots:
     void	onEscFindLineEdit();
     void	setFindString(const QString &txt);
     void	textSearched(const QString&txt, bool word);
+	void	colorTheme();
+	void	aboutToShowColorTheme();
 	
 private:
 	Ui::MainWindowClass ui;
@@ -182,4 +184,5 @@ private:
     QAction *m_recentFileSystemActs[MaxRecentDirs];
     enum { MaxClipboardHist = 10 + 26 };
     QAction *m_clipboardHistActs[MaxClipboardHist];
+    std::vector<QAction *>	m_colorThemeActions;
 };

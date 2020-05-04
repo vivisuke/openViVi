@@ -591,7 +591,7 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 			showMessage(tr("%1 lines selected.").arg(n));
 		} else {
 			int hv = m_scrollX0 * m_fontWidth;
-			pnt.setX(pnt.x() + hv - m_lineNumAreaWidth);
+			pnt.setX(qMax(0, pnt.x() + hv - m_lineNumAreaWidth));
 			//qDebug() << pnt;
 			int vln, offset;
 			pointToLineOffset(pnt, vln, offset);

@@ -1077,6 +1077,30 @@ void MainWindow::textSearched(const QString&txt, bool word)
 {
 	ui.action_WordSearch->setChecked(word);
 }
+void MainWindow::colorTheme()
+{
+}
+void MainWindow::aboutToShowColorTheme()
+{
+#if 0
+	for (int i = 0; i < (int)m_colorThemeActions.size(); ++i) {
+		delete m_colorThemeActions[i];
+	}
+	m_colorThemeActions.clear();
+	ui.menu_ColorTheme->clear();
+#ifdef		_DEBUG
+	QDir dir("colors");
+#else
+	QDir dir(qApp->applicationDirPath() + "/colors");
+#endif
+	QStringList lst = dir.entryList(QStringList("*.stg"));
+	foreach(const QString fileName, lst) {
+		QAction *act = ui.menu_ColorTheme->addAction(fileName.left(fileName.size() - 4));
+		connect(act, SIGNAL(triggered()), this, SLOT(colorTheme()));
+		m_colorThemeActions.push_back(act);
+	}
+#endif
+}
 void MainWindow::setFindString(const QString &txt)
 {
     QSettings settings;
