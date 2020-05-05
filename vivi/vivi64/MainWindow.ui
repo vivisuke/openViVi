@@ -105,7 +105,14 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
+    <widget class="QMenu" name="menu_ColorTheme">
+     <property name="title">
+      <string>&amp;ColorTheme</string>
+     </property>
+     <addaction name="separator"/>
+    </widget>
     <addaction name="action_LineNumber"/>
+    <addaction name="menu_ColorTheme"/>
    </widget>
    <widget class="QMenu" name="menu_Window">
     <property name="title">

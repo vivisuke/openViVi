@@ -103,6 +103,7 @@ MainWindow::MainWindow(QWidget *parent)
 	setupIcons();				//	各タイプアイコン設定
 	createActions();
 	createMenus();
+	connect(ui.menu_ColorTheme, SIGNAL(aboutToShow()), this, SLOT(aboutToShowColorTheme()));
 	//connectMenuActions();
 	setAcceptDrops(true);		//	ドロップを有効化
 	//
@@ -1077,21 +1078,64 @@ void MainWindow::textSearched(const QString&txt, bool word)
 {
 	ui.action_WordSearch->setChecked(word);
 }
+void MainWindow::typesettingsChanged(EditView *view)
+{
+	view->typeSettings()->writeSettings();
+	view->typeSettings()->loadKeyWords();
+#if 0	//##
+	const bool b = view->typeSettings()->boolValue(TypeSettings::VIEW_LINENUM);
+	ui.action_LineNumber->setChecked(b);
+	onViewLineNumberChanged(view->typeName(), b);
+	const bool bLB = view->typeSettings()->boolValue(TypeSettings::LINE_BREAK_WIN_WIDTH);
+	ui.action_LineBreakWinWidth->setChecked(bLB);
+	for(int i = 0; i < ui.tabWidget->count(); ++i) {
+		//EditView *view = (EditView *)ui.tabWidget->widget(i);
+		EditView *ptr = nthWidget(i);
+		if( isEditView(ptr) && ptr->typeName() == view->typeName() ) {
+			ptr->updateFont();
+			view->document()->buildWholeMap();
+		}
+	}
+#endif
+	view->update();
+}
 void MainWindow::colorTheme()
 {
+    QAction *action = qobject_cast<QAction *>(sender());
+	EditView *view = currentWidget();
+	if( !isEditView(view) ) return;
+	TypeSettings *typeSettings = view->typeSettings();
+#ifdef		_DEBUG
+	QDir dir(qApp->applicationDirPath());
+	dir.cdUp();
+	dir.cdUp();
+	dir.cd("colors");
+	QString fileName = dir.absolutePath() + "/";
+#else
+	QString fileName(qApp->applicationDirPath() + "/colors/");
+#endif
+	fileName += action->text() + ".stg";
+	if( !typeSettings->load(fileName, true) ) 		//	true for load only Colors
+		return;
+	//view->update();
+	typesettingsChanged(view);
 }
 void MainWindow::aboutToShowColorTheme()
 {
-#if 0
+#if 1
 	for (int i = 0; i < (int)m_colorThemeActions.size(); ++i) {
 		delete m_colorThemeActions[i];
 	}
 	m_colorThemeActions.clear();
 	ui.menu_ColorTheme->clear();
 #ifdef		_DEBUG
-	QDir dir("colors");
+	QDir dir(qApp->applicationDirPath());
+	dir.cdUp();
+	dir.cdUp();
+	dir.cd("colors");
+	//QDir dir("colors");
 #else
-	QDir dir(qApp->applicationDirPath() + "/colors");
+	QDir dir(qApp->applicationDirPath() + "/colors/");
 #endif
 	QStringList lst = dir.entryList(QStringList("*.stg"));
 	foreach(const QString fileName, lst) {

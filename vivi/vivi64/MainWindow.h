@@ -72,6 +72,7 @@ protected:
     bool	maybeSave();
     bool	maybeSave(EditView *);
 	void	reload(cchar *codecName = 0);
+	void	typesettingsChanged(EditView *view);
     
 protected:
 	void	dragEnterEvent(QDragEnterEvent *event);
