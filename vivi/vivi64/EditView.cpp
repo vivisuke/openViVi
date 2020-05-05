@@ -752,6 +752,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_Escape:
 		//onEscape(ctrl, shift, alt);
 		m_textCursor->clearSelection();
+		m_fallingChars.clear();
 		break;
 	case Qt::Key_Return:
 	case Qt::Key_Enter:
