@@ -412,6 +412,7 @@ QString ViewTokenizer::nextToken()
 		}
 	}
 #endif
+	bool bANSI = qch.unicode() < 0x100;
 	while( m_ix < m_lastBuffer ) {
 		qch = m_buffer->charAt(m_ix);
 		if( qch.unicode() < 0x20
@@ -432,6 +433,8 @@ QString ViewTokenizer::nextToken()
 		{
 			break;
 		}
+		if( bANSI && qch.unicode() >= 0x100 || !bANSI && qch.unicode() < 0x100)
+			break;
 		txt += qch;
 		++m_ix;
 		if( m_inHTMLTag && qch == '>' ) {
