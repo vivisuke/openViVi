@@ -41,5 +41,9 @@
         <file>Resources/undo_lightgray.png</file>
         <file>Resources/pencil_orange.png</file>
         <file>Resources/opt_word.png</file>
+        <file>Resources/keisen.png</file>
+        <file>Resources/opt_ic.png</file>
+        <file>Resources/opt_regexp.png</file>
+        <file>Resources/boxselect.png</file>
     </qresource>
 </RCC>

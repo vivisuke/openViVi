@@ -108,7 +108,9 @@ MainWindow::MainWindow(QWidget *parent)
 	setAcceptDrops(true);		//	ドロップを有効化
 	//
 	ui.mainToolBar->setAttribute( Qt::WA_AlwaysShowToolTips );
-	ui.mainToolBar->insertWidget(ui.action_SearchForward, m_findStringCB = new QComboBox());
+	ui.searchToolBar->setAttribute( Qt::WA_AlwaysShowToolTips );
+	ui.otherToolBar->setAttribute( Qt::WA_AlwaysShowToolTips );
+	ui.searchToolBar->insertWidget(ui.action_SearchForward, m_findStringCB = new QComboBox());
 	m_findLineEdit = new FindLineEdit;
 	m_findLineEdit->setPlaceholderText(tr("search text"));
 	QFont fnt = m_findLineEdit->font();
@@ -130,8 +132,10 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(m_findLineEdit, SIGNAL(escPressed()), this, SLOT(onEscFindLineEdit()));
 	connect(m_findLineEdit, SIGNAL(focusIn()), this, SLOT(onFocusInFindLineEdit()));
 #endif
-	ui.mainToolBar->setObjectName("MainToolBar");
+	//ui.mainToolBar->setObjectName("MainToolBar");
 	ui.mainToolBar->setWindowTitle(tr("MainToolBar"));
+	ui.searchToolBar->setWindowTitle(tr("SearchToolBar"));
+	ui.otherToolBar->setWindowTitle(tr("OtherToolBar"));
 	//
 	m_outlineDock = new QDockWidget(tr("Outline"));
 	m_outlineDock->setObjectName("Outline");

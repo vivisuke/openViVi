@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
+    <width>715</width>
     <height>400</height>
    </rect>
   </property>
@@ -48,7 +48,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>715</width>
      <height>22</height>
     </rect>
    </property>
@@ -83,6 +83,7 @@
     <addaction name="action_Save"/>
     <addaction name="action_SaveAs"/>
     <addaction name="menu_Reload"/>
+    <addaction name="action_cpp_h"/>
     <addaction name="separator"/>
     <addaction name="menu_RecentFiles"/>
     <addaction name="menu_FavoriteFiles"/>
@@ -118,10 +119,13 @@
     <property name="title">
      <string>&amp;Window</string>
     </property>
+    <addaction name="action_NextTab"/>
+    <addaction name="action_PrevTab"/>
+    <addaction name="action_FormerFile"/>
    </widget>
    <widget class="QMenu" name="menu_Settings">
     <property name="title">
-     <string>Se&amp;ttings</string>
+     <string>Settin&amp;gs</string>
     </property>
     <addaction name="action_TypeSettings"/>
     <addaction name="action_GlobalSettings"/>
@@ -140,13 +144,23 @@
     <addaction name="action_SearchCurWord"/>
     <addaction name="action_SearchForward"/>
     <addaction name="action_SearchBackward"/>
+    <addaction name="action_IgnoreCase"/>
     <addaction name="action_WordSearch"/>
+    <addaction name="action_RegExp"/>
+   </widget>
+   <widget class="QMenu" name="menu_Tool">
+    <property name="title">
+     <string>&amp;Tool</string>
+    </property>
+    <addaction name="action_BoxSelect"/>
+    <addaction name="action_KeisenMode"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
    <addaction name="menu_Search"/>
    <addaction name="menu_View"/>
    <addaction name="menu_Window"/>
+   <addaction name="menu_Tool"/>
    <addaction name="menu_Settings"/>
    <addaction name="menu_Other"/>
   </widget>
@@ -167,11 +181,29 @@
    <addaction name="action_Cut"/>
    <addaction name="action_Copy"/>
    <addaction name="action_Paste"/>
-   <addaction name="separator"/>
+  </widget>
+  <widget class="QToolBar" name="searchToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_IgnoreCase"/>
    <addaction name="action_WordSearch"/>
+   <addaction name="action_RegExp"/>
    <addaction name="action_SearchForward"/>
    <addaction name="action_SearchBackward"/>
-   <addaction name="separator"/>
+  </widget>
+  <widget class="QToolBar" name="otherToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_BoxSelect"/>
+   <addaction name="action_KeisenMode"/>
    <addaction name="action_TypeSettings"/>
    <addaction name="action_GlobalSettings"/>
    <addaction name="action_About_ViVi"/>
@@ -432,6 +464,86 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="action_NextTab">
+   <property name="text">
+    <string>&amp;NextTab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="action_PrevTab">
+   <property name="text">
+    <string>&amp;PrevTab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Tab</string>
+   </property>
+  </action>
+  <action name="action_KeisenMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/keisen.png</normaloff>:/MainWindow/Resources/keisen.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;KeisenMode</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F5</string>
+   </property>
+  </action>
+  <action name="action_cpp_h">
+   <property name="text">
+    <string>cpp/.h fileOpen(&amp;\)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+\</string>
+   </property>
+  </action>
+  <action name="action_FormerFile">
+   <property name="text">
+    <string>&amp;FormerFile</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+^</string>
+   </property>
+  </action>
+  <action name="action_IgnoreCase">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/opt_ic.png</normaloff>:/MainWindow/Resources/opt_ic.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;IgnoreCase</string>
+   </property>
+  </action>
+  <action name="action_RegExp">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/opt_regexp.png</normaloff>:/MainWindow/Resources/opt_regexp.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reg&amp;Exp</string>
+   </property>
+  </action>
+  <action name="action_BoxSelect">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/MainWindow/Resources/boxselect.png</normaloff>:/MainWindow/Resources/boxselect.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;BoxSelect</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
  </widget>
