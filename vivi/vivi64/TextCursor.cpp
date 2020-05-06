@@ -196,6 +196,10 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 		vln = m_view->viewLineMgr()->positionToViewLine(pos);
 		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
 		break;
+	case BEG_LINE:
+		pos = viewLineStartPosition(vln);
+		m_px = m_view->viewLineOffsetToPx(vln, 0);
+		break;
 	case HOME_LINE:
 		pos = viewLineStartPosition(vln);
 		while( pos < m_view->bufferSize() && isSpace(m_view->charAt(pos)) )

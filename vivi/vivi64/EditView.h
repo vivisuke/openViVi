@@ -36,6 +36,7 @@ public:
 	EditView(MainWindow*, Document *doc /*, TypeSettings* = nullptr*/);
 	~EditView();
 public:
+	bool	isBoxSelectionMode() const { return false; }
 	wchar_t	charAt(pos_t pos) const;
 	size_t	bufferSize() const;
 	pos_t	cursorPosition() const;

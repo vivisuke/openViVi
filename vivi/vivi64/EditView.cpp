@@ -1657,15 +1657,62 @@ void EditView::insertTextRaw(pos_t pos, const QString &text)
 }
 void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
 {
+#if	1
+	if( isBoxSelectionMode() ) {
+	} else if( !m_textCursor->hasSelection() ) {
+		if( ctrl ) {
+			m_textCursor->movePosition(TextCursor::PREV_WORD, TextCursor::KEEP_ANCHOR);
+		} else if( shift ) {
+			m_textCursor->movePosition(TextCursor::BEG_LINE, TextCursor::KEEP_ANCHOR);
+		} else
+			m_textCursor->movePosition(TextCursor::LEFT, TextCursor::KEEP_ANCHOR);
+	}
+	if( !m_textCursor->hasSelection() ) return;
+	//##if( !isBoxSelectionMode() )
+		setupFallingChars();
+	//##if( !editForVar(QString()) )
+		m_textCursor->deleteChar(/*BS=*/true);
+#if	0	//##
+	if( m_autoCompletionDlg != 0 ) {
+		if( m_textCursor->position() <= m_autoCmplPos )
+			closeAutoCompletionDlg();
+		else {
+			QString ft = getText(*buffer(), m_autoCmplPos, m_textCursor->position() - m_autoCmplPos);
+			m_autoCompletionDlg->setFilterText(ft);
+		}
+	}
+#endif
+	emit textBackSpaced();
+#else
 	if( !m_textCursor->hasSelection() ) {
 			m_textCursor->movePosition(TextCursor::LEFT /*, TextCursor::KEEP_ANCHOR*/);
 	}
 	//if( !editForVar(QString()) )
 		m_textCursor->deleteChar(/*BS=*/true);
+#endif
 }
 void EditView::onDelete(bool ctrl, bool shift, bool alt)
 {
-	m_textCursor->deleteChar();
+	//##if( m_autoCompletionDlg != 0 )
+	//##	closeAutoCompletionDlg();
+	if( !m_textCursor->hasSelection() ) {
+		if( ctrl ) {
+			if( shift )
+				m_textCursor->movePosition(TextCursor::NEXT_CAP_WORD, TextCursor::KEEP_ANCHOR);
+			else
+				m_textCursor->movePosition(TextCursor::NEXT_WORD, TextCursor::KEEP_ANCHOR);
+		} else {
+			if( shift ) {
+				m_textCursor->movePosition(TextCursor::END_LINE, TextCursor::KEEP_ANCHOR);
+			} else
+				m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);
+		}
+	}
+	if( !m_textCursor->hasSelection() ) return;
+	setupFallingChars();
+	//##if( !editForVar(QString()) )
+		m_textCursor->deleteChar();
+	//##emit boxSelectionModeChanged(m_textCursor->isBoxSelectionMode());
 }
 void EditView::deleteText(pos_t pos, ssize_t sz, bool BS)
 {
