@@ -23,7 +23,7 @@ open source version of ViVi text editor, which supports standard text editor fea
     1. スクリプト（QScriptEngine 使用？）
     1. マルチカーソル？
     1. マークダウンプレビュー・WYSIWYG編集
-    1. HTNLビュー？
+    1. HTMLビュー？
     1. ファイルシステム（ドッキングペイン？）？
 - ViVi 7.1.xxx
   - バイナリモード
