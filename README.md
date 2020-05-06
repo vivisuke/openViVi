@@ -4,7 +4,7 @@ open source version of ViVi text editor, which supports standard text editor fea
 オープンソース版ViViテキストエディタ、
 標準的なテキストエディタの機能とviコマンドをサポートします。
 
-## スケジュール・進捗
+# ■ スケジュール・進捗
 - 2020年4月より本格的に開発開始 ~~予定~~
 - 現在（５月上旬）は作者がドキュメントを編集するために必要な機能実装・重要問題対処中
   - ５月中旬頃から基本viコマンド実装予定
@@ -32,18 +32,18 @@ open source version of ViVi text editor, which supports standard text editor fea
   - メニューカスタマイズ
   - 巨大ファイル（１GB超）対応？
 
-## 開発環境
+# ■ 開発環境
 - Windows 10, Visual Studio 2019, C++, ~~当面は32~~ 64bitモード only
 - GUI は Qt5（VS2019 VS tools） を使用   ~~？または今更 MFC ？~~
   - Qt であれば Mac, Linux でもビルド可能なはず
   
-## ビルド方法
+# ■ ビルド方法
 - Visual Studio 2019, Qt5.14(64ビットモード必須) をインストール
   - Qt download: https://www.qt.io/download-qt-installer
 - VS2019：拡張機能 > 拡張機能の管理 から Qt VS Tools をインストール
 - リポジトリの vivi/vivi.sln を VS2019 で開き、ビルド
 
-## 開発管理方針
+# ■ 開発管理方針
 ### プロジェクトへのご意見・ご要望
 本プロジェクトへのご意見・ご要望は、スポンサー様からのみ受け付けます。
 ただし、寄付金額に比例した回数制限 or 期限制限を設けます（詳細未定）。
@@ -57,7 +57,7 @@ open source version of ViVi text editor, which supports standard text editor fea
 ### 仕様かどうかの質問
 明らかに不適切な動作が仕様なのかどうかの質問は、作者が極めて不快になるので禁止します。
 
-## スポンサー
+# ■ スポンサー
 本プロジェクトは下記スポンサー様のご支援を受けています。ありがとうございます。
 - J.N 様 （2020年4月 ￥5,000)
 - YS INC 様 （2020年4月 ￥1,000)
