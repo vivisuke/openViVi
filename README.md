@@ -20,7 +20,7 @@ open source version of ViVi text editor, which supports standard text editor fea
     1. 基本以外の機能（対応括弧強調・移動、多段MDIタブ、置換ダイアログ、検索オプション、grep、BOX選択、D&D編集、クリップボード履歴、日付等入力、文字列変換、単語補完、禅コーディング、画面分割、折返し表示、折り畳み、上書きモード、終了時ファイル復帰、水平スクロールバー、ルーラー表示、マークダウン、印刷・印刷プレビュー、メニュー・ダイアログ等日本語化、キーボードマクロ、Des暗号化・復号化）
     1. 基本以外の vi コマンド
     1. 文書比較
-    1. スクリプト（QtScript 使用？）
+    1. スクリプト（QScriptEngine 使用？）
     1. マルチカーソル？
     1. マークダウンプレビュー・WYSIWYG編集
 - ViVi 7.1.xxx
