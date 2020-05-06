@@ -526,6 +526,9 @@
    </property>
   </action>
   <action name="action_RegExp">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="MainWindow.qrc">
      <normaloff>:/MainWindow/Resources/opt_regexp.png</normaloff>:/MainWindow/Resources/opt_regexp.png</iconset>
