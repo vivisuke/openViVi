@@ -1007,14 +1007,17 @@ void MainWindow::on_action_SelectAll_triggered()
 void MainWindow::on_action_IgnoreCase_triggered()
 {
 	g_globSettings.setBoolValue(GlobalSettings::IGNORE_CASE, ui.action_IgnoreCase->isChecked());
+	globSettings()->writeSettings();
 }
 void MainWindow::on_action_WordSearch_triggered()
 {
 	g_globSettings.setBoolValue(GlobalSettings::WHOLE_WORD_ONLY, ui.action_WordSearch->isChecked());
+	globSettings()->writeSettings();
 }
 void MainWindow::on_action_RegExp_triggered()
 {
 	g_globSettings.setBoolValue(GlobalSettings::REGEXP, ui.action_RegExp->isChecked());
+	globSettings()->writeSettings();
 }
 void MainWindow::on_action_SearchBackward_triggered()
 {
