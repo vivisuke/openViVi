@@ -538,6 +538,9 @@
    </property>
   </action>
   <action name="action_BoxSelect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="MainWindow.qrc">
      <normaloff>:/MainWindow/Resources/boxselect.png</normaloff>:/MainWindow/Resources/boxselect.png</iconset>

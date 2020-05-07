@@ -1195,6 +1195,16 @@ void MainWindow::onViewLineNumberChanged(const QString &typeName, bool b)
 			view->setLineNumberVisible(b);
 	}
 }
+void MainWindow::on_action_BoxSelect_triggered()
+{
+	if( ui.action_BoxSelect->isChecked() )
+		ui.action_KeisenMode->setChecked(false);
+}
+void MainWindow::on_action_KeisenMode_triggered()
+{
+	if( ui.action_KeisenMode->isChecked() )
+		ui.action_BoxSelect->setChecked(false);
+}
 void MainWindow::on_action_TypeSettings_triggered()
 {
 	EditView *view = currentWidget();
