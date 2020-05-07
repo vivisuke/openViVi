@@ -77,6 +77,7 @@ protected:
     bool	maybeSave(EditView *);
 	void	reload(cchar *codecName = 0);
 	void	typesettingsChanged(EditView *view);
+	void	updateSssrc();
     
 protected:
 	void	dragEnterEvent(QDragEnterEvent *event);

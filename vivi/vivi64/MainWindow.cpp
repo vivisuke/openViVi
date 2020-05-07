@@ -92,7 +92,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_searchAlgorithm(SSSearch::SAKUSAKU)
 	//, m_docNumber(0)
 {
-	g_globSettings.readSettings();
+	globSettings()->readSettings();
 	ui.setupUi(this);
 	m_sssrc = new SSSearch();
 	m_sssrc2 = new SSSearch();
@@ -1004,20 +1004,42 @@ void MainWindow::on_action_SelectAll_triggered()
 		view->selectAll();
 	}
 }
+void MainWindow::updateSssrc()
+{
+	QString pat = m_findStringCB->lineEdit()->text();
+	if( pat.isEmpty() ) return;
+	uint opt = 0;
+	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
+		opt |= SSSearch::IGNORE_CASE;
+	if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
+		opt |= SSSearch::WHOLE_WORD_ONLY;
+	if( globSettings()->boolValue(GlobalSettings::REGEXP) )
+		opt |= SSSearch::REGEXP;
+	m_sssrc->setup((wchar_t*)pat.data(), pat.size(), opt);
+}
 void MainWindow::on_action_IgnoreCase_triggered()
 {
-	g_globSettings.setBoolValue(GlobalSettings::IGNORE_CASE, ui.action_IgnoreCase->isChecked());
+	globSettings()->setBoolValue(GlobalSettings::IGNORE_CASE, ui.action_IgnoreCase->isChecked());
 	globSettings()->writeSettings();
+	updateSssrc();
+	EditView *view = currentWidget();
+	if( isEditView(view) ) view->update();
 }
 void MainWindow::on_action_WordSearch_triggered()
 {
-	g_globSettings.setBoolValue(GlobalSettings::WHOLE_WORD_ONLY, ui.action_WordSearch->isChecked());
+	globSettings()->setBoolValue(GlobalSettings::WHOLE_WORD_ONLY, ui.action_WordSearch->isChecked());
 	globSettings()->writeSettings();
+	updateSssrc();
+	EditView *view = currentWidget();
+	if( isEditView(view) ) view->update();
 }
 void MainWindow::on_action_RegExp_triggered()
 {
-	g_globSettings.setBoolValue(GlobalSettings::REGEXP, ui.action_RegExp->isChecked());
+	globSettings()->setBoolValue(GlobalSettings::REGEXP, ui.action_RegExp->isChecked());
 	globSettings()->writeSettings();
+	updateSssrc();
+	EditView *view = currentWidget();
+	if( isEditView(view) ) view->update();
 }
 void MainWindow::on_action_SearchBackward_triggered()
 {
@@ -1073,11 +1095,13 @@ void MainWindow::doFindString()
 		EditView *view = currentWidget();
 		if( isEditView(view) && !pat.isEmpty() ) {
 			uint opt = 0;
-			if( g_globSettings.boolValue(GlobalSettings::IGNORE_CASE) )
+			if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
 				opt |= SSSearch::IGNORE_CASE;
-			if( g_globSettings.boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
+			if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
 				opt |= SSSearch::WHOLE_WORD_ONLY;
-			if( !view->findForward(m_findString = pat, opt, g_globSettings.boolValue(GlobalSettings::LOOP_SEARCH)) )
+			if( globSettings()->boolValue(GlobalSettings::REGEXP) )
+				opt |= SSSearch::REGEXP;
+			if( !view->findForward(m_findString = pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH)) )
 				statusBar()->showMessage(tr("'%1' was not found.").arg(pat), 3000);
 			//else
 			setFindString(pat);
@@ -1193,7 +1217,7 @@ void MainWindow::updateFindStringCB()
 }
 byte MainWindow::searchAlgorithm() const	// { return m_searchAlgorithm; }
 {
-	if( g_globSettings.boolValue(GlobalSettings::REGEXP) )
+	if( globSettings()->boolValue(GlobalSettings::REGEXP) )
 		return SSSearch::STD_REGEX;
 	else
 		return m_searchAlgorithm;
