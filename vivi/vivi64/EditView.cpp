@@ -753,6 +753,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		//onEscape(ctrl, shift, alt);
 		m_textCursor->clearSelection();
 		m_fallingChars.clear();
+		mainWindow()->resetBoxKeisenMode();
 		break;
 	case Qt::Key_Return:
 	case Qt::Key_Enter:

@@ -40,6 +40,8 @@ public:
 	SSSearch	&sssrc() { return *m_sssrc; }
 	SSSearch	&sssrc2() { return *m_sssrc2; }		//	カーソル位置単語検索用
 	int		newLineType() const;
+public:
+	void	resetBoxKeisenMode();
 protected:
 	//bool	focusNextPrevChild(bool next);
 	void	createActions();
