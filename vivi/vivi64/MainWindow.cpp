@@ -1195,6 +1195,14 @@ void MainWindow::onViewLineNumberChanged(const QString &typeName, bool b)
 			view->setLineNumberVisible(b);
 	}
 }
+bool MainWindow::isBoxSelectMode() const
+{
+	return ui.action_BoxSelect->isChecked();
+}
+bool MainWindow::isKeisenMode() const
+{
+	return ui.action_KeisenMode->isChecked();
+}
 void MainWindow::resetBoxKeisenMode()
 {
 	ui.action_BoxSelect->setChecked(false);
