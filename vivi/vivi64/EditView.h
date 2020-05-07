@@ -36,7 +36,9 @@ public:
 	EditView(MainWindow*, Document *doc /*, TypeSettings* = nullptr*/);
 	~EditView();
 public:
-	bool	isBoxSelectionMode() const { return false; }
+	const MainWindow	*mainWindow() const { return m_mainWindow; }
+	bool	isBoxSelectMode() const { return false; }
+	bool	isKeisenMode() const;
 	wchar_t	charAt(pos_t pos) const;
 	size_t	bufferSize() const;
 	pos_t	cursorPosition() const;
@@ -163,7 +165,7 @@ signals:
 	void	textInserted(const QString &);		//	挿入後の位置
 	void	textBackSpaced();
 	void	textCopied(const QString &);
-	void	boxSelectionModeChanged(bool);
+	void	boxSelectModeChanged(bool);
 	void	vertScrolled(int);		//	垂直スクロール
 	void	horzScrolled(int);		//	垂直スクロール
 	void	tagJump(const QString &, int);

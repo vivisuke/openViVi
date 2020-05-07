@@ -133,6 +133,10 @@ EditView::~EditView()
 	delete m_buffer;
 	//delete m_viewLineMgr;
 }
+bool EditView::isKeisenMode() const
+{
+	return mainWindow()->isKeisenMode();
+}
 void EditView::onResized()
 {
 	auto rct = rect();
@@ -596,7 +600,7 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 			int vln, offset;
 			pointToLineOffset(pnt, vln, offset);
 			int ln = viewLineToDocLine(vln);
-			//##if( !alt && !m_textCursor->isBoxSelectionMode() )
+			//##if( !alt && !m_textCursor->isBoxSelectMode() )
 			{
 				m_textCursor->setPosition(viewLineStartPosition(vln) + offset, TextCursor::KEEP_ANCHOR);
 				if( m_mouseDblClkDragging ) {
@@ -703,7 +707,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		if( ctrl )
 			m_textCursor->movePosition(TextCursor::PREV_WORD, mvmd);
 		else {
-			if( !shift /*&& !isBoxSelectionMode()*/ && m_textCursor->hasSelection() )
+			if( !shift /*&& !isBoxSelectMode()*/ && m_textCursor->hasSelection() )
 				m_textCursor->setPosition(m_textCursor->selectionFirst());
 			else
 				m_textCursor->movePosition(TextCursor::LEFT, mvmd);
@@ -713,7 +717,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		if( ctrl )
 			m_textCursor->movePosition(TextCursor::NEXT_WORD, mvmd);
 		else {
-			if( !shift /*&& !isBoxSelectionMode()*/ && m_textCursor->hasSelection() )
+			if( !shift /*&& !isBoxSelectMode()*/ && m_textCursor->hasSelection() )
 				m_textCursor->setPosition(m_textCursor->selectionLast());
 			else
 				m_textCursor->movePosition(TextCursor::RIGHT, mvmd);
@@ -1659,7 +1663,7 @@ void EditView::insertTextRaw(pos_t pos, const QString &text)
 void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
 {
 #if	1
-	if( isBoxSelectionMode() ) {
+	if( isBoxSelectMode() ) {
 	} else if( !m_textCursor->hasSelection() ) {
 		if( ctrl ) {
 			m_textCursor->movePosition(TextCursor::PREV_WORD, TextCursor::KEEP_ANCHOR);
@@ -1669,7 +1673,7 @@ void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
 			m_textCursor->movePosition(TextCursor::LEFT, TextCursor::KEEP_ANCHOR);
 	}
 	if( !m_textCursor->hasSelection() ) return;
-	//##if( !isBoxSelectionMode() )
+	//##if( !isBoxSelectMode() )
 		setupFallingChars();
 	//##if( !editForVar(QString()) )
 		m_textCursor->deleteChar(/*BS=*/true);
@@ -1713,7 +1717,7 @@ void EditView::onDelete(bool ctrl, bool shift, bool alt)
 	setupFallingChars();
 	//##if( !editForVar(QString()) )
 		m_textCursor->deleteChar();
-	//##emit boxSelectionModeChanged(m_textCursor->isBoxSelectionMode());
+	//##emit boxSelectModeChanged(m_textCursor->isBoxSelectMode());
 }
 void EditView::deleteText(pos_t pos, ssize_t sz, bool BS)
 {
@@ -1730,7 +1734,7 @@ void EditView::undo()
 	pos_t pos = document()->undo();
 	if( isModified() != im )
 		emit modifiedChanged();
-	//##m_textCursor->setBoxSelectionMode(false);
+	//##m_textCursor->setBoxSelectMode(false);
 	m_textCursor->setPosition(pos);
 	//##checkAssocParen();
 	//##updateScrollBarInfo();
@@ -1746,7 +1750,7 @@ void EditView::redo()
 	pos_t pos = document()->redo();
 	if( isModified() != im )
 		emit modifiedChanged();
-	//##m_textCursor->setBoxSelectionMode(false);
+	//##m_textCursor->setBoxSelectMode(false);
 	m_textCursor->setPosition(pos);
 	//##checkAssocParen();
 	//##updateScrollBarInfo();
@@ -1877,11 +1881,11 @@ bool EditView::searchCurWord(QString &txt)
 	if( mainWindow()->globSettings()->boolValue(GlobalSettings::REGEXP) ) {
 		txt = escapeRegExpSpecialChars(txt);
 	}
-	if( mainWindow()->globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
-		opt |= SSSearch::IGNORE_CASE;
-	if( mainWindow()->globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
-		opt |= SSSearch::WHOLE_WORD_ONLY;
 #endif
+	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
+		opt |= SSSearch::IGNORE_CASE;
+	if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
+		opt |= SSSearch::WHOLE_WORD_ONLY;
 	opt |= SSSearch::WHOLE_WORD_ONLY;
 	bool rc = findForward(txt, opt);
 	emit textSearched(txt, true);

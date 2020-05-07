@@ -92,6 +92,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_searchAlgorithm(SSSearch::SAKUSAKU)
 	//, m_docNumber(0)
 {
+	g_globSettings.readSettings();
 	ui.setupUi(this);
 	m_sssrc = new SSSearch();
 	m_sssrc2 = new SSSearch();
@@ -156,6 +157,10 @@ MainWindow::MainWindow(QWidget *parent)
 	//
 	setupStatusBar();		//	ステータスバーセットアップ
 	updateWindowTitle();
+	//
+	ui.action_WordSearch->setChecked(globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY));
+	ui.action_IgnoreCase->setChecked(globSettings()->boolValue(GlobalSettings::IGNORE_CASE));
+	ui.action_RegExp->setChecked(globSettings()->boolValue(GlobalSettings::REGEXP));
 	//
 		on_action_New_triggered();
 }
@@ -998,6 +1003,18 @@ void MainWindow::on_action_SelectAll_triggered()
 	if( isEditView(view) ) {
 		view->selectAll();
 	}
+}
+void MainWindow::on_action_IgnoreCase_triggered()
+{
+	g_globSettings.setBoolValue(GlobalSettings::IGNORE_CASE, ui.action_IgnoreCase->isChecked());
+}
+void MainWindow::on_action_WordSearch_triggered()
+{
+	g_globSettings.setBoolValue(GlobalSettings::WHOLE_WORD_ONLY, ui.action_WordSearch->isChecked());
+}
+void MainWindow::on_action_RegExp_triggered()
+{
+	g_globSettings.setBoolValue(GlobalSettings::REGEXP, ui.action_RegExp->isChecked());
 }
 void MainWindow::on_action_SearchBackward_triggered()
 {
