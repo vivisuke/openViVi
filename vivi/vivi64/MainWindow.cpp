@@ -1021,25 +1021,37 @@ void MainWindow::on_action_IgnoreCase_triggered()
 {
 	globSettings()->setBoolValue(GlobalSettings::IGNORE_CASE, ui.action_IgnoreCase->isChecked());
 	globSettings()->writeSettings();
+#if	1
+	on_action_SearchForward_triggered();
+#else
 	updateSssrc();
 	EditView *view = currentWidget();
 	if( isEditView(view) ) view->update();
+#endif
 }
 void MainWindow::on_action_WordSearch_triggered()
 {
 	globSettings()->setBoolValue(GlobalSettings::WHOLE_WORD_ONLY, ui.action_WordSearch->isChecked());
 	globSettings()->writeSettings();
+#if	1
+	on_action_SearchForward_triggered();
+#else
 	updateSssrc();
 	EditView *view = currentWidget();
 	if( isEditView(view) ) view->update();
+#endif
 }
 void MainWindow::on_action_RegExp_triggered()
 {
 	globSettings()->setBoolValue(GlobalSettings::REGEXP, ui.action_RegExp->isChecked());
 	globSettings()->writeSettings();
+#if	1
+	on_action_SearchForward_triggered();
+#else
 	updateSssrc();
 	EditView *view = currentWidget();
 	if( isEditView(view) ) view->update();
+#endif
 }
 void MainWindow::on_action_SearchBackward_triggered()
 {
@@ -1055,8 +1067,9 @@ void MainWindow::on_action_SearchForward_triggered()
 {
 	statusBar()->clearMessage();
 	QString pat = m_findStringCB->lineEdit()->text();
+	if( pat.isEmpty() ) return;
 	EditView *view = currentWidget();
-	if( isEditView(view) && !pat.isEmpty() ) {
+	if( isEditView(view) /*&& !pat.isEmpty()*/ ) {
 		bool word = ui.action_WordSearch->isChecked();
 		view->findNext(pat, word);
 	}
