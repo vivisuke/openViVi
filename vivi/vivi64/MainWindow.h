@@ -129,6 +129,7 @@ public slots:
 	void	showMessage(const QString&, int timeout = 0);
     void	updateUndoRedoEnabled();
     void	modifiedChanged();
+    void	onEnterFindCB();
     void	doFindString();
     void	findStringChanged(const QString&);
     void	findStringChanged(int);

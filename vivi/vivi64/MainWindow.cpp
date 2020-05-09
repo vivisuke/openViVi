@@ -125,8 +125,12 @@ MainWindow::MainWindow(QWidget *parent)
 	m_findStringCB->setMaximumWidth(160);m_findStringCB->setEditable(true);
 	m_findStringCB->setCompleter(0);
 	m_findStringCB->setInsertPolicy(QComboBox::InsertAtTop);
+	//m_findLineEdit->setText(QString());
 	updateFindStringCB();
-	connect(m_findStringCB->lineEdit(), SIGNAL(returnPressed()), this, SLOT(doFindString()));
+	m_findStringCB->setCurrentText(QString());
+	//m_findStringCB->setCurrentIndex(-1);
+	connect(m_findStringCB->lineEdit(), SIGNAL(returnPressed()), this, SLOT(onEnterFindCB()));
+	//connect(m_findStringCB->lineEdit(), SIGNAL(returnPressed()), this, SLOT(doFindString()));
 	connect(m_findStringCB, SIGNAL(editTextChanged(const QString &)),
 					this, SLOT(findStringChanged(const QString &)));
 #if	0
@@ -1099,6 +1103,15 @@ void MainWindow::on_action_SearchCurWord_triggered()
 	QString txt;
 	if( !view->searchCurWord(txt) ) return;
 	setFindString(txt);
+}
+void MainWindow::onEnterFindCB()
+{
+	//	undone: インクリメンタルサーチOFFの場合
+	EditView *view = currentWidget();
+	if( view != nullptr ) {
+		ui.tabWidget->setCurrentWidget(view);
+		view->setFocus();
+	}
 }
 void MainWindow::doFindString()
 {
