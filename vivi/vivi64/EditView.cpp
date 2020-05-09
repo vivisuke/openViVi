@@ -920,7 +920,7 @@ void EditView::paintEvent(QPaintEvent *event)
 void EditView::drawLineNumberArea(QPainter& pt)
 {
 	auto rct = rect();
-	pt.setPen(Qt::black);
+	pt.setPen(typeSettings()->color(TypeSettings::LINENUM));
     int mg = m_fontWidth*2;		//.width("88");
     int mg4 = mg / 4;
 	int py = 0 /*DRAW_Y_OFFSET*/;
