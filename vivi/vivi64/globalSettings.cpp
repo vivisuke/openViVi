@@ -18,8 +18,9 @@ struct KeyBoolItem
 static KeyBoolItem keyBoolTable[] = {
 	{"IgnoreCase",	true},
 	{"MatchWholeWordOnly",	false},
-	{"LoopSearch",	true},
 	{"RegExp",			false},
+	{"LoopSearch",	true},
+	{"IncrementalSearch",	true},
 	{"GrepSubDir",	true},
 	{"ViewRtBtmPicture",	true},
 	{"SyncVertScroll",	false},

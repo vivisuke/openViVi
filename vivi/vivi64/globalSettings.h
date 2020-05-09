@@ -25,8 +25,9 @@ public:
 	enum {
 		IGNORE_CASE = 0,
 		WHOLE_WORD_ONLY,
-		LOOP_SEARCH,
 		REGEXP,
+		LOOP_SEARCH,
+		INC_SEARCH,
 		GREP_SUB_DIR,
 		VIEW_RT_BTM_PICTURE,
 		SYNC_VERT_SCROLL,				//	画面分割時：垂直スクロール同期

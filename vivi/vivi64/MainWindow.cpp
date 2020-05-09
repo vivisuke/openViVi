@@ -165,6 +165,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.action_WordSearch->setChecked(globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY));
 	ui.action_IgnoreCase->setChecked(globSettings()->boolValue(GlobalSettings::IGNORE_CASE));
 	ui.action_RegExp->setChecked(globSettings()->boolValue(GlobalSettings::REGEXP));
+	ui.action_Incremental->setChecked(globSettings()->boolValue(GlobalSettings::INC_SEARCH));
 	//
 		on_action_New_triggered();
 }
@@ -1037,6 +1038,11 @@ void MainWindow::on_action_IgnoreCase_triggered()
 	EditView *view = currentWidget();
 	if( isEditView(view) ) view->update();
 #endif
+}
+void MainWindow::on_action_Incremental_triggered()
+{
+	globSettings()->setBoolValue(GlobalSettings::INC_SEARCH, ui.action_Incremental->isChecked());
+	globSettings()->writeSettings();
 }
 void MainWindow::on_action_WordSearch_triggered()
 {

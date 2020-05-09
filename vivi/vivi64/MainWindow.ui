@@ -147,6 +147,7 @@
     <addaction name="action_IgnoreCase"/>
     <addaction name="action_WordSearch"/>
     <addaction name="action_RegExp"/>
+    <addaction name="action_Incremental"/>
    </widget>
    <widget class="QMenu" name="menu_Tool">
     <property name="title">
@@ -550,6 +551,14 @@
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="action_Incremental">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>In&amp;cremental</string>
    </property>
   </action>
  </widget>
