@@ -578,7 +578,7 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 			m_scrollY0 = qMax(0, (int)(pnt.y()/scale) - nLines / 2);
 	    	m_scrollY0 = qMin(m_scrollY0, buffer()->lineCount());		//	undone: 折返し処理対応
 			update();
-		} else if( m_mouseLineDragging ) {
+		} else if( m_mouseLineDragging ) {		//	行選択
 			int vln, offset;
 			pointToLineOffset(pnt, vln, offset);
 			m_curLineNum = viewLineToDocLine(vln, offset);
@@ -629,6 +629,7 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 			m_textCursor->setPX(pnt.x());
 			resetCursorBlinking();
 			makeCursorInView();
+			emit cursorPosChanged(ln, offset);
 		}
 		update();
 	}
