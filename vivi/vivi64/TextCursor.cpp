@@ -68,6 +68,11 @@ int TextCursor::viewLineStartPosition(int vln) const
 {
 	return m_view->viewLineMgr()->viewLineStartPosition(vln);
 }
+int TextCursor::positionInLine() const
+{
+	int ln = m_view->positionToLine(m_pos);
+	return m_pos - m_view->lineStartPosition(ln);
+}
 void TextCursor::movePosition(int op, int mode, int n, bool vi)
 {
 	pos_t pos = position();

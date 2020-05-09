@@ -43,6 +43,7 @@ public:
 	uint	getSearchOpt() const;
 	bool	isBoxSelectMode() const;	// { return ui.action_BoxSelect->isChecked(); }
 	bool	isKeisenMode() const;		// { return ui.action_Keisen->isChecked(); }
+	QString	findString() const { return m_findString; }
 public:
 	void	resetBoxKeisenMode();
 protected:

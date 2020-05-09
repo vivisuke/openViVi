@@ -74,6 +74,7 @@ public:
 	int		pxToOffset(int vln, int px) const;
 	void	pointToLineOffset(const QPoint &, int &, int &) const;
 	bool 	getSelectedLineRange(int &dln1, int &dln2) const;
+	const TextCursor*	textCursor() const;
 public:
 	MainWindow	*mainWindow() { return m_mainWindow; }
 	void	setModified(bool = true);

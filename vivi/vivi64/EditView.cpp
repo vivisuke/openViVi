@@ -948,6 +948,7 @@ void EditView::drawLineNumberArea(QPainter& pt)
 }
 void EditView::drawMatchedBG(QPainter&pt)
 {
+	if (mainWindow()->findString().isEmpty()) return;
 	const auto rct = rect();
 	int px, py = 0;
 	for (int ln = m_scrollY0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
@@ -1286,19 +1287,21 @@ void EditView::drawMinMap(QPainter& pt)
 	}
 	pt.setOpacity(1.0);
 	//	検索マッチ部分強調
-	pt.setPen(typeSettings()->color(TypeSettings::MATCHED_BG));
-	SSSearch &sssrc = mainWindow()->sssrc();
-	pos_t pos = 0;
-	const int last = document()->size();
-	while( (pos = sssrc.strstr(*buffer(), pos, last)) >= 0 ) {
-		const int matchLength = sssrc.matchLength();
-		int ln = document()->positionToLine(pos);
-		auto lineStartPos = document()->lineStartPosition(ln);
-		auto px1 = px + textWidth(lineStartPos, pos - lineStartPos) / m_fontWidth;
-		auto px2 = px + textWidth(lineStartPos, pos - lineStartPos + matchLength) / m_fontWidth;
-		int py = ln * scale;
-		pt.drawLine(px1, py, px2, py);
-		pos += matchLength;
+	if( !mainWindow()->findString().isEmpty() ) {
+		pt.setPen(typeSettings()->color(TypeSettings::MATCHED_BG));
+		SSSearch &sssrc = mainWindow()->sssrc();
+		pos_t pos = 0;
+		const int last = document()->size();
+		while( (pos = sssrc.strstr(*buffer(), pos, last)) >= 0 ) {
+			const int matchLength = sssrc.matchLength();
+			int ln = document()->positionToLine(pos);
+			auto lineStartPos = document()->lineStartPosition(ln);
+			auto px1 = px + textWidth(lineStartPos, pos - lineStartPos) / m_fontWidth;
+			auto px2 = px + textWidth(lineStartPos, pos - lineStartPos + matchLength) / m_fontWidth;
+			int py = ln * scale;
+			pt.drawLine(px1, py, px2, py);
+			pos += matchLength;
+		}
 	}
 	//
 	rct.setY(m_scrollY0*scale);
@@ -1466,6 +1469,10 @@ int EditView::textWidth(pos_t first, ssize_t sz, /*pos_t last,*/ const Buffer* p
 	}
 #endif
 	return wd;
+}
+const TextCursor* EditView::textCursor() const
+{
+	return m_textCursor;
 }
 void EditView::pointToLineOffset(const QPoint &pnt, int &vln, int &offset) const
 {

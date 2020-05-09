@@ -16,6 +16,7 @@
 #include "globalSettings.h"
 #include "charEncoding.h"
 #include "FindLineEdit.h"
+#include "TextCursor.h"
 #include "../buffer/sssearch.h"
 
 #define		APP_NAME					"ViVi64"
@@ -131,8 +132,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//m_findStringCB->setCurrentIndex(-1);
 	connect(m_findStringCB->lineEdit(), SIGNAL(returnPressed()), this, SLOT(onEnterFindCB()));
 	//connect(m_findStringCB->lineEdit(), SIGNAL(returnPressed()), this, SLOT(doFindString()));
-	connect(m_findStringCB, SIGNAL(editTextChanged(const QString &)),
-					this, SLOT(findStringChanged(const QString &)));
+	connect(m_findStringCB, SIGNAL(editTextChanged(const QString &)), this, SLOT(findStringChanged(const QString &)));
 #if	0
 	connect(m_findLineEdit, SIGNAL(escPressed()), this, SLOT(onEscFindLineEdit()));
 	connect(m_findLineEdit, SIGNAL(focusIn()), this, SLOT(onFocusInFindLineEdit()));
@@ -1144,20 +1144,24 @@ void MainWindow::doFindString()
 }
 void MainWindow::findStringChanged(const QString &pat)
 {
-	if( pat.isEmpty() ) {
-		//	undone: インクリメンタルサーチ終了
-		return;
-	}
+	m_findString = pat;
 	EditView *view = currentWidget();
 	if (isEditView(view)) {
-		if (pat.isEmpty()) {
+		if( pat.isEmpty() ) {
+			//	undone: インクリメンタルサーチ終了
+			view->update();
+			return;
 		}
+		uint opt = getSearchOpt();
+		if (!view->findForward(m_findString = pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), false))
+			statusBar()->showMessage(tr("'%1' was not found.").arg(pat), 3000);
 		else {
-			uint opt = getSearchOpt();
-			if (!view->findForward(m_findString = pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), false))
-				statusBar()->showMessage(tr("'%1' was not found.").arg(pat), 3000);
-			//m_incSearched = true;
+			auto ln = view->textCursor()->viewLine();
+			auto offset = view->textCursor()->positionInLine();
+			//auto pos = view->textCursor()->position();
+			onCursorPosChanged(ln, offset);
 		}
+		//m_incSearched = true;
 	}
 }
 void MainWindow::findStringChanged(int)
