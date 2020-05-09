@@ -127,9 +127,9 @@ MainWindow::MainWindow(QWidget *parent)
 	m_findStringCB->setInsertPolicy(QComboBox::InsertAtTop);
 	updateFindStringCB();
 	connect(m_findStringCB->lineEdit(), SIGNAL(returnPressed()), this, SLOT(doFindString()));
-#if	0
 	connect(m_findStringCB, SIGNAL(editTextChanged(const QString &)),
 					this, SLOT(findStringChanged(const QString &)));
+#if	0
 	connect(m_findLineEdit, SIGNAL(escPressed()), this, SLOT(onEscFindLineEdit()));
 	connect(m_findLineEdit, SIGNAL(focusIn()), this, SLOT(onFocusInFindLineEdit()));
 #endif
@@ -1004,10 +1004,8 @@ void MainWindow::on_action_SelectAll_triggered()
 		view->selectAll();
 	}
 }
-void MainWindow::updateSssrc()
+uint MainWindow::getSearchOpt() const
 {
-	QString pat = m_findStringCB->lineEdit()->text();
-	if( pat.isEmpty() ) return;
 	uint opt = 0;
 	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
 		opt |= SSSearch::IGNORE_CASE;
@@ -1015,6 +1013,13 @@ void MainWindow::updateSssrc()
 		opt |= SSSearch::WHOLE_WORD_ONLY;
 	if( globSettings()->boolValue(GlobalSettings::REGEXP) )
 		opt |= SSSearch::REGEXP;
+	return opt;
+}
+void MainWindow::updateSssrc()
+{
+	QString pat = m_findStringCB->lineEdit()->text();
+	if( pat.isEmpty() ) return;
+	auto opt = getSearchOpt();
 	m_sssrc->setup((wchar_t*)pat.data(), pat.size(), opt);
 }
 void MainWindow::on_action_IgnoreCase_triggered()
@@ -1107,13 +1112,7 @@ void MainWindow::doFindString()
 		QString pat = m_findStringCB->lineEdit()->text();
 		EditView *view = currentWidget();
 		if( isEditView(view) && !pat.isEmpty() ) {
-			uint opt = 0;
-			if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
-				opt |= SSSearch::IGNORE_CASE;
-			if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
-				opt |= SSSearch::WHOLE_WORD_ONLY;
-			if( globSettings()->boolValue(GlobalSettings::REGEXP) )
-				opt |= SSSearch::REGEXP;
+			uint opt = getSearchOpt();
 			if( !view->findForward(m_findString = pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH)) )
 				statusBar()->showMessage(tr("'%1' was not found.").arg(pat), 3000);
 			//else
@@ -1123,8 +1122,23 @@ void MainWindow::doFindString()
 	}
 	m_searching = false;
 }
-void MainWindow::findStringChanged(const QString &)
+void MainWindow::findStringChanged(const QString &pat)
 {
+	if( pat.isEmpty() ) {
+		//	undone: インクリメンタルサーチ終了
+		return;
+	}
+	EditView *view = currentWidget();
+	if (isEditView(view)) {
+		if (pat.isEmpty()) {
+		}
+		else {
+			uint opt = getSearchOpt();
+			if (!view->findForward(m_findString = pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), false))
+				statusBar()->showMessage(tr("'%1' was not found.").arg(pat), 3000);
+			//m_incSearched = true;
+		}
+	}
 }
 void MainWindow::findStringChanged(int)
 {
