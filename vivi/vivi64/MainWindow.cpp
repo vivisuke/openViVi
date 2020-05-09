@@ -421,6 +421,7 @@ void MainWindow::onNewLineCodeChanged(int)
 }
 void MainWindow::onCursorPosChanged(int ln, int offset)
 {
+	qDebug() << "onCursorPosChanged()";
 	EditView *view = (EditView *)sender();
 	if( !isEditView(view) ) return;
 	m_lineOffsetLabel->setText(QString("pos: %1 (%2:%3)")

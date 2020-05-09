@@ -544,8 +544,7 @@ void EditView::mousePressEvent(QMouseEvent *event)
 			int nLines = rct.height() / m_lineHeight;
 			m_scrollY0 = qMax(0, (int)(pnt.y() / scale) - nLines / 2);
 	    	m_scrollY0 = qMin(m_scrollY0, buffer()->lineCount());		//	undone: 折返し処理対応
-		}
-		if( pnt.x() < m_lineNumAreaWidth ) {		//	行番号エリアの場合
+		} else if( pnt.x() < m_lineNumAreaWidth ) {		//	行番号エリアの場合
 			m_mouseLineDragging = true;
 			pnt.setX(pnt.x() - m_lineNumAreaWidth + m_scrollX0*m_fontWidth);
 			int vln, offset;
@@ -554,11 +553,13 @@ void EditView::mousePressEvent(QMouseEvent *event)
 			//qDebug() << vln;
 			m_textCursor->setPosition(viewLineStartPosition(vln));
 			m_textCursor->setPosition(viewLineStartPosition(vln+1), TextCursor::KEEP_ANCHOR);
+			emit cursorPosChanged(vln, offset);
 		} else {		//	通常テキストエリアの場合
 			pnt.setX(pnt.x() - m_lineNumAreaWidth + m_scrollX0*m_fontWidth);
 			int vln, offset;
 			pointToLineOffset(pnt, vln, offset);
 			m_textCursor->setPosition(viewLineStartPosition(vln) + offset, shift ? TextCursor::KEEP_ANCHOR : TextCursor::MOVE_ANCHOR);
+			emit cursorPosChanged(vln, offset);
 		}
 		update();
 	}
