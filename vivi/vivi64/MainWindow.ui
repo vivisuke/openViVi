@@ -129,6 +129,7 @@
     </property>
     <addaction name="action_TypeSettings"/>
     <addaction name="action_GlobalSettings"/>
+    <addaction name="action_viCommand"/>
    </widget>
    <widget class="QMenu" name="menu_Other">
     <property name="title">
@@ -559,6 +560,14 @@
    </property>
    <property name="text">
     <string>In&amp;cremental</string>
+   </property>
+  </action>
+  <action name="action_viCommand">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;viCommand</string>
    </property>
   </action>
  </widget>
