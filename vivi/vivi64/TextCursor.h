@@ -59,6 +59,7 @@ public:
 	TextCursor(EditView *view, pos_t pos = 0, int anchor= 0);
 	TextCursor(const TextCursor &x);
 public:
+	byte		mode() const { return m_mode; }
 	int		position() const { return m_pos; }
 	int		positionInLine() const;	//	行内オフセットを返す
 	int		anchor() const { return m_anchor; }
@@ -75,6 +76,7 @@ public:
 	QString	selectedText() const;
 	bool	getSelectedLineRange(int &dln1, int &dln2) const;
 public:
+	void	setMode(byte mode);
 	void	clearSelection();
 	void	setPosition(pos_t pos, int mode = MOVE_ANCHOR);
 	void	setLineAndPosition(int vln, pos_t pos, int mode = MOVE_ANCHOR);

@@ -103,6 +103,12 @@
     <ClCompile Include="assocParen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="viEditView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -127,6 +133,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="viewLineMgr.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ViEngine.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

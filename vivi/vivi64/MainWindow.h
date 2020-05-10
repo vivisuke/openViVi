@@ -17,6 +17,7 @@ typedef const char cchar;
 class TypeSettings;
 class GlobalSettings;
 class SSSearch;
+class ViEngine;
 
 extern GlobalSettings	g_globSettings;
 GlobalSettings *globSettings();
@@ -44,7 +45,9 @@ public:
 	bool	isBoxSelectMode() const;	// { return ui.action_BoxSelect->isChecked(); }
 	bool	isKeisenMode() const;		// { return ui.action_Keisen->isChecked(); }
 	QString	findString() const { return m_findString; }
+	const ViEngine	*viEngine() const { return m_viEngine; }
 public:
+	ViEngine	*viEngine() { return m_viEngine; }
 	void	resetBoxKeisenMode();
 protected:
 	//bool	focusNextPrevChild(bool next);
@@ -154,6 +157,7 @@ private:
 	int		m_curTabIndex;
 	int		m_formerTabIndex;
 	//int		m_docNumber;
+	ViEngine	*m_viEngine;
 	
 	QComboBox	*m_findStringCB;
 	QString			m_findString;

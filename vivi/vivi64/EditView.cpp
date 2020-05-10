@@ -313,6 +313,18 @@ size_t EditView::bufferSize() const
 {
 	return buffer()->size();
 }
+int EditView::lineCount() const
+{
+	return document()->lineCount();
+}
+int EditView::viewLineCount() const
+{
+	if (m_viewLineMgr->isEmpty()) {
+		return document()->lineCount();
+	} else {
+		return m_viewLineMgr->size() - 1;		//	1 for ダミー行
+	}
+}
 void EditView::onCursorPosChanged()
 {
 	resetCursorBlinking();
@@ -1573,6 +1585,128 @@ int EditView::pxToOffset(int vln, int px) const
 	}
 #endif
 }
+//	clmn：0 オリジン
+int EditView::columnToPos(int vln, int clmn) const
+{
+	int dln = viewLineToDocLine(vln);
+	pos_t pos = lineStartPosition(dln);
+	if( !clmn ) return pos;
+	pos_t last = posEOS(dln);
+	const int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
+	int c = 0;
+	while( c < clmn && pos < last ) {
+		if( charAt(pos++) == '\t' ) {
+			c += nTab - c % nTab;
+			if( c > clmn )
+				return pos - 1;		//	TAB 位置を返す
+		} else
+			++c;
+	}
+	return pos;
+}
+//	dln 行の改行位置を返す
+int EditView::posEOS(int dln) const
+{
+	pos_t first = lineStartPosition(dln);
+	pos_t last = lineStartPosition(dln+1);
+	while( last > first && isNewLineChar(charAt(last-1)) )
+		--last;
+	return last;
+}
+void EditView::setMark(pos_t pos, char ch)
+{
+	//##document()->setMark(pos, ch);
+}
+//	カーソル位置をマーク or マーク解除
+void EditView::markSetUnset()
+{
+	//##document()->markSetUnset(m_textCursor->position());
+	update();
+}
+void EditView::clearMark(pos_t pos)
+{
+	//##document()->markSetUnset(pos);
+	update();
+}
+//	次のマーク位置に移動（非ループ）
+bool EditView::nextMark(bool fromBeinDoc)
+{
+#if 0		//##
+	std::vector<MarkItem> lst;
+	document()->getMarks(lst);
+	if( lst.empty() ) return false;
+	const pos_t pos = fromBeinDoc ? -1 : m_textCursor->position();
+	for(int i = 0; i < lst.size(); ++i) {
+		if( lst[i].m_pos > pos ) {
+			m_textCursor->setPosition(lst[i].m_pos);
+			makeCursorInView(true);
+			update();
+			return true;
+		}
+	}
+#endif
+	return false;
+}
+bool EditView::prevMark(bool fromEndDoc)
+{
+#if 0		//##
+	std::vector<MarkItem> lst;
+	document()->getMarks(lst);
+	if( lst.empty() ) return false;
+	const pos_t pos = fromEndDoc ? bufferSize() + 1 : m_textCursor->position();
+	for(int i = lst.size(); --i >= 0; ) {
+		if( lst[i].m_pos < pos ) {
+			m_textCursor->setPosition(lst[i].m_pos);
+			makeCursorInView();
+			update();
+			return true;
+		}
+	}
+#endif // 0
+
+	return false;
+}
+bool EditView::jumpMarkPos(char ch)
+{
+	pos_t pos = buffer()->markPos(ch);
+	if( pos < 0 ) return false;
+	m_textCursor->setPosition(pos);
+	return true;
+}
+void EditView::curTopOfScreen(bool vi, int n)
+{
+	int vln = m_scrollY0;
+	m_textCursor->setPosition(viewLineStartPosition(vln + n - 1));
+	if( vi )
+		m_textCursor->movePosition(TextCursor::FIRST_NOSPACE);
+	makeCursorInView();
+	resetCursorBlinking();
+	update();
+}
+void EditView::curMiddleOfScreen(bool vi)
+{
+	QRect rct = rect();
+	int vlnTop = m_scrollY0;
+	int vln = vlnTop + rct.height() / lineHeight() / 2;
+	m_textCursor->setPosition(viewLineStartPosition(vln));
+	if( vi )
+		m_textCursor->movePosition(TextCursor::FIRST_NOSPACE);
+	makeCursorInView();
+	resetCursorBlinking();
+	update();
+}
+void EditView::curBottomOfScreen(bool vi, int n)
+{
+	QRect rct = rect();
+	int vlnTop = m_scrollY0;
+	int vln = vlnTop + rct.height() / lineHeight() - n;
+	m_textCursor->setPosition(viewLineStartPosition(vln));
+	if( vi )
+		m_textCursor->movePosition(TextCursor::FIRST_NOSPACE);
+	makeCursorInView();
+	resetCursorBlinking();
+	update();
+}
 bool  EditView::getSelectedLineRange(int &ln1, int &ln2) const
 {
 	if( !m_textCursor->hasSelection() )
@@ -1663,6 +1797,12 @@ void EditView::revIndent(int ln1, int ln2, bool vi)
 		m_textCursor->setPosition(lineStartPosition(ln2+1), TextCursor::KEEP_ANCHOR);
 	}
 	update();
+}
+void EditView::insertText(const QString &)
+{
+}
+void EditView::insertText(const QString &, const QString &)		//	選択領域の前後に文字挿入
+{
 }
 void EditView::insertTextRaw(pos_t pos, const QString &text)
 {
@@ -1852,6 +1992,10 @@ void EditView::closeUndoBlock()
 {
 	buffer()->closeUndoBlock();
 }
+void EditView::closeAllUndoBlock()
+{
+	buffer()->closeAllUndoBlock();
+}
 void EditView::selectAll()
 {
 	m_textCursor->setPosition(0);
@@ -2012,4 +2156,297 @@ void EditView::setModified(bool b)
 	if( b == isModified() ) return;
 	document()->setModified(b);
 	emit modifiedChanged();
+}
+void EditView::scrollDown()
+{
+	int v = m_scrollY0;
+	m_scrollY0 = (++v);
+	update();
+}
+void EditView::scrollUp()
+{
+	int v = m_scrollY0;
+	if( v == 0 ) return;
+	m_scrollY0 = (--v);
+	update();
+}
+void EditView::scrollDownPage(bool shift)
+{
+	const int nLines = rect().height() / lineHeight();
+	int v = m_scrollY0;
+	m_scrollY0 = (v + nLines);
+	int vln = qMin(m_textCursor->viewLine() + nLines, viewLineCount());
+	pos_t pos = viewLineStartPosition(vln);
+	int mode = shift ? TextCursor::KEEP_ANCHOR : TextCursor::MOVE_ANCHOR;
+	m_textCursor->setPosition(pos, mode);
+	m_textCursor->movePosition(TextCursor::FIRST_NOSPACE, mode);
+	update();
+}
+void EditView::scrollUpPage(bool shift)
+{
+	const int nLines = rect().height() / lineHeight();
+	int v = m_scrollY0;
+	m_scrollY0 = (v - nLines);
+	int vln = qMax(m_textCursor->viewLine() - nLines, 0);
+	pos_t pos = viewLineStartPosition(vln);
+	int mode = shift ? TextCursor::KEEP_ANCHOR : TextCursor::MOVE_ANCHOR;
+	m_textCursor->setPosition(pos, mode);
+	m_textCursor->movePosition(TextCursor::FIRST_NOSPACE, mode);
+	update();
+}
+void EditView::scrollDownHalfPage()
+{
+	const int nLines = rect().height() / lineHeight();
+	int v = m_scrollY0;
+	m_scrollY0 = (v + nLines / 2);
+	int vln = qMin(m_textCursor->viewLine() + nLines / 2, viewLineCount());
+	pos_t pos = viewLineStartPosition(vln);
+	m_textCursor->setPosition(pos);
+	m_textCursor->movePosition(TextCursor::FIRST_NOSPACE);
+	update();
+}
+void EditView::scrollUpHalfPage()
+{
+	const int nLines = rect().height() / lineHeight();
+	int v = m_scrollY0;
+	m_scrollY0 = (v - nLines / 2);
+	int vln = qMax(m_textCursor->viewLine() - nLines / 2, 0);
+	pos_t pos = viewLineStartPosition(vln);
+	m_textCursor->setPosition(pos);
+	m_textCursor->movePosition(TextCursor::FIRST_NOSPACE);
+	update();
+}
+void EditView::exposeBottomOfScreen()
+{
+	int v = m_scrollY0;
+	m_scrollY0 = (v + 1);
+	int vln = qMin(m_textCursor->viewLine() + 1, viewLineCount());
+	pos_t pos = viewLineStartPosition(vln);
+	m_textCursor->setPosition(pos);
+	m_textCursor->movePosition(TextCursor::FIRST_NOSPACE);
+	update();
+}
+void EditView::exposeTopOfScreen()
+{
+	int v = m_scrollY0;
+	m_scrollY0 = (v - 1);
+	int vln = qMax(m_textCursor->viewLine() - 1, 0);
+	pos_t pos = viewLineStartPosition(vln);
+	m_textCursor->setPosition(pos);
+	m_textCursor->movePosition(TextCursor::FIRST_NOSPACE);
+	update();
+}
+void EditView::scrollCurTopOfScreen()
+{
+	int ln = document()->positionToLine(m_textCursor->position());
+	if( ln == m_scrollY0 ) {
+		scrollCurCenterOfScreen();
+	} else {
+		int ln2 = document()->positionToLine(m_textCursor->position())
+					- rect().height() / lineHeight() / 2;
+		if( ln2 < 0 ) ln2 = 0;
+		if( ln2 == m_scrollY0 ) {
+			scrollCurBottomOfScreen();
+		} else {
+			m_scrollY0 = (ln);
+			update();
+		}
+	}
+}
+void EditView::scrollCurQuarterOfScreen()
+{
+	int ln = document()->positionToLine(m_textCursor->position())
+				- rect().height() / lineHeight() / 4;
+	if( ln < 0 ) ln = 0;
+	m_scrollY0 = (ln);
+	update();
+}
+void EditView::scrollCurCenterOfScreen()
+{
+	int ln = document()->positionToLine(m_textCursor->position())
+				- rect().height() / lineHeight() / 2;
+	if( ln < 0 ) ln = 0;
+	m_scrollY0 = (ln);
+	update();
+}
+void EditView::scrollCurBottomOfScreen()
+{
+	int ln = document()->positionToLine(m_textCursor->position())
+				- rect().height() / lineHeight() + 2;
+	if( ln < 0 ) ln = 0;
+	m_scrollY0 = (ln);
+	update();
+}
+void EditView::joinLines(int nLines, bool vi)
+{
+	pos_t firstPos;
+	int firstLine, lastLine;
+	int newPos;	//	for vi
+	if( m_textCursor->hasSelection() ) {
+		firstPos = m_textCursor->selectionFirst();
+		firstLine = positionToLine(firstPos) ;
+		pos_t last = m_textCursor->selectionLast();
+		lastLine = positionToLine(last);
+		if( last == lineStartPosition(lastLine) ) --lastLine;		//	行頭の場合は、直前行までとする
+	} else {
+		firstLine = positionToLine(firstPos = m_textCursor->position());
+		lastLine = firstLine + qMax(nLines - 1, 1);
+	}
+	if( vi )
+		newPos = endOfLinePosition(firstLine);
+	QTime tm;
+	tm.start();
+	openUndoBlock();
+	int dln = viewLineToDocLine(firstLine);
+	while( firstLine <= --lastLine ) {
+		pos_t pos2 = lineStartPosition(lastLine+1);
+		pos_t pos1 = pos2;
+		while( pos1 > 0 && isNewLineChar(charAt(pos1 - 1)) ) --pos1;
+		while( isSpaceChar(charAt(pos2)) ) ++pos2;
+#if	0
+		//	TextCursor::insertText() を繰り返し呼ぶと時間がかかる場合があるので、
+		//	ドキュメント or バッファの挿入関数を直接呼ぶ方がよい
+		buffer()->replaceText(pos1, pos2 - pos1, L" ", 1, dln);
+#else
+		m_textCursor->setPosition(pos1);
+		m_textCursor->setPosition(pos2, TextCursor::KEEP_ANCHOR);
+		m_textCursor->insertText(" ");
+		//m_textCursor->deleteChar();
+#endif
+	}
+	closeUndoBlock();
+	//##updateScrollBarInfo();
+	if( vi )
+		m_textCursor->setPosition(newPos);
+	else {
+		m_textCursor->setPosition(firstPos);
+		m_textCursor->movePosition(TextCursor::HOME_LINE);
+	}
+	makeCursorInView();
+	update();
+	int ms = tm.elapsed();
+	showMessage(QString("%1 elapsed.").arg(ms/1000.0), 5000);
+
+}
+int EditView::endOfLinePosition(int dln) const		//	行の改行位置を返す
+{
+	pos_t ls = lineStartPosition(dln);
+	pos_t pos = lineStartPosition(dln+1);
+	while( pos > ls && isNewLineChar(charAt(pos - 1)) )
+		--pos;
+	return pos;
+}
+//	インクリメント・デクリメント
+void EditView::incDec(bool bInc, int d)
+{
+	pos_t pos = m_textCursor->position();
+	if( m_textCursor->hasSelection() ) {
+		pos = m_textCursor->selectionFirst();
+		m_textCursor->clearSelection();
+	}
+	wchar_t ch = charAt(pos);
+	if( isDigit(ch) ) {
+		while( pos > 0 && isDigit(charAt(pos-1)) ) --pos;
+		pos_t first = pos;
+		pos = m_textCursor->position();;
+		while( pos < bufferSize() && isDigit(charAt(pos)) ) ++pos;
+		pos_t last = pos;
+		//QString txt = getText(*buffer(), first, last);
+		m_textCursor->setPosition(first);
+		m_textCursor->setPosition(last, TextCursor::KEEP_ANCHOR);
+		QString txt = m_textCursor->selectedText();
+		int n = txt.toInt() + (bInc ? d : -d);
+		if( txt[0] == '0' )
+			txt = QString("%1").arg(n, txt.size(), 10, QChar('0'));
+		else
+			txt = QString::number(n);
+		m_textCursor->insertText(txt);
+		m_textCursor->movePosition(TextCursor::LEFT, TextCursor::MOVE_ANCHOR, txt.size());
+		makeCursorInView();
+		update();
+	}
+}
+void EditView::openPrevLine()
+{
+	pos_t pos = m_textCursor->position();
+	int vln = m_textCursor->viewLine();
+	m_textCursor->movePosition(TextCursor::BEG_LINE);
+	m_textCursor->movePosition(TextCursor::LEFT);
+	//qDebug() << "viewLine = " << m_textCursor->viewLine() << ", pos = " << m_textCursor->position();
+	//QString name = typeSettings()->name();
+	//bool bCPP = name == "CPP" || name == "C#" || name == "JAVA" || name == "JS" || name == "PHP";
+	QString itext = autoIndentText(/*bCPP,*/ false);
+	m_textCursor->insertText(itext);
+	if( !vln )
+		m_textCursor->movePosition(TextCursor::LEFT);
+	//##checkAssocParen();
+	makeCursorInView();
+	update();
+}
+void EditView::openNextLine()
+{
+	pos_t pos = m_textCursor->position();
+	int vln = m_textCursor->viewLine();
+	m_textCursor->movePosition(TextCursor::END_LINE);
+	//QString name = typeSettings()->name();
+	//bool bCPP = name == "CPP" || name == "C#" || name == "JAVA" || name == "JS" || name == "PHP";
+	QString itext = autoIndentText(/*bCPP*/);
+	m_textCursor->insertText(itext);
+	//##checkAssocParen();
+	makeCursorInView();
+	update();
+}
+void EditView::toggleUpperLowerCase()
+{
+	//	undone: BOX選択モード対応
+	if( m_textCursor->hasSelection() ) {
+		QString t = m_textCursor->selectedText();
+		bool toggled = false;
+		for(int i = 0; i < t.size(); ++i) {
+			wchar_t ch = t[i].unicode();
+			if( ch >= 'A' && ch <= 'Z' )
+				ch += 'a' - 'A';
+			else if( ch >= 'a' && ch <= 'z' )
+				ch += 'A' - 'a';
+			else
+				continue;
+			t[i] = QChar(ch);
+			toggled = true;
+		}
+		if( toggled )
+			m_textCursor->insertText(t);
+		//m_textCursor->clearSelection();
+	} else {
+		wchar_t ch = m_textCursor->charAt();
+		if( ch >= 'A' && ch <= 'Z' )
+			ch += 'a' - 'A';
+		else if( ch >= 'a' && ch <= 'z' )
+			ch += 'A' - 'a';
+		else {
+			m_textCursor->movePosition(TextCursor::RIGHT);
+			update();
+			return;
+		}
+		m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);
+		m_textCursor->insertText(QString(QChar(ch)));
+	}
+	update();
+}
+void EditView::toggleTrueFalse()
+{
+	TextCursor cur(*m_textCursor);
+	if( !cur.hasSelection() ) {
+		cur.movePosition(TextCursor::BEG_WORD);
+		cur.movePosition(TextCursor::END_WORD, TextCursor::KEEP_ANCHOR);
+	}
+	QString text = cur.selectedText();
+	if( text == "true" )
+		text = "false";
+	else if( text == "false" )
+		text = "true";
+	else
+		return;
+	*m_textCursor = cur;
+	m_textCursor->insertText(text);
+	update();
 }

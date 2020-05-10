@@ -17,6 +17,7 @@
 #include "charEncoding.h"
 #include "FindLineEdit.h"
 #include "TextCursor.h"
+#include "ViEngine.h"
 #include "../buffer/sssearch.h"
 
 #define		APP_NAME					"ViVi64"
@@ -95,6 +96,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
 	globSettings()->readSettings();
 	ui.setupUi(this);
+	m_viEngine = new ViEngine();
 	m_sssrc = new SSSearch();
 	m_sssrc2 = new SSSearch();
 	//g_settingsMgr = new SettingsMgr();
@@ -1076,7 +1078,7 @@ void MainWindow::on_action_SearchBackward_triggered()
 	EditView *view = currentWidget();
 	if( isEditView(view) && !pat.isEmpty() ) {
 		bool word = ui.action_WordSearch->isChecked();
-		view->findPrev(pat, word);
+		//##view->findPrev(pat, word);
 	}
 }
 void MainWindow::on_action_SearchForward_triggered()
@@ -1087,7 +1089,7 @@ void MainWindow::on_action_SearchForward_triggered()
 	EditView *view = currentWidget();
 	if( isEditView(view) /*&& !pat.isEmpty()*/ ) {
 		bool word = ui.action_WordSearch->isChecked();
-		view->findNext(pat, word);
+		//##view->findNext(pat, word);
 	}
 }
 void MainWindow::on_action_Search_triggered()

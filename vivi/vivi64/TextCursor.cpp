@@ -508,6 +508,11 @@ int TextCursor::endSSWord(int n)
 {
 	return m_pos;
 }
+void TextCursor::setMode(byte mode)
+{
+	if( (m_mode = mode) == VI_LINE_SEL_MODE )
+		m_anchorViewLine = m_viewLine;
+}
 void TextCursor::clearSelection()
 {
 	m_mode = NOMAL_MODE;

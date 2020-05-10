@@ -41,6 +41,8 @@ public:
 	bool	isKeisenMode() const;
 	wchar_t	charAt(pos_t pos) const;
 	size_t	bufferSize() const;
+	int		lineCount() const;
+	int		viewLineCount() const;
 	pos_t	cursorPosition() const;
 	int		cursorLine() const;		//	[0, EOFLine]
 	int		EOFLine() const;
@@ -72,9 +74,12 @@ public:
 	int		textWidth(const QString &) const;
 	int		textWidth(pos_t, ssize_t, /*pos_t,*/ const Buffer* = 0) const;
 	int		pxToOffset(int vln, int px) const;
+	int		columnToPos(int vln, int clmn) const;
+	int		posEOS(int dln) const;		//	dln 行の改行位置を返す
 	void	pointToLineOffset(const QPoint &, int &, int &) const;
 	bool 	getSelectedLineRange(int &dln1, int &dln2) const;
 	const TextCursor*	textCursor() const;
+	int	endOfLinePosition(int dln) const;		//	行の改行位置を返す
 public:
 	MainWindow	*mainWindow() { return m_mainWindow; }
 	void	setModified(bool = true);
@@ -83,15 +88,52 @@ public:
 	Document*	document() { return m_document; }
 	Buffer	*buffer() { return m_buffer; }
 	bool	makeCursorInView(bool bQuarter = false);
+	void	doViCommand();		//	viEngine が保有する vi コマンドを実行
+	void	doFindText(const QString &);		//	/ ? 検索処理
+	void	doFindText(const QString &, bool fwd);		//	/ ? 検索処理
+	void	curMove(int mv, int n = 1, bool vi = false);
 	void	jumpToLine(int ln, bool vi = false);		//	ln [0, EOFLine) ドキュメント行番号
+	void	setMark(pos_t pos, char ch);
+	void	markSetUnset();
+	void	clearMark(pos_t pos);
+	bool	nextMark(bool = false);		//	次のマーク位置に移動（非ループ）
+	bool	prevMark(bool = false);		//	前のマーク位置に移動（非ループ）
+	bool	jumpMarkPos(char ch);
+	void	scrollDown();
+	void	scrollUp();
+	void	scrollDownPage(bool = false);
+	void	scrollUpPage(bool= false);
+	void	scrollDownHalfPage();
+	void	scrollUpHalfPage();
+	void	exposeBottomOfScreen();
+	void	exposeTopOfScreen();
+	void	scrollCurTopOfScreen();
+	void	scrollCurQuarterOfScreen();
+	void	scrollCurCenterOfScreen();
+	void	scrollCurBottomOfScreen();
+	void	curTopCenterBottomOfScreen();
+	void	curTopOfScreen(bool vi = false, int cnt = 1);
+	void	curMiddleOfScreen(bool vi = false);
+	void	curBottomOfScreen(bool vi = false, int cnt = 1);
 	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
 	void	onCursorPosChanged();
 	void	doInsertText(const QString &, bool, bool, bool);
+	void	insertText(const QString &);
+	void	insertText(const QString &, const QString &);		//	選択領域の前後に文字挿入
 	void	insertTextRaw(pos_t pos, const QString &);
 	QString	indentText(int ln);
 	QString	autoIndentText(/*bool,*/ bool nxline = true);
 	void	paste(const QString &);
 	void	boxPaste(const QString &);
+	void	joinLines(int = 0, bool vi = false);
+	void	incDec(bool bInc, int n = 1);		//	インクリメント・デクリメント
+	void	encomment();
+	void	decomment();
+	void	blockComment();
+	void	openPrevLine();
+	void	openNextLine();
+	void	toggleUpperLowerCase();
+	void	toggleTrueFalse();
 	void	openUndoBlock();
 	void	closeUndoBlock();
 	void	closeAllUndoBlock();
@@ -107,7 +149,15 @@ public:
 	bool	findBackward(const QString &, uint opt = 0, bool loop = false, bool vi = false);
 	void	findNext(const QString&, bool word = false, bool vi = false);
 	void	findPrev(const QString&, bool word = false, bool vi = false);
+	void	findNext(const QString &, bool vi = false);
+	void	findPrev(const QString &, bool vi = false);
 protected:
+	void	viFindCharForward(wchar_t qch, bool bPrev, int mvmd, int repCnt);
+	void	viFindCharBackward(wchar_t qch, bool bPrev, int mvmd, int repCnt);
+	void	viYankText();
+	void	viYankLine();
+	void	viPastePrev();
+	void	viPasteNext();
 	bool	focusNextPrevChild(bool next);
 	void	resetCursorBlinking();
 	void	drawLineNumbers();
@@ -169,6 +219,8 @@ signals:
 	void	boxSelectModeChanged(bool);
 	void	vertScrolled(int);		//	垂直スクロール
 	void	horzScrolled(int);		//	垂直スクロール
+	void	textObject(wchar_t, bool bInner);
+	void	findTagsPat(const QString &pat, const QString &symbol);
 	void	tagJump(const QString &, int);
 	void	tagsJump(const QString &, const QString &, const QString &);
 	void	outputViewClosed();

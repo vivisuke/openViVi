@@ -104,6 +104,8 @@
     <ClCompile Include="tokenizer.cpp" />
     <ClCompile Include="typeSettings.cpp" />
     <ClCompile Include="TypeStgDlg.cpp" />
+    <ClCompile Include="viEditView.cpp" />
+    <ClCompile Include="ViEngine.cpp" />
     <ClCompile Include="viewLineMgr.cpp" />
     <ClCompile Include="ViewTokenizer.cpp" />
   </ItemGroup>
@@ -131,6 +133,7 @@
     <ClInclude Include="TextCursor.h" />
     <QtMoc Include="viewLineMgr.h" />
     <ClInclude Include="tokenizer.h" />
+    <QtMoc Include="ViEngine.h" />
     <ClInclude Include="ViewTokenizer.h" />
     <QtMoc Include="EditView.h" />
     <QtMoc Include="..\buffer\Buffer.h" />
