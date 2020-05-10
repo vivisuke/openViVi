@@ -179,7 +179,7 @@ QString autoIndentText(TypeSettings *typeSettings,
 		return pythonAutoIndect(typeSettings, text, buffer, pos0);
 	}
 	if( !bCPP ) return text;
-	if( buffer[pos0] == '}' ) {	//	カーソル位置が } の場合
+	if( pos0 < buffer.size() && buffer[pos0] == '}' ) {	//	カーソル位置が } の場合
 		int apos = assocParenPositionBackward(typeSettings, buffer, pos0, '}', '{');
 		if( apos >= 0 ) {		//	対応する括弧がある
 			text = text0;
