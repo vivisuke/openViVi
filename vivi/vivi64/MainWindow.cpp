@@ -168,6 +168,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.action_IgnoreCase->setChecked(globSettings()->boolValue(GlobalSettings::IGNORE_CASE));
 	ui.action_RegExp->setChecked(globSettings()->boolValue(GlobalSettings::REGEXP));
 	ui.action_Incremental->setChecked(globSettings()->boolValue(GlobalSettings::INC_SEARCH));
+	ui.action_viCommand->setChecked(globSettings()->boolValue(GlobalSettings::VI_COMMAND));
 	//
 		on_action_New_triggered();
 }
@@ -1326,6 +1327,12 @@ void MainWindow::on_action_TypeSettings_triggered()
 }
 void MainWindow::on_action_GlobalSettings_triggered()
 {
+}
+void MainWindow::on_action_viCommand_triggered()
+{
+	bool b = ui.action_viCommand->isChecked();
+	globSettings()->setBoolValue(GlobalSettings::VI_COMMAND, b);
+	globSettings()->writeSettings();
 }
 void MainWindow::on_action_About_ViVi_triggered()
 {
