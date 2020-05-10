@@ -18,6 +18,7 @@
 #include <iostream>
 #include <exception>
 #include <new>
+#include <assert.h>
 
 //#ifndef		Q_OS_WIN32
 //#define		Q_OS_WIN32		1
@@ -100,11 +101,13 @@ public:
 	void setGapIndex(pos_t gapIndex) const { move_gap(gapIndex); }
 	ssize_t gapSize() const { return m_gapSize; }
 	value_type operator[](pos_t ix) const {	//	operator[] は範囲チェックを行わない
+		assert( ix >= 0 && ix < size() );
 		if( ix >= m_gapIndex ) ix += m_gapSize;
 		return m_data[ix];
 		//return at(ix);
 	}
 	value_type &operator[](pos_t ix) {	//	operator[] は範囲チェックを行わない
+		assert( ix >= 0 && ix < size() );
 		if( ix >= m_gapIndex ) ix += m_gapSize;
 		return m_data[ix];
 		//return ref(ix);
