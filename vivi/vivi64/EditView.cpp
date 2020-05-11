@@ -774,12 +774,15 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		break;
 	case Qt::Key_Return:
 	case Qt::Key_Enter:
+		text = "\n";
+#if	0
 		switch( m_mainWindow->newLineType() ) {
 		default:
 		case NEWLINE_CRLF:	text = "\r\n";	break;
 		case NEWLINE_LF:	text = "\n";	break;
 		case NEWLINE_CR:	text = "\r";	break;
 		}
+#endif
 		goto ins;
 	case Qt::Key_Tab:
 		text = "\t";

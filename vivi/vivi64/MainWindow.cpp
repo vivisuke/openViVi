@@ -174,7 +174,10 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.action_Incremental->setChecked(globSettings()->boolValue(GlobalSettings::INC_SEARCH));
 	ui.action_viCommand->setChecked(globSettings()->boolValue(GlobalSettings::VI_COMMAND));
 	//
-		on_action_New_triggered();
+	if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) )
+		setMode(MODE_VI);
+	//
+	on_action_New_triggered();
 }
 MainWindow::~MainWindow()
 {
