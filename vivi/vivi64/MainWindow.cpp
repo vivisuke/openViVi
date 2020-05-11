@@ -30,6 +30,14 @@
 #define		MAX_CLIPBOARD_HIST		100
 #define		MAX_N_EXT_CMD				32
 
+#define		MODE_WIDTH				64
+enum {
+	MODE_INS = 0,
+	MODE_REP,
+	MODE_VI,
+	MODE_EX,
+};
+
 int	g_docNumber = 0;
 SettingsMgr	g_settingsMgr;
 GlobalSettings	g_globSettings;
@@ -387,6 +395,14 @@ void MainWindow::setupStatusBar()
 	m_typeCB->setMaxVisibleItems(m_typeCB->count());
 	connect(m_typeCB, SIGNAL(currentIndexChanged(const QString &)),
 			this, SLOT(onTypeChanged(const QString &)));
+	statusBar()->addPermanentWidget(m_modeCB = new QComboBox());	//	モード：ins/rep/vi/ex
+	m_modeCB->setMaximumWidth(MODE_WIDTH);
+	m_modeCB->addItem(tr("ins"));
+	m_modeCB->addItem(tr("rep"));
+	m_modeCB->addItem(tr("vi"));
+	m_modeCB->addItem(tr("ex"));
+	m_modeCB->setMaxVisibleItems(m_modeCB->count());
+	connect(m_modeCB, SIGNAL(currentIndexChanged(int)), this, SLOT(onModeChanged(int)));
 }
 int MainWindow::newLineType() const
 {
@@ -418,6 +434,9 @@ void MainWindow::onTypeChanged(const QString &type)
 	setTypeSettings(view, typeSettings);
 	view->setFocus();
 	//view->update();
+}
+void MainWindow::onModeChanged(int ix)
+{
 }
 void MainWindow::onNewLineCodeChanged(int)
 {

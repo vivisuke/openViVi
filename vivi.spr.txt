@@ -456,10 +456,10 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0442 ● C 05/10            │ToDo│buffer[buffer.size()] 参照の場合は、0 を返した方がよい？
 0443 ◎ C 05/10 05/10 0.011│ToDo│gap_buffer::operator[](ix)：assert() による範囲チェック
 0444 ◎ C 05/11 05/11 0.012│ToDo│Settings > viCommand 追加
-0445 ● C 05/11            │ToDo│ステータスバー右端に ins/rep/vi/ex ドロップダウン追加
+0445 ◎ C 05/11 05/11 0.012│ToDo│ステータスバー右端に ins/rep/vi/ex ドロップダウン追加
 0446 ◎ C 05/11 05/11 0.012│ToDo│起動時：Settings > viCommand チェック
 0447 ◎ C 05/11 05/11 0.012│ToDo│Settings > viCommand 処理
-0448 ● C 05/11            │ToDo│
+0448 ● C 05/11            │ToDo│vi/ex モードのとき、viCommand 無効にされたときの処理
 0449 ● C 05/11            │ToDo│
 0450 ● C 05/11            │ToDo│
 0451 ● C 05/11            │ToDo│

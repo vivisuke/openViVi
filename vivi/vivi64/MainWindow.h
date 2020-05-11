@@ -130,6 +130,7 @@ public slots:
     void	onCharEncodingChanged(const QString&);
     void	onBomChanged(bool);
 	void	onTypeChanged(const QString&);
+	void	onModeChanged(int);
 	void	onNewLineCodeChanged(int);
     void	onCursorPosChanged(int, int);
 	void	showMessage(const QString&, int timeout = 0);
@@ -177,6 +178,7 @@ private:
 	QComboBox	*m_encodingCB;
 	QComboBox	*m_newLineCodeCB;
 	QComboBox	*m_typeCB;
+	QComboBox	*m_modeCB;				//	ins/rep/vi/ex
 	QIcon	*m_iconCPP;
 	QIcon	*m_iconCS;
 	QIcon	*m_iconCSS;
