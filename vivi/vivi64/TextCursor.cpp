@@ -1,4 +1,5 @@
 ﻿#include "TextCursor.h"
+#include "assocParen.h"
 #include "EditView.h"
 #include "viewLineMgr.h"
 #include "Document.h"
@@ -201,6 +202,37 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 		vln = m_view->viewLineMgr()->positionToViewLine(pos);
 		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
 		break;
+	case NEXT_SS_WORD:
+		if( pos == m_view->bufferSize() ) return;
+		pos = nextSSWord(n);
+		while( pos < m_view->bufferSize() && pos >= viewLineStartPosition(vln+1) ) {
+			++vln;
+		}
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		break;
+	case NEXT_SS_WORD_NOSKIPSPC:
+		if( pos == m_view->bufferSize() ) return;
+		pos = nextSSWord(n, true);
+		while( pos < m_view->bufferSize() && pos >= viewLineStartPosition(vln+1) ) {
+			++vln;
+		}
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		break;
+	case PREV_SS_WORD:
+		pos = prevSSWord(n);
+		while( pos < m_view->viewLineStartPosition(vln) ) {
+			--vln;
+		}
+		m_px = m_view->viewLineOffsetToPx(vln, pos - m_view->viewLineStartPosition(vln));
+		break;
+	case END_SS_WORD:
+		if( pos == m_view->bufferSize() ) return;
+		pos = endSSWord(n);
+		if( vi && mode != KEEP_ANCHOR )
+			--pos;
+		vln = m_view->viewLineMgr()->positionToViewLine(pos);
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		break;
 	case BEG_LINE:
 		pos = viewLineStartPosition(vln);
 		m_px = m_view->viewLineOffsetToPx(vln, 0);
@@ -247,6 +279,133 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 		vln = m_view->EOFLine();
 		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
 		break;
+	case ASSOC_PAREN: {
+		//pos = associatedParen();
+		bool bSharp;
+		pos_t pos0 = pos;
+		pos = assocParenPosition(m_view->typeSettings(), *m_view->buffer(), pos, bSharp);
+		vln = m_view->viewLineMgr()->positionToViewLine(pos);
+		if( mode == KEEP_ANCHOR && pos > pos0 && bSharp ) {
+			//	#if から #endif までを選択する場合は #endif の次行まで選択
+			pos = m_view->viewLineStartPosition(vln+1) - 1;
+		}
+		if( mode == KEEP_ANCHOR ) {
+			if( pos < m_anchor )
+				++m_anchor;
+			else if( pos > m_anchor )
+				++pos;
+		}
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		break;
+	}
+	case BEG_OF_CUR_SECTION:
+		if( !dln ) {
+			pos = 0;
+			vln = 0;
+			break;
+		}
+		pos = m_view->viewLineStartPosition(dln);
+		for (int i = 0; pos != 0 && i < n; ++i) {
+			if( m_view->charAt(pos) == '{' ) {
+				pos = m_view->viewLineStartPosition(--dln);
+			}
+			while( pos != 0 && m_view->charAt(pos) != '{' ) {
+				pos = m_view->viewLineStartPosition(--dln);
+			}
+		}
+		vln = m_view->docLineToViewLine(dln);
+		break;
+	case BEG_OF_NEXT_SECTION:
+		pos = m_view->viewLineStartPosition(dln);
+		for (int i = 0; pos < m_view->bufferSize() && i < n; ++i) {
+			if( m_view->charAt(pos) == '{' ) {
+				pos = m_view->viewLineStartPosition(++dln);
+			}
+			while( pos < m_view->bufferSize() && m_view->charAt(pos) != '{' ) {
+				pos = m_view->viewLineStartPosition(++dln);
+			}
+		}
+		vln = m_view->docLineToViewLine(dln);
+		break;
+	case PREV_BLANK_LINE:
+		pos = m_view->viewLineStartPosition(vln);
+		for (int i = 0; pos != 0 && i < n; ++i) {
+			while( pos != 0 && isNewLine(m_view->charAt(pos)) ) {
+				--vln;
+				pos = m_view->viewLineStartPosition(vln);
+			}
+			while( pos != 0 && !isNewLine(m_view->charAt(pos)) ) {
+				--vln;
+				pos = m_view->viewLineStartPosition(vln);
+			}
+		}
+		break;
+	case NEXT_BLANK_LINE:
+		pos = m_view->viewLineStartPosition(vln);
+		for (int i = 0; pos < m_view->bufferSize() && i < n; ++i) {
+			while(  pos < m_view->bufferSize() && isNewLine(m_view->charAt(pos)) ) {
+				++vln;
+				pos = m_view->viewLineStartPosition(vln);
+			}
+			while(  pos < m_view->bufferSize() && !isNewLine(m_view->charAt(pos)) ) {
+				++vln;
+				pos = m_view->viewLineStartPosition(vln);
+			}
+		}
+		break;
+	case PREV_HEADING_LINE: {
+		int ln = m_view->viewLineToDocLine(vln);
+		pos = m_view->lineStartPosition(ln);
+		if( pos != 0 ) {
+			//ln = m_view->viewLineToDocLine(--vln, offset);
+			pos = m_view->lineStartPosition(--ln);		//	強制的に１行移動
+		}
+		while( pos != 0 && isSpaceOrNewLineOrSharp(m_view->charAt(pos)) ) {
+			//ln = m_view->viewLineToDocLine(--vln, offset);
+			pos = m_view->lineStartPosition(--ln);
+		}
+		pos_t p = pos;
+		//int v = vln;
+		for(;;) {
+			if( !pos ) {
+				p = pos;
+				break;
+			}
+			if( isSpaceOrNewLineOrSharp(m_view->charAt(pos)) )
+				break;
+			p = pos;
+			pos = m_view->lineStartPosition(--ln);
+		}
+#if	0
+		while( pos != 0 && !isSpaceOrNewLineOrSharp(m_view->charAt(pos)) ) {
+			p = pos;
+			//ln = m_view->viewLineToDocLine(--vln, offset);
+			pos = m_view->lineStartPosition(--ln);
+		}
+#endif
+		vln = m_view->viewLineMgr()->positionToViewLine(pos = p);
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		//vln = m_view->docLineToViewLine(ln = l);
+		//ln = m_view->viewLineToDocLine(vln = v, offset);
+		break;
+	}
+	case NEXT_HEADING_LINE: {
+		int ln = m_view->viewLineToDocLine(vln);
+		pos = m_view->lineStartPosition(ln);
+		while( pos < m_view->bufferSize() && !isSpaceOrNewLineOrSharp(m_view->charAt(pos)) ) {
+			//ln = m_view->viewLineToDocLine(++vln, offset);
+			pos = m_view->lineStartPosition(++ln);
+		}
+		while( pos < m_view->bufferSize() && isSpaceOrNewLineOrSharp(m_view->charAt(pos)) ) {
+			//++vln;
+			//ln = m_view->viewLineToDocLine(++vln, offset);
+			pos = m_view->lineStartPosition(++ln);
+		}
+		vln = m_view->viewLineMgr()->positionToViewLine(pos);
+		break;
+	}
+	default:
+		return;
 	}
 	//m_pos = pos;
 	setLineAndPosition(vln, pos, mode);
