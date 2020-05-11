@@ -393,9 +393,11 @@ void MainWindow::setupStatusBar()
 	m_modeCB->setMaximumWidth(MODE_WIDTH);
 	m_modeCB->addItem(tr("ins"));
 	m_modeCB->addItem(tr("rep"));
-	m_modeCB->addItem(tr("vi"));
-	m_modeCB->addItem(tr("ex"));
-	m_modeCB->setMaxVisibleItems(m_modeCB->count());
+	if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) ) {
+		m_modeCB->addItem(tr("vi"));
+		m_modeCB->addItem(tr("ex"));
+	}
+	m_modeCB->setMaxVisibleItems(4 /*m_modeCB->count()*/);
 	connect(m_modeCB, SIGNAL(currentIndexChanged(int)), this, SLOT(onModeChanged(int)));
 }
 int MainWindow::newLineType() const
@@ -1355,6 +1357,14 @@ void MainWindow::on_action_viCommand_triggered()
 	bool b = ui.action_viCommand->isChecked();
 	globSettings()->setBoolValue(GlobalSettings::VI_COMMAND, b);
 	globSettings()->writeSettings();
+	if( b ) {
+		m_modeCB->addItem(tr("vi"));
+		m_modeCB->addItem(tr("ex"));
+	} else {
+		if( mode() >= MODE_VI ) setMode(MODE_INS);
+		m_modeCB->removeItem(MODE_EX);
+		m_modeCB->removeItem(MODE_VI);
+	}
 }
 void MainWindow::on_action_About_ViVi_triggered()
 {

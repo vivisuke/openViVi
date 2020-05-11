@@ -1396,21 +1396,24 @@ void EditView::drawCursor(QPainter& pt)
 	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth;
 	if( !m_preeditString.isEmpty() ) px += m_preeditWidth;
 	//int ht = QFontMetrics(m_font).ascent();
+	int wd = m_fontWidth;
+	if( pos < document()->size() && charAt(pos) >= 0x100 ) {	//	手抜き判定
+		wd *= 2;
+	}
 	const auto mode = mainWindow()->mode();
 	switch( mode ) {
 	case MODE_INS:
 		pt.fillRect(QRect(px - hv, py, CURSOR_WD, m_fontHeight),
 							typeSettings()->color(TypeSettings::CURSOR));
 		break;
-	case MODE_VI: {
-		int wd = m_fontWidth;
-		if( pos < document()->size() && charAt(pos) >= 0x100 ) {	//	手抜き判定
-			wd *= 2;
-		}
+	case MODE_REP:
+		pt.fillRect(QRect(px - hv, py, wd, m_fontHeight),
+							typeSettings()->color(TypeSettings::CURSOR));
+		break;
+	case MODE_VI:
 		pt.fillRect(QRect(px - hv, py+m_fontHeight/2, wd, m_fontHeight/2),
 							typeSettings()->color(TypeSettings::CURSOR));
 		break;
-	}
 	}
 }
 int EditView::textWidth(const QString &text) const
