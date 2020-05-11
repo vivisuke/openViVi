@@ -906,9 +906,9 @@ void EditView::paintEvent(QPaintEvent *event)
 	drawPreeditString(pt);
 	drawMatchedBG(pt);
 	drawSelection(pt);
+	drawCursor(pt);				//	テキストカーソル表示
 	drawTextArea(pt);			//	テキストエイア描画
 	drawMinMap(pt);				//	ミニマップ描画
-	drawCursor(pt);				//	テキストカーソル表示
 	drawLineCursor(pt);			//	行カーソル表示
 	//	行番号部分背景描画
 	pt.setOpacity(1.0);
@@ -1396,8 +1396,22 @@ void EditView::drawCursor(QPainter& pt)
 	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth;
 	if( !m_preeditString.isEmpty() ) px += m_preeditWidth;
 	//int ht = QFontMetrics(m_font).ascent();
-	pt.fillRect(QRect(px - hv, py, CURSOR_WD, m_fontHeight),
-						typeSettings()->color(TypeSettings::CURSOR));
+	const auto mode = mainWindow()->mode();
+	switch( mode ) {
+	case MODE_INS:
+		pt.fillRect(QRect(px - hv, py, CURSOR_WD, m_fontHeight),
+							typeSettings()->color(TypeSettings::CURSOR));
+		break;
+	case MODE_VI: {
+		int wd = m_fontWidth;
+		if( pos < document()->size() && charAt(pos) >= 0x100 ) {	//	手抜き判定
+			wd *= 2;
+		}
+		pt.fillRect(QRect(px - hv, py+m_fontHeight/2, wd, m_fontHeight/2),
+							typeSettings()->color(TypeSettings::CURSOR));
+		break;
+	}
+	}
 }
 int EditView::textWidth(const QString &text) const
 {
