@@ -157,6 +157,7 @@ public slots:
 	void	colorTheme();
 	void	aboutToShowColorTheme();
 	void	viModeChanged();
+	void	viCmdFixed();
 	
 private:
 	Ui::MainWindowClass ui;

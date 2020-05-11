@@ -100,6 +100,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.setupUi(this);
 	m_viEngine = new ViEngine();
 	connect(m_viEngine, SIGNAL(modeChanged()), this, SLOT(viModeChanged()));
+	connect(m_viEngine, SIGNAL(cmdFixed()), this, SLOT(viCmdFixed()));
 	m_sssrc = new SSSearch();
 	m_sssrc2 = new SSSearch();
 	//g_settingsMgr = new SettingsMgr();
@@ -444,6 +445,26 @@ void MainWindow::viModeChanged()
 {
 	int vm = m_viEngine->mode();
 	setMode(vm);
+}
+void MainWindow::viCmdFixed()
+{
+#if	0
+	if( m_viEngine->cmd() == ViCmd::SAVE_ALL_EXIT ) {
+		on_action_SaveAll_Exit_triggered();
+		return;
+	}
+	if( m_viEngine->cmd() == ViCmd::EXEC_YANK_TEXT) {
+		bool bLine;
+		QString text = m_viEngine->yankText(bLine);
+		m_viEngine->resetStatus();
+		m_viEngine->processCommand(text);
+		return;
+	}
+#endif
+	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
+	if( isEditView(view) ) {
+		view->doViCommand();
+	}
 }
 void MainWindow::onNewLineCodeChanged(int)
 {
