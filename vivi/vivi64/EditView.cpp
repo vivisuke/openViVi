@@ -1090,9 +1090,10 @@ void EditView::drawLineText(QPainter &pt,
 							bool &inLineComment,
 							QString &quotedText)
 {
+	pt.setFont(m_font);
 	int pxLimit = rect().width() - MINMAP_WIDTH + m_scrollX0*m_fontWidth;
 	QFontMetrics fm(m_font);
-	QFontMetrics fmBold(m_fontBold);
+	//QFontMetrics fmBold(m_fontBold);
 	QFontMetrics fmMB(m_fontMB);
 	const auto descent = fm.descent();
 	const auto chWidth = m_fontWidth;		//fm.width(QString("8"));
@@ -1203,12 +1204,16 @@ void EditView::drawLineText(QPainter &pt,
 			}
 		}
 		if( !token.isEmpty() ) {
+#if	0
 			if( bold )
 				pt.setFont(m_fontBold);
 			else
 				pt.setFont(m_font);
+#endif
 			pt.setPen(col);
-			px += drawTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ /*, bold*/);
+			px += drawTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+			//if( bold )
+			//	drawTokenText(pt, token, clmn, px+1, py, peDX, tabwd, chWidth, descent /*, col*/ /*, bold*/);
 		}
 		//
 		if( !nextToken.isEmpty() ) {
@@ -1227,9 +1232,9 @@ int EditView::drawTokenText(QPainter& pt,
 								int peDX,		//	IME変換候補表示のためのX座標差分
 								int tabwd,
 								const int chWidth,
-								const int descent)		//	フォントのベースライン下高さ
+								const int descent,		//	フォントのベースライン下高さ
 								//QColor& col)
-								//bool bold)
+								bool bold)
 {
 	int wd = 0;	 tabwd;
 	int sx = m_scrollX0 * m_fontWidth;
@@ -1249,6 +1254,8 @@ int EditView::drawTokenText(QPainter& pt,
 	if (token[0] < 0x100) {
 		//pt.setFont(m_font);
 		pt.drawText(px + peDX - sx, py, token);
+		if( bold )
+			pt.drawText(px + peDX - sx + 1, py, token);
 		wd = chWidth * token.size();
 	} else {
 		auto x = px + peDX;
@@ -1261,6 +1268,8 @@ int EditView::drawTokenText(QPainter& pt,
 			}
 			else {
 				pt.drawText(x - sx, py + descent - m_lineHeight, chWidth * 2, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
+				if( bold )
+					pt.drawText(x - sx + 1, py + descent - m_lineHeight, chWidth * 2, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
 				x += chWidth * 2;
 				wd += chWidth * 2;
 			}
@@ -1430,7 +1439,7 @@ int EditView::textWidth(pos_t first, ssize_t sz, /*pos_t last,*/ const Buffer* p
 	if( !sz ) return 0;
 	if( pbuffer == 0 ) pbuffer = buffer();
 	QFontMetrics fm = fontMetrics();
-	QFontMetrics fmBold(m_fontBold);
+	//QFontMetrics fmBold(m_fontBold);
 	int nTab = document()->typeSettings()->intValue(TypeSettings::TAB_WIDTH);
 	//int tabWidth = fm.width(QString(nTab, QChar(' ')));
 	int wd = 0;
