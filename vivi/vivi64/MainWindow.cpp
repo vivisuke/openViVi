@@ -99,6 +99,7 @@ MainWindow::MainWindow(QWidget *parent)
 	globSettings()->readSettings();
 	ui.setupUi(this);
 	m_viEngine = new ViEngine();
+	connect(m_viEngine, SIGNAL(modeChanged()), this, SLOT(viModeChanged()));
 	m_sssrc = new SSSearch();
 	m_sssrc2 = new SSSearch();
 	//g_settingsMgr = new SettingsMgr();
@@ -434,10 +435,15 @@ void MainWindow::onTypeChanged(const QString &type)
 void MainWindow::onModeChanged(int md)
 {
 	if( md < MODE_EX ) {
-	EditView *view = currentWidget();
-	if( isEditView(view) )
-		view->setFocus();
+		EditView *view = currentWidget();
+		if( isEditView(view) )
+			view->setFocus();
 	}
+}
+void MainWindow::viModeChanged()
+{
+	int vm = m_viEngine->mode();
+	setMode(vm);
 }
 void MainWindow::onNewLineCodeChanged(int)
 {
@@ -1329,6 +1335,20 @@ void MainWindow::resetBoxKeisenMode()
 void MainWindow::setMode(int md)
 {
 	m_modeCB->setCurrentIndex(md);
+	switch( md ) {
+	case MODE_INS:
+		viEngine()->setMode(Mode::INSERT);
+		break;
+	case MODE_REP:
+		viEngine()->setMode(Mode::REPLACE);
+		break;
+	case MODE_VI:
+		viEngine()->setMode(Mode::COMMAND);
+		break;
+	case MODE_EX:
+		viEngine()->setMode(Mode::CMDLINE);
+		break;
+	}
 }
 void MainWindow::on_action_BoxSelect_triggered()
 {

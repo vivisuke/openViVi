@@ -11,6 +11,7 @@
 #include "TextCursor.h"
 #include "viewLineMgr.h"
 #include "charEncoding.h"
+#include "ViEngine.h"
 #include "../buffer/Buffer.h"
 #include "../buffer/bufferUtl.h"
 #include "../buffer/UTF16.h"
@@ -710,6 +711,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 {
 	auto rct = rect();
 	int nLines = rct.height() / m_lineHeight;
+	ViEngine *viEngine = mainWindow()->viEngine();
 	const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
 	const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
 	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
@@ -1743,6 +1745,10 @@ bool  EditView::getSelectedLineRange(int &ln1, int &ln2) const
 void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 {
 	if( text.isEmpty() ) return;
+	if( mainWindow()->mode() == MODE_VI ) {
+		mainWindow()->viEngine()->processCommand(text, m_textCursor->hasSelection());
+		return;
+	}
 	bool ai = false;
 	int ln = positionToLine(m_textCursor->position());
 	if( text == "\t" ) {

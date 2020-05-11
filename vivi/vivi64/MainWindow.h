@@ -156,6 +156,7 @@ public slots:
     void	textSearched(const QString&txt, bool word);
 	void	colorTheme();
 	void	aboutToShowColorTheme();
+	void	viModeChanged();
 	
 private:
 	Ui::MainWindowClass ui;
