@@ -663,14 +663,82 @@ int TextCursor::endWord(int n)
 }
 int TextCursor::nextSSWord(int n, bool cw)
 {
+	wchar_t ch;
+	while( --n >= 0 ) {
+		uchar type = getCharType(ch);		//	ch に文字を読み込む
+		switch( type ) {
+		default:
+			do {
+				//mvRight();
+				++m_pos;
+			} while( m_pos < m_view->bufferSize() && (type = getCharType(ch)) != CTSB_SPACE
+				&& type != CTDB_SPACE && type != CT_NEWLINE && type != CT_EOF );
+			if( cw )
+				return m_pos;		//	cw の場合は継続空白類をスキップしない
+			//	下にスルー
+		case CTSB_SPACE:
+		case CT_NEWLINE:
+		case CTDB_SPACE:
+			do {
+				//mvRight();
+				++m_pos;
+			} while( m_pos < m_view->bufferSize() &&
+					((type = getCharType(ch)) == CTSB_SPACE || type == CTDB_SPACE || type == CT_NEWLINE) );
+			break;
+		}
+	}
 	return m_pos;
 }
 int TextCursor::prevSSWord(int n)
 {
+	byte type;
+	wchar_t ch;
+	while( --n >= 0 ) {
+		if( !m_pos ) break;		//	バッファ先頭にいる場合
+		--m_pos;
+		if( !m_pos ) break;
+		while( (type = getCharType(ch)) == CTSB_SPACE || type == CTDB_SPACE || type == CT_NEWLINE ) {//	継続スペース
+			if( !--m_pos )
+				return true;
+		}
+		type = getCharType(ch);
+		if( type == CT_EOF ) break;
+		switch( type ) {
+		default:
+			do {
+				if( !--m_pos )
+					return true;
+			} while( (type = getCharType(ch)) != CTSB_SPACE && type != CTDB_SPACE && type != CT_NEWLINE && type != CT_EOF );
+			if( /*!skipTailSpaces ||*/ (/*!skipNewlines &&*/ type == CT_NEWLINE) ) break;
+		case CTSB_SPACE:
+		case CT_NEWLINE:
+		case CTDB_SPACE:
+			//do {
+			//	mvLeft();
+			//} while( (type = getCharType(ch)) == CTSB_SPACE || type == CTDB_SPACE || type == CT_NEWLINE );
+			break;
+		}
+		//mvRight();
+		++m_pos;
+	}
 	return m_pos;
 }
 int TextCursor::endSSWord(int n)
 {
+	wchar_t ch;
+	if( getCharType(ch) == CT_EOF ) return false;
+	uchar type;
+	++m_pos;
+	while( --n >= 0 ) {
+		while( (type = getCharType(ch)) == CT_NEWLINE || type == CTSB_SPACE || type == CTDB_SPACE ) {
+			++m_pos;
+		}
+		while( m_pos < m_view->bufferSize() && (type = getCharType(ch)) != CT_NEWLINE
+					&& type != CTSB_SPACE && type != CTDB_SPACE && type != CT_EOF )
+		{
+			++m_pos;
+		}
+	}
 	return m_pos;
 }
 void TextCursor::setMode(byte mode)
