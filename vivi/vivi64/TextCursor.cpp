@@ -699,7 +699,7 @@ int TextCursor::prevSSWord(int n)
 		if( !m_pos ) break;
 		while( (type = getCharType(ch)) == CTSB_SPACE || type == CTDB_SPACE || type == CT_NEWLINE ) {//	継続スペース
 			if( !--m_pos )
-				return true;
+				return m_pos;
 		}
 		type = getCharType(ch);
 		if( type == CT_EOF ) break;
@@ -707,7 +707,7 @@ int TextCursor::prevSSWord(int n)
 		default:
 			do {
 				if( !--m_pos )
-					return true;
+					return m_pos;
 			} while( (type = getCharType(ch)) != CTSB_SPACE && type != CTDB_SPACE && type != CT_NEWLINE && type != CT_EOF );
 			if( /*!skipTailSpaces ||*/ (/*!skipNewlines &&*/ type == CT_NEWLINE) ) break;
 		case CTSB_SPACE:
