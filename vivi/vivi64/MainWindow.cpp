@@ -30,7 +30,7 @@
 #define		MAX_CLIPBOARD_HIST		100
 #define		MAX_N_EXT_CMD				32
 
-#define		MODE_WIDTH				64
+#define		MODE_WIDTH				48
 
 int	g_docNumber = 0;
 SettingsMgr	g_settingsMgr;
