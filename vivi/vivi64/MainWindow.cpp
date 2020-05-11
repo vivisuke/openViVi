@@ -429,8 +429,13 @@ void MainWindow::onTypeChanged(const QString &type)
 	view->setFocus();
 	//view->update();
 }
-void MainWindow::onModeChanged(int ix)
+void MainWindow::onModeChanged(int md)
 {
+	if( md < MODE_EX ) {
+	EditView *view = currentWidget();
+	if( isEditView(view) )
+		view->setFocus();
+	}
 }
 void MainWindow::onNewLineCodeChanged(int)
 {
