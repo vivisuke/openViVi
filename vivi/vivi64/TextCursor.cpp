@@ -213,6 +213,12 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 			pos = viewLineStartPosition(vln);
 		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
 		break;
+	case FIRST_NOSPACE:
+		pos = viewLineStartPosition(vln);
+		while( pos < m_view->bufferSize() && isSpace(m_view->charAt(pos)) )
+			++pos;
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		break;
 	case LAST_CHAR_LINE:
 	case END_LINE: {
 		if( pos != m_view->bufferSize() ) {
