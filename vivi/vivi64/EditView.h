@@ -175,6 +175,7 @@ protected:
 	void	drawSelection(QPainter&);
 	void	drawMinMap(QPainter&);
 	void	updateLineNumberInfo();
+	void	onEscape(bool, bool, bool);
 	void	onResized();
 	void	insertTextSub(QString, bool ctrl, bool shift, bool alt);
 	void	onBackSpace(bool ctrl, bool shift, bool alt);

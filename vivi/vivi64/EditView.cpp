@@ -768,10 +768,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		m_textCursor->movePosition(TextCursor::DOWN, mvmd, nLines);
 		break;
 	case Qt::Key_Escape:
-		//onEscape(ctrl, shift, alt);
-		m_textCursor->clearSelection();
-		m_fallingChars.clear();
-		mainWindow()->resetBoxKeisenMode();
+		onEscape(ctrl, shift, alt);
 		break;
 	case Qt::Key_Return:
 	case Qt::Key_Enter:
@@ -822,6 +819,18 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	onCursorPosChanged();
 	makeCursorInView();
 	update();
+}
+void EditView::onEscape(bool ctrl, bool shift, bool alt)
+{
+	m_textCursor->clearSelection();
+	m_fallingChars.clear();
+	mainWindow()->resetBoxKeisenMode();
+	//
+	auto md = mainWindow()->mode();
+	if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) && (md == MODE_INS || md == MODE_REP) ) {
+		mainWindow()->setMode(MODE_VI);
+		update();
+	}
 }
 void EditView::doInsertText(const QString &text, bool ctrl, bool shift, bool alt)
 {

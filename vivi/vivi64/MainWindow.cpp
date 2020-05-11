@@ -31,12 +31,6 @@
 #define		MAX_N_EXT_CMD				32
 
 #define		MODE_WIDTH				64
-enum {
-	MODE_INS = 0,
-	MODE_REP,
-	MODE_VI,
-	MODE_EX,
-};
 
 int	g_docNumber = 0;
 SettingsMgr	g_settingsMgr;
@@ -1324,6 +1318,10 @@ void MainWindow::resetBoxKeisenMode()
 {
 	ui.action_BoxSelect->setChecked(false);
 	ui.action_KeisenMode->setChecked(false);
+}
+void MainWindow::setMode(int md)
+{
+	m_modeCB->setCurrentIndex(md);
 }
 void MainWindow::on_action_BoxSelect_triggered()
 {

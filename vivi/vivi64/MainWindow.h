@@ -5,6 +5,7 @@
 #include <QTreeWidget>
 #include <QCheckBox>
 #include <QLabel>
+#include <QCombobox>
 #include "ui_MainWindow.h"
 #include "EditView.h"
 class FindLineEdit;
@@ -12,6 +13,13 @@ class FindLineEdit;
 //typedef QPlainTextEdit	EditView;
 
 typedef const char cchar;
+
+enum {
+	MODE_INS = 0,
+	MODE_REP,
+	MODE_VI,
+	MODE_EX,
+};
 
 //class SettingsMgr;
 class TypeSettings;
@@ -46,9 +54,11 @@ public:
 	bool	isKeisenMode() const;		// { return ui.action_Keisen->isChecked(); }
 	QString	findString() const { return m_findString; }
 	const ViEngine	*viEngine() const { return m_viEngine; }
+	int		mode() const { return m_modeCB->currentIndex(); }
 public:
 	ViEngine	*viEngine() { return m_viEngine; }
 	void	resetBoxKeisenMode();
+	void	setMode(int);
 protected:
 	//bool	focusNextPrevChild(bool next);
 	void	createActions();
