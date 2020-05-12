@@ -3,6 +3,8 @@
 #include "EditView.h"
 #include "viewLineMgr.h"
 #include "Document.h"
+#include "MainWindow.h"
+#include "ViEngine.h"
 #include "../buffer/UTF16.h"
 #include "../buffer/bufferUtl.h"
 
@@ -825,8 +827,31 @@ bool TextCursor::getSelectedLineRange(int &dln1, int &dln2) const
 		--dln2;
 	return true;
 }
-void TextCursor::deleteChar(bool BS, bool vi)
+void TextCursor::deleteChar(bool isBS, bool vi)
 {
+#if	0
+	if( isBoxSelectionMode() ) {
+		deleteBoxSelected(isBS);
+		return;
+	}
+#endif
+	if( !hasSelection() ) {
+		movePosition(RIGHT, KEEP_ANCHOR);
+		if( !hasSelection() ) return;
+	}
+	if( vi ) {
+		QString txt = selectedText();
+		m_view->mainWindow()->viEngine()->setYankText(txt, /*bLine:*/false);
+	}
+	pos_t pos = selectionFirst();
+	m_view->deleteText(pos, selectionLast() - pos, isBS);
+	setPosition(pos);
+	clearSelection();
+	m_viewLine = m_view->viewLineMgr()->positionToViewLine(pos);
+	m_px = m_view->viewLineOffsetToPx(m_viewLine, pos - m_view->viewLineStartPosition(m_viewLine));
+	m_view->update();
+	m_view->document()->updateView(m_view);
+#if	0
 	pos_t pos = selectionFirst();
 	if( pos == m_view->document()->size() ) return;
 	if( !hasSelection() ) {
@@ -840,6 +865,7 @@ void TextCursor::deleteChar(bool BS, bool vi)
 	m_px = m_view->viewLineOffsetToPx(m_viewLine, pos - m_view->viewLineStartPosition(m_viewLine));
 	m_view->update();
 	m_view->document()->updateView(m_view);
+#endif
 }
 void TextCursor::insertText(const QString &text)
 {

@@ -472,6 +472,7 @@ void MainWindow::viCmdFixed()
 		on_action_SaveAll_Exit_triggered();
 		return;
 	}
+#endif
 	if( m_viEngine->cmd() == ViCmd::EXEC_YANK_TEXT) {
 		bool bLine;
 		QString text = m_viEngine->yankText(bLine);
@@ -479,7 +480,6 @@ void MainWindow::viCmdFixed()
 		m_viEngine->processCommand(text);
 		return;
 	}
-#endif
 	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 	if( isEditView(view) ) {
 		view->doViCommand();
