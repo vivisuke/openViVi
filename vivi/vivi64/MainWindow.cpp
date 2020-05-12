@@ -451,6 +451,28 @@ void MainWindow::viModeChanged()
 	int vm = m_viEngine->mode();
 	setMode(vm);
 }
+void MainWindow::textInserted(const QString &text)
+{
+	if( m_viEngine->isRedoRecording() )
+		m_viEngine->appendInsertedText(text);
+	qDebug() << "ViEngine::m_insertedText = " << m_viEngine->insertedText();
+#if 0	//##
+	if( m_reinserting || text.isEmpty() || isNewLineChar(text[0].unicode()) ) return;
+	EditView *view = (EditView *)sender();
+	if( !isEditView(view) ) return;
+	pos_t pos = view->cursorPosition();
+	if( m_textInsertedView != view
+		|| m_textInsertedPos != pos - text.size() )
+	{
+		m_textInsertedView = view;
+		if( !m_viEngine->redoing() )
+			m_insertedText = text;
+	} else if( !m_viEngine->redoing() )
+		m_insertedText += text;
+	qDebug() << "textInserted: MainWindow::m_insertedText = " << m_insertedText << ", text = " << text;
+	m_textInsertedPos = pos;
+#endif // 0
+}
 void MainWindow::insertText(QString text)
 {
 	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
@@ -587,6 +609,7 @@ EditView *MainWindow::createView(QString pathName)
 	connect(view, SIGNAL(cursorPosChanged(int, int)), this, SLOT(onCursorPosChanged(int, int)));
 	connect(view, SIGNAL(reloadRequest(EditView *)), this, SLOT(reloadRequested(EditView *)));
 	connect(view, SIGNAL(textSearched(const QString&, bool)), this, SLOT(textSearched(const QString&, bool)));
+	connect(view, SIGNAL(textInserted(const QString &)), this, SLOT(textInserted(const QString &)));
 	connect(view, SIGNAL(showMessage(const QString&, int)), this, SLOT(showMessage(const QString&, int)));
 	if( !pathName.isEmpty() ) {
 		if( !loadFile(doc, pathName) ) {

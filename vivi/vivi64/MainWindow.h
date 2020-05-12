@@ -159,6 +159,7 @@ public slots:
 	void	viModeChanged();
 	void	insertText(QString);
 	void	replaceText(QString);
+	void	textInserted(const QString &);
 	void	viCmdFixed();
 	
 private:
