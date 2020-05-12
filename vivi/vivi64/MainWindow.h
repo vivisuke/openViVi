@@ -157,6 +157,8 @@ public slots:
 	void	colorTheme();
 	void	aboutToShowColorTheme();
 	void	viModeChanged();
+	void	insertText(QString);
+	void	replaceText(QString);
 	void	viCmdFixed();
 	
 private:

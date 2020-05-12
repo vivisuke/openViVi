@@ -100,6 +100,8 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.setupUi(this);
 	m_viEngine = new ViEngine();
 	connect(m_viEngine, SIGNAL(modeChanged()), this, SLOT(viModeChanged()));
+	connect(m_viEngine, SIGNAL(insertText(QString)), this, SLOT(insertText(QString)));
+	connect(m_viEngine, SIGNAL(replaceText(QString)), this, SLOT(replaceText(QString)));
 	connect(m_viEngine, SIGNAL(cmdFixed()), this, SLOT(viCmdFixed()));
 	m_sssrc = new SSSearch();
 	m_sssrc2 = new SSSearch();
@@ -448,6 +450,20 @@ void MainWindow::viModeChanged()
 {
 	int vm = m_viEngine->mode();
 	setMode(vm);
+}
+void MainWindow::insertText(QString text)
+{
+	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
+	if( isEditView(view) ) {
+		view->insertText(text);
+	}
+}
+void MainWindow::replaceText(QString text)
+{
+	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
+	if( isEditView(view) ) {
+		view->replaceText(text);
+	}
 }
 void MainWindow::viCmdFixed()
 {

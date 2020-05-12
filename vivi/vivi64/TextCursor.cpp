@@ -843,9 +843,34 @@ void TextCursor::deleteChar(bool BS, bool vi)
 }
 void TextCursor::insertText(const QString &text)
 {
+	Q_ASSERT( m_pos >= 0 );
+#if	0
+	m_view->clearOpenCloseParenPos();
+	if( isBoxSelectionMode() ) {
+		insertTextBoxSelected(text);
+		return;
+	}
+#endif
+	bool im = m_view->isModified();
+	if( hasSelection() ) {
+		pos_t pos = selectionFirst();
+		bool bo = m_view->buffer()->isUndoBlockOpened();
+		if( !bo )
+			m_view->openUndoBlock();
+		m_view->deleteText(pos, selectionLast() - pos, true);
+		m_view->insertTextRaw(pos, text);
+		if( !bo )
+			m_view->closeUndoBlock();
+		setPosition(pos += text.size());
+	} else {
 		m_view->insertTextRaw(position(), text);
 		//int sz = text == "\r\n" ? 1 : text.size();
 		QString t = text;
 		t.replace("\r\n", "\n");	//	CRLF は1回で移動
 		movePosition(RIGHT, MOVE_ANCHOR, t.size());
+	}
+	m_view->update();
+	m_view->document()->updateView(m_view);
+	if( !im )
+		m_view->emitModifiedChanged();
 }

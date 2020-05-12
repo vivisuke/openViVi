@@ -121,6 +121,7 @@ public:
 	void	insertText(const QString &);
 	void	insertText(const QString &, const QString &);		//	選択領域の前後に文字挿入
 	void	insertTextRaw(pos_t pos, const QString &);
+	void	replaceText(const QString &);
 	QString	indentText(int ln);
 	QString	autoIndentText(/*bool,*/ bool nxline = true);
 	void	paste(const QString &);
@@ -151,6 +152,7 @@ public:
 	void	findPrev(const QString&, bool word = false, bool vi = false);
 	void	findNext(const QString &, bool vi = false);
 	void	findPrev(const QString &, bool vi = false);
+	void	emitModifiedChanged() { emit modifiedChanged(); }
 protected:
 	void	viFindCharForward(wchar_t qch, bool bPrev, int mvmd, int repCnt);
 	void	viFindCharBackward(wchar_t qch, bool bPrev, int mvmd, int repCnt);

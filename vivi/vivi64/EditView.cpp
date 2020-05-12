@@ -542,6 +542,8 @@ void EditView::focusOutEvent( QFocusEvent * event )
 }
 void EditView::mousePressEvent(QMouseEvent *event)
 {
+	if( mainWindow()->mode() == MODE_EX )
+		mainWindow()->setMode(MODE_VI);
 	const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
 	const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
 	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
@@ -1783,6 +1785,9 @@ void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 				m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);
 		}
 	}
+		if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) )
+			mainWindow()->viEngine()->processCommand(text, m_textCursor->hasSelection());
+		else
 			m_textCursor->insertText(text);		//	文字挿入
 }
 QString EditView::indentText(int ln)
@@ -1842,8 +1847,31 @@ void EditView::revIndent(int ln1, int ln2, bool vi)
 	}
 	update();
 }
-void EditView::insertText(const QString &)
+void EditView::replaceText(const QString &text)
 {
+	if( text.isEmpty() ) return;
+	m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR, text.size(), /*vi:*/true);
+	insertText(text);
+}
+void EditView::insertText(const QString &text0)
+{
+	QString text = text0;
+#if	0
+	//	done: 選択されている部分と text の先頭が一致している場合対応
+	if( m_textCursor->hasSelection() ) {
+		QString t = m_textCursor->selectedText();
+		if( text.startsWith(t) ) {
+			m_textCursor->setPosition(m_textCursor->selectionLast());		//	選択末尾に移動
+			text = text.mid(t.size());
+		}
+	}
+#endif
+	m_textCursor->insertText(text);
+	emit textInserted(text);
+	//##updateScrollBarInfo();
+	makeCursorInView();
+	resetCursorBlinking();
+	update();
 }
 void EditView::insertText(const QString &, const QString &)		//	選択領域の前後に文字挿入
 {
