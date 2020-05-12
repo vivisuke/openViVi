@@ -1,0 +1,39 @@
+﻿viEngine.txt
+
+	EditView::keyPressEvent():
+		EditView::insertedTextSub():
+			ViEngine::processCommand(const QString &text, ...):	//	コマンド文字列処理
+				ViEngine::processCommand(wchar_t ch, ...):		//	コマンド１文字処理
+					switch (mode())
+					case Mode::INSERT:		//	挿入モード
+						if( ch == Esc ):
+							.....
+							setMode(Mode::COMMAND);
+						else:
+							emit insertText(ch);	//	文字挿入処理
+					case Mode::REPLACE:		//	上書きモード
+						if( ch == Esc ):
+							.....
+							setMode(Mode::COMMAND);
+						else:
+							emit replaceText(ch);	//	文字上書き処理
+					case Mode::COMMAND:		//	通常 vi コマンドモード
+						ViEngine::viCommand():
+							if( 通常モードの場合 ):
+								ViEngine::doCmd():
+									if( 挿入モード遷移の場合 ):		//	iIaACsS等
+										.....
+										setMode(Mode::INSERT);
+									else:
+										MainWindow::viCmdFixed():
+											EditView::doViCommand():
+												//	確定した vi コマンド：viEngine->cmd()
+												if( カーソル移動コマンドの場合 ):
+													m_textCursor->movePosition()	//	
+												if( スクロールコマンドの場合 ):
+													スクロール処理
+												if( 検索コマンドの場合 ):
+													検索処理
+												....
+					case Mode::CMDLINE:		//	ex モード
+

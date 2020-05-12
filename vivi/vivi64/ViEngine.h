@@ -214,9 +214,9 @@ public:
 	void	setCmdLineChar(QChar ch) { m_cmdLineChar = ch; }
 	void	setPrevMode(byte);
 	void	popMode();			//	モードを元に戻す
-	void	doViCommand(const QString &cmd) { processCommand(cmd); }
+	void	doViCommand(const QString &cmd) { processCommandText(cmd); }
 	void	doViCommand(wchar_t ch) { processCommand(ch); }
-	void	processCommand(const QString &, bool hasSelection = false);
+	void	processCommandText(const QString &, bool hasSelection = false);
 	void	processCommand(wchar_t, bool hasSelection = false);
 	void	imeOpenStatusChanged();
 	void	setYankText(const QString &text, bool bLine);

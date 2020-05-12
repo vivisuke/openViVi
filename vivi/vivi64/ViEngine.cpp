@@ -3,6 +3,7 @@
 #include <QString>
 #include <QDebug>
 
+
 ViEngine::ViEngine(QObject *parent)
 	: QObject(parent)
 	, m_mode(Mode::INSERT)
@@ -138,7 +139,7 @@ void ViEngine::doFind(const QString &pat, bool forward)
 	m_cmd = ViCmd::SEARCH_PAT;
 	emit cmdFixed();
 }
-void ViEngine::processCommand(const QString &text, bool hasSelection)
+void ViEngine::processCommandText(const QString &text, bool hasSelection)
 {
 	if( mode() == Mode::INSERT && text.indexOf(0x1b) < 0 ) {
 		emit insertText(text);
@@ -607,7 +608,7 @@ void ViEngine::viCommand(wchar_t ch, bool hasSelection)
 				resetStatus(false);		//	false for m_repeatCount をクリアしない
 				//m_redoCount = repeatCount();
 				m_redoing = true;
-				processCommand(m_redoCmd);
+				processCommandText(m_redoCmd);
 				m_redoing = false;
 				if( m_undoBlockOpened ) {
 					m_cmd = ViCmd::CLOSE_ALL_UNDO_BLOCK;

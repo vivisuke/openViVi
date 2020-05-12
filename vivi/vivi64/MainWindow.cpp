@@ -499,7 +499,7 @@ void MainWindow::viCmdFixed()
 		bool bLine;
 		QString text = m_viEngine->yankText(bLine);
 		m_viEngine->resetStatus();
-		m_viEngine->processCommand(text);
+		m_viEngine->processCommandText(text);
 		return;
 	}
 	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();

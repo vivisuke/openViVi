@@ -1760,7 +1760,7 @@ void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 {
 	if( text.isEmpty() ) return;
 	if( mainWindow()->mode() == MODE_VI ) {
-		mainWindow()->viEngine()->processCommand(text, m_textCursor->hasSelection());
+		mainWindow()->viEngine()->processCommandText(text, m_textCursor->hasSelection());
 		return;
 	}
 	bool ai = false;
@@ -1786,7 +1786,7 @@ void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 		}
 	}
 		if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) )
-			mainWindow()->viEngine()->processCommand(text, m_textCursor->hasSelection());
+			mainWindow()->viEngine()->processCommandText(text, m_textCursor->hasSelection());
 		else
 			m_textCursor->insertText(text);		//	文字挿入
 }
