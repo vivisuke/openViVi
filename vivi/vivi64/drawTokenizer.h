@@ -45,7 +45,7 @@ public:
 public:
 	int		ix() const { return m_ix; }
 	int		tokenix() const { return m_tokenix; }
-	byte	tokenType() const { return m_tokenType; }
+	byte_t	tokenType() const { return m_tokenType; }
 	bool	isInLineComment() const { return m_inLineComment; }
 	bool	isInBlockComment() const { return m_inBlockComment; }
 	//bool	isInScript() const { return m_inScript; }
@@ -85,7 +85,7 @@ private:
 	int		m_quotedTextix;
 	int		m_lastBuffer;
 	int		m_lastBuffer2;			//	ホントのバッファ末尾
-	byte	m_tokenType;				//	トークン種別
+	byte_t	m_tokenType;				//	トークン種別
 	bool	m_inLineComment;
 	bool	m_inBlockComment;
 	//bool	m_inScript;

@@ -730,7 +730,7 @@ int TextCursor::nextSSWord(int n, bool cw)
 }
 int TextCursor::prevSSWord(int n)
 {
-	byte type;
+	byte_t type;
 	wchar_t ch;
 	while( --n >= 0 ) {
 		if( !m_pos ) break;		//	バッファ先頭にいる場合
@@ -780,7 +780,7 @@ int TextCursor::endSSWord(int n)
 	}
 	return m_pos;
 }
-void TextCursor::setMode(byte mode)
+void TextCursor::setMode(byte_t mode)
 {
 	if( (m_mode = mode) == VI_LINE_SEL_MODE )
 		m_anchorViewLine = m_viewLine;

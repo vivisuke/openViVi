@@ -16,6 +16,7 @@
 #include <QObject>
 
 typedef unsigned char byte;
+typedef unsigned __int8 byte_t;
 typedef unsigned int uint;
 typedef const wchar_t cwchar_t;
 
@@ -115,9 +116,9 @@ public:
 	//int		indexOf(wchar_t *pat, wchar_t *pend, int from = 0, bool ic = false) const;
 	//int		indexOf(cwchar_t *pat, int from = 0, bool ic = false) const;
 	//	from:検索開始位置、last：検索終了位置
-	pos_t		indexOf(SSSearch &, cwchar_t *pat, ssize_t sz, pos_t from = 0, uint opt = 0, pos_t last = -1, byte = 0) const;
+	pos_t		indexOf(SSSearch &, cwchar_t *pat, ssize_t sz, pos_t from = 0, uint opt = 0, pos_t last = -1, byte_t algorithm = 0) const;
 	//	from:検索開始位置、last：検索終了位置
-	pos_t		rIndexOf(SSSearch &, cwchar_t *pat, ssize_t sz, pos_t from = 0, uint opt = 0, pos_t last = -1, byte = 0) const;
+	pos_t		rIndexOf(SSSearch &, cwchar_t *pat, ssize_t sz, pos_t from = 0, uint opt = 0, pos_t last = -1, byte_t algorithm = 0) const;
 	bool	isMatched(cwchar_t *pat, ssize_t sz, pos_t pos) const;
 	bool	isMatched(cwchar_t *pat, pos_t pos) const;
 	bool	isMatchedIC(cwchar_t *pat, ssize_t sz, pos_t pos) const;
@@ -156,8 +157,8 @@ public:
 //	置換、undo 対応
 	bool	replaceText(pos_t pos, ssize_t dsz, cwchar_t *, int isz, int = -1,
 									bool = false);		//	編集箇所更新
-	int		replaceAll(cwchar_t *before, ssize_t, cwchar_t *after, ssize_t, uint opt = 0, byte = 0);
-	int		replaceAll(cwchar_t *before, ssize_t, cwchar_t *after, ssize_t, uint opt, byte, pos_t, pos_t &, pos_t &, bool = true);
+	int		replaceAll(cwchar_t *before, ssize_t, cwchar_t *after, ssize_t, uint opt = 0, byte_t = 0);
+	int		replaceAll(cwchar_t *before, ssize_t, cwchar_t *after, ssize_t, uint opt, byte_t, pos_t, pos_t &, pos_t &, bool = true);
 	int		undo();
 	int		redo();
 	void	openUndoBlock();

@@ -2,8 +2,8 @@
 //
 //			File:			"charEncoding.h"
 //			Created:		03-Mar-2011
-//			Author:			’Ã“cLG
-//			Description:	•¶šƒR[ƒh”»’èŠÖ”éŒ¾
+//			Author:			æ´¥ç”°ä¼¸ç§€
+//			Description:	æ–‡å­—ã‚³ãƒ¼ãƒ‰åˆ¤å®šé–¢æ•°å®£è¨€
 //
 //----------------------------------------------------------------------
 
@@ -21,6 +21,7 @@
 
 #include <QString>
 typedef unsigned char byte;
+typedef unsigned __int8 byte_t;
 typedef const unsigned char cbyte;
 typedef unsigned char uchar;
 typedef const char cchar;
@@ -65,6 +66,6 @@ bool	loadFile(const QString& pathName, QString& buf, QString& errMess, uchar& ch
 //bool	getTextCodec(const QString &fileName, QString &errorString, QTextCodec *&codec,
 //						int &bomLength, byte &);
 
-byte checkNewLineCode(cbyte *ptr, cbyte *endptr, byte charCode);
+byte_t checkNewLineCode(cbyte *ptr, cbyte *endptr, byte_t charCode);
 
 #endif		//_HEADER_CHARENCODING_H

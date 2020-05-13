@@ -18,6 +18,7 @@
 
 
 typedef unsigned char byte;
+typedef unsigned __int8 byte_t;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int uint;
@@ -103,7 +104,7 @@ private:
 	bool	m_ignoreCase;
 	bool	m_wholeWordOnly;		//	単語単位
 	//bool	m_matchNotBOL;			//	^exp とマッチしない
-	byte	m_algorithm;
+	byte_t	m_algorithm;
 	int		m_plen;
 	int		m_matchLength;		//	マッチしたテキスト文字数
 	int		m_nreg;					//	使用レジスタ数 for SHIFT_AND

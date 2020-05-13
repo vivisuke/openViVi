@@ -1,4 +1,4 @@
-﻿#ifndef VIENGINE_H
+#ifndef VIENGINE_H
 #define VIENGINE_H
 
 #include <QObject>
@@ -8,6 +8,7 @@ class EditView;
 
 typedef unsigned char uchar;
 typedef unsigned char byte;
+typedef unsigned __int8 byte_t;
 #ifdef	_WIN64
 	typedef __int64 ssize_t;
 	typedef __int64 pos_t;
@@ -178,8 +179,8 @@ public:
 	~ViEngine();
 
 public:
-	byte	mode() const { return m_mode; }
-	byte	prevMode() const { return m_prevMode; }
+	byte_t	mode() const { return m_mode; }
+	byte_t	prevMode() const { return m_prevMode; }
 	char	vMode() const { return m_vMode; }
 	int	cmd() const { return m_cmd; }
 	int	subMode() const { return m_subMode; }
@@ -204,7 +205,7 @@ public:
 	bool	globDoing() const { return m_globalDoing; }
 	
 public:
-	void	setMode(byte mode);
+	void	setMode(byte_t mode);
 	void	setVMode(char ch) { m_vMode = ch; }
 	void	clearVMode() { m_vMode = 0; }
 	void	resetStatus(bool = true);
@@ -212,7 +213,7 @@ public:
 	void	setCmd(wchar_t cmd) { m_cmd = cmd; }
 	void	setCmdText(const QString &cmd) { m_cmdText = cmd; }
 	void	setCmdLineChar(QChar ch) { m_cmdLineChar = ch; }
-	void	setPrevMode(byte);
+	void	setPrevMode(byte_t);
 	void	popMode();			//	モードを元に戻す
 	void	doViCommand(const QString &cmd) { processCommandText(cmd); }
 	void	doViCommand(wchar_t ch) { processCommand(ch); }
@@ -252,8 +253,8 @@ signals:
 
 private:
 	bool		m_noInsModeAtImeOpenStatus;
-	byte		m_mode;
-	byte		m_prevMode;			//	直前のモード
+	byte_t		m_mode;
+	byte_t		m_prevMode;			//	直前のモード
 	char		m_vMode;				//	{ v | V }
 	wchar_t	m_cdy;				//	{c|d|y}
 	wchar_t	m_subMode;		//	{c|d|g|y|z|>|<|#|[|]}

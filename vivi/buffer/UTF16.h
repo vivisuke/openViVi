@@ -13,6 +13,7 @@
 #define		_HEADER_UTF16_H
 
 typedef unsigned char byte;
+typedef unsigned __int8 byte_t;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 
@@ -33,6 +34,6 @@ enum {
 	CTDB_CONT,
 	CTDB_OTHER,
 };
-byte UTF16CharType(wchar_t);
+byte_t UTF16CharType(wchar_t);
 
 #endif		//_HEADER_UTF16_H

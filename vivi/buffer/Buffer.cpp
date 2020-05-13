@@ -592,14 +592,14 @@ pos_t Buffer::strrstr(cwchar_t *pat, ssize_t sz, pos_t pos, pos_t last, bool ic)
 	}
 	return -1;
 }
-pos_t Buffer::indexOf(SSSearch &sss, cwchar_t *pat, ssize_t sz, pos_t pos, uint opt, pos_t last, byte algorithm) const
+pos_t Buffer::indexOf(SSSearch &sss, cwchar_t *pat, ssize_t sz, pos_t pos, uint opt, pos_t last, byte_t algorithm) const
 {
 	//uint opt = 0;
 	//if( ic ) opt |= SSSearch::IGNORE_CASE;
 	if( !sss.setup(pat, sz, opt, algorithm) ) return -1;
 	return sss.strstr(*this, pos, last);
 }
-pos_t Buffer::rIndexOf(SSSearch &sss, cwchar_t *pat, ssize_t sz, pos_t from, uint opt, pos_t last, byte algorithm) const
+pos_t Buffer::rIndexOf(SSSearch &sss, cwchar_t *pat, ssize_t sz, pos_t from, uint opt, pos_t last, byte_t algorithm) const
 {
 	//uint opt = 0;
 	//if( ic ) opt |= SSSearch::IGNORE_CASE;
@@ -607,7 +607,7 @@ pos_t Buffer::rIndexOf(SSSearch &sss, cwchar_t *pat, ssize_t sz, pos_t from, uin
 	return sss.strrstr(*this, from, last /*, algorithm*/);
 }
 
-int Buffer::replaceAll(cwchar_t *before, ssize_t bsz, cwchar_t *after, ssize_t asz, uint opt, byte algorithm)
+int Buffer::replaceAll(cwchar_t *before, ssize_t bsz, cwchar_t *after, ssize_t asz, uint opt, byte_t algorithm)
 {
 	pos_t first = 0;
 	pos_t last = -1;
@@ -673,7 +673,7 @@ std::wstring replaceText(const std::wstring &text,
 	}
 	return text2;
 }
-int Buffer::replaceAll(cwchar_t *before, ssize_t bsz, cwchar_t *after, ssize_t asz0, uint opt, byte algorithm,
+int Buffer::replaceAll(cwchar_t *before, ssize_t bsz, cwchar_t *after, ssize_t asz0, uint opt, byte_t algorithm,
 						pos_t first, pos_t &last, pos_t &lastPos, bool global)
 {
 	m_editedPos.clear();
@@ -681,7 +681,7 @@ int Buffer::replaceAll(cwchar_t *before, ssize_t bsz, cwchar_t *after, ssize_t a
 	int cnt = 0;
 	pos_t pos = first;
 	if( last < 0 ) last = size();
-	std::auto_ptr<SSSearch> sss(new SSSearch());
+	std::unique_ptr<SSSearch> sss(new SSSearch());
 	sss->setup(before, bsz, opt, algorithm);
 	openUndoBlock();
 	std::wstring atext0(after, asz0);
@@ -774,8 +774,8 @@ bool Buffer::isWordBegin(pos_t pos) const
 	if( !pos ) return true;
 	wchar_t pch;
 	if( (pch = charAt(pos-1)) <= ' ' ) return true;
-	byte p = UTF16CharType(pch);
-	byte t = UTF16CharType(charAt(pos));
+	byte_t p = UTF16CharType(pch);
+	byte_t t = UTF16CharType(charAt(pos));
 	return p != t;
 }
 bool Buffer::isWordEnd(pos_t pos) const
@@ -784,8 +784,8 @@ bool Buffer::isWordEnd(pos_t pos) const
 	///if( pos == 1 ) return false;
 	wchar_t ch;
 	if( (ch = charAt(pos)) <= ' ' ) return true;
-	byte p = UTF16CharType(charAt(pos - 1));
-	byte t = UTF16CharType(ch);
+	byte_t p = UTF16CharType(charAt(pos - 1));
+	byte_t t = UTF16CharType(ch);
 	return p != t;
 }
 int Buffer::gapIndex() const

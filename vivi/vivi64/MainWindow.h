@@ -45,7 +45,7 @@ public:
 	~MainWindow();
 	
 public:
-	byte	searchAlgorithm() const;	// { return m_searchAlgorithm; }
+	byte_t	searchAlgorithm() const;	// { return m_searchAlgorithm; }
 	SSSearch	&sssrc() { return *m_sssrc; }
 	SSSearch	&sssrc2() { return *m_sssrc2; }		//	カーソル位置単語検索用
 	int		newLineType() const;
@@ -170,7 +170,7 @@ private:
 	
 	bool	m_searching;			//	検索中
 	bool	m_incSearched;		//	インクリメンタルサーチ済み
-	byte	m_searchAlgorithm;
+	byte_t	m_searchAlgorithm;
 	int		m_curTabIndex;
 	int		m_formerTabIndex;
 	//int		m_docNumber;

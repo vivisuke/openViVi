@@ -568,7 +568,7 @@ void ViEngine::viCommand(wchar_t ch, bool hasSelection)
 			break;
 		case '*':
 			m_cmd = ViCmd::SEARCH_CUR_WORD;
-			m_cmdLineChar = '/';		//	n が順方向になりますように
+			m_cmdLineChar = '/';		//	n が順方向になりますようにお願い
 			m_moved = true;
 			break;
 		case 'n':

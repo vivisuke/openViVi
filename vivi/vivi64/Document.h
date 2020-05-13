@@ -8,6 +8,7 @@
 typedef unsigned char uchar;
 typedef const char cchar;
 typedef unsigned char byte;
+typedef unsigned __int8 byte_t;
 typedef unsigned int uint;
 #ifdef	_WIN64
 	typedef __int64 ssize_t;
@@ -36,7 +37,7 @@ public:
 	wchar_t	charAt(pos_t pos) const;
 	bool	bom() const { return m_bBom; }
 	uchar	charEncoding() const { return m_charEncoding; }
-	byte	newLineCode() const { return m_newLineCode; }
+	byte_t	newLineCode() const { return m_newLineCode; }
 	QByteArray	codecName() const;
 	bool	isEmpty() const;
 	bool	isModified() const;		// { return m_modified; }
@@ -90,7 +91,7 @@ private:
 	QString	m_title;
 	Buffer	*m_buffer;
 	bool	m_bBom;
-	byte	m_newLineCode;
+	byte_t	m_newLineCode;
 	uchar	m_charEncoding;
 	int		m_bomLength;
 	TypeSettings	*m_typeSettings;

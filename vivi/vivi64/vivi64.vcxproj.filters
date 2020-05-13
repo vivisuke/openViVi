@@ -226,4 +226,7 @@
   <ItemGroup>
     <Image Include="icon1.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
+  </ItemGroup>
 </Project>
