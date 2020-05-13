@@ -524,6 +524,28 @@ skipAlnum:
 }
 int TextCursor::nextCapWord(int n)
 {
+	while( --n >= 0 ) {
+		wchar_t ch = m_view->charAt(m_pos);
+		bool upper = false;
+		if( ch >= 'A' && ch <= 'Z') {
+			upper = true;
+		} else if( ch >= 'a' && ch <= 'z' || ch == '_' ) {
+		} else {
+			return m_pos;
+			//return nextWord(n);
+		}
+		for(;;) {
+			ch = m_view->charAt(++m_pos);
+			if( ch >= 'A' && ch <= 'Z') {
+				if( !upper ) break;
+			} else if( ch >= 'a' && ch <= 'z' || ch >= '0' && ch <= '9' ) {
+				upper = false;
+			} else { //if( ch == '_' )
+				break;
+				//return m_pos;
+			}
+		}
+	}
 	return m_pos;
 }
 int TextCursor::prevWord(int n)
