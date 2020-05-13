@@ -835,8 +835,9 @@ void EditView::onEscape(bool ctrl, bool shift, bool alt)
 	//
 	auto md = mainWindow()->mode();
 	if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) && (md == MODE_INS || md == MODE_REP) ) {
-		mainWindow()->setMode(MODE_VI);
-		update();
+		mainWindow()->viEngine()->processCommand(0x1b);
+		//mainWindow()->setMode(MODE_VI);
+		//update();
 	}
 }
 void EditView::doInsertText(const QString &text, bool ctrl, bool shift, bool alt)
