@@ -67,9 +67,9 @@ namespace ViCmd {
 		CUR_NEXT_SS_WORD,		//	W
 		CUR_PREV_SS_WORD,		//	B
 		CUR_END_SS_WORD,		//	E
-		CUR_BEG_LINE,			//	行先頭
+		CUR_BEG_LINE,			//	0 行先頭
 		CUR_NTH_COLUMN,			//	指定カラム位置へ移動
-		CUR_FIRST_NOSPACE,		//	行の最初の非空白文字へ
+		CUR_FIRST_NOSPACE,		//	^ 行の最初の非空白文字
 		CUR_LAST_CHAR_LINE,		//	行の最後の文字へ
 		CUR_END_LINE,
 		CUR_NEXT_FNS_LINE,		//	次行先頭非空白文字

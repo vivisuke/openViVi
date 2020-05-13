@@ -452,6 +452,7 @@ void EditView::doViCommand()		//	viEngine が保有する vi コマンドを実�
 			} else {
 				int ln1 = viewLineToDocLine(m_textCursor->viewLine());
 				revIndent(ln1, ln1 + repCnt - 1, true);
+				m_textCursor->movePosition(TextCursor::FIRST_NOSPACE, mvmd, repCnt, true);
 			}
 			break;
 		case ViCmd::SHIFT_RIGHT:
@@ -464,6 +465,7 @@ void EditView::doViCommand()		//	viEngine が保有する vi コマンドを実�
 			} else {
 				int ln1 = viewLineToDocLine(m_textCursor->viewLine());
 				indent(ln1, ln1 + repCnt - 1, true);
+				m_textCursor->movePosition(TextCursor::FIRST_NOSPACE, mvmd, repCnt, true);
 			}
 			break;
 		case ViCmd::JOIN_LINES:
