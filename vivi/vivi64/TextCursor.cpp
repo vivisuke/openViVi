@@ -204,6 +204,21 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 		vln = m_view->viewLineMgr()->positionToViewLine(pos);
 		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
 		break;
+	case NEXT_WORD_NOSKIPSPC:
+		if( pos == m_view->bufferSize() ) return;
+		pos = nextWord(n, true);
+		while( pos < m_view->bufferSize() && pos >= viewLineStartPosition(vln+1) ) {
+			++vln;
+		}
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		break;
+	case NEXT_CAP_WORD:
+		if( (pos = nextCapWord(n)) >= viewLineStartPosition(vln+1) ) {
+			++vln;
+		}
+		if( m_mode == VI_CHAR_SEL_MODE ) --pos;
+		m_px = m_view->viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln));
+		break;
 	case NEXT_SS_WORD:
 		if( pos == m_view->bufferSize() ) return;
 		pos = nextSSWord(n);
