@@ -39,6 +39,7 @@ open source version of ViVi text editor, which supports standard text editor fea
   
 # ■ ビルド方法
 - Visual Studio 2019, Qt5.14(64ビットモード必須) をインストール
+  - 「開発ツールのセットアップ」 https://www.youtube.com/watch?v=4gBAuga80bc
   - Qt download: https://www.qt.io/download-qt-installer
 - VS2019：拡張機能 > 拡張機能の管理 から Qt VS Tools をインストール
 - リポジトリの vivi/vivi.sln を VS2019 で開き、ビルド
