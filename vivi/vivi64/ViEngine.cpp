@@ -648,6 +648,28 @@ void ViEngine::processSubMode(wchar_t ch)
 		resetStatus();
 		return;
 	}
+	if (m_subMode == '>') {
+		switch (ch) {
+		case '>':
+			m_cmd = ViCmd::SHIFT_RIGHT;
+			doCmd();
+			return;
+		}
+		//	invalid command
+		resetStatus();
+		return;
+	}
+	if (m_subMode == '<') {
+		switch (ch) {
+		case '<':
+			m_cmd = ViCmd::SHIFT_LEFT;
+			doCmd();
+			return;
+		}
+		//	invalid command
+		resetStatus();
+		return;
+	}
 	if (m_subMode == 'f' || m_subMode == 'F' || m_subMode == 't' || m_subMode == 'T')
 	{
 		m_lastFindChar = ch;
