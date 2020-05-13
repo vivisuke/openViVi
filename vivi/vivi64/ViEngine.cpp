@@ -159,7 +159,7 @@ void ViEngine::processCommand(wchar_t ch, bool hasSelection)
 		case Mode::INSERT:
 			if( ch == 0x1b ) {		//	Esc
 				int reptCnt = repeatCount();
-				if( m_redoRecording && reptCnt > 1 ) {
+				if( m_redoRecording && reptCnt > 1 ) {		//	<n>i<text> Esc の場合
 					QString text;
 					for (int i = 0; i < reptCnt - 1; ++i) {
 						text += m_insertedText;
@@ -172,8 +172,10 @@ void ViEngine::processCommand(wchar_t ch, bool hasSelection)
 					m_undoBlockOpened = false;
 				}
 				resetStatus();
+				m_cmd = ViCmd::CUR_LEFT;
+				emit cmdFixed();
 				setMode(Mode::COMMAND);
-			} else {
+			} else {		//	Esc 以外の場合 → 文字挿入
 				QString txt = QChar(ch);
 				emit insertText(txt);
 			}
