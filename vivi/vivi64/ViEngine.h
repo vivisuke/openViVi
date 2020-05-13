@@ -239,6 +239,7 @@ public:
 
 protected:
 	void	viCommand(wchar_t, bool hasSelection);
+	void 	processSubMode(wchar_t ch);
 	void	openUndoBlock();
 
 signals:

@@ -1,39 +1,76 @@
 ﻿viEngine.txt
 
+■ 処理概要：
+
 	EditView::keyPressEvent():
 		EditView::insertedTextSub():
 			ViEngine::processCommand(const QString &text, ...):	//	コマンド文字列処理
 				ViEngine::processCommand(wchar_t ch, ...):		//	コマンド１文字処理
 					switch (mode())
-					case Mode::INSERT:		//	挿入モード
-						if( ch == Esc ):
-							.....
-							setMode(Mode::COMMAND);
-						else:
-							emit insertText(ch);	//	文字挿入処理
-					case Mode::REPLACE:		//	上書きモード
-						if( ch == Esc ):
-							.....
-							setMode(Mode::COMMAND);
-						else:
-							emit replaceText(ch);	//	文字上書き処理
-					case Mode::COMMAND:		//	通常 vi コマンドモード
-						ViEngine::viCommand():
-							if( 通常モードの場合 ):
-								ViEngine::doCmd():
-									if( 挿入モード遷移の場合 ):		//	iIaACsS等
-										.....
-										setMode(Mode::INSERT);
-									else:
-										MainWindow::viCmdFixed():
-											EditView::doViCommand():
-												//	確定した vi コマンド：viEngine->cmd()
-												if( カーソル移動コマンドの場合 ):
-													m_textCursor->movePosition()	//	
-												if( スクロールコマンドの場合 ):
-													スクロール処理
-												if( 検索コマンドの場合 ):
-													検索処理
-												....
-					case Mode::CMDLINE:		//	ex モード
+						case Mode::INSERT:		//	挿入モード
+							if( ch == Esc ):
+								.....
+								setMode(Mode::COMMAND);
+							else:
+								emit insertText(ch);	//	文字挿入処理
+						case Mode::REPLACE:		//	上書きモード
+							if( ch == Esc ):
+								.....
+								setMode(Mode::COMMAND);
+							else:
+								emit replaceText(ch);	//	文字上書き処理
+						case Mode::COMMAND:		//	通常 vi コマンドモード
+							ViEngine::viCommand():
+								if( 通常モードの場合 ):
+									ViEngine::doCmd():
+										if( 挿入モード遷移の場合 ):		//	iIaACsS等
+											.....
+											setMode(Mode::INSERT);
+										else:
+											MainWindow::viCmdFixed():
+												EditView::doViCommand():
+													//	確定した vi コマンド：viEngine->cmd()
+													if( カーソル移動コマンドの場合 ):
+														m_textCursor->movePosition()	//	
+													if( スクロールコマンドの場合 ):
+														スクロール処理
+													if( 検索コマンドの場合 ):
+														検索処理
+													....
+						case Mode::CMDLINE:		//	ex モード
+
+■ モード・サブモード処理：
+
+	ViEngine::viCommand(wchar_t ch):
+		if( m_subMode != 0 の場合 ):
+			各サブモードの処理
+			return;
+		switch(ch):
+			case 'c':
+				m_subMode = m_cdy = ch;
+			case 'd':
+				m_subMode = m_cdy = ch;
+			case 'y':
+				m_subMode = m_cdy = ch;
+			case 'f', 'F', 't', 'T', 'g', 'm', 'z', ...:
+				m_subMode = ch;
+			case 'i';
+				m_toInsertMode = true;		//	実際のモード遷移は ViEngine::doCmd() で行われる
+			....
+			case 'x':
+				m_cmd = ViCmd::DELETE_CHAR;
+			.....
+		doCmd():
+
+■ {c|d|y}mv 処理：
+
+	・{c|d|y} 押下時点：m_subMode を設定するのみ at ViEngine::viCommand()
+	・mv 実行時
+		ViEngine::doCmd():
+			emit cmdFixed();
+			if( m_moved && (m_cdy == 'c' || m_cdy == 'd') ):
+				m_cmd = ViCmd::DELETE_CHAR;
+				emit cmdFixed();		//	mv 範囲を削除
+				if( m_cdy == 'c' ):
+					m_toInsertMode = true;		//	挿入モード遷移
 

@@ -222,186 +222,8 @@ void ViEngine::viCommand(wchar_t ch, bool hasSelection)
 	m_toInsertMode = false;
 	m_moved = false;
 	m_editCmd = false;			//	.(redo) 対象コマンド
-	if( m_subMode == 'r' ) {
-		if( ch != 0x1b ) {		//	Esc は置換非対象
-			m_cmd = ViCmd::REPLACE_CHAR;		//	1文字置換、置換文字は m_cmdText の最後の文字
-			emit cmdFixed();
-			if( !m_redoing ) {
-				m_lastRepeatCount = repeatCount();
-				m_redoCmd = QString("r") + QChar(ch);
-			}
-		}
-		resetStatus();
-		return;
-	}
-	if( m_subMode == 'g' ) {
-		switch (ch) {
-			case 'g':
-				m_cmd = ViCmd::CUR_BEG_DOC;
-				m_moved = true;
-				doCmd();
-				return;
-		}
-		//	invalid command
-		resetStatus();
-		return;
-	}
-	if( m_subMode == 'f'  || m_subMode == 'F'  || m_subMode == 't'  || m_subMode == 'T'  )
-	{
-		m_lastFindChar = ch;
-		m_cmd = m_subMode == 'f' ? ViCmd::SEARCH_CHAR_f :
-						m_subMode == 'F' ? ViCmd::SEARCH_CHAR_F :
-						m_subMode == 't' ? ViCmd::SEARCH_CHAR_t : ViCmd::SEARCH_CHAR_T;
-		m_lastFindCmd = m_cmd;
-		m_moved = true;
-		doCmd();
-		return;
-	}
-	if( m_subMode == 'Z' ) {
-		if( ch == 'Z' ) {
-			m_cmd = ViCmd::SAVE_ALL_EXIT;
-			doCmd();
-			return;
-		}
-		//	invalid command
-		resetStatus();
-		return;
-	}
-	if( m_subMode == 'z' ) {
-		switch (ch) {
-			case '\r':
-			case '\n':
-				m_cmd = ViCmd::SCROLL_CUR_AT_TOP;
-				m_moved = true;
-				doCmd();
-				return;
-			case '.':
-				m_cmd = ViCmd::SCROLL_CUR_IN_MIDDLE;
-				m_moved = true;
-				doCmd();
-				return;
-			case '-':
-				m_cmd = ViCmd::SCROLL_CUR_AT_BOTTOM;
-				m_moved = true;
-				doCmd();
-				return;
-		}
-		//	invalid command
-		resetStatus();
-		return;
-	}
-	if( m_subMode == '#' ) {
-		switch (ch) {
-			case '#':
-			case '+':
-				m_cmd = ViCmd::INCREMENT;
-				m_editCmd = true;
-				doCmd();
-				return;
-			case '-':
-				m_cmd = ViCmd::DECREMENT;
-				m_editCmd = true;
-				doCmd();
-				return;
-			case '!':
-				m_cmd = ViCmd::TOGGLE_TRUE_FALSE;
-				m_editCmd = true;
-				doCmd();
-				return;
-		}
-		//	invalid command
-		resetStatus();
-		return;
-	}
-	if( m_subMode == '[' ) {
-		switch (ch) {
-			case '[':
-				m_cmd = ViCmd::BEG_OF_CUR_SECTION;
-				m_moved = true;
-				doCmd();
-				return;
-		}
-		//	invalid command
-		resetStatus();
-		return;
-	}
-	if( m_subMode == ']' ) {
-		switch (ch) {
-			case ']':
-				m_cmd = ViCmd::BEG_OF_NEXT_SECTION;
-				m_moved = true;
-				doCmd();
-				return;
-		}
-		//	invalid command
-		resetStatus();
-		return;
-	}
-	if( m_subMode == 'm' ) {
-		if( ch >= 'a' && ch <= 'z' ) {
-			m_cmd = ViCmd::MARK;
-			doCmd();
-		}
-		resetStatus();
-		return;
-	}
-	if( m_subMode == '\'' ) {
-		if( ch >= 'a' && ch <= 'z' ) {
-			m_cmd = ViCmd::JUMP_MARK_LINE;
-			m_moved = true;
-			doCmd();
-		}
-		resetStatus();
-		return;
-	}
-	if( m_subMode == '`' ) {
-		if( ch >= 'a' && ch <= 'z' ) {
-			m_cmd = ViCmd::JUMP_MARK_POS;
-			m_moved = true;
-			doCmd();
-		}
-		resetStatus();
-		return;
-	}
-	if( m_subMode == '"' ) {
-		if( ch >= '0' && ch <= '9' || ch >= 'a' && ch <= 'z' ) {
-			m_yankBufferChar = ch;
-			m_subMode = 0;
-			return;
-		}
-		resetStatus();
-		return;
-	}
-	if( m_subMode == '@' ) {
-		if( ch == '@' ) {
-			m_cmd = ViCmd::EXEC_YANK_TEXT;
-			doCmd();
-		} else if( ch >= '0' && ch <= '9' || ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' ) {
-			m_yankBufferChar = tolower(ch);
-			m_cmd = ViCmd::EXEC_YANK_TEXT;
-			doCmd();
-		}
-		resetStatus();
-		return;
-	}
-	if( m_subMode == 'i' ) {
-		if( ch == '"' || ch == '\'' || ch == '(' || ch == '{' || ch == '[' || ch == '<' ) {
-			m_textObjectChar = ch;
-			m_cmd = ViCmd::TEXT_OBJECT_I;
-			m_moved = true;
-			doCmd();
-		}
-		resetStatus();
-		return;
-	}
-	if( m_subMode == 'a' ) {
-		if( ch == '"' || ch == '\'' || ch == '(' || ch == '{' || ch == '[' || ch == '<' ) {
-			m_textObjectChar = ch;
-			m_cmd = ViCmd::TEXT_OBJECT_A;
-			m_moved = true;
-			doCmd();
-		}
-		resetStatus();
+	if( m_subMode != 0 ) {
+		processSubMode(ch);
 		return;
 	}
 	switch (ch) {
@@ -797,6 +619,193 @@ void ViEngine::viCommand(wchar_t ch, bool hasSelection)
 		}
 	}
 	doCmd();
+}
+void ViEngine::processSubMode(wchar_t ch)
+{
+	if (m_subMode == 'r') {
+		if (ch != 0x1b) {		//	Esc は置換非対象
+			m_cmd = ViCmd::REPLACE_CHAR;		//	1文字置換、置換文字は m_cmdText の最後の文字
+			emit cmdFixed();
+			if (!m_redoing) {
+				m_lastRepeatCount = repeatCount();
+				m_redoCmd = QString("r") + QChar(ch);
+			}
+		}
+		resetStatus();
+		return;
+	}
+	if (m_subMode == 'g') {
+		switch (ch) {
+		case 'g':
+			m_cmd = ViCmd::CUR_BEG_DOC;
+			m_moved = true;
+			doCmd();
+			return;
+		}
+		//	invalid command
+		resetStatus();
+		return;
+	}
+	if (m_subMode == 'f' || m_subMode == 'F' || m_subMode == 't' || m_subMode == 'T')
+	{
+		m_lastFindChar = ch;
+		m_cmd = m_subMode == 'f' ? ViCmd::SEARCH_CHAR_f :
+			m_subMode == 'F' ? ViCmd::SEARCH_CHAR_F :
+			m_subMode == 't' ? ViCmd::SEARCH_CHAR_t : ViCmd::SEARCH_CHAR_T;
+		m_lastFindCmd = m_cmd;
+		m_moved = true;
+		doCmd();
+		return;
+	}
+	if (m_subMode == 'Z') {
+		if (ch == 'Z') {
+			m_cmd = ViCmd::SAVE_ALL_EXIT;
+			doCmd();
+			return;
+		}
+		//	invalid command
+		resetStatus();
+		return;
+	}
+	if (m_subMode == 'z') {
+		switch (ch) {
+		case '\r':
+		case '\n':
+			m_cmd = ViCmd::SCROLL_CUR_AT_TOP;
+			m_moved = true;
+			doCmd();
+			return;
+		case '.':
+			m_cmd = ViCmd::SCROLL_CUR_IN_MIDDLE;
+			m_moved = true;
+			doCmd();
+			return;
+		case '-':
+			m_cmd = ViCmd::SCROLL_CUR_AT_BOTTOM;
+			m_moved = true;
+			doCmd();
+			return;
+		}
+		//	invalid command
+		resetStatus();
+		return;
+	}
+	if (m_subMode == '#') {
+		switch (ch) {
+		case '#':
+		case '+':
+			m_cmd = ViCmd::INCREMENT;
+			m_editCmd = true;
+			doCmd();
+			return;
+		case '-':
+			m_cmd = ViCmd::DECREMENT;
+			m_editCmd = true;
+			doCmd();
+			return;
+		case '!':
+			m_cmd = ViCmd::TOGGLE_TRUE_FALSE;
+			m_editCmd = true;
+			doCmd();
+			return;
+		}
+		//	invalid command
+		resetStatus();
+		return;
+	}
+	if (m_subMode == '[') {
+		switch (ch) {
+		case '[':
+			m_cmd = ViCmd::BEG_OF_CUR_SECTION;
+			m_moved = true;
+			doCmd();
+			return;
+		}
+		//	invalid command
+		resetStatus();
+		return;
+	}
+	if (m_subMode == ']') {
+		switch (ch) {
+		case ']':
+			m_cmd = ViCmd::BEG_OF_NEXT_SECTION;
+			m_moved = true;
+			doCmd();
+			return;
+		}
+		//	invalid command
+		resetStatus();
+		return;
+	}
+	if (m_subMode == 'm') {
+		if (ch >= 'a' && ch <= 'z') {
+			m_cmd = ViCmd::MARK;
+			doCmd();
+		}
+		resetStatus();
+		return;
+	}
+	if (m_subMode == '\'') {
+		if (ch >= 'a' && ch <= 'z') {
+			m_cmd = ViCmd::JUMP_MARK_LINE;
+			m_moved = true;
+			doCmd();
+		}
+		resetStatus();
+		return;
+	}
+	if (m_subMode == '`') {
+		if (ch >= 'a' && ch <= 'z') {
+			m_cmd = ViCmd::JUMP_MARK_POS;
+			m_moved = true;
+			doCmd();
+		}
+		resetStatus();
+		return;
+	}
+	if (m_subMode == '"') {
+		if (ch >= '0' && ch <= '9' || ch >= 'a' && ch <= 'z') {
+			m_yankBufferChar = ch;
+			m_subMode = 0;
+			return;
+		}
+		resetStatus();
+		return;
+	}
+	if (m_subMode == '@') {
+		if (ch == '@') {
+			m_cmd = ViCmd::EXEC_YANK_TEXT;
+			doCmd();
+		}
+		else if (ch >= '0' && ch <= '9' || ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z') {
+			m_yankBufferChar = tolower(ch);
+			m_cmd = ViCmd::EXEC_YANK_TEXT;
+			doCmd();
+		}
+		resetStatus();
+		return;
+	}
+	if (m_subMode == 'i') {
+		if (ch == '"' || ch == '\'' || ch == '(' || ch == '{' || ch == '[' || ch == '<') {
+			m_textObjectChar = ch;
+			m_cmd = ViCmd::TEXT_OBJECT_I;
+			m_moved = true;
+			doCmd();
+		}
+		resetStatus();
+		return;
+	}
+	if (m_subMode == 'a') {
+		if (ch == '"' || ch == '\'' || ch == '(' || ch == '{' || ch == '[' || ch == '<') {
+			m_textObjectChar = ch;
+			m_cmd = ViCmd::TEXT_OBJECT_A;
+			m_moved = true;
+			doCmd();
+		}
+		resetStatus();
+		return;
+	}
+	assert(0);
 }
 void ViEngine::doCmd()
 {
