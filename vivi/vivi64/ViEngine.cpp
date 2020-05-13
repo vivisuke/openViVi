@@ -141,9 +141,9 @@ void ViEngine::doFind(const QString &pat, bool forward)
 }
 void ViEngine::processCommandText(const QString &text, bool hasSelection)
 {
-	if( mode() == Mode::INSERT && text.indexOf(0x1b) < 0 ) {
-		emit insertText(text);
-	} else {
+	//if( mode() == Mode::INSERT && text.indexOf(0x1b) < 0 ) {
+	//	emit insertText(text);
+	//} else {
 		for (int i = 0; i < text.size(); ++i) {
 			if( mode() == Mode::CMDLINE ) {
 				emit doExCommand(text.mid(i));
@@ -151,7 +151,7 @@ void ViEngine::processCommandText(const QString &text, bool hasSelection)
 			}
 			processCommand(text[i].unicode(), hasSelection);
 		}
-	}
+	//}
 }
 void ViEngine::processCommand(wchar_t ch, bool hasSelection)
 {
