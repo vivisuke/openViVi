@@ -21,6 +21,11 @@
 #include "ViEngine.h"
 #include "../buffer/sssearch.h"
 
+#ifdef		WIN32
+#include	<windows.h>
+#include	<imm.h>		//	for IME
+#endif
+
 #define		APP_NAME					"ViVi64"
 
 #define		KEY_RECENTFILELIST			"recentFileList"
@@ -450,12 +455,16 @@ void MainWindow::onModeChanged(int md)
 }
 void MainWindow::viModeChanged()
 {
-#if		0	//def	WIN32
+#if	0
+	setAttribute( Qt::WA_InputMethodEnabled, false );
+#else
+#ifdef	WIN32
 	if( m_viEngine->mode() == Mode::COMMAND ) {
-		HWND hwnd = window()->winId();
+		HWND hwnd = (HWND)window()->winId();
 		HIMC himc = ImmGetContext(hwnd);
 		ImmSetOpenStatus(himc, FALSE);		//	IME OFF
 	}
+#endif
 #endif
 	int vm = m_viEngine->mode();
 	setMode(vm);
