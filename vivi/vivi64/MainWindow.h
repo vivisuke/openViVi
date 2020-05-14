@@ -276,7 +276,7 @@ private:
     EditView	*m_grepView;			//	grep結果出力ビュー
     EditView	*m_outputView;			//	Outputビュー
     EditView*m_lastView;				//	Output にフォーカスが移る前のフォーカスビュー
-    EditView*m_testView;				//	単体テスト用ビュー
+    //##EditView*m_testView;				//	単体テスト用ビュー
     bool		m_testing;					//	テスト中フラグ
 	
 	QComboBox	*m_findStringCB;

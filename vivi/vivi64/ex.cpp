@@ -65,7 +65,7 @@ void MainWindow::commandLineMode(QChar qch)
 	if( qch == '/' || qch == '?' ) {
 		ui.action_RegExp->setChecked(true);		//	正規表現ON
 		globSettings()->setBoolValue(GlobalSettings::REGEXP, true);
-		EditView *view = m_testView != 0 ? m_testView : currentWidget();
+		EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 		if( view == 0 || !isEditView(view) )
 			m_viEngine->setIncSearchViewPos(0, 0);
 		else
@@ -121,7 +121,7 @@ void MainWindow::onEnterCmdLineEdit()
 	m_cmdLineEdit->hide();
 	QString text = m_cmdLineEdit->text();
 	if( text.isEmpty() ) return;
-	EditView* view = m_testView != 0 ? m_testView : currentWidget();
+	EditView* view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 	if (view != 0) {
 		view->setFocus();
 	}
@@ -176,7 +176,7 @@ void MainWindow::onEscCmdLineEdit()
 {
 	statusBar()->removeWidget(m_cmdLineEdit);
 	m_cmdLineEdit->hide();
-	EditView* view = m_testView != 0 ? m_testView : currentWidget();
+	EditView* view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 	if (view != 0) {
 		view->setFocus();
 	}
@@ -217,7 +217,7 @@ void MainWindow::onSpaceCmdLineEdit()
 //	先頭に : が挿入された場合、選択範囲行番号を挿入する
 void MainWindow::onColonCmdLineEdit()
 {
-	EditView *view = m_testView != 0 ? m_testView : currentWidget();
+	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 	if( !isEditView(view) ) return;
 	const QString text = m_cmdLineEdit->text();
 	if( m_cmdLineEdit->cursorPosition() != 2 || text.left(2) != "::" )		//	"::" でない場合
@@ -572,7 +572,7 @@ void MainWindow::doExCommand(QString cmd, bool bGlobal)
 {
 	EditView *view;
 	if( !m_viEngine->globDoing() ) {
-		view = m_testView != 0 ? m_testView : currentWidget();
+		view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 		if( !isEditView(view) ) view = 0;
 		m_viEngine->setView(view);
 	} else
@@ -748,7 +748,7 @@ void MainWindow::doExCommand(QString cmd, bool bGlobal)
 	}
 	if( cmd == "font" && arg[0] == '=' ) {
 		arg = arg.mid(1);
-		EditView *view = m_testView != 0 ? m_testView : currentWidget();
+		EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 		if( !isEditView(view) || arg.isEmpty() ) return;
 		TypeSettings *typeSettings = view->typeSettings();
 		typeSettings->setTextValue(TypeSettings::FONT_NAME, arg);

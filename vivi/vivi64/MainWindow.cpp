@@ -1,4 +1,4 @@
-#include <assert.h>
+﻿#include <assert.h>
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QMimeData>
@@ -95,6 +95,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_incSearched(false)
 	, m_searching(false)
 	, m_searchAlgorithm(SSSearch::SAKUSAKU)
+	, m_cmdLineEdit(nullptr)
 	//, m_docNumber(0)
 {
 	globSettings()->readSettings();
@@ -449,8 +450,56 @@ void MainWindow::onModeChanged(int md)
 }
 void MainWindow::viModeChanged()
 {
+#if		0	//def	WIN32
+	if( m_viEngine->mode() == Mode::COMMAND ) {
+		HWND hwnd = window()->winId();
+		HIMC himc = ImmGetContext(hwnd);
+		ImmSetOpenStatus(himc, FALSE);		//	IME OFF
+	}
+#endif
 	int vm = m_viEngine->mode();
 	setMode(vm);
+	switch( vm ) {
+	case Mode::INSERT:
+		setupInsertModeShortcut();
+		break;
+	case Mode::REPLACE:
+		setupInsertModeShortcut();
+		break;
+	case Mode::COMMAND:
+		setupCommandModeShortcut();
+		if( m_viEngine->prevMode() == Mode::INSERT || m_viEngine->prevMode() == Mode::REPLACE ) {
+			EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
+			if( isEditView(view) )
+				view->curMove(TextCursor::LEFT, 1, true);
+		}
+		break;
+	case Mode::CMDLINE:
+		commandLineMode(m_viEngine->cmdLineChar());
+		break;
+	}
+}
+void MainWindow::setupCommandModeShortcut()
+{
+#if	0	//##
+	ui.action_Search->setShortcut(QKeySequence());
+	ui.action_ScrollDownPage->setShortcut(QKeySequence("Ctrl+F"));
+	ui.action_Decrement->setShortcut(QKeySequence());
+	ui.action_ScrollDownHalfPage->setShortcut(QKeySequence("Ctrl+D"));
+	ui.action_InputPrevLineChar->setShortcut(QKeySequence());
+	ui.action_ExposeBottomOfScreen->setShortcut(QKeySequence("Ctrl+E"));
+#endif
+}
+void MainWindow::setupInsertModeShortcut()
+{
+#if	0	//##
+	ui.action_ScrollDownPage->setShortcut(QKeySequence());
+	ui.action_Search->setShortcut(QKeySequence("Ctrl+F"));
+	ui.action_ScrollDownHalfPage->setShortcut(QKeySequence());
+	ui.action_Decrement->setShortcut(QKeySequence("Ctrl+D"));
+	ui.action_ExposeBottomOfScreen->setShortcut(QKeySequence());
+	ui.action_InputPrevLineChar->setShortcut(QKeySequence("Ctrl+E"));
+#endif
 }
 void MainWindow::textInserted(const QString &text)
 {
