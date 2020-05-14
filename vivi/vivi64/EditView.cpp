@@ -1,4 +1,5 @@
-﻿#include <QtGui>
+﻿#include <assert.h>
+#include <QtGui>
 #include <QTransform>
 //#include <QPainter>
 #include <QDebug>
@@ -2522,4 +2523,22 @@ void EditView::toggleTrueFalse()
 	*m_textCursor = cur;
 	m_textCursor->insertText(text);
 	update();
+}
+QString EditView::getLineText(int dln) const
+{
+	assert(0);
+	return "";
+}
+uint EditView::lineFlags(int dln) const
+{
+	assert(0);
+	return 0;
+}
+void EditView::substitute(int dln1, int dln2, const QString &pat, const QString &rep, const QString &opt)
+{
+	assert(0);
+}
+void EditView::setCursorPosition(pos_t pos, int mode)
+{
+	assert(0);
 }

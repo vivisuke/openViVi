@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtWidgets/QMainWindow>
 #include <QPlainTextEdit>
@@ -6,6 +6,12 @@
 #include <QCheckBox>
 #include <QLabel>
 #include <QCombobox>
+#include <QTime>
+#include <QTimer>
+#include <QThread>
+#include <QProcess>
+#include <QDir>
+//#include <qnetwork.h>
 #include "ui_MainWindow.h"
 #include "EditView.h"
 class FindLineEdit;
@@ -26,6 +32,10 @@ class TypeSettings;
 class GlobalSettings;
 class SSSearch;
 class ViEngine;
+class CommandLine;
+class FindLineEdit;
+class AutoCompletionDlg;
+class QNetworkAccessManager;
 
 extern GlobalSettings	g_globSettings;
 GlobalSettings *globSettings();
@@ -59,6 +69,7 @@ public:
 	ViEngine	*viEngine() { return m_viEngine; }
 	void	resetBoxKeisenMode();
 	void	setMode(int);
+	void	commandLineMode(QChar = ':');
 protected:
 	//bool	focusNextPrevChild(bool next);
 	void	createActions();
@@ -97,7 +108,47 @@ protected:
 protected:
 	void	dragEnterEvent(QDragEnterEvent *event);
 	void dropEvent(QDropEvent* event);
+	void	execCommand(const QString &cmd);
+	void	updateMapFileLine(EditView *);
+	void	updateMapFileMarks(EditView *);
+	void	showCurrentDir();
+	void	doMoveCopyCommand(EditView *view, QString &arg);
+	void	doSubstitute(EditView *view, const QString &arg);
+	bool	parseSubstisute(const QString &arg, QString &pat, QString &rep, QString &opt);
+	void	activateDockBar(const QString &);
+	void	appendToExCmdHist(const QString &cmd);
+	void	showAutoCompletionDlg(const QStringList &, QString = QString() /*, bool = false*/);
+	void closeAutoCompletionDlg();
+	void	setupCommandModeShortcut();
+	void	setupInsertModeShortcut();
+	void	makeSureOutputView();
+	void	setEnabledViewMenues(bool);
 
+protected slots:
+	void	onEditedCmdLineEdit(QString);
+	//void	onFocusOutCmdLineEdit();
+	void	onEnterCmdLineEdit();
+	void	onEscCmdLineEdit();
+	void	onSpaceCmdLineEdit();
+	void	onSlashCmdLineEdit();
+	void	onColonCmdLineEdit();
+	bool	isEditCommand(QString &arg);
+	void	fileNameCompletion(QDir &, QString = QString());
+	void	onUpCmdLineEdit();
+	void	onDownCmdLineEdit();
+    EditView	*openFile(const QString &fileName, bool forced = false);
+
+private slots:
+	void autoCmplKeyPressed(QString);
+	void autoCmplBackSpace();
+	void autoCmplDelete(bool, bool);
+	void autoCmplLeft(bool, bool);
+	void autoCmplRight(bool, bool);
+	void autoCmplZenCoding();
+	void autoCmplPasted();
+	void autoCmplDecided(QString, bool);
+	void autoCmplRejected();
+	
 private slots:
 	void	on_action_NewWindow_triggered();
 	void	on_action_New_triggered();
@@ -130,6 +181,11 @@ private slots:
 	void	on_action_GlobalSettings_triggered();
 	void	on_action_viCommand_triggered();
 	void	on_action_About_ViVi_triggered();
+	void	on_action_ExCommand_triggered();
+	void	on_action_NextTab_triggered();
+	void	on_action_PrevTab_triggered();
+	void	on_action_FormerTab_triggered();
+	void	on_action_ZenCoding_triggered();
 	//
 public slots:
     void	reloadRequested(EditView *, cchar *codecName = 0);
@@ -161,6 +217,14 @@ public slots:
 	void	replaceText(QString);
 	void	textInserted(const QString &);
 	void	viCmdFixed();
+	void	doExCommand(QString, bool bGlobal);
+	void	doExCommand(QString cmd) { doExCommand(cmd, false); }
+    //void	setFindString(const QString &txt);
+	void	onRecieved(const QString);
+	void	imeOpenStatusChanged();
+	void	doOutput(const QString &);		//	アウトプットにテキスト出力
+	void	doOutputToBar(const QString &);		//	アウトプットバーにテキスト出力
+	void	doOutputToGrepView(const QString &);		//	grepビューにテキスト出力
 	
 private:
 	Ui::MainWindowClass ui;
@@ -175,6 +239,45 @@ private:
 	int		m_formerTabIndex;
 	//int		m_docNumber;
 	ViEngine	*m_viEngine;
+	QStringList		m_clipboardHist;		//	クリップボード履歴
+	//QList<InsData>	m_insDataList;		//	挿入文字列履歴
+	QString			m_insertedText;
+	EditView			*m_textInsertedView;
+	int					m_textInsertedPos;
+	int					m_jumpLineNumber;		//	1 org
+	int					m_possibleGrepCount;			//	Grep 実行可能回数
+	int					m_possibleReplaceCount;		//	Replace 実行可能回数
+	int					m_possibleCmdModeCount;		//	vi コマンドモード遷移可能回数
+	QStringList		m_grepDirHist;				//	検索ディレクトリ履歴
+    QStringList		m_exCmdHist;				//	ex-command 履歴
+    int				m_exCmdHistIndex;
+	QString		m_sbMessage;
+	QTimer			m_timer;
+	QTime			m_time;
+	QThread			m_thread;
+	QThread			m_idleThread;
+	class GrepEngine		*m_grepEngine;
+    //QNetworkAccessManager	*m_networkAccessManager;
+    bool		m_reinserting;			//	再入力中
+    QString		m_tagsJumpFileName;		//	tagsJump を行った文書のフルパス名
+    int				m_tagsJumpLine;				//	tagsJump を行った文書行 0..*
+    std::vector<QString>	m_tagsJumpFileNames;		//	tagsJump を行った文書のフルパス名
+    std::vector<int>		m_tagsJumpLines;				//	tagsJump を行った文書行 0..*
+    CommandLine	*m_cmdLineEdit;
+    QString			m_cmdLineText;					//	入力されたテキスト for 履歴フィルタ
+    int				m_autoCmplIndex;				//	自動補完開始位置
+	AutoCompletionDlg	*m_autoCompletionDlg;
+	bool			m_autoCmplDlgClosed;			//	自動補完ダイアログを閉じたばかり
+    QProcess	*m_process;					//	外部コマンド実行用プロセス
+    QMap<QString, quint64>	m_mapFilePathToLine;		//	値の上位は (uint)time(0) の値
+    //	上位24bit (uint)time(0) の値の上位24bit、その次にマーク文字8ビット、下位32bit は位置
+    QMultiMap<QString, quint64>	m_mapFilePathToMarks;
+    int		m_seqGrepView;
+    EditView	*m_grepView;			//	grep結果出力ビュー
+    EditView	*m_outputView;			//	Outputビュー
+    EditView*m_lastView;				//	Output にフォーカスが移る前のフォーカスビュー
+    EditView*m_testView;				//	単体テスト用ビュー
+    bool		m_testing;					//	テスト中フラグ
 	
 	QComboBox	*m_findStringCB;
 	QString			m_findString;

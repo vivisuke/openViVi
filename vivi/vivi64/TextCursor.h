@@ -3,6 +3,7 @@
 #include <QString>
 
 typedef unsigned char byte;
+typedef unsigned __int8 byte_t;
 #ifdef	_WIN64
 	typedef __int64 ssize_t;
 	typedef __int64 pos_t;
@@ -59,7 +60,7 @@ public:
 	TextCursor(EditView *view, pos_t pos = 0, int anchor= 0);
 	TextCursor(const TextCursor &x);
 public:
-	byte		mode() const { return m_mode; }
+	byte_t		mode() const { return m_mode; }
 	int		position() const { return m_pos; }
 	int		positionInLine() const;	//	行内オフセットを返す
 	int		anchor() const { return m_anchor; }
@@ -76,7 +77,7 @@ public:
 	QString	selectedText() const;
 	bool	getSelectedLineRange(int &dln1, int &dln2) const;
 public:
-	void	setMode(byte mode);
+	void	setMode(byte_t mode);
 	void	clearSelection();
 	void	setPosition(pos_t pos, int mode = MOVE_ANCHOR);
 	void	setLineAndPosition(int vln, pos_t pos, int mode = MOVE_ANCHOR);
@@ -102,7 +103,7 @@ protected:
 
 private:
 	EditView	*m_view;
-	byte		m_mode;
+	byte_t		m_mode;
 	int		m_pos;
 	int		m_anchor;
 	int		m_wordBegPos;			//	単語先頭位置 for マウスダブルクリック単語単位選択

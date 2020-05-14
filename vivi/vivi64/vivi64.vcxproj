@@ -43,11 +43,11 @@
   </ImportGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;network;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;network;widgets</QtModules>
   </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
     <Import Project="$(QtMsBuild)\qt.props" />
@@ -90,18 +90,22 @@
     <ClCompile Include="..\buffer\undoMgr.cpp" />
     <ClCompile Include="..\buffer\UTF16.cpp" />
     <ClCompile Include="assocParen.cpp" />
+    <ClCompile Include="AutoCompletionDlg.cpp" />
     <ClCompile Include="autoIndent.cpp" />
     <ClCompile Include="charEncoding.cpp" />
+    <ClCompile Include="CommandLine.cpp" />
     <ClCompile Include="CTabBar.cpp" />
     <ClCompile Include="CTabWidget.cpp" />
     <ClCompile Include="Document.cpp" />
     <ClCompile Include="EditView.cpp" />
+    <ClCompile Include="ex.cpp" />
     <ClCompile Include="FindLineEdit.cpp" />
     <ClCompile Include="globalSettings.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NamedColorDlg.cpp" />
     <ClCompile Include="settingsMgr.cpp" />
+    <ClCompile Include="TestViCommands.cpp" />
     <ClCompile Include="TextCursor.cpp" />
     <ClCompile Include="tokenizer.cpp" />
     <ClCompile Include="typeSettings.cpp" />
@@ -124,14 +128,17 @@
   <ItemGroup>
     <QtMoc Include="NamedColorDlg.h" />
     <ClInclude Include="assocParen.h" />
+    <QtMoc Include="AutoCompletionDlg.h" />
     <ClInclude Include="charEncoding.h" />
     <QtMoc Include="Document.h" />
     <QtMoc Include="FindLineEdit.h" />
+    <QtMoc Include="CommandLine.h" />
     <ClInclude Include="CTabBar.h" />
     <ClInclude Include="CTabWidget.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="settingsMgr.h" />
     <QtMoc Include="TypeStgDlg.h" />
+    <QtMoc Include="TestViCommands.h" />
     <ClInclude Include="TextCursor.h" />
     <QtMoc Include="viewLineMgr.h" />
     <ClInclude Include="tokenizer.h" />

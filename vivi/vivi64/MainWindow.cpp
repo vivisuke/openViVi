@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QMimeData>
@@ -736,6 +737,11 @@ void MainWindow::openFavoriteFile()
     QAction *action = qobject_cast<QAction *>(sender());
     if (action)
 		createView(action->data().toString());
+}
+EditView *MainWindow::openFile(const QString &fileName, bool forced)
+{
+	assert(0);
+	return 0;
 }
 bool MainWindow::loadFile(Document *doc, const QString &pathName, /*cchar *codecName,*/
 										bool bJump)		//	保存カーソル位置にジャンプ
@@ -1476,3 +1482,53 @@ bool MainWindow::focusNextPrevChild(bool next)
 		return QMainWindow::focusNextPrevChild(next);
 }
 #endif
+void MainWindow::on_action_NextTab_triggered()
+{
+	assert(0);
+}
+void MainWindow::on_action_PrevTab_triggered()
+{
+	assert(0);
+}
+void MainWindow::on_action_FormerTab_triggered()
+{
+	assert(0);
+}
+void MainWindow::on_action_ZenCoding_triggered()
+{
+	assert(0);
+}
+#if	0
+void MainWindow::onEnterCmdLineEdit()
+{
+	assert(0);
+}
+void MainWindow::doExCommand(QString, bool bGlobal)
+{
+	assert(0);
+}
+#endif
+void MainWindow::doOutput(const QString &)		//	アウトプットにテキスト出力
+{
+	assert(0);
+}
+void MainWindow::doOutputToBar(const QString &)		//	アウトプットバーにテキスト出力
+{
+	assert(0);
+}
+void MainWindow::doOutputToGrepView(const QString &)		//	grepビューにテキスト出力
+{
+	assert(0);
+}
+void MainWindow::execCommand(const QString &cmd)
+{
+	assert(0);
+}
+void MainWindow::onRecieved(const QString)
+{
+	assert(0);
+}
+void MainWindow::imeOpenStatusChanged()
+{
+	assert(0);
+}

@@ -3,6 +3,7 @@
 #include <QScrollArea>
 #include <QFont>
 #include <QTimer>
+#include "TextCursor.h"
 #include "../buffer/Buffer.h"
 //#include "typeSettings.h"
 //#include "globalSettings.h"
@@ -115,6 +116,16 @@ public:
 	void	curTopOfScreen(bool vi = false, int cnt = 1);
 	void	curMiddleOfScreen(bool vi = false);
 	void	curBottomOfScreen(bool vi = false, int cnt = 1);
+	void	setCursorPosition(pos_t pos, int mode = TextCursor::MOVE_ANCHOR);
+	void	nextTag();
+	void	prevTag();
+	void	nextHeadingLine();
+	void	prevHeadingLine();
+	void	nextBlankLine();
+	void	prevBlankLine();
+	void	begOfCurSection();		//	[[
+	void	begOfNextSction();		//	]]
+	void	jumpToLastModifiedPos();
 	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
 	void	onCursorPosChanged();
 	void	doInsertText(const QString &, bool, bool, bool);
@@ -153,6 +164,10 @@ public:
 	void	findNext(const QString &, bool vi = false);
 	void	findPrev(const QString &, bool vi = false);
 	void	emitModifiedChanged() { emit modifiedChanged(); }
+	QString	getLineText(int dln) const;
+	uint	lineFlags(int dln) const;
+	void	substitute(int dln1, int dln2, const QString &pat, const QString &rep, const QString &opt);
+
 protected:
 	void	viFindCharForward(wchar_t qch, bool bPrev, int mvmd, int repCnt);
 	void	viFindCharBackward(wchar_t qch, bool bPrev, int mvmd, int repCnt);
