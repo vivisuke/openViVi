@@ -577,6 +577,7 @@ void EditView::mousePressEvent(QMouseEvent *event)
 			pointToLineOffset(pnt, vln, offset);
 			m_textCursor->setPosition(viewLineStartPosition(vln) + offset, shift ? TextCursor::KEEP_ANCHOR : TextCursor::MOVE_ANCHOR);
 			emit cursorPosChanged(vln, offset);
+			makeCursorInView();
 		}
 		update();
 	}
@@ -2188,6 +2189,7 @@ bool EditView::findBackward(const QString &text, uint opt, bool loop, bool vi)
 	update();
 	return true;
 }
+#if	0
 void EditView::findNext(const QString &pat, bool word, bool vi)
 {
 	uint opt = 0;
@@ -2223,6 +2225,7 @@ void EditView::findPrev(const QString &pat, bool word, bool vi)
 	setFocus();
 	update();
 }
+#endif
 bool EditView::focusNextPrevChild(bool next)
 {
 	return false;

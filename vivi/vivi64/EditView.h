@@ -159,10 +159,13 @@ public:
 	bool	searchCurWord(QString &);
 	bool	findForward(const QString &, uint opt = 0, bool loop = false, bool next = true, bool vi = false);
 	bool	findBackward(const QString &, uint opt = 0, bool loop = false, bool vi = false);
-	void	findNext(const QString&, bool word = false, bool vi = false);
-	void	findPrev(const QString&, bool word = false, bool vi = false);
+#if	1
 	void	findNext(const QString &, bool vi = false);
 	void	findPrev(const QString &, bool vi = false);
+#else
+	void	findNext(const QString&, bool word, bool vi = false);
+	void	findPrev(const QString&, bool word, bool vi = false);
+#endif
 	void	emitModifiedChanged() { emit modifiedChanged(); }
 	QString	getLineText(int dln) const;
 	uint	lineFlags(int dln) const;

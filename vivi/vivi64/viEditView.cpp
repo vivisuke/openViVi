@@ -75,6 +75,7 @@ void EditView::viFindCharBackward(wchar_t qch, bool bPrev, int mvmd, int repCnt)
 		}
 	}
 }
+#if	1
 void EditView::findNext(const QString &pat, bool vi)
 {
 	uint opt = 0;
@@ -107,6 +108,7 @@ void EditView::findPrev(const QString &pat, bool vi)
 	setFocus();
 	update();
 }
+#endif
 void EditView::curMove(int mv, int n, bool vi)
 {
 	m_textCursor->movePosition(mv, TextCursor::MOVE_ANCHOR, n, vi);
@@ -332,14 +334,14 @@ void EditView::doViCommand()		//	viEngine が保有する vi コマンドを実�
 			QString pat = mainWindow()->findString();
 			if( !pat.isEmpty() )
 				for (int i = 0; i < repCnt; ++i)
-					//##findNext(pat, /*vi=*/true);
+					findNext(pat, /*vi=*/true);
 			break;
 		}
 		case ViCmd::SEARCH_PREV: {
 			QString pat = mainWindow()->findString();
 			if( !pat.isEmpty() )
 				for (int i = 0; i < repCnt; ++i)
-					//##findPrev(pat, /*vi=*/true);
+					findPrev(pat, /*vi=*/true);
 			break;
 		}
 		case ViCmd::SEARCH_CHAR_f:
