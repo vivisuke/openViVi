@@ -8,6 +8,7 @@
 #include <QDebug>
 #include "version.h"
 #include "MainWindow.h"
+#include "CommandLine.h"
 #include "CTabWidget.h"
 #include "Document.h"
 #include "EditView.h"
@@ -1471,6 +1472,8 @@ void MainWindow::setMode(int md)
 		break;
 	case MODE_VI:
 		viEngine()->setMode(Mode::COMMAND);
+		if( m_cmdLineEdit != nullptr )
+			m_cmdLineEdit->hide();
 		break;
 	case MODE_EX:
 		viEngine()->setMode(Mode::CMDLINE);

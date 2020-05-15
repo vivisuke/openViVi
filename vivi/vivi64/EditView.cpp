@@ -543,8 +543,9 @@ void EditView::focusOutEvent( QFocusEvent * event )
 }
 void EditView::mousePressEvent(QMouseEvent *event)
 {
-	if( mainWindow()->mode() == MODE_EX )
+	if( mainWindow()->mode() == MODE_EX ) {
 		mainWindow()->setMode(MODE_VI);
+	}
 	const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
 	const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
 	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;

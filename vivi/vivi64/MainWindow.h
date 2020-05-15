@@ -69,6 +69,7 @@ public:
 	ViEngine	*viEngine() { return m_viEngine; }
 	void	resetBoxKeisenMode();
 	void	setMode(int);
+	void	hideCmdLineEdit();
 	void	commandLineMode(QChar = ':');
 protected:
 	//bool	focusNextPrevChild(bool next);

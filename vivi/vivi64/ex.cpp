@@ -114,6 +114,10 @@ void MainWindow::onEditedCmdLineEdit(QString text)
 		fileNameCompletion(dir, fn);
 	}
 }
+void MainWindow::hideCmdLineEdit()
+{
+	m_cmdLineEdit->hide();
+}
 //	Enter が押された場合の処理
 void MainWindow::onEnterCmdLineEdit()
 {
