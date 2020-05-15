@@ -32,8 +32,14 @@ open source version of ViVi text editor, which supports standard text editor fea
   - メニューカスタマイズ
   - 巨大ファイル（１GB超）対応？
 
+# ■ Windows 版ダウンロード
+
+以下から zip をダウンロードし、解凍・実行してください。
+
+https://github.com/vivisuke/openViVi/releases
+
 # ■ 開発環境
-- Windows 10, Visual Studio 2019, C++, ~~当面は32~~ 64bitモード only
+- Windows 10, Visual Studio 2019, C++17, ~~当面は32~~ 64bitモード only
 - GUI は Qt5（VS2019 VS tools） を使用   ~~？または今更 MFC ？~~
   - Qt であれば Mac, Linux でもビルド可能なはず
   
@@ -60,6 +66,7 @@ open source version of ViVi text editor, which supports standard text editor fea
 
 # ■ スポンサー
 本プロジェクトは下記スポンサー様のご支援を受けています。ありがとうございます。
+- umibose 様 （2020年5月 ￥20,000)
 - daruyanagi 様 （2020年5月 ￥1,000)
 - J.N 様 （2020年4月 ￥5,000)
 - YS INC 様 （2020年4月 ￥1,000)
