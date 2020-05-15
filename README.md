@@ -32,7 +32,7 @@ open source version of ViVi text editor, which supports standard text editor fea
   - メニューカスタマイズ
   - 巨大ファイル（１GB超）対応？
 
-# ■ バイナリダウンロード
+# ■ Windows 版ダウンロード
 
 以下から zip をダウンロードし、解凍・実行してください。
 https://github.com/vivisuke/openViVi/releases
