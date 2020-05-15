@@ -78,9 +78,10 @@ void EditView::viFindCharBackward(wchar_t qch, bool bPrev, int mvmd, int repCnt)
 #if	1
 void EditView::findNext(const QString &pat, bool vi)
 {
-	uint opt = 0;
-	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) ) opt |= SSSearch::IGNORE_CASE;
-	if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) ) opt |= SSSearch::WHOLE_WORD_ONLY;
+	auto opt = mainWindow()->getSearchOpt();
+	//uint opt = 0;
+	//if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) ) opt |= SSSearch::IGNORE_CASE;
+	//if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) ) opt |= SSSearch::WHOLE_WORD_ONLY;
 	QTime tm;
 	tm.start();
 	bool rc = findForward(pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), true, vi);
@@ -96,11 +97,10 @@ void EditView::findNext(const QString &pat, bool vi)
 }
 void EditView::findPrev(const QString &pat, bool vi)
 {
-	uint opt = 0;
-	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
-		opt |= SSSearch::IGNORE_CASE;
-	if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
-		opt |= SSSearch::WHOLE_WORD_ONLY;
+	auto opt = mainWindow()->getSearchOpt();
+	//uint opt = 0;
+	//if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) ) opt |= SSSearch::IGNORE_CASE;
+	//if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) ) opt |= SSSearch::WHOLE_WORD_ONLY;
 	if( !findBackward(pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), vi) )
 		showMessage(tr("'%1' was not found.").arg(pat), 3000);
 	else
