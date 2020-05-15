@@ -172,8 +172,8 @@ void ViEngine::processCommand(wchar_t ch, bool hasSelection)
 					m_undoBlockOpened = false;
 				}
 				resetStatus();
-				m_cmd = ViCmd::CUR_LEFT;
-				emit cmdFixed();
+				//m_cmd = ViCmd::CUR_LEFT;
+				//emit cmdFixed();
 				setMode(Mode::COMMAND);
 			} else {		//	Esc 以外の場合 → 文字挿入
 				QString txt = QChar(ch);
