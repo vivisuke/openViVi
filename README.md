@@ -35,6 +35,7 @@ open source version of ViVi text editor, which supports standard text editor fea
 # ■ Windows 版ダウンロード
 
 以下から zip をダウンロードし、解凍・実行してください。
+
 https://github.com/vivisuke/openViVi/releases
 
 # ■ 開発環境
