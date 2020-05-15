@@ -1167,14 +1167,14 @@ void MainWindow::on_action_SelectAll_triggered()
 		view->selectAll();
 	}
 }
-uint MainWindow::getSearchOpt() const
+uint MainWindow::getSearchOpt(bool vi) const
 {
 	uint opt = 0;
 	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
 		opt |= SSSearch::IGNORE_CASE;
 	if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
 		opt |= SSSearch::WHOLE_WORD_ONLY;
-	if( globSettings()->boolValue(GlobalSettings::REGEXP) )
+	if( vi || globSettings()->boolValue(GlobalSettings::REGEXP) )
 		opt |= SSSearch::REGEXP;
 	return opt;
 }
