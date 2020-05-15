@@ -866,6 +866,7 @@ QVariant EditView::inputMethodQuery( Qt::InputMethodQuery query ) const
 }
 void EditView::inputMethodEvent(QInputMethodEvent * event)
 {
+	qDebug() << "inputMethodEvent()";
 	const QString &text = event->commitString();
 	if( !text.isEmpty() ) {		//	■ IME入力が確定した場合
 		m_preeditString.clear();
@@ -2541,5 +2542,8 @@ void EditView::substitute(int dln1, int dln2, const QString &pat, const QString 
 }
 void EditView::setCursorPosition(pos_t pos, int mode)
 {
-	assert(0);
+	//assert(0);
+	m_textCursor->setPosition(pos, mode);
+	makeCursorInView();
+	update();
 }
