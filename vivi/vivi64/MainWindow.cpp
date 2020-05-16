@@ -1312,6 +1312,7 @@ void MainWindow::doFindString()
 }
 void MainWindow::findStringChanged(const QString &pat)
 {
+	if( m_searching ) return;	//	検索中の場合、再検索しないようにねっ
 	m_findString = pat;
 	EditView *view = currentWidget();
 	if (isEditView(view)) {
@@ -1417,6 +1418,7 @@ void MainWindow::aboutToShowColorTheme()
 }
 void MainWindow::setFindString(const QString &txt)
 {
+	m_searching = true;		//	再検索を行わないようにおまじない
     QSettings settings;
     QStringList strList = settings.value("findStringList").toStringList();
     strList.removeAll(txt);
@@ -1426,6 +1428,7 @@ void MainWindow::setFindString(const QString &txt)
     settings.setValue("findStringList", strList);
 	updateFindStringCB();
 	m_findString = txt;
+	m_searching = false;
 }
 void MainWindow::updateFindStringCB()
 {
