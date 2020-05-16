@@ -868,6 +868,8 @@ QVariant EditView::inputMethodQuery( Qt::InputMethodQuery query ) const
 void EditView::inputMethodEvent(QInputMethodEvent * event)
 {
 	qDebug() << "inputMethodEvent()";
+	if( mainWindow()->mode() == MODE_VI )
+		mainWindow()->setMode(MODE_INS);
 	const QString &text = event->commitString();
 	if( !text.isEmpty() ) {		//	■ IME入力が確定した場合
 		m_preeditString.clear();
