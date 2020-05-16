@@ -565,15 +565,26 @@ void MainWindow::viCmdFixed()
 	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 	if( isEditView(view) ) {
 		view->doViCommand();
+		onCursorPosChanged();
 	}
 }
 void MainWindow::onNewLineCodeChanged(int)
 {
+	assert(0);
 }
-void MainWindow::onCursorPosChanged(int ln, int offset)
+void MainWindow::onCursorPosChanged()
+{
+	EditView* view = /*m_testView != 0 ? m_testView :*/ currentWidget();
+	if (isEditView(view)) {
+		auto ln = view->textCursor()->viewLine();
+		auto offset = view->textCursor()->positionInLine();
+		onCursorPosChanged(view, ln, offset);
+	}
+}
+void MainWindow::onCursorPosChanged(EditView* view, int ln, int offset)
 {
 	qDebug() << "onCursorPosChanged()";
-	EditView *view = (EditView *)sender();
+	//EditView *view = (EditView *)sender();
 	if( !isEditView(view) ) return;
 	m_lineOffsetLabel->setText(QString("pos: %1 (%2:%3)")
 												.arg(view->cursorPosition()).arg(ln).arg(offset));
@@ -666,7 +677,7 @@ EditView *MainWindow::createView(QString pathName)
 	EditView* view = new EditView(this, doc /*, typeSettings*/);	//QPlainTextEdit();	//createView();
 	connect(view, SIGNAL(modifiedChanged()), this, SLOT(modifiedChanged()));
 	connect(view, SIGNAL(updateUndoRedoEnabled()), this, SLOT(updateUndoRedoEnabled()));
-	connect(view, SIGNAL(cursorPosChanged(int, int)), this, SLOT(onCursorPosChanged(int, int)));
+	connect(view, SIGNAL(cursorPosChanged(EditView*, int, int)), this, SLOT(onCursorPosChanged(EditView*, int, int)));
 	connect(view, SIGNAL(reloadRequest(EditView *)), this, SLOT(reloadRequested(EditView *)));
 	connect(view, SIGNAL(textSearched(const QString&, bool)), this, SLOT(textSearched(const QString&, bool)));
 	connect(view, SIGNAL(textInserted(const QString &)), this, SLOT(textInserted(const QString &)));
@@ -1313,10 +1324,13 @@ void MainWindow::findStringChanged(const QString &pat)
 		if (!view->findForward(m_findString = pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), false))
 			statusBar()->showMessage(tr("'%1' was not found.").arg(pat), 3000);
 		else {
+			onCursorPosChanged();
+#if	0
 			auto ln = view->textCursor()->viewLine();
 			auto offset = view->textCursor()->positionInLine();
 			//auto pos = view->textCursor()->position();
 			onCursorPosChanged(ln, offset);
+#endif
 		}
 		//m_incSearched = true;
 	}

@@ -226,7 +226,7 @@ private slots:
 	void	onTimer();
 signals:
 	void	modifiedChanged() const;
-	void	cursorPosChanged(int, int);
+	void	cursorPosChanged(EditView*, int, int);
 	void	doOutput(const QString &) const;
 	void	escPressed();
 	void	showMessage(const QString &, int timeout = 0) const;

@@ -334,7 +334,7 @@ void EditView::onCursorPosChanged()
 	//m_tmCounter = TM_FPS / 2;
 	pos_t pos = m_textCursor->position();
 	int ln = document()->positionToLine(pos);
-	emit cursorPosChanged(ln+1, pos - lineStartPosition(ln));
+	emit cursorPosChanged(this, ln+1, pos - lineStartPosition(ln));
 }
 void EditView::jumpToLine(int ln, bool vi)		//	ln [0, EOFLine) ドキュメント行番号
 {
@@ -570,13 +570,13 @@ void EditView::mousePressEvent(QMouseEvent *event)
 			//qDebug() << vln;
 			m_textCursor->setPosition(viewLineStartPosition(vln));
 			m_textCursor->setPosition(viewLineStartPosition(vln+1), TextCursor::KEEP_ANCHOR);
-			emit cursorPosChanged(vln, offset);
+			emit cursorPosChanged(this, vln, offset);
 		} else {		//	通常テキストエリアの場合
 			pnt.setX(pnt.x() - m_lineNumAreaWidth + m_scrollX0*m_fontWidth);
 			int vln, offset;
 			pointToLineOffset(pnt, vln, offset);
 			m_textCursor->setPosition(viewLineStartPosition(vln) + offset, shift ? TextCursor::KEEP_ANCHOR : TextCursor::MOVE_ANCHOR);
-			emit cursorPosChanged(vln, offset);
+			emit cursorPosChanged(this, vln, offset);
 			makeCursorInView();
 		}
 		update();
@@ -647,7 +647,7 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 			m_textCursor->setPX(pnt.x());
 			resetCursorBlinking();
 			makeCursorInView();
-			emit cursorPosChanged(ln, offset);
+			emit cursorPosChanged(this, ln, offset);
 		}
 		update();
 	}
@@ -2158,6 +2158,7 @@ bool EditView::findForward(const QString &text, uint opt, bool loop, bool next, 
 	//onCursorPosChanged();
 	sssrc.setup((wchar_t *)text.data(), text.size());
 	update();
+	qDebug() << "findForward() pos = " << pos;
 	return true;
 }
 bool EditView::findBackward(const QString &text, uint opt, bool loop, bool vi)
