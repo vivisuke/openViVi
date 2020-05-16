@@ -1461,7 +1461,9 @@ int EditView::textWidth(pos_t first, ssize_t sz, /*pos_t last,*/ const Buffer* p
 	auto pos = first;
 	int col = 0;
 	while( pos != endpos ) {
-		auto ch = pos < pbuffer->size() ? pbuffer->operator[](pos) : '\0';
+		if (pos >= pbuffer->size())
+			break;
+		auto ch = pbuffer->operator[](pos);
 		if( ch == '\t' ) {
 			auto n = (nTab - col % nTab);
 			col += n;
