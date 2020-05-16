@@ -200,6 +200,7 @@ public slots:
 	void	onModeChanged(int);
 	void	onNewLineCodeChanged(int);
     void	onCursorPosChanged();
+    void	onCursorPosChanged(EditView*);
     void	onCursorPosChanged(EditView*, int, int);
 	void	showMessage(const QString&, int timeout = 0);
     void	updateUndoRedoEnabled();

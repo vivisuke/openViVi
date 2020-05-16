@@ -538,6 +538,7 @@ void MainWindow::insertText(QString text)
 	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 	if( isEditView(view) ) {
 		view->insertText(text);
+		onCursorPosChanged(view);
 	}
 }
 void MainWindow::replaceText(QString text)
@@ -545,6 +546,7 @@ void MainWindow::replaceText(QString text)
 	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 	if( isEditView(view) ) {
 		view->replaceText(text);
+		onCursorPosChanged(view);
 	}
 }
 void MainWindow::viCmdFixed()
@@ -565,7 +567,7 @@ void MainWindow::viCmdFixed()
 	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 	if( isEditView(view) ) {
 		view->doViCommand();
-		onCursorPosChanged();
+		onCursorPosChanged(view);
 	}
 }
 void MainWindow::onNewLineCodeChanged(int)
@@ -576,10 +578,14 @@ void MainWindow::onCursorPosChanged()
 {
 	EditView* view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 	if (isEditView(view)) {
-		auto ln = view->textCursor()->viewLine();
-		auto offset = view->textCursor()->positionInLine();
-		onCursorPosChanged(view, ln, offset);
+		onCursorPosChanged(view);
 	}
+}
+void MainWindow::onCursorPosChanged(EditView* view)
+{
+	auto ln = view->textCursor()->viewLine();
+	auto offset = view->textCursor()->positionInLine();
+	onCursorPosChanged(view, ln, offset);
 }
 void MainWindow::onCursorPosChanged(EditView* view, int ln, int offset)
 {
