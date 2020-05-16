@@ -87,7 +87,7 @@ void MainWindow::onEditedCmdLineEdit(QString text)
 	if( text.isEmpty() ) return;
 	m_cmdLineText = m_cmdLineEdit->text();
 	if( text[0] == '/' ) {
-		m_findStringCB->lineEdit()->setText(text.mid(1));
+		//##m_findStringCB->lineEdit()->setText(text.mid(1));
 	} else if( text[0] == ':' ) {
 		if( m_autoCompletionDlg != 0 ) return;
 		if( m_autoCmplDlgClosed ) {
