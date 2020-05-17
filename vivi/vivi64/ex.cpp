@@ -56,7 +56,20 @@ void MainWindow::commandLineMode(QChar qch)
 	//if( m_cmdLineEdit->parentWidget() == 0 )
 	if (!m_cmdLineEdit->isVisible() )	
 	{
+#if	1
+	m_cmdLineEdit->setParent(statusBar());
+	auto g = m_curCharCode->geometry();
+	auto rct = statusBar()->rect();
+	auto ht = rct.height();
+	rct.setRight(g.left());
+	const int SPC = 2;
+	rct.setLeft(SPC);
+	rct.setTop(SPC);
+	rct.setBottom(ht - SPC);
+	m_cmdLineEdit->setGeometry(rct);
+#else
 		statusBar()->insertPermanentWidget(0, m_cmdLineEdit);
+#endif
 		//m_cmdLineEdit->setText(qch);
 		m_cmdLineEdit->show();
 	}

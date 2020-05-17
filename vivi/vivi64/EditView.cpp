@@ -1808,7 +1808,8 @@ QString EditView::autoIndentText(/*bool,*/ bool nxline)
 	QString text = ::autoIndentText(typeSettings(),
 							*buffer(),
 							m_textCursor->position(),
-							(cwchar *)newLineText().data(),
+							(cwchar*)L"\n",
+							//(cwchar *)newLineText().data(),
 							nxline /*, bCPP*/);
 	return text;
 }
