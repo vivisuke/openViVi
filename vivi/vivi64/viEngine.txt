@@ -1,6 +1,6 @@
 ﻿viEngine.txt
 
-■ 処理概要：
+■ vi コマンド処理概要：
 
 	EditView::keyPressEvent():
 		EditView::insertedTextSub():
@@ -74,3 +74,24 @@
 				if( m_cdy == 'c' ):
 					m_toInsertMode = true;		//	挿入モード遷移
 
+■ コマンドラインモード
+
+◎ コマンドラインエディット表示
+ 	MainWindow::viModeChanged()		//	モード遷移時にコールされる
+ 		MainWindow::commandLineMode(QChar qch)
+			if( m_cmdLineEdit == 0 ) {		//	コマンドラインエディットが生成されていない場合
+				コマンドラインエディットが生成;
+				シグナル・ソケット結合（Enter, ↑ 等）
+			}
+			コマンドラインエディットジオメトリ設定・表示
+
+◎ Enter 押下時処理 at コマンドラインエディット
+	MainWindow::onEnterCmdLineEdit()	//	m_cmdLineEdit の Enter 押下シグナルにコネクトされている
+		if( text[0] == ':' ) {
+			doExCommand(text.mid(1));		//	先頭の:を削除したものを引数にして doExCommand() をコール
+		} else if( view != 0 && (text[0] == '/' || text[0] == '?') ) {
+			doSearchCommand(view, text);
+		}
+		m_viEngine->popMode();			//	モードを元に戻す
+	
+■ /?検索処理

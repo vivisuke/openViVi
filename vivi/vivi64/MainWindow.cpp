@@ -1242,6 +1242,7 @@ void MainWindow::on_action_WordSearch_triggered()
 {
 	globSettings()->setBoolValue(GlobalSettings::WHOLE_WORD_ONLY, ui.action_WordSearch->isChecked());
 	globSettings()->writeSettings();
+	updateSssrc();
 #if	1
 	on_action_SearchForward_triggered();
 #else
@@ -1254,6 +1255,7 @@ void MainWindow::on_action_RegExp_triggered()
 {
 	globSettings()->setBoolValue(GlobalSettings::REGEXP, ui.action_RegExp->isChecked());
 	globSettings()->writeSettings();
+	updateSssrc();
 #if	1
 	on_action_SearchForward_triggered();
 #else

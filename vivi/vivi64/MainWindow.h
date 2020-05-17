@@ -130,6 +130,7 @@ protected slots:
 	void	onEditedCmdLineEdit(QString);
 	//void	onFocusOutCmdLineEdit();
 	void	onEnterCmdLineEdit();
+	void doSearchCommand(EditView* view, QString& text);
 	void	onEscCmdLineEdit();
 	void	onSpaceCmdLineEdit();
 	void	onSlashCmdLineEdit();

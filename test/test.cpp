@@ -5,7 +5,7 @@ hoge::hoge()
 	0 hoge() hoge
 	0 hoge() hoge
 	0 hoge() hoge
-	xyzF() hoge
+	xyzF() xxhoge
 	hdx() hoge
 	dx() hoge
 	dx() hogeoe

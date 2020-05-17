@@ -146,47 +146,51 @@ void MainWindow::onEnterCmdLineEdit()
 		doExCommand(text.mid(1));		//	先頭の:を削除
 	else if( view != 0 && (text[0] == '/' || text[0] == '?') ) {
 		if( !isEditView(view) ) return;
-		if( view == m_viEngine->incSearchView() )
-			view->setCursorPosition(m_viEngine->incSearchPos());
-		int first = view->cursorPosition();
-		view->doFindText(text);
-		//int last = view->cursorPosition();
-#if	0
-		if( m_viEngine->cdy() == 'c' || m_viEngine->cdy() == 'd' ) {
-			view->setCursorPosition(first, TextCursor::KEEP_ANCHOR);
-			m_viEngine->setCmd(ViCmd::DELETE_CHAR);
-			view->doViCommand();
-		}
-#else
-		if( m_viEngine->cdy() != 0 ) {
-			byte mode = Mode::COMMAND;
-			view->setCursorPosition(first, TextCursor::KEEP_ANCHOR);
-			switch( m_viEngine->cdy() ) {
-				case 'c':
-					m_viEngine->setToInsertMode(true);
-					mode = Mode::INSERT;
-					//qDebug() << "c";
-					//break;
-				case 'd':
-					//qDebug() << "d";
-					m_viEngine->setCmd(ViCmd::DELETE_CHAR);
-					break;
-				case 'y':
-					//qDebug() << "y";
-					m_viEngine->setCmd(ViCmd::YANK_TEXT);
-					break;
-			}
-			//view->doViCommand();
-			m_viEngine->doCmd();
-			m_viEngine->setPrevMode(mode);
-		}
-#endif
-		m_viEngine->resetStatus();
+		doSearchCommand(view, text);
 	}
 	//if( m_viEngine->cdy() != 0 )
 	//	m_viEngine->setMode(Mode::COMMAND);
 	//else
 		m_viEngine->popMode();			//	モードを元に戻す
+}
+void MainWindow::doSearchCommand(EditView* view, QString& text)
+{
+	if (view == m_viEngine->incSearchView())
+		view->setCursorPosition(m_viEngine->incSearchPos());
+	int first = view->cursorPosition();
+	view->doFindText(text);
+	//int last = view->cursorPosition();
+#if	0
+	if (m_viEngine->cdy() == 'c' || m_viEngine->cdy() == 'd') {
+		view->setCursorPosition(first, TextCursor::KEEP_ANCHOR);
+		m_viEngine->setCmd(ViCmd::DELETE_CHAR);
+		view->doViCommand();
+	}
+#else
+	if (m_viEngine->cdy() != 0) {
+		byte mode = Mode::COMMAND;
+		view->setCursorPosition(first, TextCursor::KEEP_ANCHOR);
+		switch (m_viEngine->cdy()) {
+		case 'c':
+			m_viEngine->setToInsertMode(true);
+			mode = Mode::INSERT;
+			//qDebug() << "c";
+			//break;
+		case 'd':
+			//qDebug() << "d";
+			m_viEngine->setCmd(ViCmd::DELETE_CHAR);
+			break;
+		case 'y':
+			//qDebug() << "y";
+			m_viEngine->setCmd(ViCmd::YANK_TEXT);
+			break;
+		}
+		//view->doViCommand();
+		m_viEngine->doCmd();
+		m_viEngine->setPrevMode(mode);
+	}
+#endif
+	m_viEngine->resetStatus();
 }
 //	Esc が押された場合の処理
 void MainWindow::onEscCmdLineEdit()
