@@ -654,6 +654,15 @@ void MainWindow::dropEvent(QDropEvent* event)
 		//openFile(fileName);
 	}
 }
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+	if( m_cmdLineEdit != nullptr && m_curCharCode != nullptr ) {
+		auto g = m_curCharCode->geometry();
+		auto rct = m_cmdLineEdit->geometry();
+		rct.setRight(g.left());
+		m_cmdLineEdit->setGeometry(rct);
+	}
+}
 void MainWindow::on_action_NewWindow_triggered()
 {
 	qDebug() << "on_action_NewWindow_triggered()";

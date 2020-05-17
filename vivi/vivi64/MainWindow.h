@@ -108,7 +108,8 @@ protected:
     
 protected:
 	void	dragEnterEvent(QDragEnterEvent *event);
-	void dropEvent(QDropEvent* event);
+	void	dropEvent(QDropEvent* event);
+	void	resizeEvent(QResizeEvent *event);
 	void	execCommand(const QString &cmd);
 	void	updateMapFileLine(EditView *);
 	void	updateMapFileMarks(EditView *);
