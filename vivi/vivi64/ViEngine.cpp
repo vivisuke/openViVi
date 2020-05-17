@@ -572,14 +572,14 @@ void ViEngine::viCommand(wchar_t ch, bool hasSelection)
 			m_moved = true;
 			break;
 		case 'n':
-			if( m_cmdLineChar == '/' )
+			if( m_cmdLineChar != '?' )
 				m_cmd = ViCmd::SEARCH_NEXT;
 			else
 				m_cmd = ViCmd::SEARCH_PREV;
 			m_moved = true;
 			break;
 		case 'N':
-			if( m_cmdLineChar == '/' )
+			if( m_cmdLineChar != '?' )
 				m_cmd = ViCmd::SEARCH_PREV;
 			else
 				m_cmd = ViCmd::SEARCH_NEXT;

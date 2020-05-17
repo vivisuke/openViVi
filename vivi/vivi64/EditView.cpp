@@ -984,6 +984,7 @@ void EditView::drawLineNumberArea(QPainter& pt)
 void EditView::drawMatchedBG(QPainter&pt)
 {
 	if (mainWindow()->findString().isEmpty()) return;
+	if( !mainWindow()->hasSearchBoxFocus() ) return;
 	const auto rct = rect();
 	int px, py = 0;
 	for (int ln = m_scrollY0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {

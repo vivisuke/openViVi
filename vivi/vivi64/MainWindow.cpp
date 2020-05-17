@@ -1459,6 +1459,10 @@ void MainWindow::aboutToShowColorTheme()
 	}
 #endif
 }
+bool MainWindow::hasSearchBoxFocus()		//	検索ボックスがフォーカスを持っているか？
+{
+	return m_findLineEdit->hasFocus();
+}
 void MainWindow::setFindString(const QString &txt)
 {
 	m_searching = true;		//	再検索を行わないようにおまじない

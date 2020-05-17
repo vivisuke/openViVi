@@ -71,6 +71,7 @@ public:
 	void	setMode(int);
 	void	hideCmdLineEdit();
 	void	commandLineMode(QChar = ':');
+	bool	hasSearchBoxFocus();		//	検索ボックスがフォーカスを持っているか？
 protected:
 	//bool	focusNextPrevChild(bool next);
 	void	createActions();
