@@ -1116,6 +1116,13 @@ void MainWindow::currentChanged(int index)
 	ui.action_LineNumber->setChecked(ts->boolValue(TypeSettings::VIEW_LINENUM));
 	//
 	updateWindowTitle();
+	//
+	QString fullPathName = view->fullPathName();
+	if( fullPathName.isEmpty() ) return;
+	QDir dir(fullPathName);
+	dir.cdUp();
+	qDebug() << dir.absolutePath();
+	QDir::setCurrent(dir.absolutePath());
 }
 void MainWindow::updateUndoRedoEnabled()
 {
@@ -1262,7 +1269,7 @@ void MainWindow::on_action_SearchBackward_triggered()
 	EditView *view = currentWidget();
 	if( isEditView(view) && !pat.isEmpty() ) {
 		bool word = ui.action_WordSearch->isChecked();
-		//##view->findPrev(pat, word);
+		view->findPrev(pat, word);
 	}
 }
 void MainWindow::on_action_SearchForward_triggered()
@@ -1273,7 +1280,7 @@ void MainWindow::on_action_SearchForward_triggered()
 	EditView *view = currentWidget();
 	if( isEditView(view) /*&& !pat.isEmpty()*/ ) {
 		bool word = ui.action_WordSearch->isChecked();
-		//##view->findNext(pat, word);
+		view->findNext(pat, word);
 	}
 }
 void MainWindow::on_action_Search_triggered()
@@ -1299,23 +1306,32 @@ void MainWindow::on_action_SearchCurWord_triggered()
 }
 void MainWindow::onEnterFindCB()
 {
+#if	1
 	//	undone: Enter は次検索、Shift + Enter は前検索
 	const bool shift = (g_app->keyboardModifiers() & Qt::ShiftModifier) != 0;
+	if( !shift )
+		on_action_SearchForward_triggered();
+	else
+		on_action_SearchBackward_triggered();
+#else
 	//	~~undone: インクリメンタルサーチOFFの場合~~
 	EditView *view = currentWidget();
 	if( view != nullptr ) {
 		ui.tabWidget->setCurrentWidget(view);
 		view->setFocus();
 	}
+#endif
 }
 void MainWindow::doFindString()
 {
 	m_searching = true;
 	statusBar()->clearMessage();
 	if( m_incSearched ) {		//	インクリメンタルサーチ済み
+#if	0
 		EditView *view = currentWidget();
 		if( view != 0 )
 			view->setFocus();
+#endif
 	} else {
 		QString pat = m_findStringCB->lineEdit()->text();
 		EditView *view = currentWidget();
@@ -1325,7 +1341,7 @@ void MainWindow::doFindString()
 				statusBar()->showMessage(tr("'%1' was not found.").arg(pat), 3000);
 			//else
 			setFindString(pat);
-			view->setFocus();
+			//##view->setFocus();
 		}
 	}
 	m_searching = false;
