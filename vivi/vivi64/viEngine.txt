@@ -1,4 +1,4 @@
-﻿viEngine.txt
+viEngine.txt
 
 ■ vi コマンド処理概要：
 
@@ -95,3 +95,14 @@
 		m_viEngine->popMode();			//	モードを元に戻す
 	
 ■ /?検索処理
+
+
+■ 検索処理
+	MainWindow::findStringChanged(const QString &pat)	//	検索ボックスラインエディットの編集シグナルにコネクトされている
+		if( pat が空でない && ビューがアクティブ )
+			//	インクリメンタルサーチ
+			EditView::findForward()
+			
+	MainWindow::onEnterFindCB()		//	検索ボックスラインエディットの Enter 押下シグナルにコネクトされている
+	
+	MainWindow::onEscFindLineEdit()		//	検索ボックスラインエディットの Esc 押下シグナルにコネクトされている

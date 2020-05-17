@@ -148,11 +148,11 @@ MainWindow::MainWindow(QWidget *parent)
 	updateFindStringCB();
 	m_findStringCB->setCurrentText(QString());
 	//m_findStringCB->setCurrentIndex(-1);
-	connect(m_findStringCB->lineEdit(), SIGNAL(returnPressed()), this, SLOT(onEnterFindCB()));
 	//connect(m_findStringCB->lineEdit(), SIGNAL(returnPressed()), this, SLOT(doFindString()));
 	connect(m_findStringCB, SIGNAL(editTextChanged(const QString &)), this, SLOT(findStringChanged(const QString &)));
-#if	0
+	connect(m_findStringCB->lineEdit(), SIGNAL(returnPressed()), this, SLOT(onEnterFindCB()));
 	connect(m_findLineEdit, SIGNAL(escPressed()), this, SLOT(onEscFindLineEdit()));
+#if	0
 	connect(m_findLineEdit, SIGNAL(focusIn()), this, SLOT(onFocusInFindLineEdit()));
 #endif
 	//ui.mainToolBar->setObjectName("MainToolBar");
@@ -1306,6 +1306,14 @@ void MainWindow::on_action_SearchCurWord_triggered()
 	if( !view->searchCurWord(txt) ) return;
 	setFindString(txt);
 }
+void MainWindow::onEscFindLineEdit()
+{
+	//assert(0);
+	EditView *view = currentWidget();
+	if( view != nullptr ) {
+		view->setFocus();
+	}
+}
 void MainWindow::onEnterFindCB()
 {
 #if	1
@@ -1378,9 +1386,6 @@ void MainWindow::findStringChanged(int)
 {
 }
 void MainWindow::onFocusInFindLineEdit()
-{
-}
-void MainWindow::onEscFindLineEdit()
 {
 }
 void MainWindow::textSearched(const QString&txt, bool word)
