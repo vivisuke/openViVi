@@ -39,6 +39,8 @@
 
 #define		MODE_WIDTH				48
 
+extern QApplication* g_app;
+
 int	g_docNumber = 0;
 SettingsMgr	g_settingsMgr;
 GlobalSettings	g_globSettings;
@@ -707,6 +709,7 @@ EditView *MainWindow::createView(QString pathName)
 	}
 	addNewView(view, typeNameToIcon(typeName), title, pathName);
 	updateWindowTitle();
+	onCursorPosChanged(view);
 	return view;
 }
 QIcon *MainWindow::typeNameToIcon(const QString& typeName)
@@ -1296,7 +1299,9 @@ void MainWindow::on_action_SearchCurWord_triggered()
 }
 void MainWindow::onEnterFindCB()
 {
-	//	undone: インクリメンタルサーチOFFの場合
+	//	undone: Enter は次検索、Shift + Enter は前検索
+	const bool shift = (g_app->keyboardModifiers() & Qt::ShiftModifier) != 0;
+	//	~~undone: インクリメンタルサーチOFFの場合~~
 	EditView *view = currentWidget();
 	if( view != nullptr ) {
 		ui.tabWidget->setCurrentWidget(view);
