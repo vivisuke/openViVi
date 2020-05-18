@@ -2234,43 +2234,6 @@ bool EditView::findBackward(const QString &text, uint opt, bool loop, bool vi)
 	update();
 	return true;
 }
-#if	0
-void EditView::findNext(const QString &pat, bool word, bool vi)
-{
-	uint opt = 0;
-	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) ) opt |= SSSearch::IGNORE_CASE;
-	//if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
-	if( word )
-		opt |= SSSearch::WHOLE_WORD_ONLY;
-	QTime tm;
-	tm.start();
-	bool rc = findForward(pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), true, vi);
-	int ms = tm.elapsed();
-	if( !rc )
-		showMessage(tr("'%1' was not found (%2 msec).").arg(pat).arg(ms), 3000);
-	else {
-		showMessage(tr("(%1 msec).").arg(ms), 3000);
-		mainWindow()->setFindString(pat);
-	}
-	setFocus();
-	update();
-}
-void EditView::findPrev(const QString &pat, bool word, bool vi)
-{
-	uint opt = 0;
-	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
-		opt |= SSSearch::IGNORE_CASE;
-	//if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
-	if( word )
-		opt |= SSSearch::WHOLE_WORD_ONLY;
-	if( !findBackward(pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), vi) )
-		showMessage(tr("'%1' was not found.").arg(pat), 3000);
-	else
-		mainWindow()->setFindString(pat);
-	setFocus();
-	update();
-}
-#endif
 bool EditView::focusNextPrevChild(bool next)
 {
 	return false;

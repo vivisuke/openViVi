@@ -1324,6 +1324,7 @@ void MainWindow::onEnterFindCB()
 		on_action_SearchForward_triggered();
 	else
 		on_action_SearchBackward_triggered();
+	m_findLineEdit->setFocus();		//	若干泥縄的
 #else
 	//	~~undone: インクリメンタルサーチOFFの場合~~
 	EditView *view = currentWidget();
