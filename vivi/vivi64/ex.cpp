@@ -79,6 +79,8 @@ void MainWindow::commandLineMode(QChar qch)
 	if( qch == '/' || qch == '?' ) {
 		ui.action_RegExp->setChecked(true);		//	正規表現ON
 		globSettings()->setBoolValue(GlobalSettings::REGEXP, true);
+		ui.action_WordSearch->setChecked(false);		//	単語単位OFF
+		globSettings()->setBoolValue(GlobalSettings::WHOLE_WORD_ONLY, false);
 		EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 		if( view == 0 || !isEditView(view) )
 			m_viEngine->setIncSearchViewPos(0, 0);

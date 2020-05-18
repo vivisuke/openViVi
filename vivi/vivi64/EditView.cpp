@@ -2122,16 +2122,19 @@ bool EditView::searchCurWord(QString &txt)
 	if( ln1 != ln2 ) return false;
 	txt = document()->text(first, last - first);
 	if( txt.isEmpty() ) return false;
-	uint opt = 0;
+	//uint opt = 0;
 #if	0	//##
 	if( mainWindow()->globSettings()->boolValue(GlobalSettings::REGEXP) ) {
 		txt = escapeRegExpSpecialChars(txt);
 	}
 #endif
+#if	0
 	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
 		opt |= SSSearch::IGNORE_CASE;
 	if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
 		opt |= SSSearch::WHOLE_WORD_ONLY;
+#endif
+	auto opt = mainWindow()->getSearchOpt();
 	opt |= SSSearch::WHOLE_WORD_ONLY;
 	bool rc = findForward(txt, opt);
 	emit textSearched(txt, true);
