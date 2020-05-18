@@ -843,7 +843,7 @@ void EditView::onEscape(bool ctrl, bool shift, bool alt)
 		//update();
 	} else if( md == MODE_VI ) {
 		//mainWindow()->setFindString("");
-		mainWindow()->setShowMatchedBG(false);
+		mainWindow()->setShowMatchedBG(false);		//	検索マッチ強調OFF
 		update();
 	}
 }
@@ -1227,16 +1227,53 @@ void EditView::drawLineText(QPainter &pt,
 			}
 		}
 		if( !token.isEmpty() ) {
-#if	0
-			if( bold )
-				pt.setFont(m_fontBold);
-			else
-				pt.setFont(m_font);
-#endif
-			pt.setPen(col);
-			px += drawTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
-			//if( bold )
-			//	drawTokenText(pt, token, clmn, px+1, py, peDX, tabwd, chWidth, descent /*, col*/ /*, bold*/);
+			auto tlast = tkn.tokenix() + token.size();
+			if( !m_textCursor->hasSelection() ||		//	非選択状態
+				tkn.tokenix() >= m_textCursor->selectionLast() ||		//	選択範囲より後ろ
+				tlast <= m_textCursor->selectionFirst() )			//	選択範囲より前
+			{
+				pt.setPen(col);
+				px += drawTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+			} else {	//	選択状態にかかっている場合
+				//if( tkn.tokenix() >= m_textCursor->selectionFirst() && tkn.ix() < m_textCursor->selectionLast() ) {
+				//	//	token 全体が選択状態の場合
+				//	pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
+				//	px += drawTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+				//} else
+				//{
+					if( tkn.tokenix() < m_textCursor->selectionFirst() ) {	//	途中から選択状態の場合
+						int len = m_textCursor->selectionFirst() - tkn.tokenix();
+						if( m_textCursor->selectionLast() < tlast ) {		//	途中まで選択状態の場合
+							pt.setPen(col);
+							px += drawTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							int len2 = m_textCursor->selectionLast() - m_textCursor->selectionFirst();
+							pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
+							//auto t1 = token.mid(len, len2);
+							px += drawTokenText(pt, token.mid(len, len2), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							pt.setPen(col);
+							//auto t2 = token.mid(len+len2);
+							px += drawTokenText(pt, token.mid(len+len2), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+						} else {
+							pt.setPen(col);
+							px += drawTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
+							px += drawTokenText(pt, token.mid(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+						}
+					} else {		//	最初から選択状態の場合
+						if( m_textCursor->selectionLast() < tlast ) {		//	途中まで選択状態の場合
+							pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
+							int len = m_textCursor->selectionLast() - tkn.tokenix();
+							px += drawTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							pt.setPen(col);
+							px += drawTokenText(pt, token.mid(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+						} else {
+							//	token 全体が選択状態の場合
+							pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
+							px += drawTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+						}
+					}
+				//}
+			}
 		}
 		//
 		if( !nextToken.isEmpty() ) {
@@ -1262,18 +1299,6 @@ int EditView::drawTokenText(QPainter& pt,
 	int wd = 0;	 tabwd;
 	int sx = m_scrollX0 * m_fontWidth;
 	//pt.setPen(col);
-#if	0
-	if (bold) {
-		pt.setFont(m_fontBold);
-		//pt.drawText(px + peDX - sx, py, token);
-	} //else
-#endif
-#if	0
-	if( token[0] == '\t' ) {
-		int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
-		
-	} else 
-#endif
 	if (token[0] < 0x100) {
 		//pt.setFont(m_font);
 		pt.drawText(px + peDX - sx, py, token);
