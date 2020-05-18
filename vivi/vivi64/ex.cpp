@@ -43,6 +43,7 @@ void MainWindow::commandLineMode(QChar qch)
 	if( m_cmdLineEdit == 0 ) {
 		m_cmdLineEdit = new CommandLine();
 		//connect(m_cmdLineEdit, SIGNAL(focusOut()), this, SLOT(onFocusOutCmdLineEdit()));
+		connect(m_cmdLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(onCmdLineTextChanged(const QString &)));
 		connect(m_cmdLineEdit, SIGNAL(returnPressed()), this, SLOT(onEnterCmdLineEdit()));
 		connect(m_cmdLineEdit, SIGNAL(escPressed()), this, SLOT(onEscCmdLineEdit()));
 		//connect(m_cmdLineEdit, SIGNAL(spacePressed()), this, SLOT(onSpaceCmdLineEdit()));
@@ -130,6 +131,26 @@ void MainWindow::onEditedCmdLineEdit(QString text)
 void MainWindow::hideCmdLineEdit()
 {
 	m_cmdLineEdit->hide();
+}
+void MainWindow::onCmdLineTextChanged(const QString &text)
+{
+	if( text.isEmpty() || (text[0] != '/' && text[0] != '?') ) return;
+	auto pat = text.mid(1);
+	m_findString = pat;
+	EditView *view = currentWidget();
+	if (isEditView(view)) {
+		if( pat.isEmpty() ) {
+			//	undone: インクリメンタルサーチ終了
+			view->update();
+			return;
+		}
+		uint opt = getSearchOpt();
+		if (!view->findForward(m_findString = pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), false))
+			statusBar()->showMessage(tr("'%1' was not found.").arg(pat), 3000);
+		else {
+			onCursorPosChanged();
+		}
+	}
 }
 //	Enter が押された場合の処理
 void MainWindow::onEnterCmdLineEdit()
