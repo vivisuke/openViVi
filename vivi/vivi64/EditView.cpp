@@ -843,7 +843,7 @@ void EditView::onEscape(bool ctrl, bool shift, bool alt)
 		//update();
 	} else if( md == MODE_VI ) {
 		//mainWindow()->setFindString("");
-		mainWindow()->setMatchedBG(false);
+		mainWindow()->setShowMatchedBG(false);
 		update();
 	}
 }
@@ -989,7 +989,7 @@ void EditView::drawMatchedBG(QPainter&pt)
 {
 	if (mainWindow()->findString().isEmpty()) return;
 	if( mainWindow()->mode() == MODE_VI ) {
-		if( !mainWindow()->isMatchedMG() )
+		if( !mainWindow()->willShowMatchedMG() )
 			return;
 	} else {
 		if( !mainWindow()->hasSearchBoxFocus() )

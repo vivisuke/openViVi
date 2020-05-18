@@ -212,7 +212,7 @@ void MainWindow::doSearchCommand(EditView* view, QString& text)
 	}
 #endif
 	m_viEngine->resetStatus();
-	m_bMatchedBG = true;
+	m_showMatchedBG = true;
 }
 //	Esc が押された場合の処理
 void MainWindow::onEscCmdLineEdit()
