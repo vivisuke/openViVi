@@ -841,6 +841,10 @@ void EditView::onEscape(bool ctrl, bool shift, bool alt)
 		mainWindow()->viEngine()->processCommand(0x1b);
 		//mainWindow()->setMode(MODE_VI);
 		//update();
+	} else if( md == MODE_VI ) {
+		//mainWindow()->setFindString("");
+		mainWindow()->setMatchedBG(false);
+		update();
 	}
 }
 void EditView::doInsertText(const QString &text, bool ctrl, bool shift, bool alt)
@@ -984,8 +988,13 @@ void EditView::drawLineNumberArea(QPainter& pt)
 void EditView::drawMatchedBG(QPainter&pt)
 {
 	if (mainWindow()->findString().isEmpty()) return;
-	if( mainWindow()->mode() != MODE_VI && !mainWindow()->hasSearchBoxFocus() )
-		return;
+	if( mainWindow()->mode() == MODE_VI ) {
+		if( !mainWindow()->isMatchedMG() )
+			return;
+	} else {
+		if( !mainWindow()->hasSearchBoxFocus() )
+			return;
+	}
 	const auto rct = rect();
 	int px, py = 0;
 	for (int ln = m_scrollY0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
