@@ -14,6 +14,7 @@ public:
 protected:
 	void	keyPressEvent(QKeyEvent *);
 	void	focusOutEvent ( QFocusEvent * event );
+	bool	focusNextPrevChild(bool next);
 
 signals:
 	void	focusOut();

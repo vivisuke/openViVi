@@ -338,6 +338,20 @@ void EditView::onCursorPosChanged()
 }
 void EditView::jumpToLine(int ln, bool vi)		//	ln [0, EOFLine) ドキュメント行番号
 {
+	pos_t pos = document()->lineStartPosition(ln);
+	int vln = docLineToViewLine(ln);
+	int offset;
+	if( viewLineToDocLine(vln, offset) != ln ) {	//	折畳まれている場合
+		//##expand(vln);
+		//##vln = docLineToViewLine(ln);
+	}
+	m_textCursor->setLineAndPosition(vln, pos);
+	if( vi )
+		m_textCursor->movePosition(TextCursor::FIRST_NOSPACE);
+	scrollCurQuarterOfScreen();
+	makeCursorInView();
+	//onCursorPosChanged();
+	update();
 }
 //	return:	スクロールしたかどうか
 bool EditView::makeCursorInView(bool bQuarter)
@@ -2539,8 +2553,9 @@ void EditView::toggleTrueFalse()
 }
 QString EditView::getLineText(int dln) const
 {
-	assert(0);
-	return "";
+	return ::getLineText(*buffer(), dln);
+	//assert(0);
+	//return "";
 }
 uint EditView::lineFlags(int dln) const
 {

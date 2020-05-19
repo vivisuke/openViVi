@@ -1645,9 +1645,10 @@ void MainWindow::doExCommand(QString, bool bGlobal)
 	assert(0);
 }
 #endif
-void MainWindow::doOutput(const QString &)		//	アウトプットにテキスト出力
+void MainWindow::doOutput(const QString &text)		//	アウトプットにテキスト出力
 {
-	assert(0);
+	m_outputWidget->textCursor().insertText(text);
+	//assert(0);
 }
 void MainWindow::doOutputToBar(const QString &)		//	アウトプットバーにテキスト出力
 {

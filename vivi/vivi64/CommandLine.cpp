@@ -58,3 +58,7 @@ void CommandLine::keyPressEvent(QKeyEvent *event)
 		emit colonPressed();
 	}
 }
+bool CommandLine::focusNextPrevChild(bool next)
+{
+	return false;
+}
