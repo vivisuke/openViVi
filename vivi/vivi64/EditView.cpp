@@ -2562,9 +2562,35 @@ uint EditView::lineFlags(int dln) const
 	assert(0);
 	return 0;
 }
-void EditView::substitute(int dln1, int dln2, const QString &pat, const QString &rep, const QString &opt)
+void EditView::substitute(int dln1, int dln2, const QString &before, const QString &after, const QString &optstr)
 {
-	assert(0);
+	//assert(0);
+	int opt = 0;
+	bool global = optstr.indexOf('g') >= 0;
+	pos_t first = lineStartPosition(dln1);
+	pos_t last = lineStartPosition(dln2+1);
+	//	done: 折り返しモードの場合は、いったん折り返し情報をクリアし、置換後に再構築
+	const bool lineBreaked = viewLineMgr()->isLineBreakMode();
+	viewLineMgr()->clear();		//	＊折り返し情報クリア＊
+	
+	bool im = isModified();
+	byte_t algorithm = mainWindow()->searchAlgorithm();
+	//if( mainWindow()->globSettings()->boolValue(GlobalSettings::REGEXP) )
+		algorithm = SSSearch::STD_REGEX;
+	pos_t pos;
+	int cnt = buffer()->replaceAll((const wchar_t *)before.data(), before.size(),
+									(const wchar_t *)after.data(), after.size(),
+									opt, algorithm, first, last, pos, global);
+	showMessage(tr("%1 replaced.").arg(cnt), 5000);
+	if( pos >= 0 )
+		m_textCursor->setPosition(pos);
+	if( isModified() != im )
+		emit modifiedChanged();
+	if( lineBreaked )
+		viewLineMgr()->setLineBreak(true);
+	//##updateScrollBarInfo();
+	makeCursorInView();
+	update();
 }
 void EditView::setCursorPosition(pos_t pos, int mode)
 {

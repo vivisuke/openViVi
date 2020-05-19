@@ -83,6 +83,7 @@ public:
 	int	endOfLinePosition(int dln) const;		//	行の改行位置を返す
 public:
 	MainWindow	*mainWindow() { return m_mainWindow; }
+	ViewLineMgr *viewLineMgr() { return m_viewLineMgr; }
 	void	setModified(bool = true);
 	void	setLineNumberVisible(bool);
 	void	setPlainText(const QString&);
