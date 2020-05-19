@@ -1647,6 +1647,8 @@ void MainWindow::doExCommand(QString, bool bGlobal)
 #endif
 void MainWindow::doOutput(const QString &text)		//	アウトプットにテキスト出力
 {
+	if( !m_outputDock->isVisible() )
+		m_outputDock->show();
 	m_outputWidget->textCursor().insertText(text);
 	//assert(0);
 }
