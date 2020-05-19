@@ -2564,8 +2564,13 @@ QString EditView::getLineText(int dln) const
 }
 uint EditView::lineFlags(int dln) const
 {
-	assert(0);
-	return 0;
+	return buffer()->lineFlags(dln);
+	//assert(0);
+	//return 0;
+}
+void EditView::clearLineFlags()
+{
+	buffer()->clearLineFlags();
 }
 void EditView::substitute(int dln1, int dln2, const QString &before, const QString &after, const QString &optstr)
 {
