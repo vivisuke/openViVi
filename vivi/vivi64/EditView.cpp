@@ -1047,7 +1047,7 @@ void EditView::drawSelection(QPainter& pt)
 	//	選択開始行
 	int sz = viewLineMgr()->viewLineSize(firstLn);
 	int px2 = viewLineOffsetToPx(firstLn, sz) + m_lineNumAreaWidth - m_scrollX0*m_fontWidth;
-	QRect r(px1, py1, px2 - px1, m_lineHeight);
+	QRect r(px1, py1, px2 - px1 + m_fontWidth*2, m_lineHeight);
 	pt.drawRect(r);
 	//	途中行
 	py1 += m_lineHeight;
@@ -1055,7 +1055,7 @@ void EditView::drawSelection(QPainter& pt)
 		int pos0 = viewLineMgr()->viewLineStartPosition(vln);
 		int sz = viewLineMgr()->viewLineSize(vln);
 		int px2 = viewLineOffsetToPx(vln, sz) + m_lineNumAreaWidth - m_scrollX0*m_fontWidth;
-		QRect r(m_lineNumAreaWidth, py1, px2 - m_lineNumAreaWidth /*- m_scrollX0*m_fontWidth*/, m_lineHeight);
+		QRect r(m_lineNumAreaWidth, py1, px2 - m_lineNumAreaWidth /*- m_scrollX0*m_fontWidth*/ + m_fontWidth*2, m_lineHeight);
 		pt.drawRect(r);
 	}
 	//	選択修了行
