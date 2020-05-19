@@ -88,7 +88,7 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	, m_buffer(doc->buffer())
 	//, m_buffer(buffer)
 	//, m_typeSettings(nullptr)
-	, m_lineNumDigits(3)		//	初期値は3桁 1〜999
+	, m_lineNumDigits(4)		//	初期値は4桁 1〜9999
 	,m_scrollX0(0)
 	,m_scrollY0(0)
 	, m_mouseDragging(false)
