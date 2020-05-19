@@ -1324,14 +1324,19 @@ int EditView::drawTokenText(QPainter& pt,
 		wd = 0;
 		for (int i = 0; i != token.size(); ++i) {
 			QString txt = token[i];
+			int wd = 2;
+			if( txt[0].unicode() >= 0xd800 && txt[0].unicode() < 0xd900 ) {
+				txt += token[++i];
+				wd = 4;
+			}
 			if (txt == " ") {
 				x += chWidth;
 				wd += chWidth;
 			}
 			else {
-				pt.drawText(x - sx, py + descent - m_lineHeight, chWidth * 2, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
+				pt.drawText(x - sx, py + descent - m_lineHeight, chWidth * wd, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
 				if( bold )
-					pt.drawText(x - sx + 1, py + descent - m_lineHeight, chWidth * 2, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
+					pt.drawText(x - sx + 1, py + descent - m_lineHeight, chWidth * wd, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
 				x += chWidth * 2;
 				wd += chWidth * 2;
 			}
