@@ -78,6 +78,7 @@ protected:
 	//bool	focusNextPrevChild(bool next);
 	void	createActions();
 	void	createMenus();
+	void	createDockWindows();
 	void	connectMenuActions();
     void	addToFavoriteFileList(const QString &);		//	レジストリの "favoriteFileList" に追加
     void	addToRecentFileList(const QString &);		//	レジストリの "recentFileList" に追加
@@ -299,6 +300,8 @@ private:
 	SSSearch		*m_sssrc2;
 	QDockWidget		*m_outlineDock;
 	QTreeWidget		*m_treeWidget;
+	QDockWidget		*m_outputDock;
+	QPlainTextEdit	*m_outputWidget;
 	
 	QLabel		*m_lineOffsetLabel;
 	QLabel		*m_curCharCode;			//	カーソル位置文字コード

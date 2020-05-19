@@ -161,11 +161,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.searchToolBar->setWindowTitle(tr("SearchToolBar"));
 	ui.otherToolBar->setWindowTitle(tr("OtherToolBar"));
 	//
-	m_outlineDock = new QDockWidget(tr("Outline"));
-	m_outlineDock->setObjectName("Outline");
-	m_outlineDock->setWidget(m_treeWidget = new QTreeWidget());
-	m_outlineDock->setAllowedAreas(Qt::AllDockWidgetAreas);
-	addDockWidget(Qt::LeftDockWidgetArea, m_outlineDock);
+	createDockWindows();
 	//	デザイナでタブの消し方がわからないので、ここで消しておく
 	while( ui.tabWidget->count() )
 		ui.tabWidget->removeTab(0);
@@ -195,6 +191,20 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
 	//delete m_settingsMgr;
+}
+void MainWindow::createDockWindows()
+{
+	m_outlineDock = new QDockWidget(tr("Outline"));
+	m_outlineDock->setObjectName("Outline");
+	m_outlineDock->setWidget(m_treeWidget = new QTreeWidget());
+	m_outlineDock->setAllowedAreas(Qt::AllDockWidgetAreas);
+	addDockWidget(Qt::LeftDockWidgetArea, m_outlineDock);
+	//
+	m_outputDock = new QDockWidget(tr("Output"));
+	m_outputDock->setObjectName("Output");
+	m_outputDock->setWidget(m_outputWidget = new QPlainTextEdit());
+	m_outputDock->setAllowedAreas(Qt::AllDockWidgetAreas);
+	addDockWidget(Qt::BottomDockWidgetArea, m_outputDock);
 }
 void MainWindow::createActions()
 {
