@@ -8,6 +8,15 @@
 #include "../buffer/UTF16.h"
 #include "../buffer/bufferUtl.h"
 
+bool isSrgtPirFirstChar(QChar ch)
+{
+	return ch.unicode() >= 0xd800 && ch.unicode() < 0xdc00;
+}
+bool isSrgtPirSecondChar(QChar ch)
+{
+	return ch.unicode() >= 0xdc00 && ch.unicode() < 0xe000;
+}
+
 bool isSafeChar(wchar_t ch);
 
 inline bool isSpace(wchar_t ch)

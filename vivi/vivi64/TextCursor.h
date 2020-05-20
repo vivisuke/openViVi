@@ -15,6 +15,9 @@ typedef unsigned __int8 byte_t;
 
 class EditView;
 
+bool isSrgtPirFirstChar(QChar);
+bool isSrgtPirSecondChar(QChar);
+
 class TextCursor {
 public:
 	enum {

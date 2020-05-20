@@ -205,6 +205,7 @@ void MainWindow::createDockWindows()
 	m_outputDock->setWidget(m_outputWidget = new QPlainTextEdit());
 	m_outputDock->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::BottomDockWidgetArea, m_outputDock);
+	m_outputDock->hide();		//	undone: 状態保存・復帰
 }
 void MainWindow::createActions()
 {

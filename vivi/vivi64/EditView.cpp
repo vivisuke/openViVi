@@ -1325,7 +1325,7 @@ int EditView::drawTokenText(QPainter& pt,
 		for (int i = 0; i != token.size(); ++i) {
 			QString txt = token[i];
 			int w = 2;
-			if( txt[0].unicode() >= 0xd800 && txt[0].unicode() < 0xd900 ) {
+			if( isSrgtPirFirstChar(token[i]) && isSrgtPirSecondChar(token[i+1]) ) {
 				txt += token[++i];
 				w = 4;
 			}
