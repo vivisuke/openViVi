@@ -10,11 +10,19 @@
 
 bool isSrgtPirFirstChar(QChar ch)
 {
-	return ch.unicode() >= 0xd800 && ch.unicode() < 0xdc00;
+	return isSrgtPirFirstChar(ch.unicode());
 }
 bool isSrgtPirSecondChar(QChar ch)
 {
-	return ch.unicode() >= 0xdc00 && ch.unicode() < 0xe000;
+	return isSrgtPirSecondChar(ch.unicode());
+}
+bool isSrgtPirFirstChar(wchar_t ch)
+{
+	return ch >= 0xd800 && ch < 0xdc00;
+}
+bool isSrgtPirSecondChar(wchar_t ch)
+{
+	return ch >= 0xdc00 && ch < 0xe000;
 }
 
 bool isSafeChar(wchar_t ch);
@@ -100,8 +108,14 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 			if( vi && ls == pos ) break;
 			if( --pos < ls ) {
 				ls = viewLineStartPosition(--vln);
-				if( pos != 0 && m_view->charAt(pos) == '\n'
-					&& m_view->charAt(pos - 1) == '\r' )
+				if( pos != 0 &&
+					m_view->charAt(pos) == '\n' && m_view->charAt(pos-1) == '\r' )
+				{
+					--pos;
+				}
+			} else {
+				if( pos != 0 &&
+					isSrgtPirFirstChar(m_view->charAt(pos-1)) && isSrgtPirSecondChar(m_view->charAt(pos)) )
 				{
 					--pos;
 				}
@@ -114,28 +128,24 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 		if( pos == m_view->bufferSize() ) return;
 		pos_t nxls = viewLineStartPosition(vln+1);
 		for (int  i = 0; i < n; ++i) {
-#if	0
-			if( vi ) {
-				if( mode == MOVE_ANCHOR
-					&& (m_view->charAt(pos+1) == '\r' || m_view->charAt(pos+1) == '\n') )
-					break;
-				if( mode == KEEP_ANCHOR
-					&& (m_view->charAt(pos) == '\r' || m_view->charAt(pos) == '\n') )
-					break;
-			}
-#endif
 			auto ch = m_view->charAt(pos);
 			if( m_view->charAt(pos) == '\r' || m_view->charAt(pos) == '\n' ) {
-				if( m_view->charAt(pos) == '\r' && m_view->charAt(pos+1) == '\n' )
+				if( pos + 1 < m_view->buffer()->size() &&
+					m_view->charAt(pos) == '\r' && m_view->charAt(pos+1) == '\n' )
+				{
 					pos += 2;
-				else
+				} else
 					pos += 1;
 				++vln;
-				//ln = m_view->viewLineToDocLine(++vln, offset);
-				//pos = viewLineStartPosition(vln);
 				nxls = viewLineStartPosition(vln+1);
 			} else {
-				if( ++pos >= nxls && vln < m_view->viewLineMgr()->EOFLine() ) {
+				if( pos + 1 < m_view->buffer()->size() &&
+					isSrgtPirFirstChar(m_view->charAt(pos)) && isSrgtPirSecondChar(m_view->charAt(pos+1)) )
+				{
+					pos += 2;
+				} else
+					++pos;
+				if( pos >= nxls && vln < m_view->viewLineMgr()->EOFLine() ) {
 					++vln;
 					//ln = m_view->viewLineToDocLine(++vln, offset);
 					nxls = viewLineStartPosition(vln+1);

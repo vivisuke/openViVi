@@ -17,6 +17,8 @@ class EditView;
 
 bool isSrgtPirFirstChar(QChar);
 bool isSrgtPirSecondChar(QChar);
+bool isSrgtPirFirstChar(wchar_t);
+bool isSrgtPirSecondChar(wchar_t);
 
 class TextCursor {
 public:
