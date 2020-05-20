@@ -1337,8 +1337,8 @@ int EditView::drawTokenText(QPainter& pt,
 				pt.drawText(x - sx, py + descent - m_lineHeight, chWidth * w, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
 				if( bold )
 					pt.drawText(x - sx + 1, py + descent - m_lineHeight, chWidth * w, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
-				x += chWidth * 2;
-				wd += chWidth * 2;
+				x += chWidth * w;
+				wd += chWidth * w;
 			}
 		}
 	}
