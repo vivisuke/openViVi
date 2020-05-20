@@ -136,6 +136,7 @@
      <string>&amp;Other</string>
     </property>
     <addaction name="action_About_ViVi"/>
+    <addaction name="action_Github"/>
    </widget>
    <widget class="QMenu" name="menu_Search">
     <property name="title">
@@ -568,6 +569,11 @@
    </property>
    <property name="text">
     <string>&amp;viCommand</string>
+   </property>
+  </action>
+  <action name="action_Github">
+   <property name="text">
+    <string>&amp;Github</string>
    </property>
   </action>
  </widget>

@@ -189,6 +189,7 @@ private slots:
 	void	on_action_GlobalSettings_triggered();
 	void	on_action_viCommand_triggered();
 	void	on_action_About_ViVi_triggered();
+	void	on_action_Github_triggered();
 	void	on_action_ExCommand_triggered();
 	void	on_action_NextTab_triggered();
 	void	on_action_PrevTab_triggered();
