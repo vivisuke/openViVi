@@ -128,6 +128,7 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 		if( pos == m_view->bufferSize() ) return;
 		pos_t nxls = viewLineStartPosition(vln+1);
 		for (int  i = 0; i < n; ++i) {
+			if (pos == m_view->bufferSize()) break;
 			auto ch = m_view->charAt(pos);
 			if( m_view->charAt(pos) == '\r' || m_view->charAt(pos) == '\n' ) {
 				if( pos + 1 < m_view->buffer()->size() &&
