@@ -24,6 +24,19 @@ bool isSrgtPirSecondChar(wchar_t ch)
 {
 	return ch >= 0xdc00 && ch < 0xe000;
 }
+int numChars(const QString& txt)
+{
+	int n = 0;
+	int i = 0;
+	while( i < txt.size() ) {
+		if( isSrgtPirFirstChar(txt[i]) && isSrgtPirSecondChar(txt[i+1]) )
+			i += 2;
+		else
+			++i;
+		++n;
+	}
+	return n;
+}
 
 bool isSafeChar(wchar_t ch);
 
@@ -944,13 +957,13 @@ void TextCursor::insertText(const QString &text)
 		m_view->insertTextRaw(pos, text);
 		if( !bo )
 			m_view->closeUndoBlock();
-		setPosition(pos += text.size());
+		setPosition(pos += numChars(text));
 	} else {
 		m_view->insertTextRaw(position(), text);
 		//int sz = text == "\r\n" ? 1 : text.size();
 		QString t = text;
 		t.replace("\r\n", "\n");	//	CRLF は1回で移動
-		movePosition(RIGHT, MOVE_ANCHOR, t.size());
+		movePosition(RIGHT, MOVE_ANCHOR, numChars(t));
 	}
 	m_view->update();
 	m_view->document()->updateView(m_view);
