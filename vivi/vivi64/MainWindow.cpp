@@ -67,7 +67,7 @@ GlobalSettings* globSettings() { return &g_globSettings; }
 
 */
 //----------------------------------------------------------------------
-bool isValid(QWidget *w, const QString &className)
+bool isValid(const QWidget *w, const QString &className)
 {
 	return w != 0 && QString(w->metaObject()->className()) == className;
 }
@@ -75,7 +75,7 @@ bool isEditViewFocused(QWidget *w)
 {
 	return isValid(w, "EditView") && w->hasFocus();
 }
-bool isEditView(QWidget *w)
+bool isEditView(const QWidget *w)
 {
 	return isValid(w, "EditView");
 }
@@ -692,6 +692,13 @@ void MainWindow::on_action_New_triggered()
 EditView *MainWindow::createView(QString pathName)
 {
 	//	undone: pathName を既にオープンしている場合対応
+    QString absPath = QDir(pathName).absolutePath();
+	int ix = isOpened(absPath);
+	if( ix >= 0 ) {
+		auto* view = nthWidget(ix);
+		ui.tabWidget->setCurrentIndex(ix);
+		return view;
+	}
 	QFileInfo info(pathName);
 	QString typeName, title;
 	if( !pathName.isEmpty() ) {
@@ -788,6 +795,20 @@ EditView *MainWindow::nthWidget(int ix)
 	}
 #endif
 	return (EditView *)w;
+}
+const EditView *MainWindow::nthWidget(int ix) const
+{
+	const QWidget *w = ui.tabWidget->widget(ix);
+#if	0
+	if( isSplitter(w) ) {
+		QSplitter *sp = (QSplitter *)w;
+		if( sp->count() > 1 && sp->widget(1)->hasFocus() )
+			return (EditView *)sp->widget(1);
+		else
+			return (EditView *)sp->widget(0);
+	}
+#endif
+	return (const EditView *)w;
 }
 void MainWindow::on_action_Open_triggered()
 {
@@ -1526,6 +1547,18 @@ void MainWindow::onViewLineNumberChanged(const QString &typeName, bool b)
 		if( isEditView(view) && view->typeName() == typeName )
 			view->setLineNumberVisible(b);
 	}
+}
+int MainWindow::isOpened(const QString& pathName) const		//	既にオープンされていれば、MDITabs インデックスを返す、-1 for not opened
+{
+	for(int i = 0; i < ui.tabWidget->count(); ++i) {
+		const EditView *view = nthWidget(i);
+		if( isEditView(view) ) {
+			auto pn = view->fullPathName();
+			if( pn == pathName )
+				return i;
+		}
+	}
+	return -1;
 }
 bool MainWindow::isBoxSelectMode() const
 {

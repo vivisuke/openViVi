@@ -13,9 +13,10 @@
 
 #define		N_CMD_HIST		64
 
+
 typedef unsigned char byte;
 
-bool isEditView(QWidget *w);
+bool isEditView(const QWidget *w);
 
 inline bool isAlnum(QChar qch)
 {

@@ -66,6 +66,7 @@ public:
 	QString	findString() const { return m_findString; }
 	const ViEngine	*viEngine() const { return m_viEngine; }
 	int		mode() const { return m_modeCB->currentIndex(); }
+	int		isOpened(const QString&) const;		//	既にオープンされていれば、MDITabs インデックスを返す、-1 for not opened
 public:
 	ViEngine	*viEngine() { return m_viEngine; }
 	void	resetBoxKeisenMode();
@@ -98,6 +99,7 @@ protected:
     //EditView	*openFile(const QString &pathName, bool forced = false);
 	EditView	*currentWidget();
 	EditView	*nthWidget(int);
+	const EditView	*nthWidget(int) const;
 	void	setTypeSettings(EditView *, TypeSettings *);
 	void	onViewLineNumberChanged(const QString &, bool);
 	QIcon	*typeNameToIcon(const QString&);
