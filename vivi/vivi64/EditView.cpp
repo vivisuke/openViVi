@@ -1608,9 +1608,10 @@ int EditView::pxToOffset(int vln, int px) const
 	const int nextLinePos = viewLineMgr()->viewLineStartPosition(vln+1);
 	int wd = 0;
 	int col = 0;
-	int offset = 0;
+	int offset = 0, lastOffset;
 	const Buffer* buf = buffer();
 	while( wd < px && pos < nextLinePos ) {
+		lastOffset = offset;
 		auto ch = buf->operator[](pos);
 		if( ch == '\t' ) {
 			int n = (nTab - col % nTab);
@@ -1621,6 +1622,11 @@ int EditView::pxToOffset(int vln, int px) const
 		} else if( ch < 0x100 ) {
 			col += 1;
 			wd += chWidth;
+		} else if( isSrgtPirFirstChar(ch) && isSrgtPirSecondChar(buf->operator[](pos+1)) ) {
+			col += 4;
+			wd += chWidth * 4;
+			++offset;
+			++pos;
 		} else {
 			col += 2;
 			wd += chWidth * 2;
@@ -1628,7 +1634,7 @@ int EditView::pxToOffset(int vln, int px) const
 		++offset;
 		++pos;
 	}
-	return px < wd ? offset - 1 : offset;
+	return px < wd ? lastOffset : offset;
 #if	0
 	QFontMetricsF fm = QFontMetricsF(fontMetrics());
 	QFontMetricsF fmBold(m_fontBold);
