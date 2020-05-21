@@ -839,11 +839,13 @@ void MainWindow::openFavoriteFile()
     if (action)
 		createView(action->data().toString());
 }
+#if	0
 EditView *MainWindow::openFile(const QString &fileName, bool forced)
 {
 	assert(0);
 	return 0;
 }
+#endif
 bool MainWindow::loadFile(Document *doc, const QString &pathName, /*cchar *codecName,*/
 										bool bJump)		//	保存カーソル位置にジャンプ
 {

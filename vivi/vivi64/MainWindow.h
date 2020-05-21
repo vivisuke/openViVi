@@ -144,7 +144,7 @@ protected slots:
 	void	fileNameCompletion(QDir &, QString = QString());
 	void	onUpCmdLineEdit();
 	void	onDownCmdLineEdit();
-    EditView	*openFile(const QString &fileName, bool forced = false);
+    //EditView	*openFile(const QString &fileName, bool forced = false);
 
 private slots:
 	void autoCmplKeyPressed(QString);

@@ -46,8 +46,8 @@ void MainWindow::commandLineMode(QChar qch)
 		connect(m_cmdLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(onCmdLineTextChanged(const QString &)));
 		connect(m_cmdLineEdit, SIGNAL(returnPressed()), this, SLOT(onEnterCmdLineEdit()));
 		connect(m_cmdLineEdit, SIGNAL(escPressed()), this, SLOT(onEscCmdLineEdit()));
-		//connect(m_cmdLineEdit, SIGNAL(spacePressed()), this, SLOT(onSpaceCmdLineEdit()));
-		//connect(m_cmdLineEdit, SIGNAL(slashPressed()), this, SLOT(onSlashCmdLineEdit()));
+		connect(m_cmdLineEdit, SIGNAL(spacePressed()), this, SLOT(onSpaceCmdLineEdit()));
+		connect(m_cmdLineEdit, SIGNAL(slashPressed()), this, SLOT(onSlashCmdLineEdit()));
 		connect(m_cmdLineEdit, SIGNAL(colonPressed()), this, SLOT(onColonCmdLineEdit()));
 		connect(m_cmdLineEdit, SIGNAL(upPressed()), this, SLOT(onUpCmdLineEdit()));
 		connect(m_cmdLineEdit, SIGNAL(downPressed()), this, SLOT(onDownCmdLineEdit()));
@@ -804,7 +804,7 @@ void MainWindow::doExCommand(QString cmd, bool bGlobal)
 	}
 	if( cmd == "e" || cmd == "edit" ) {
 		if( !exmark )
-			view = openFile(arg /*, true*/);
+			view = createView(arg /*, true*/);
 		else if( view != 0 && arg.isEmpty() ) {
 			view->setModified(false);
 			reloadRequested(view);
