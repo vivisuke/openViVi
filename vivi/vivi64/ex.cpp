@@ -878,6 +878,16 @@ void MainWindow::doExCommand(QString cmd, bool bGlobal)
 		on_action_ZenCoding_triggered();
 		return;
 	}
+	if( cmd == "cls" ) {
+		m_outputWidget->document()->clear();
+#if	0
+		m_outputWidget->textCursor().setPosition(0);
+		auto sz = m_outputWidget->document()->characterCount();
+		m_outputWidget->textCursor().setPosition(sz, QTextCursor::KeepAnchor);
+		m_outputWidget->textCursor().deleteChar();
+#endif
+		return;
+	}
 	if( cmd == "test" /*&& !arg.isEmpty()*/ ) {
 		if( arg.isEmpty() )
 			arg = "c:/vivi/ssetest.txt";
