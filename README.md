@@ -4,6 +4,8 @@ open source version of ViVi text editor, which supports standard text editor fea
 オープンソース版ViViテキストエディタ、
 標準的なテキストエディタの機能とviコマンドをサポートします。
 
+<img src = "https://github.com/vivisuke/openViVi/blob/master/images/MainWindow-001.png" width = 600 />
+
 # ■ スケジュール・進捗
 - 2020年4月より本格的に開発開始 ~~予定~~
 - 現在（５月）は vi コマンド、作者がドキュメント編集を行うために必要な機能実装、重要問題対処中
