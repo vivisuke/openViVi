@@ -495,7 +495,12 @@ void EditView::setupFallingChars()
 			QPointF pnt(px+m_lineNumAreaWidth, py+m_fontHeight);
 			qreal theta = 3.1415926535 * 2 * (qrand() % 65536) / 65536;
 			QPointF v(2*qCos(theta), 2*qSin(theta));
-			m_fallingChars.push_back(FallingChar(QChar(buffer()->charAt(first)), pnt, v));
+			QString txt = QChar(buffer()->charAt(first));
+			if( isSrgtPirFirstChar(txt[0]) ) {
+				txt += QChar(buffer()->charAt(++first));
+			}
+			m_fallingChars.push_back(FallingChar(txt, pnt, v));
+			//m_fallingChars.push_back(FallingChar(QChar(buffer()->charAt(first)), pnt, v));
 			if( ++first >= last ) break;
 			px += textWidth(first, 1 /*, last*/);
 		}
@@ -966,7 +971,7 @@ void EditView::paintEvent(QPaintEvent *event)
 			//##t.translate(-(m_fallingChars[i].m_pnt.x() - hp.x() + m_fontWidth/2), -(m_fallingChars[i].m_pnt.y() - m_fontHeight/2));
 			//##t.rotateRadians(3.1415926535/6);
 			//##pt.setTransform(t);
-			pt.drawText(m_fallingChars[i].m_pnt - hp, QString(m_fallingChars[i].m_ch));
+			pt.drawText(m_fallingChars[i].m_pnt - hp, m_fallingChars[i].m_text);
 			//qDebug() << m_fallingChars[i].m_pnt - hp;
 		}
 		pt.setTransform(QTransform());	//	回転リセット

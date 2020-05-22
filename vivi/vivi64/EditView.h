@@ -18,14 +18,24 @@ class ViewLineMgr;
 struct FallingChar		//	落下中文字
 {
 public:
-	FallingChar(QChar ch, QPointF pnt, QPointF v)
-		: m_ch(ch)
+	FallingChar(QString txt, QPointF pnt, QPointF v)
+		: m_text(txt)
+		//, m_ch(ch)
 		, m_pnt(pnt)
 		, m_v(v)
 		{}
+#if	0
+	FallingChar(QChar ch, QPointF pnt, QPointF v)
+		: m_text(ch)
+		, m_ch(ch)
+		, m_pnt(pnt)
+		, m_v(v)
+		{}
+#endif
 
 public:
-	QChar	m_ch;
+	//QChar	m_ch;
+	QString	m_text;
 	QPointF	m_pnt;		//	位置
 	QPointF	m_v;		//	速度ベクター
 };
