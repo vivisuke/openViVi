@@ -2159,7 +2159,7 @@ bool EditView::saveFile() const
 		emit modifiedChanged();
 	return rc;
 }
-bool EditView::searchCurWord(QString &txt)
+bool EditView::searchCurWord(QString &txt, bool vi)
 {
 	if( m_textCursor->hasSelection() ) {
 		int ln1 = positionToLine(m_textCursor->selectionFirst());
@@ -2183,15 +2183,9 @@ bool EditView::searchCurWord(QString &txt)
 		txt = escapeRegExpSpecialChars(txt);
 	}
 #endif
-#if	0
-	if( globSettings()->boolValue(GlobalSettings::IGNORE_CASE) )
-		opt |= SSSearch::IGNORE_CASE;
-	if( globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY) )
-		opt |= SSSearch::WHOLE_WORD_ONLY;
-#endif
 	auto opt = mainWindow()->getSearchOpt();
 	opt |= SSSearch::WHOLE_WORD_ONLY;
-	bool rc = findForward(txt, opt);
+	bool rc = findForward(txt, opt, false, true, vi);
 	emit textSearched(txt, true);
 	resetCursorBlinking();
 	update();

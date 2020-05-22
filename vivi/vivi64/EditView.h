@@ -168,7 +168,7 @@ public:
 	void	updateFont();
 	void	setFullPathName(const QString &);
 	bool	saveFile() const;
-	bool	searchCurWord(QString &);
+	bool	searchCurWord(QString &, bool vi = false);
 	bool	findForward(const QString &, uint opt = 0, bool loop = false, bool next = true, bool vi = false);
 	bool	findBackward(const QString &, uint opt = 0, bool loop = false, bool vi = false);
 #if	1

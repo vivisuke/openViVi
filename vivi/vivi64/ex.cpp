@@ -50,6 +50,7 @@ void MainWindow::commandLineMode(QChar qch)
 		connect(m_cmdLineEdit, SIGNAL(spacePressed()), this, SLOT(onSpaceCmdLineEdit()));
 		connect(m_cmdLineEdit, SIGNAL(slashPressed()), this, SLOT(onSlashCmdLineEdit()));
 		connect(m_cmdLineEdit, SIGNAL(colonPressed()), this, SLOT(onColonCmdLineEdit()));
+		connect(m_cmdLineEdit, SIGNAL(tabPressed()), this, SLOT(onTabCmdLineEdit()));
 		connect(m_cmdLineEdit, SIGNAL(upPressed()), this, SLOT(onUpCmdLineEdit()));
 		connect(m_cmdLineEdit, SIGNAL(downPressed()), this, SLOT(onDownCmdLineEdit()));
 		connect(m_cmdLineEdit, SIGNAL(textEdited(QString)), this, SLOT(onEditedCmdLineEdit(QString)));
@@ -273,6 +274,10 @@ void MainWindow::onColonCmdLineEdit()
 	if( !view->getSelectedLineRange(dln1, dln2) ) return;
 	m_cmdLineEdit->backspace();
 	m_cmdLineEdit->insert(QString("%1,%2").arg(dln1+1).arg(dln2+1));
+}
+void MainWindow::onTabCmdLineEdit()
+{
+	m_cmdLineEdit->setFocus();		//	フォーカスを戻す？
 }
 void MainWindow::fileNameCompletion(QDir &dir, QString filter)
 {

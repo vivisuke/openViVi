@@ -57,6 +57,9 @@ void CommandLine::keyPressEvent(QKeyEvent *event)
 	if( event->key() == Qt::Key_Colon) {
 		emit colonPressed();
 	}
+	if( event->key() == Qt::Key_Tab) {
+		emit tabPressed();
+	}
 }
 bool CommandLine::focusNextPrevChild(bool next)
 {

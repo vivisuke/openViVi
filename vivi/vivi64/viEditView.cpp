@@ -327,7 +327,7 @@ void EditView::doViCommand()		//	viEngine が保有する vi コマンドを実�
 		}
 		case ViCmd::SEARCH_CUR_WORD: {
 			QString pat;
-			searchCurWord(pat);
+			searchCurWord(pat, /*vi:*/true);
 			break;
 		}
 		case ViCmd::SEARCH_NEXT: {

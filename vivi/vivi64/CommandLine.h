@@ -22,6 +22,7 @@ signals:
 	void	spacePressed();
 	void	slashPressed();			//	ディレクトリセパレータ押下
 	void	colonPressed();
+	void	tabPressed();
 	void	upPressed();
 	void	downPressed();
 

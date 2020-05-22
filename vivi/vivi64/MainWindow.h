@@ -145,6 +145,7 @@ protected slots:
 	void	onSpaceCmdLineEdit();
 	void	onSlashCmdLineEdit();
 	void	onColonCmdLineEdit();
+	void	onTabCmdLineEdit();
 	bool	isEditCommand(QString &arg);
 	void	fileNameCompletion(QDir &, QString = QString());
 	void	onUpCmdLineEdit();
