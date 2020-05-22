@@ -818,11 +818,16 @@ void MainWindow::doExCommand(QString cmd, bool bGlobal)
 	//	return;
 	//}
 	if( cmd == "w" || cmd == "write" ) {
+		if( view != 0 )
+			doSave(view);
+#if	0
 		if( !arg.isEmpty() ) {
 		} else {
 			if( view != 0 )
 				view->saveFile();
 		}
+#endif
+		return;
 	}
 	if( cmd == "wq" || cmd == "writequit" || cmd == "x" || cmd == "exit" ) {
 		if( arg.isEmpty() ) {
@@ -879,7 +884,8 @@ void MainWindow::doExCommand(QString cmd, bool bGlobal)
 		return;
 	}
 	if( cmd == "cls" ) {
-		m_outputWidget->document()->clear();
+		clearOutput();
+		//m_outputWidget->document()->clear();
 #if	0
 		m_outputWidget->textCursor().setPosition(0);
 		auto sz = m_outputWidget->document()->characterCount();

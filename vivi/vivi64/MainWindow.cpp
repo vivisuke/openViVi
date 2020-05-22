@@ -106,6 +106,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_showMatchedBG(false)
 	, m_searchAlgorithm(SSSearch::SAKUSAKU)
 	, m_cmdLineEdit(nullptr)
+	, m_process(nullptr)
 	//, m_docNumber(0)
 {
 	globSettings()->readSettings();
@@ -1686,6 +1687,10 @@ void MainWindow::doExCommand(QString, bool bGlobal)
 	assert(0);
 }
 #endif
+void MainWindow::clearOutput()
+{
+	m_outputWidget->document()->clear();
+}
 void MainWindow::doOutput(const QString &text)		//	アウトプットにテキスト出力
 {
 	if( !m_outputDock->isVisible() )
@@ -1703,7 +1708,34 @@ void MainWindow::doOutputToGrepView(const QString &)		//	grepビューにテキ�
 }
 void MainWindow::execCommand(const QString &cmd)
 {
-	assert(0);
+	//assert(0);
+	if( m_process == 0 ) {
+		m_process = new QProcess();
+		connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(readyReadStandardOutput()));
+		connect(m_process, SIGNAL(readyReadStandardError()), this, SLOT(readyReadStandardError()));
+	}
+	m_process->start(cmd);
+	auto err = m_process->error();
+	bool b = m_process->waitForFinished();
+	QByteArray ba = m_process->readAllStandardOutput();
+}
+void MainWindow::readyReadStandardOutput()
+{
+	clearOutput();
+	QByteArray ba = m_process->readAllStandardOutput();
+	//qDebug() << ba;
+	QTextCodec *codec = QTextCodec::codecForName("Shift_JIS");
+	QString text = codec->toUnicode(ba);
+	doOutput(text);
+}
+void MainWindow::readyReadStandardError()
+{
+	clearOutput();
+	QByteArray ba = m_process->readAllStandardError();
+	//qDebug() << ba;
+	QTextCodec *codec = QTextCodec::codecForName("Shift_JIS");
+	QString text = codec->toUnicode(ba);
+	doOutput(text);
 }
 void MainWindow::onRecieved(const QString)
 {

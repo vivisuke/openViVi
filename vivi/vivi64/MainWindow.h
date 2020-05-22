@@ -131,9 +131,12 @@ protected:
 	void	setupInsertModeShortcut();
 	void	makeSureOutputView();
 	void	setEnabledViewMenues(bool);
+	void	clearOutput();
 
 protected slots:
 	void	onEditedCmdLineEdit(QString);
+	void	readyReadStandardOutput();
+	void	readyReadStandardError();
 	//void	onFocusOutCmdLineEdit();
 	void	onCmdLineTextChanged(const QString &);
 	void	onEnterCmdLineEdit();
