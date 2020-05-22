@@ -1834,7 +1834,7 @@ bool  EditView::getSelectedLineRange(int &ln1, int &ln2) const
 void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 {
 	if( text.isEmpty() ) return;
-	if( mainWindow()->mode() == MODE_VI ) {
+	if( text != "\t" && mainWindow()->mode() == MODE_VI ) {
 		mainWindow()->viEngine()->processCommandText(text, m_textCursor->hasSelection());
 		return;
 	}
