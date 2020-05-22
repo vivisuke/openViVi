@@ -307,7 +307,7 @@ void TextCursor::movePosition(int op, int mode, int n, bool vi)
 			pos = viewLineStartPosition(vln + 1);
 			wchar_t pch = m_view->charAt(pos-1);
 			if( pch == '\n') {
-				if( m_view->charAt(pos-2) == '\r' )
+				if( pos >= 2 && m_view->charAt(pos-2) == '\r' )
 					pos -= 2;
 				else
 					--pos;

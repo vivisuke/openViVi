@@ -1971,7 +1971,7 @@ void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
 	}
 	if( !m_textCursor->hasSelection() ) return;
 	//##if( !isBoxSelectMode() )
-		setupFallingChars();
+		//setupFallingChars();
 	//##if( !editForVar(QString()) )
 		m_textCursor->deleteChar(/*BS=*/true);
 #if	0	//##
@@ -2011,7 +2011,7 @@ void EditView::onDelete(bool ctrl, bool shift, bool alt)
 		}
 	}
 	if( !m_textCursor->hasSelection() ) return;
-	setupFallingChars();
+	//setupFallingChars();
 	//##if( !editForVar(QString()) )
 		m_textCursor->deleteChar();
 	//##emit boxSelectModeChanged(m_textCursor->isBoxSelectMode());
