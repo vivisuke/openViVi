@@ -1633,16 +1633,28 @@ void MainWindow::on_action_viCommand_triggered()
 		m_modeCB->removeItem(MODE_VI);
 	}
 }
+void MainWindow::on_action_viTutorial_triggered()
+{
+	QDesktopServices::openUrl(QUrl("https://github.com/vivisuke/openViVi/wiki/viTutorial"));
+}
+void MainWindow::on_action_helpViCommand_triggered()
+{
+	QDesktopServices::openUrl(QUrl("https://github.com/vivisuke/openViVi/wiki/viCommand"));
+}
+void MainWindow::on_action_helpExCommand_triggered()
+{
+	QDesktopServices::openUrl(QUrl("https://github.com/vivisuke/openViVi/wiki/exCommand"));
+}
+void MainWindow::on_action_Github_triggered()
+{
+	QDesktopServices::openUrl(QUrl("https://github.com/vivisuke/openViVi"));
+}
 void MainWindow::on_action_About_ViVi_triggered()
 {
 	QMessageBox::about(this, "about ViVi",
 						tr("<p><a href=\"https://github.com/vivisuke/openViVi\">openViVi</a> version ") + QString(VERSION_STR)
 						+ tr("<br>Copyright (C) 2020 by N.Tsuda")
 						+ tr("<br>Powered by <a href=\"https://www.qt.io/\">Qt</a> ") + QT_VERSION_STR);
-}
-void MainWindow::on_action_Github_triggered()
-{
-	QDesktopServices::openUrl(QUrl("https://github.com/vivisuke/openViVi"));
 }
 #if	0
 bool MainWindow::focusNextPrevChild(bool next)

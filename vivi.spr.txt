@@ -605,9 +605,9 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 									メモ：検索ボックスにフォーカスがあるかどうかではなく、matchedString で強調するかどうかを指定
 0581 ◎ C 05/23 05/23 0.020│ToDo│MainWindow::m_showMatchedBG は廃止し、m_matchedString を参照
 0582 ◎ C 05/23 05/23 0.021│ToDo│Other メニューは Help に変更
-0583 ● C 05/23            │ToDo│Help > viTutorial メニュー追加
-0584 ● C 05/23            │ToDo│Help > viCommand メニュー追加
-0585 ● C 05/23            │ToDo│Help > exCommand メニュー追加
+0583 ◎ C 05/23 05/23 0.021│ToDo│Help > viTutorial メニュー追加
+0584 ◎ C 05/23 05/23 0.021│ToDo│Help > viCommand メニュー追加
+0585 ◎ C 05/23 05/23 0.021│ToDo│Help > exCommand メニュー追加
 0586 ● C 05/23            │ToDo│
 0587 ● C 05/23            │ToDo│
 0588 ● C 05/23            │ToDo│

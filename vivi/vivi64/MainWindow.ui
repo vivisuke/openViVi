@@ -135,8 +135,11 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="action_Github"/>
+    <addaction name="action_viTutorial"/>
+    <addaction name="action_helpViCommand"/>
+    <addaction name="action_helpExCommand"/>
     <addaction name="separator"/>
+    <addaction name="action_Github"/>
     <addaction name="action_About_ViVi"/>
    </widget>
    <widget class="QMenu" name="menu_Search">
@@ -574,7 +577,22 @@
   </action>
   <action name="action_Github">
    <property name="text">
-    <string>&amp;Github</string>
+    <string>&amp;SourceCode(Github)</string>
+   </property>
+  </action>
+  <action name="action_viTutorial">
+   <property name="text">
+    <string>vi&amp;Tutorial</string>
+   </property>
+  </action>
+  <action name="action_helpViCommand">
+   <property name="text">
+    <string>&amp;viCommand</string>
+   </property>
+  </action>
+  <action name="action_helpExCommand">
+   <property name="text">
+    <string>&amp;exCommand</string>
    </property>
   </action>
  </widget>
