@@ -62,7 +62,7 @@ public:
 	uint	getSearchOpt(bool vi = false) const;
 	bool	isBoxSelectMode() const;	// { return ui.action_BoxSelect->isChecked(); }
 	bool	isKeisenMode() const;		// { return ui.action_Keisen->isChecked(); }
-	bool	willShowMatchedMG() const { return m_showMatchedBG; }
+	//bool	willShowMatchedMG() const { return m_showMatchedBG; }
 	QString	findString() const { return m_findString; }
 	const ViEngine	*viEngine() const { return m_viEngine; }
 	int		mode() const { return m_modeCB->currentIndex(); }
@@ -75,7 +75,8 @@ public:
 	void	hideCmdLineEdit();
 	void	commandLineMode(QChar = ':');
 	bool	hasSearchBoxFocus();		//	検索ボックスがフォーカスを持っているか？
-	void	setShowMatchedBG(bool b) { m_showMatchedBG = b; }
+	//void	setShowMatchedBG(bool b) { m_showMatchedBG = b; }
+	void	clearMatchedString() { m_matchedString.clear(); }
 protected:
 	//bool	focusNextPrevChild(bool next);
 	void	createActions();
@@ -252,7 +253,7 @@ private:
 	
 	bool	m_searching;			//	検索中
 	bool	m_incSearched;			//	インクリメンタルサーチ済み
-	bool	m_showMatchedBG;		//	マッチ背景強調 at vi mode
+	//bool	m_showMatchedBG;		//	マッチ背景強調 at vi mode
 	QString	m_matchedString;		//	マッチ強調文字列
 	byte_t	m_searchAlgorithm;
 	int		m_curTabIndex;

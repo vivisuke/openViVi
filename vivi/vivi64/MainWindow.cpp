@@ -103,7 +103,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_formerTabIndex(-1)
 	, m_incSearched(false)
 	, m_searching(false)
-	, m_showMatchedBG(false)
+	//, m_showMatchedBG(false)
 	, m_searchAlgorithm(SSSearch::SAKUSAKU)
 	, m_cmdLineEdit(nullptr)
 	, m_process(nullptr)
@@ -1349,6 +1349,7 @@ void MainWindow::onEscFindLineEdit()
 	//assert(0);
 	EditView *view = currentWidget();
 	if( view != nullptr ) {
+		m_matchedString.clear();	//	マッチ強調終了
 		view->setFocus();
 	}
 }
@@ -1399,6 +1400,7 @@ void MainWindow::findStringChanged(const QString &pat)
 {
 	if( m_searching ) return;	//	検索中の場合、再検索しないようにねっ
 	m_findString = pat;
+	m_matchedString = pat;
 	EditView *view = currentWidget();
 	if (isEditView(view)) {
 		if( pat.isEmpty() ) {

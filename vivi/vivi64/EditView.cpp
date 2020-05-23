@@ -862,7 +862,8 @@ void EditView::onEscape(bool ctrl, bool shift, bool alt)
 		//update();
 	} else if( md == MODE_VI ) {
 		//mainWindow()->setFindString("");
-		mainWindow()->setShowMatchedBG(false);		//	検索マッチ強調OFF
+		//mainWindow()->setShowMatchedBG(false);		//	検索マッチ強調OFF
+		mainWindow()->clearMatchedString();
 		update();
 	}
 }
@@ -1006,14 +1007,19 @@ void EditView::drawLineNumberArea(QPainter& pt)
 }
 void EditView::drawMatchedBG(QPainter&pt)
 {
-	if (mainWindow()->findString().isEmpty()) return;
+	auto pat = mainWindow()->matchedString();
+	if (pat.isEmpty()) return;
 	if( mainWindow()->mode() == MODE_VI ) {
-		if( !mainWindow()->willShowMatchedMG() )
-			return;
+		//if( !mainWindow()->willShowMatchedMG() )
+		//	return;
 	} else {
 		if( !mainWindow()->hasSearchBoxFocus() )
 			return;
 	}
+	//	とりあえず毎回 SSSearch を初期化、もしパフォーマンス的に問題があれば将来的に改修
+	SSSearch &sssrc = mainWindow()->sssrc();
+	uint opt = mainWindow()->getSearchOpt();
+	sssrc.setup((wchar_t *)pat.data(), pat.size(), opt);
 	const auto rct = rect();
 	int px, py = 0;
 	for (int ln = m_scrollY0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {

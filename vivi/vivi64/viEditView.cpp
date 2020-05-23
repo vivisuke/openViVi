@@ -333,7 +333,7 @@ void EditView::doViCommand()		//	viEngine が保有する vi コマンドを実�
 		case ViCmd::SEARCH_NEXT: {
 			QString pat = mainWindow()->findString();
 			if( !pat.isEmpty() ) {
-				mainWindow()->setShowMatchedBG(true);
+				//mainWindow()->setShowMatchedBG(true);
 				for (int i = 0; i < repCnt; ++i)
 					findNext(pat, /*vi=*/true);
 			}
@@ -342,7 +342,7 @@ void EditView::doViCommand()		//	viEngine が保有する vi コマンドを実�
 		case ViCmd::SEARCH_PREV: {
 			QString pat = mainWindow()->findString();
 			if( !pat.isEmpty() ) {
-				mainWindow()->setShowMatchedBG(true);
+				//mainWindow()->setShowMatchedBG(true);
 				for (int i = 0; i < repCnt; ++i)
 					findPrev(pat, /*vi=*/true);
 			}
