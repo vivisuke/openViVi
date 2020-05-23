@@ -67,6 +67,7 @@ public:
 	const ViEngine	*viEngine() const { return m_viEngine; }
 	int		mode() const { return m_modeCB->currentIndex(); }
 	int		isOpened(const QString&) const;		//	既にオープンされていれば、MDITabs インデックスを返す、-1 for not opened
+	QString	matchedString() const { return m_matchedString; }
 public:
 	ViEngine	*viEngine() { return m_viEngine; }
 	void	resetBoxKeisenMode();
@@ -250,8 +251,9 @@ private:
 	//GlobalSettings		*m_globSettings;
 	
 	bool	m_searching;			//	検索中
-	bool	m_incSearched;		//	インクリメンタルサーチ済み
+	bool	m_incSearched;			//	インクリメンタルサーチ済み
 	bool	m_showMatchedBG;		//	マッチ背景強調 at vi mode
+	QString	m_matchedString;		//	マッチ強調文字列
 	byte_t	m_searchAlgorithm;
 	int		m_curTabIndex;
 	int		m_formerTabIndex;
