@@ -1366,11 +1366,15 @@ void MainWindow::on_action_Search_triggered()
 	m_findStringCB->lineEdit()->setSelection(0, txt.size());
 	m_findStringCB->lineEdit()->setFocus();
 }
-void MainWindow::on_action_SearchCurWord_triggered()
+void MainWindow::setSearchWordOpt()
 {
 	ui.action_WordSearch->setChecked(true);
 	globSettings()->setBoolValue(GlobalSettings::WHOLE_WORD_ONLY, true);
 	globSettings()->writeSettings();
+}
+void MainWindow::on_action_SearchCurWord_triggered()
+{
+	setSearchWordOpt();		//	単語単位検索オプション強制ON
 	//
 	EditView *view = currentWidget();
 	if( !isEditView(view) ) return;

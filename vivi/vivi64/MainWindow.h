@@ -74,6 +74,7 @@ public:
 	ViEngine	*viEngine() { return m_viEngine; }
 	void	resetBoxKeisenMode();
 	void	setMode(int);
+	void	setSearchWordOpt();
 	void	hideCmdLineEdit();
 	void	commandLineMode(QChar = ':');
 	bool	hasSearchBoxFocus();		//	検索ボックスがフォーカスを持っているか？
