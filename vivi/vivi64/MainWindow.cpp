@@ -1368,6 +1368,10 @@ void MainWindow::on_action_Search_triggered()
 }
 void MainWindow::on_action_SearchCurWord_triggered()
 {
+	ui.action_WordSearch->setChecked(true);
+	globSettings()->setBoolValue(GlobalSettings::WHOLE_WORD_ONLY, true);
+	globSettings()->writeSettings();
+	//
 	EditView *view = currentWidget();
 	if( !isEditView(view) ) return;
 	QString txt;
