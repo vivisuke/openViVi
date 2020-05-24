@@ -79,6 +79,7 @@ public:
 	bool	hasSearchBoxFocus();		//	検索ボックスがフォーカスを持っているか？
 	//void	setShowMatchedBG(bool b) { m_showMatchedBG = b; }
 	void	clearMatchedString() { m_matchedString.clear(); }
+	void	setMatchedString(const QString& txt) { m_matchedString = txt; }
 protected:
 	//bool	focusNextPrevChild(bool next);
 	void	createActions();
