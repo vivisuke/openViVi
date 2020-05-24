@@ -1,5 +1,7 @@
+
 hoge()
 {
+	hage();
 }
 
 main() {

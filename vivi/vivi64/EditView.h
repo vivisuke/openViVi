@@ -94,6 +94,7 @@ public:
 public:
 	MainWindow	*mainWindow() { return m_mainWindow; }
 	ViewLineMgr *viewLineMgr() { return m_viewLineMgr; }
+	TextCursor*	textCursor() { return m_textCursor; }
 	void	clearLineFlags();
 	void	setModified(bool = true);
 	void	setLineNumberVisible(bool);

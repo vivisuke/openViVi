@@ -108,6 +108,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_cmdLineEdit(nullptr)
 	, m_process(nullptr)
 	//, m_docNumber(0)
+	, m_incSearchPos(0)
 {
 	globSettings()->readSettings();
 	ui.setupUi(this);

@@ -84,10 +84,13 @@ void MainWindow::commandLineMode(QChar qch)
 		ui.action_WordSearch->setChecked(false);		//	単語単位OFF
 		globSettings()->setBoolValue(GlobalSettings::WHOLE_WORD_ONLY, false);
 		EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
-		if( view == 0 || !isEditView(view) )
+		if( view == 0 || !isEditView(view) ) {
+			m_incSearchPos = 0;
 			m_viEngine->setIncSearchViewPos(0, 0);
-		else
+		} else {
+			m_incSearchPos = view->textCursor()->position();
 			m_viEngine->setIncSearchViewPos(view, view->cursorPosition());
+		}
 	}
 	m_cmdLineEdit->setFocus();
 	m_exCmdHistIndex = m_exCmdHist.size();
@@ -141,19 +144,20 @@ void MainWindow::onCmdLineTextChanged(const QString &text)
 	if( text.isEmpty() || (text[0] != '/' && text[0] != '?') ) return;
 	auto pat = text.mid(1);
 	m_findString = pat;
+	m_matchedString = pat;
 	EditView *view = currentWidget();
 	if (isEditView(view)) {
 		if( pat.isEmpty() ) {
 			//	undone: インクリメンタルサーチ終了
-			view->update();
-			return;
+		} else {
+			uint opt = getSearchOpt();
+			if (!view->findForward(m_findString = pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), false))
+				statusBar()->showMessage(tr("'%1' was not found.").arg(pat), 3000);
+			else {
+				onCursorPosChanged();
+			}
 		}
-		uint opt = getSearchOpt();
-		if (!view->findForward(m_findString = pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), false))
-			statusBar()->showMessage(tr("'%1' was not found.").arg(pat), 3000);
-		else {
-			onCursorPosChanged();
-		}
+		view->update();
 	}
 }
 //	Enter が押された場合の処理
@@ -221,11 +225,18 @@ void MainWindow::doSearchCommand(EditView* view, QString& text)
 //	Esc が押された場合の処理
 void MainWindow::onEscCmdLineEdit()
 {
+	QString text = m_cmdLineEdit->text();
 	statusBar()->removeWidget(m_cmdLineEdit);
 	m_cmdLineEdit->hide();
 	EditView* view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 	if (view != 0) {
 		view->setFocus();
+		if( !text.isEmpty() && (text[0] == '/' || text[0] == '?') ) {
+			m_matchedString.clear();
+			view->textCursor()->setPosition(m_incSearchPos);
+			view->makeCursorInView();
+			view->update();
+		}
 	}
 	m_viEngine->popMode();			//	モードを元に戻す
 }

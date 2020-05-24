@@ -14,11 +14,13 @@
 //#include <qnetwork.h>
 #include "ui_MainWindow.h"
 #include "EditView.h"
+#include "../buffer/Buffer.h"
 class FindLineEdit;
 
 //typedef QPlainTextEdit	EditView;
 
 typedef const char cchar;
+//typedef __uint64 pos_t;
 
 enum {
 	MODE_INS = 0,
@@ -272,6 +274,7 @@ private:
 	int					m_possibleGrepCount;			//	Grep 実行可能回数
 	int					m_possibleReplaceCount;		//	Replace 実行可能回数
 	int					m_possibleCmdModeCount;		//	vi コマンドモード遷移可能回数
+	pos_t			m_incSearchPos;				//	インクリメンタルサーチ開始位置
 	QStringList		m_grepDirHist;				//	検索ディレクトリ履歴
     QStringList		m_exCmdHist;				//	ex-command 履歴
     int				m_exCmdHistIndex;

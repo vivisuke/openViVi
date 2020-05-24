@@ -1012,6 +1012,7 @@ void EditView::drawMatchedBG(QPainter&pt)
 	if( mainWindow()->mode() == MODE_VI ) {
 		//if( !mainWindow()->willShowMatchedMG() )
 		//	return;
+	} else if( mainWindow()->mode() == MODE_EX ) {
 	} else {
 		if( !mainWindow()->hasSearchBoxFocus() )
 			return;
