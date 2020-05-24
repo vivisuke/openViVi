@@ -106,7 +106,6 @@ MainWindow::MainWindow(QWidget *parent)
 	//, m_showMatchedBG(false)
 	, m_searchAlgorithm(SSSearch::SAKUSAKU)
 	, m_cmdLineEdit(nullptr)
-	, m_autoCompletionDlg(nullptr)
 	, m_process(nullptr)
 	//, m_docNumber(0)
 	, m_incSearchPos(0)
@@ -471,6 +470,11 @@ void MainWindow::onModeChanged(int md)
 		EditView *view = currentWidget();
 		if( isEditView(view) )
 			view->setFocus();
+	} else {
+		if( m_cmdLineEdit == nullptr || !m_cmdLineEdit->isVisible() ) {
+			m_viEngine->setCmdLineChar(':');
+			commandLineMode(QChar(':'));
+		}
 	}
 }
 void MainWindow::viModeChanged()
