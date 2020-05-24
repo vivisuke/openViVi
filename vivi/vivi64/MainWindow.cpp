@@ -1193,6 +1193,29 @@ void MainWindow::modifiedChanged()
 	updateTabText(view);
 	updateWindowTitle();
 }
+void MainWindow::on_action_cpp_h_triggered()
+{
+	EditView *view = currentWidget();
+	if( !isEditView(view) ) return;
+	QString fullPath = view->fullPathName();
+	if( fullPath.isEmpty() ) return;
+	QString ext = getExtension(fullPath).toLower();
+	fullPath = fullPath.left(fullPath.size() - ext.size());
+	QString ext2;
+	if( ext == "c" || ext == "cpp" || ext == "cxx" )
+		ext2 = "h";
+	else if( ext == "h" ) {
+		//	.cpp が存在せず、c が存在する場合は c を開く
+		//bool c = QFileInfo(fullPath + "c").exists();
+		if( !QFileInfo(fullPath + "cpp").exists() && QFileInfo(fullPath + "c").exists() )
+			ext2 = "c";
+		else
+			ext2 = "cpp";
+	} else
+		return;
+	fullPath += ext2;
+	createView(fullPath);
+}
 void MainWindow::on_action_eXit_triggered()
 {
 	qDebug() << "on_action_eXit_triggered()";
@@ -1310,8 +1333,8 @@ void MainWindow::on_action_SearchBackward_triggered()
 	m_matchedString = pat;
 	EditView *view = currentWidget();
 	if( isEditView(view) && !pat.isEmpty() ) {
-		bool word = ui.action_WordSearch->isChecked();
-		view->findPrev(pat, word);
+		//bool word = ui.action_WordSearch->isChecked();
+		view->findPrev(pat /*, word*/);
 	}
 }
 void MainWindow::on_action_SearchForward_triggered()
@@ -1322,8 +1345,8 @@ void MainWindow::on_action_SearchForward_triggered()
 	if( pat.isEmpty() ) return;
 	EditView *view = currentWidget();
 	if( isEditView(view) /*&& !pat.isEmpty()*/ ) {
-		bool word = ui.action_WordSearch->isChecked();
-		view->findNext(pat, word);
+		//bool word = ui.action_WordSearch->isChecked();
+		view->findNext(pat /*, word*/);
 	}
 }
 void MainWindow::on_action_Search_triggered()

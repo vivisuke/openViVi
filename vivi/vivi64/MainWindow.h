@@ -178,6 +178,7 @@ private slots:
 	void	on_action_Reload_triggered();
 	void	on_action_AddCurrentFile_triggered();
 	void	on_action_RemoveFile_triggered();
+	void	on_action_cpp_h_triggered();
 	void	on_action_eXit_triggered();
 	void	on_action_Undo_triggered();
 	void	on_action_Redo_triggered();
