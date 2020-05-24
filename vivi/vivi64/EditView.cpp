@@ -855,6 +855,7 @@ void EditView::onEscape(bool ctrl, bool shift, bool alt)
 	m_fallingChars.clear();
 	mainWindow()->resetBoxKeisenMode();
 	//
+	mainWindow()->clearMatchedString();
 	auto md = mainWindow()->mode();
 	if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) && (md == MODE_INS || md == MODE_REP) ) {
 		mainWindow()->viEngine()->processCommand(0x1b);
@@ -863,7 +864,6 @@ void EditView::onEscape(bool ctrl, bool shift, bool alt)
 	} else if( md == MODE_VI ) {
 		//mainWindow()->setFindString("");
 		//mainWindow()->setShowMatchedBG(false);		//	検索マッチ強調OFF
-		mainWindow()->clearMatchedString();
 		update();
 	}
 }
@@ -1014,8 +1014,8 @@ void EditView::drawMatchedBG(QPainter&pt)
 		//	return;
 	} else if( mainWindow()->mode() == MODE_EX ) {
 	} else {
-		if( !mainWindow()->hasSearchBoxFocus() )
-			return;
+		//if( !mainWindow()->hasSearchBoxFocus() )
+		//	return;
 	}
 	//	とりあえず毎回 SSSearch を初期化、もしパフォーマンス的に問題があれば将来的に改修
 	SSSearch &sssrc = mainWindow()->sssrc();

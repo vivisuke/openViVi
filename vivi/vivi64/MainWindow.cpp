@@ -1307,6 +1307,7 @@ void MainWindow::on_action_SearchBackward_triggered()
 {
 	statusBar()->clearMessage();
 	QString pat = m_findStringCB->lineEdit()->text();
+	m_matchedString = pat;
 	EditView *view = currentWidget();
 	if( isEditView(view) && !pat.isEmpty() ) {
 		bool word = ui.action_WordSearch->isChecked();
@@ -1317,6 +1318,7 @@ void MainWindow::on_action_SearchForward_triggered()
 {
 	statusBar()->clearMessage();
 	QString pat = m_findStringCB->lineEdit()->text();
+	m_matchedString = pat;
 	if( pat.isEmpty() ) return;
 	EditView *view = currentWidget();
 	if( isEditView(view) /*&& !pat.isEmpty()*/ ) {
