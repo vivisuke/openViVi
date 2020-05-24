@@ -150,6 +150,7 @@ void MainWindow::onCmdLineTextChanged(const QString &text)
 		if( pat.isEmpty() ) {
 			//	undone: インクリメンタルサーチ終了
 		} else {
+			view->textCursor()->setPosition(m_incSearchPos);	//	最初の位置から再検索
 			uint opt = getSearchOpt();
 			if (!view->findForward(m_findString = pat, opt, globSettings()->boolValue(GlobalSettings::LOOP_SEARCH), false))
 				statusBar()->showMessage(tr("'%1' was not found.").arg(pat), 3000);
