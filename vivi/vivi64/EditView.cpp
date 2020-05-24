@@ -2183,6 +2183,8 @@ bool EditView::searchCurWord(QString &txt, bool vi)
 	int ln2 = positionToLine(last = m_textCursor->selectionLast());
 	if( ln1 != ln2 ) return false;
 	txt = document()->text(first, last - first);
+	mainWindow()->setFindString(txt);
+	mainWindow()->setMatchedString(txt);
 	if( txt.isEmpty() ) return false;
 	//uint opt = 0;
 #if	0	//##
