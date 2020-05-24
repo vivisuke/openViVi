@@ -1,4 +1,4 @@
-﻿#include "mainwindow.h"
+#include "mainwindow.h"
 #include "EditView.h"
 #include "CommandLine.h"
 #include "ViEngine.h"
@@ -310,39 +310,41 @@ void MainWindow::showAutoCompletionDlg(const QStringList &lst, QString ft /*, bo
 		return;
 	}
 	m_autoCmplIndex = m_cmdLineEdit->cursorPosition();
-	m_autoCompletionDlg = new AutoCompletionDlg(lst, ft, /*selTail:*/false, this);
-	m_autoCompletionDlg->setFilterCaseSensitive(false);		//	大文字小文字同一視
-	m_autoCompletionDlg->setResizable(false);		//	リサイズ不可
-	connect(m_autoCompletionDlg, SIGNAL(keyPressed(QString)),
-					this, SLOT(autoCmplKeyPressed(QString)),
-					Qt::QueuedConnection);
-	connect(m_autoCompletionDlg, SIGNAL(backSpace()),
-					this, SLOT(autoCmplBackSpace()),
-					Qt::QueuedConnection);
-	connect(m_autoCompletionDlg, SIGNAL(delPressed(bool, bool)),
-					this, SLOT(autoCmplDelete(bool, bool)),
-					Qt::QueuedConnection);
-	connect(m_autoCompletionDlg, SIGNAL(leftPressed(bool, bool)),
-					this, SLOT(autoCmplLeft(bool, bool)),
-					Qt::QueuedConnection);
-	connect(m_autoCompletionDlg, SIGNAL(rightPressed(bool, bool)),
-					this, SLOT(autoCmplRight(bool, bool)),
-					Qt::QueuedConnection);
-	connect(m_autoCompletionDlg, SIGNAL(zenCoding()),
-					this, SLOT(autoCmplZenCoding()),
-					Qt::QueuedConnection);
-	connect(m_autoCompletionDlg, SIGNAL(pasted()),
-					this, SLOT(autoCmplPasted()),
-					Qt::QueuedConnection);
-	connect(m_autoCompletionDlg, SIGNAL(decided(QString, bool)),
-					this, SLOT(autoCmplDecided(QString, bool)),
-					Qt::QueuedConnection);
-	connect(m_autoCompletionDlg, SIGNAL(rejected()),
-					this, SLOT(autoCmplRejected()),
-					Qt::QueuedConnection);
-	//connect(m_autoCompletionDlg, SIGNAL(focusOut()),
-	//				this, SLOT(autoCmplFocusOut()),
-	//				Qt::QueuedConnection);
+	if( m_autoCompletionDlg == nullptr ) {
+		m_autoCompletionDlg = new AutoCompletionDlg(lst, ft, /*selTail:*/false, this);
+		m_autoCompletionDlg->setFilterCaseSensitive(false);		//	大文字小文字同一視
+		m_autoCompletionDlg->setResizable(false);		//	リサイズ不可
+		connect(m_autoCompletionDlg, SIGNAL(keyPressed(QString)),
+						this, SLOT(autoCmplKeyPressed(QString)),
+						Qt::QueuedConnection);
+		connect(m_autoCompletionDlg, SIGNAL(backSpace()),
+						this, SLOT(autoCmplBackSpace()),
+						Qt::QueuedConnection);
+		connect(m_autoCompletionDlg, SIGNAL(delPressed(bool, bool)),
+						this, SLOT(autoCmplDelete(bool, bool)),
+						Qt::QueuedConnection);
+		connect(m_autoCompletionDlg, SIGNAL(leftPressed(bool, bool)),
+						this, SLOT(autoCmplLeft(bool, bool)),
+						Qt::QueuedConnection);
+		connect(m_autoCompletionDlg, SIGNAL(rightPressed(bool, bool)),
+						this, SLOT(autoCmplRight(bool, bool)),
+						Qt::QueuedConnection);
+		connect(m_autoCompletionDlg, SIGNAL(zenCoding()),
+						this, SLOT(autoCmplZenCoding()),
+						Qt::QueuedConnection);
+		connect(m_autoCompletionDlg, SIGNAL(pasted()),
+						this, SLOT(autoCmplPasted()),
+						Qt::QueuedConnection);
+		connect(m_autoCompletionDlg, SIGNAL(decided(QString, bool)),
+						this, SLOT(autoCmplDecided(QString, bool)),
+						Qt::QueuedConnection);
+		connect(m_autoCompletionDlg, SIGNAL(rejected()),
+						this, SLOT(autoCmplRejected()),
+						Qt::QueuedConnection);
+		//connect(m_autoCompletionDlg, SIGNAL(focusOut()),
+		//				this, SLOT(autoCmplFocusOut()),
+		//				Qt::QueuedConnection);
+	}
 	
 	m_autoCompletionDlg->show();
 
@@ -412,6 +414,7 @@ void MainWindow::closeAutoCompletionDlg()
 {
 	if( m_autoCompletionDlg == 0 )
 		return;
+	m_autoCompletionDlg->hide();
 	delete m_autoCompletionDlg;
 	m_autoCompletionDlg = 0;
 	m_autoCmplDlgClosed = true;

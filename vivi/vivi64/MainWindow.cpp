@@ -106,6 +106,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//, m_showMatchedBG(false)
 	, m_searchAlgorithm(SSSearch::SAKUSAKU)
 	, m_cmdLineEdit(nullptr)
+	, m_autoCompletionDlg(nullptr)
 	, m_process(nullptr)
 	//, m_docNumber(0)
 	, m_incSearchPos(0)
@@ -1206,7 +1207,6 @@ void MainWindow::on_action_cpp_h_triggered()
 		ext2 = "h";
 	else if( ext == "h" ) {
 		//	.cpp が存在せず、c が存在する場合は c を開く
-		//bool c = QFileInfo(fullPath + "c").exists();
 		if( !QFileInfo(fullPath + "cpp").exists() && QFileInfo(fullPath + "c").exists() )
 			ext2 = "c";
 		else
