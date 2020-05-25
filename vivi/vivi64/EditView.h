@@ -183,6 +183,9 @@ public:
 	QString	getLineText(int dln) const;
 	uint	lineFlags(int dln) const;
 	void	substitute(int dln1, int dln2, const QString &pat, const QString &rep, const QString &opt);
+	void	zenCoding();
+	void	completion();
+	void	kwCompletion();
 
 protected:
 	void	viFindCharForward(wchar_t qch, bool bPrev, int mvmd, int repCnt);

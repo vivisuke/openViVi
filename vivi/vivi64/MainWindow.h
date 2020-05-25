@@ -189,6 +189,7 @@ private slots:
 	void	on_action_Copy_triggered();
 	void	on_action_Paste_triggered();
 	void	on_action_SelectAll_triggered();
+	void	on_action_ZenCoding_triggered();
 	void	on_action_IgnoreCase_triggered();
 	void	on_action_WordSearch_triggered();
 	void	on_action_RegExp_triggered();
@@ -212,7 +213,7 @@ private slots:
 	void	on_action_NextTab_triggered();
 	void	on_action_PrevTab_triggered();
 	void	on_action_FormerTab_triggered();
-	void	on_action_ZenCoding_triggered();
+	//void	on_action_ZenCoding_triggered();
 	//
 public slots:
     void	reloadRequested(EditView *, cchar *codecName = 0);
@@ -320,7 +321,7 @@ private:
 	SSSearch		*m_sssrc;
 	SSSearch		*m_sssrc2;
 	QDockWidget		*m_outlineDock;
-	QTreeWidget		*m_treeWidget;
+	QTreeWidget		*m_outlineWidget;
 	QDockWidget		*m_outputDock;
 	QPlainTextEdit	*m_outputWidget;
 	

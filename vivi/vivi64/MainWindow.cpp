@@ -199,7 +199,9 @@ void MainWindow::createDockWindows()
 {
 	m_outlineDock = new QDockWidget(tr("Outline"));
 	m_outlineDock->setObjectName("Outline");
-	m_outlineDock->setWidget(m_treeWidget = new QTreeWidget());
+	m_outlineDock->setWidget(m_outlineWidget = new QTreeWidget());
+	//m_outlineWidget->setColumnCount(1);
+	m_outlineWidget->setHeaderHidden(true);
 	m_outlineDock->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::LeftDockWidgetArea, m_outlineDock);
 	//
@@ -699,7 +701,7 @@ void MainWindow::on_action_New_triggered()
 }
 EditView *MainWindow::createView(QString pathName)
 {
-	//	undone: pathName を既にオープンしている場合対応
+	//	done: pathName を既にオープンしている場合対応
     QString absPath = QDir(pathName).absolutePath();
 	int ix = isOpened(absPath);
 	if( ix >= 0 ) {
@@ -738,6 +740,11 @@ EditView *MainWindow::createView(QString pathName)
 	addNewView(view, typeNameToIcon(typeName), title, pathName);
 	updateWindowTitle();
 	onCursorPosChanged(view);
+	//	undone: タイトルをアウトラインバーに追加
+	auto top = new QTreeWidgetItem(QStringList(view->title()));
+	m_outlineWidget->addTopLevelItem(top);
+	top->setExpanded(true);
+	//
 	return view;
 }
 QIcon *MainWindow::typeNameToIcon(const QString& typeName)
@@ -1269,6 +1276,12 @@ void MainWindow::on_action_SelectAll_triggered()
 		view->selectAll();
 	}
 }
+void MainWindow::on_action_ZenCoding_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) )
+		view->zenCoding();
+}
 uint MainWindow::getSearchOpt(bool vi) const
 {
 	uint opt = 0;
@@ -1738,10 +1751,6 @@ void MainWindow::on_action_PrevTab_triggered()
 	doPrevTab();
 }
 void MainWindow::on_action_FormerTab_triggered()
-{
-	assert(0);
-}
-void MainWindow::on_action_ZenCoding_triggered()
 {
 	assert(0);
 }

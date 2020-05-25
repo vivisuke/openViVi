@@ -2623,3 +2623,6 @@ void EditView::setCursorPosition(pos_t pos, int mode)
 	makeCursorInView();
 	update();
 }
+void EditView::zenCoding()
+{
+}
