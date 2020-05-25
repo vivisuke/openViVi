@@ -106,6 +106,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NamedColorDlg.cpp" />
+    <ClCompile Include="OutlineBar.cpp" />
     <ClCompile Include="settingsMgr.cpp" />
     <ClCompile Include="TestViCommands.cpp" />
     <ClCompile Include="TextCursor.cpp" />
@@ -137,6 +138,7 @@
     <QtMoc Include="CommandLine.h" />
     <ClInclude Include="CTabBar.h" />
     <ClInclude Include="CTabWidget.h" />
+    <QtMoc Include="OutlineBar.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="settingsMgr.h" />
     <QtMoc Include="TypeStgDlg.h" />

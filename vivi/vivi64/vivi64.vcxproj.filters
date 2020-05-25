@@ -121,6 +121,9 @@
     <ClCompile Include="TestViCommands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OutlineBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -157,6 +160,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="TestViCommands.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="OutlineBar.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

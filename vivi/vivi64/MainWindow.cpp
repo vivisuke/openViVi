@@ -741,13 +741,13 @@ EditView *MainWindow::createView(QString pathName)
 	updateWindowTitle();
 	onCursorPosChanged(view);
 	//	done: タイトルをアウトラインバーに追加
-	addToOutlineBar(view->title(), doc->fullPathName());
+	addToOutlineBar(view);
 	//
 	return view;
 }
-void MainWindow::addToOutlineBar(const QString& title, const QString& fullPath)
+void MainWindow::addToOutlineBar(EditView* view)
 {
-	auto top = new QTreeWidgetItem(QStringList(title));
+	auto top = new QTreeWidgetItem(QStringList(view->title()));
 	m_outlineWidget->addTopLevelItem(top);
 	top->setExpanded(true);
 }
