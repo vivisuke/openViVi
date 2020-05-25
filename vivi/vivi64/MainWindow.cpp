@@ -748,6 +748,7 @@ EditView *MainWindow::createView(QString pathName)
 void MainWindow::addToOutlineBar(EditView* view)
 {
 	auto top = new QTreeWidgetItem(QStringList(view->title()));
+	top->setData(0, 0, QVariant((cchar*)view));
 	m_outlineBar->addTopLevelItem(top);
 	top->setExpanded(true);
 }
