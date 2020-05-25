@@ -199,9 +199,9 @@ void MainWindow::createDockWindows()
 {
 	m_outlineDock = new QDockWidget(tr("Outline"));
 	m_outlineDock->setObjectName("Outline");
-	m_outlineDock->setWidget(m_outlineWidget = new QTreeWidget());
+	m_outlineDock->setWidget(m_outlineBar = new OutlineBar());
 	//m_outlineWidget->setColumnCount(1);
-	m_outlineWidget->setHeaderHidden(true);
+	m_outlineBar->setHeaderHidden(true);
 	m_outlineDock->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::LeftDockWidgetArea, m_outlineDock);
 	//
@@ -748,7 +748,7 @@ EditView *MainWindow::createView(QString pathName)
 void MainWindow::addToOutlineBar(EditView* view)
 {
 	auto top = new QTreeWidgetItem(QStringList(view->title()));
-	m_outlineWidget->addTopLevelItem(top);
+	m_outlineBar->addTopLevelItem(top);
 	top->setExpanded(true);
 }
 QIcon *MainWindow::typeNameToIcon(const QString& typeName)

@@ -14,6 +14,7 @@
 //#include <qnetwork.h>
 #include "ui_MainWindow.h"
 #include "EditView.h"
+#include "OutlineBar.h"
 #include "../buffer/Buffer.h"
 class FindLineEdit;
 
@@ -323,7 +324,8 @@ private:
 	SSSearch		*m_sssrc;
 	SSSearch		*m_sssrc2;
 	QDockWidget		*m_outlineDock;
-	QTreeWidget		*m_outlineWidget;
+	//QTreeWidget		*m_outlineWidget;
+	OutlineBar		*m_outlineBar;
 	QDockWidget		*m_outputDock;
 	QPlainTextEdit	*m_outputWidget;
 	
