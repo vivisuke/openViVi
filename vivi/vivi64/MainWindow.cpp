@@ -1714,20 +1714,28 @@ bool MainWindow::focusNextPrevChild(bool next)
 		return QMainWindow::focusNextPrevChild(next);
 }
 #endif
+void MainWindow::doNextTab(int n)
+{
+	if( ui.tabWidget->count() < 2 ) return;
+	int ix = (ui.tabWidget->currentIndex() + n) % ui.tabWidget->count();
+	ui.tabWidget->setCurrentIndex(ix);
+}
+void MainWindow::doPrevTab(int n)
+{
+	if( ui.tabWidget->count() < 2 ) return;
+	int ix = (ui.tabWidget->currentIndex() - n);
+	while( ix < 0 ) ix += ui.tabWidget->count();
+	ui.tabWidget->setCurrentIndex(ix);
+}
 void MainWindow::on_action_NextTab_triggered()
 {
 	//assert(0);
-	if( ui.tabWidget->count() < 2 ) return;
-	int ix = (ui.tabWidget->currentIndex() + 1) % ui.tabWidget->count();
-	ui.tabWidget->setCurrentIndex(ix);
+	doNextTab();
 }
 void MainWindow::on_action_PrevTab_triggered()
 {
 	//assert(0);
-	if( ui.tabWidget->count() < 2 ) return;
-	int ix = (ui.tabWidget->currentIndex() - 1);
-	if( ix < 0 ) ix = ui.tabWidget->count() - 1;
-	ui.tabWidget->setCurrentIndex(ix);
+	doPrevTab();
 }
 void MainWindow::on_action_FormerTab_triggered()
 {

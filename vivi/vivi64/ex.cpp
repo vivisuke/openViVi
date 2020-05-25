@@ -878,11 +878,13 @@ void MainWindow::doExCommand(QString cmd, bool bGlobal)
 	//	return;
 	//}
 	if( cmd == "n" || cmd == "ne" || cmd == "next" ) {
-		on_action_NextTab_triggered();
+		//on_action_NextTab_triggered();
+		doNextTab(lns.m_second);
 		return;
 	}
 	if( cmd == "pr" || cmd == "prev" ) {
-		on_action_PrevTab_triggered();
+		//on_action_PrevTab_triggered();
+		doPrevTab(lns.m_second);
 		return;
 	}
 	if( cmd == "cd" ) {

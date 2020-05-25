@@ -117,6 +117,8 @@ protected:
 	void	reload(cchar *codecName = 0);
 	void	typesettingsChanged(EditView *view);
 	void	updateSssrc();
+	void	doNextTab(int n=1);
+	void	doPrevTab(int n=1);
     
 protected:
 	void	dragEnterEvent(QDragEnterEvent *event);
