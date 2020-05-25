@@ -1716,11 +1716,18 @@ bool MainWindow::focusNextPrevChild(bool next)
 #endif
 void MainWindow::on_action_NextTab_triggered()
 {
-	assert(0);
+	//assert(0);
+	if( ui.tabWidget->count() < 2 ) return;
+	int ix = (ui.tabWidget->currentIndex() + 1) % ui.tabWidget->count();
+	ui.tabWidget->setCurrentIndex(ix);
 }
 void MainWindow::on_action_PrevTab_triggered()
 {
-	assert(0);
+	//assert(0);
+	if( ui.tabWidget->count() < 2 ) return;
+	int ix = (ui.tabWidget->currentIndex() - 1);
+	if( ix < 0 ) ix = ui.tabWidget->count() - 1;
+	ui.tabWidget->setCurrentIndex(ix);
 }
 void MainWindow::on_action_FormerTab_triggered()
 {
