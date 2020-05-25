@@ -740,12 +740,16 @@ EditView *MainWindow::createView(QString pathName)
 	addNewView(view, typeNameToIcon(typeName), title, pathName);
 	updateWindowTitle();
 	onCursorPosChanged(view);
-	//	undone: タイトルをアウトラインバーに追加
-	auto top = new QTreeWidgetItem(QStringList(view->title()));
-	m_outlineWidget->addTopLevelItem(top);
-	top->setExpanded(true);
+	//	done: タイトルをアウトラインバーに追加
+	addToOutlineBar(view->title(), doc->fullPathName());
 	//
 	return view;
+}
+void MainWindow::addToOutlineBar(const QString& title, const QString& fullPath)
+{
+	auto top = new QTreeWidgetItem(QStringList(title));
+	m_outlineWidget->addTopLevelItem(top);
+	top->setExpanded(true);
 }
 QIcon *MainWindow::typeNameToIcon(const QString& typeName)
 {

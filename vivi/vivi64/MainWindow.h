@@ -140,6 +140,7 @@ protected:
 	void	makeSureOutputView();
 	void	setEnabledViewMenues(bool);
 	void	clearOutput();
+	void	addToOutlineBar(const QString&, const QString&);
 
 protected slots:
 	void	onEditedCmdLineEdit(QString);
