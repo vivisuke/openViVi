@@ -147,6 +147,7 @@ protected:
 	//void	addToOutlineBar(const QString&, const QString&);
 	void	addToOutlineBar(EditView*);
 	void	removeFromOutlineBar(EditView*);
+	QTreeWidgetItem*	pathToItem(const QString&);
 
 protected slots:
 	void	onEditedCmdLineEdit(QString);

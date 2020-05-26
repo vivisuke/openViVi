@@ -748,6 +748,16 @@ EditView *MainWindow::createView(QString pathName)
 	//
 	return view;
 }
+QTreeWidgetItem* MainWindow::pathToItem(const QString& path)
+{
+	int cnt = m_outlineBar->topLevelItemCount();
+	for (int i = 0; i < cnt; ++i) {
+		auto* top = m_outlineBar->topLevelItem(i);
+		if( top->text(0) == path )
+			return top;
+	}
+	return nullptr;
+}
 void MainWindow::addToOutlineBar(EditView* view)
 {
 	auto item = new QTreeWidgetItem(QStringList(view->title()));
@@ -758,8 +768,11 @@ void MainWindow::addToOutlineBar(EditView* view)
 	} else {
 		QDir dir(view->fullPathName());
 		dir.cdUp();
-		auto top = new QTreeWidgetItem(QStringList(dir.absolutePath()));
-		m_outlineBar->addTopLevelItem(top);
+		auto top = pathToItem(dir.absolutePath());
+		if( top == nullptr ) {
+			top = new QTreeWidgetItem(QStringList(dir.absolutePath()));
+			m_outlineBar->addTopLevelItem(top);
+		}
 		top->addChild(item);
 		top->setExpanded(true);
 	}
