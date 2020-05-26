@@ -762,7 +762,9 @@ void MainWindow::removeFromOutlineBar(EditView* view)
 		auto* item = m_outlineBar->topLevelItem(i);
 		auto* v = (EditView*)item->data(1, 0).toULongLong();
 		if( v == view ) {
-			m_outlineBar->removeItemWidget(item, 0);	//	削除できない orz
+			//m_outlineBar->removeItemWidget(item, 0);	//	削除できない orz
+			auto item = m_outlineBar->takeTopLevelItem(i);
+			delete item;
 			break;
 		}
 	}
