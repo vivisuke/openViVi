@@ -750,10 +750,19 @@ EditView *MainWindow::createView(QString pathName)
 }
 void MainWindow::addToOutlineBar(EditView* view)
 {
-	auto top = new QTreeWidgetItem(QStringList(view->title()));
-	top->setData(1, 0, QVariant((qulonglong)view));
-	m_outlineBar->addTopLevelItem(top);
-	top->setExpanded(true);
+	auto item = new QTreeWidgetItem(QStringList(view->title()));
+	item->setData(1, 0, QVariant((qulonglong)view));
+	if( view->fullPathName().isEmpty() ) {
+		m_outlineBar->addTopLevelItem(item);
+		//top->setExpanded(true);
+	} else {
+		QDir dir(view->fullPathName());
+		dir.cdUp();
+		auto top = new QTreeWidgetItem(QStringList(dir.absolutePath()));
+		m_outlineBar->addTopLevelItem(top);
+		top->addChild(item);
+		top->setExpanded(true);
+	}
 }
 void MainWindow::removeFromOutlineBar(EditView* view)
 {
