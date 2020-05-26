@@ -785,12 +785,20 @@ void MainWindow::currentViewChangedAtOutlineBar(EditView* view)
 {
 	if( m_currentView != 0 ) {
 		auto* item = viewToOutlineBarItem(m_currentView);
-		if( item != nullptr )
+		if( item != nullptr ) {
 			item->setIcon(0, QIcon(":/MainWindow/Resources/crop_portrait_gray.png"));
+			auto* pr = item->parent();
+			if( pr != nullptr )
+				pr->setIcon(0, QIcon(":/MainWindow/Resources/folder_black.png"));
+		}
 	}
 	auto* item = viewToOutlineBarItem(view);
-	if( item != nullptr )
+	if( item != nullptr ) {
 		item->setIcon(0, QIcon(":/MainWindow/Resources/crop_portrait.png"));
+		auto* pr = item->parent();
+		if( pr != nullptr )
+			pr->setIcon(0, QIcon(":/MainWindow/Resources/folder_open.png"));
+	}
 }
 void MainWindow::addToOutlineBar(EditView* view)
 {
@@ -810,7 +818,7 @@ void MainWindow::addToOutlineBar(EditView* view)
 			m_outlineBar->addTopLevelItem(top);
 			m_outlineBar->sortItems(0, Qt::AscendingOrder);
 			top->setData(1, 0, QVariant((qulonglong)0));
-			top->setIcon(0, QIcon(":/MainWindow/Resources/folder_black.png"));
+			top->setIcon(0, QIcon(":/MainWindow/Resources/folder_open.png"));
 		}
 		top->addChild(item);
 		top->sortChildren(0, Qt::AscendingOrder);
