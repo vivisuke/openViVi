@@ -562,6 +562,7 @@ void EditView::focusOutEvent( QFocusEvent * event )
 }
 void EditView::mousePressEvent(QMouseEvent *event)
 {
+	mainWindow()->viEngine()->resetRedoRecording();
 	if( mainWindow()->mode() == MODE_EX ) {
 		mainWindow()->setMode(MODE_VI);
 	}
@@ -744,6 +745,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	QString text = event->text();
 	switch( event->key() ) {
 	case Qt::Key_Left:
+		//viEngine->resetRedoRecording();
 		if( ctrl )
 			m_textCursor->movePosition(TextCursor::PREV_WORD, mvmd);
 		else {
@@ -754,6 +756,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		}
 		break;
 	case Qt::Key_Right:
+		//viEngine->resetRedoRecording();
 		if( ctrl )
 			m_textCursor->movePosition(TextCursor::NEXT_WORD, mvmd);
 		else {
@@ -764,12 +767,15 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		}
 		break;
 	case Qt::Key_Up:
+		//viEngine->resetRedoRecording();
 		m_textCursor->movePosition(TextCursor::UP, mvmd);
 		break;
 	case Qt::Key_Down:
+		//viEngine->resetRedoRecording();
 		m_textCursor->movePosition(TextCursor::DOWN, mvmd);
 		break;
 	case Qt::Key_Home:
+		//viEngine->resetRedoRecording();
 		if( ctrl ) {
 			m_textCursor->movePosition(TextCursor::BEG_DOC, mvmd);
 			m_scrollY0 = 0;		//	暫定コード
@@ -845,6 +851,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		return;
 	}
 	}
+	viEngine->resetRedoRecording();
 	onCursorPosChanged();
 	makeCursorInView();
 	update();
