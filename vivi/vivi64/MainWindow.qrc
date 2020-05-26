@@ -45,5 +45,7 @@
         <file>Resources/opt_ic.png</file>
         <file>Resources/opt_regexp.png</file>
         <file>Resources/boxselect.png</file>
+        <file>Resources/crop_portrait.png</file>
+        <file>Resources/folder_black.png</file>
     </qresource>
 </RCC>

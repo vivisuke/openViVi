@@ -763,6 +763,7 @@ void MainWindow::addToOutlineBar(EditView* view)
 {
 	auto item = new QTreeWidgetItem(QStringList(view->title()));
 	item->setData(1, 0, QVariant((qulonglong)view));
+	item->setIcon(0, QIcon(":/MainWindow/Resources/crop_portrait.png"));
 	if( view->fullPathName().isEmpty() ) {
 		m_outlineBar->addTopLevelItem(item);
 		//top->setExpanded(true);
@@ -774,6 +775,7 @@ void MainWindow::addToOutlineBar(EditView* view)
 			top = new QTreeWidgetItem(QStringList(dir.absolutePath()));
 			m_outlineBar->addTopLevelItem(top);
 			top->setData(1, 0, QVariant((qulonglong)0));
+			top->setIcon(0, QIcon(":/MainWindow/Resources/folder_black.png"));
 		}
 		top->addChild(item);
 		top->setExpanded(true);
