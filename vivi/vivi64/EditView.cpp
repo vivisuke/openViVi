@@ -1966,6 +1966,7 @@ void EditView::insertTextRaw(pos_t pos, const QString &text)
 }
 void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
 {
+	mainWindow()->viEngine()->onBackSpace();
 #if	1
 	if( isBoxSelectMode() ) {
 	} else if( !m_textCursor->hasSelection() ) {

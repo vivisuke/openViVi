@@ -1,4 +1,4 @@
-﻿#include <assert.h>
+#include <assert.h>
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QMimeData>
@@ -120,6 +120,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(m_viEngine, SIGNAL(insertText(QString)), this, SLOT(insertText(QString)));
 	connect(m_viEngine, SIGNAL(replaceText(QString)), this, SLOT(replaceText(QString)));
 	connect(m_viEngine, SIGNAL(cmdFixed()), this, SLOT(viCmdFixed()));
+	//	undone: connect onBackSpace() ？
 	m_sssrc = new SSSearch();
 	m_sssrc2 = new SSSearch();
 	//g_settingsMgr = new SettingsMgr();

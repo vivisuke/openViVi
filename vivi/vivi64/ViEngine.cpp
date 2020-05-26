@@ -129,6 +129,7 @@ void ViEngine::removeFromInsertedText(const QString &text)
 void ViEngine::onBackSpace()
 {
 	//	undone: Ctrl + BackSpace 対応
+	//	undone: 🐸文字対応
 	if( m_redoRecording && !m_insertedText.isEmpty() )
 		m_insertedText = m_insertedText.left(m_insertedText.size() - 1);
 }
@@ -176,6 +177,8 @@ void ViEngine::processCommand(wchar_t ch, bool hasSelection)
 				//emit cmdFixed();
 				setMode(Mode::COMMAND);
 			} else {		//	Esc 以外の場合 → 文字挿入
+				//if( ch == '\b' )	//	BackSpace
+				//	onBackSpace();
 				QString txt = QChar(ch);
 				emit insertText(txt);
 			}
