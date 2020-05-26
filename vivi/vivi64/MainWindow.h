@@ -278,6 +278,7 @@ private:
 	
 	bool	m_searching;			//	検索中
 	bool	m_incSearched;			//	インクリメンタルサーチ済み
+	bool	m_modeChanging;			//	モード変更中
 	//bool	m_showMatchedBG;		//	マッチ背景強調 at vi mode
 	QString	m_matchedString;		//	マッチ強調文字列
 	byte_t	m_searchAlgorithm;

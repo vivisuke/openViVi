@@ -103,6 +103,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_formerTabIndex(-1)
 	, m_incSearched(false)
 	, m_searching(false)
+	, m_modeChanging(false)
 	//, m_showMatchedBG(false)
 	, m_searchAlgorithm(SSSearch::SAKUSAKU)
 	, m_cmdLineEdit(nullptr)
@@ -480,8 +481,10 @@ void MainWindow::onModeChanged(int md)
 			view->setFocus();
 	} else {
 		if( m_cmdLineEdit == nullptr || !m_cmdLineEdit->isVisible() ) {
-			m_viEngine->setCmdLineChar(':');
-			commandLineMode(QChar(':'));
+			if (!m_modeChanging /*m_viEngine->cmdLineChar() == '\0'*/ ) {
+				m_viEngine->setCmdLineChar(':');
+				commandLineMode(QChar(':'));
+			}
 		}
 	}
 }
@@ -1763,7 +1766,9 @@ void MainWindow::resetBoxKeisenMode()
 }
 void MainWindow::setMode(int md)
 {
+	m_modeChanging = true;
 	m_modeCB->setCurrentIndex(md);
+	m_modeChanging = false;
 	switch( md ) {
 	case MODE_INS:
 		viEngine()->setMode(Mode::INSERT);
