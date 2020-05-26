@@ -71,6 +71,7 @@ public:
 	int		mode() const { return m_modeCB->currentIndex(); }
 	int		isOpened(const QString&) const;		//	既にオープンされていれば、MDITabs インデックスを返す、-1 for not opened
 	QString	matchedString() const { return m_matchedString; }
+
 public:
 	ViEngine	*viEngine() { return m_viEngine; }
 	void	resetBoxKeisenMode();
@@ -82,6 +83,8 @@ public:
 	//void	setShowMatchedBG(bool b) { m_showMatchedBG = b; }
 	void	clearMatchedString() { m_matchedString.clear(); }
 	void	setMatchedString(const QString& txt) { m_matchedString = txt; }
+	void	setCurrentView(EditView*);
+
 protected:
 	//bool	focusNextPrevChild(bool next);
 	void	createActions();
@@ -143,6 +146,7 @@ protected:
 	void	clearOutput();
 	//void	addToOutlineBar(const QString&, const QString&);
 	void	addToOutlineBar(EditView*);
+	void	removeFromOutlineBar(EditView*);
 
 protected slots:
 	void	onEditedCmdLineEdit(QString);
@@ -258,6 +262,7 @@ public slots:
 	void	doOutput(const QString &);		//	アウトプットにテキスト出力
 	void	doOutputToBar(const QString &);		//	アウトプットバーにテキスト出力
 	void	doOutputToGrepView(const QString &);		//	grepビューにテキスト出力
+	void	onOutlineItemDblClicked(QTreeWidgetItem*);
 	
 private:
 	Ui::MainWindowClass ui;

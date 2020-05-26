@@ -635,7 +635,7 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0608 ◎ C 05/26 05/26 0.023│ToDo│MainWindow::addToOutlineBar() 追加
 0609 ◎ C 05/26 05/26 0.023│ToDo│QTreeWidget → OutlineBar に置き換え
 0610 ◎ C 05/26 05/26 0.023│ToDo│OutlineBar：アイテムにビューへのポインタ情報保持
-0611 ● C 05/26            │ToDo│
+0611 ◎ C 05/26 05/26 0.023│ToDo│OutlineBar：アイテムダブルクリック → そのビューをアクティブに
 0612 ● C 05/26            │ToDo│
 0613 ● C 05/26            │ToDo│
 0614 ● C 05/26            │ToDo│

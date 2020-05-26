@@ -8,4 +8,11 @@ class OutlineBar : public QTreeWidget
 
 public:
 	OutlineBar(QWidget *parent = nullptr);
+	
+protected:
+	void	mouseDoubleClickEvent(QMouseEvent *);
+
+signals:
+	void	doubleClicked(int);
+	void	doubleClicked(QTreeWidgetItem*);
 };

@@ -202,6 +202,8 @@ void MainWindow::createDockWindows()
 	m_outlineDock->setWidget(m_outlineBar = new OutlineBar());
 	//m_outlineWidget->setColumnCount(1);
 	m_outlineBar->setHeaderHidden(true);
+	connect(m_outlineBar, SIGNAL(doubleClicked(QTreeWidgetItem*)),
+			this, SLOT(onOutlineItemDblClicked(QTreeWidgetItem*))), 
 	m_outlineDock->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::LeftDockWidgetArea, m_outlineDock);
 	//
@@ -648,6 +650,7 @@ void MainWindow::closeNullDocs()			//	空のドキュメントをクローズ
 			&& view->bufferSize() == 0 )
 		{
 			ui.tabWidget->removeTab(i);
+			removeFromOutlineBar(view);
 			view->close();
 			delete view;
 		}
@@ -748,9 +751,26 @@ EditView *MainWindow::createView(QString pathName)
 void MainWindow::addToOutlineBar(EditView* view)
 {
 	auto top = new QTreeWidgetItem(QStringList(view->title()));
-	top->setData(0, 0, QVariant((cchar*)view));
+	top->setData(1, 0, QVariant((qulonglong)view));
 	m_outlineBar->addTopLevelItem(top);
 	top->setExpanded(true);
+}
+void MainWindow::removeFromOutlineBar(EditView* view)
+{
+	int cnt = m_outlineBar->topLevelItemCount();
+	for (int i = cnt; --i >= 0; ) {
+		auto* item = m_outlineBar->topLevelItem(i);
+		auto* v = (EditView*)item->data(1, 0).toULongLong();
+		if( v == view ) {
+			m_outlineBar->removeItemWidget(item, 0);	//	削除できない orz
+			break;
+		}
+	}
+}
+void MainWindow::onOutlineItemDblClicked(QTreeWidgetItem*item)
+{
+	auto* view = (EditView*)item->data(1, 0).toULongLong();
+	setCurrentView(view);
 }
 QIcon *MainWindow::typeNameToIcon(const QString& typeName)
 {
@@ -1148,6 +1168,7 @@ void MainWindow::tabCloseRequested(int index)
 		if( !maybeSave(view) )
 			return;		//	キャンセルが選択された場合
 		ui.tabWidget->removeTab(index);
+		removeFromOutlineBar(view);
 		//##updateMapFileLine(view);
 		//##updateMapFileMarks(view);
 		//??delete view;
@@ -1744,6 +1765,12 @@ void MainWindow::doPrevTab(int n)
 	int ix = (ui.tabWidget->currentIndex() - n);
 	while( ix < 0 ) ix += ui.tabWidget->count();
 	ui.tabWidget->setCurrentIndex(ix);
+}
+void MainWindow::setCurrentView(EditView* view)
+{
+	int ix = ui.tabWidget->indexOf(view);
+	if( ix >= 0 )
+		ui.tabWidget->setCurrentIndex(ix);
 }
 void MainWindow::on_action_NextTab_triggered()
 {
