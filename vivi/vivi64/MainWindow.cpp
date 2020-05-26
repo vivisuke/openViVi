@@ -796,7 +796,7 @@ void MainWindow::addToOutlineBar(EditView* view)
 {
 	auto item = new QTreeWidgetItem(QStringList(view->title()));
 	item->setData(1, 0, QVariant((qulonglong)view));
-	item->setIcon(0, QIcon(":/MainWindow/Resources/crop_portrait_gray.png"));
+	item->setIcon(0, QIcon(":/MainWindow/Resources/crop_portrait.png"));
 	if( view->fullPathName().isEmpty() ) {
 		m_outlineBar->addTopLevelItem(item);
 		m_outlineBar->sortItems(0, Qt::AscendingOrder);
