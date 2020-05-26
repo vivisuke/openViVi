@@ -11,8 +11,11 @@ public:
 	
 protected:
 	void	mouseDoubleClickEvent(QMouseEvent *);
+	void	keyPressEvent(QKeyEvent *);
 
 signals:
 	void	doubleClicked(int);
 	void	doubleClicked(QTreeWidgetItem*);
+	void	enterPressed();
+	void	colonPressed();
 };

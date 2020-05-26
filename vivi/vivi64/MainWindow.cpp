@@ -206,6 +206,8 @@ void MainWindow::createDockWindows()
 	m_outlineBar->setHeaderHidden(true);
 	connect(m_outlineBar, SIGNAL(doubleClicked(QTreeWidgetItem*)),
 			this, SLOT(onOutlineItemDblClicked(QTreeWidgetItem*))), 
+	connect(m_outlineBar, SIGNAL(enterPressed()), this, SLOT(onOutlineBarEnterPressed())), 
+	connect(m_outlineBar, SIGNAL(colonPressed()), this, SLOT(onOutlineBarColonPressed())), 
 	m_outlineDock->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::LeftDockWidgetArea, m_outlineDock);
 	//
@@ -859,7 +861,20 @@ void MainWindow::removeFromOutlineBar(EditView* view)
 void MainWindow::onOutlineItemDblClicked(QTreeWidgetItem*item)
 {
 	auto* view = (EditView*)item->data(1, 0).toULongLong();
-	setCurrentView(view);
+	if( view != nullptr )
+		setCurrentView(view);
+}
+void MainWindow::onOutlineBarEnterPressed()
+{
+	auto* item = m_outlineBar->currentItem();
+	if( item != nullptr ) {
+		auto* view = (EditView*)item->data(1, 0).toULongLong();
+		if( view != nullptr )
+			setCurrentView(view);
+	}
+}
+void MainWindow::onOutlineBarColonPressed()
+{
 }
 QIcon *MainWindow::typeNameToIcon(const QString& typeName)
 {
@@ -1861,8 +1876,10 @@ void MainWindow::doPrevTab(int n)
 void MainWindow::setCurrentView(EditView* view)
 {
 	int ix = ui.tabWidget->indexOf(view);
-	if( ix >= 0 )
+	if( ix >= 0 ) {
 		ui.tabWidget->setCurrentIndex(ix);
+		view->setFocus();
+	}
 }
 void MainWindow::on_action_NextTab_triggered()
 {

@@ -267,6 +267,8 @@ public slots:
 	void	doOutputToBar(const QString &);		//	アウトプットバーにテキスト出力
 	void	doOutputToGrepView(const QString &);		//	grepビューにテキスト出力
 	void	onOutlineItemDblClicked(QTreeWidgetItem*);
+	void	onOutlineBarEnterPressed();
+	void	onOutlineBarColonPressed();
 	
 private:
 	Ui::MainWindowClass ui;
