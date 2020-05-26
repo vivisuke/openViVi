@@ -106,6 +106,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//, m_showMatchedBG(false)
 	, m_searchAlgorithm(SSSearch::SAKUSAKU)
 	, m_cmdLineEdit(nullptr)
+	, m_currentView(nullptr)
 	, m_autoCompletionDlg(nullptr)
 	, m_process(nullptr)
 	//, m_docNumber(0)
@@ -174,7 +175,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.tabWidget->setMovable(true);				//	タブ移動可能
 	//ui.tabWidget->setTabShape(QTabWidget::Triangular);				//	タブ形状指定
 	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(tabCloseRequested(int)));
-	connect(ui.tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
+	connect(ui.tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentViewChanged(int)));
 	//
 	//ui.action_New->setIconText(tr("New"));
 	//
@@ -749,7 +750,7 @@ EditView *MainWindow::createView(QString pathName)
 	//
 	return view;
 }
-QTreeWidgetItem* MainWindow::pathToItem(const QString& path)
+QTreeWidgetItem* MainWindow::pathToOutlineBarItem(const QString& path)
 {
 	int cnt = m_outlineBar->topLevelItemCount();
 	for (int i = 0; i < cnt; ++i) {
@@ -758,6 +759,38 @@ QTreeWidgetItem* MainWindow::pathToItem(const QString& path)
 			return top;
 	}
 	return nullptr;
+}
+QTreeWidgetItem* MainWindow::viewToOutlineBarItem(EditView* view)
+{
+	int cnt = m_outlineBar->topLevelItemCount();
+	for (int i = 0; i < cnt; ++i) {
+		auto* top = m_outlineBar->topLevelItem(i);
+		auto* v = (EditView*)top->data(1, 0).toULongLong();
+		if( v == nullptr ) {	//	ディレクトリの場合
+			int cnt2 = top->childCount();
+			for (int k = 0; k < cnt2; ++k) {
+				auto* item2 = top->child(k);
+				auto* v = (EditView*)item2->data(1, 0).toULongLong();
+				if( v == view )
+					return item2;
+			}
+		} else {
+			if( v == view )
+				return top;
+		}
+	}
+	return nullptr;
+}
+void MainWindow::currentViewChangedAtOutlineBar(EditView* view)
+{
+	if( m_currentView != 0 ) {
+		auto* item = viewToOutlineBarItem(m_currentView);
+		if( item != nullptr )
+			item->setIcon(0, QIcon(":/MainWindow/Resources/crop_portrait_gray.png"));
+	}
+	auto* item = viewToOutlineBarItem(view);
+	if( item != nullptr )
+		item->setIcon(0, QIcon(":/MainWindow/Resources/crop_portrait.png"));
 }
 void MainWindow::addToOutlineBar(EditView* view)
 {
@@ -771,7 +804,7 @@ void MainWindow::addToOutlineBar(EditView* view)
 	} else {
 		QDir dir(view->fullPathName());
 		dir.cdUp();
-		auto top = pathToItem(dir.absolutePath());
+		auto top = pathToOutlineBarItem(dir.absolutePath());
 		if( top == nullptr ) {
 			top = new QTreeWidgetItem(QStringList(dir.absolutePath()));
 			m_outlineBar->addTopLevelItem(top);
@@ -1222,7 +1255,7 @@ void MainWindow::tabCloseRequested(int index)
 		//??delete view;
 	}
 }
-void MainWindow::currentChanged(int index)
+void MainWindow::currentViewChanged(int index)
 {
 	if (index < 0) return;
 	EditView *view = nthWidget(index);
@@ -1243,11 +1276,14 @@ void MainWindow::currentChanged(int index)
 	updateWindowTitle();
 	//
 	QString fullPathName = view->fullPathName();
-	if( fullPathName.isEmpty() ) return;
-	QDir dir(fullPathName);
-	dir.cdUp();
-	qDebug() << dir.absolutePath();
-	QDir::setCurrent(dir.absolutePath());
+	if( !fullPathName.isEmpty() ) {
+		QDir dir(fullPathName);
+		dir.cdUp();
+		qDebug() << dir.absolutePath();
+		QDir::setCurrent(dir.absolutePath());
+	}
+	currentViewChangedAtOutlineBar(view);
+	m_currentView = view;
 }
 void MainWindow::updateUndoRedoEnabled()
 {

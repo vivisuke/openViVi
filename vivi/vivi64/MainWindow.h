@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QtWidgets/QMainWindow>
 #include <QPlainTextEdit>
@@ -144,10 +144,13 @@ protected:
 	void	makeSureOutputView();
 	void	setEnabledViewMenues(bool);
 	void	clearOutput();
+protected:
 	//void	addToOutlineBar(const QString&, const QString&);
 	void	addToOutlineBar(EditView*);
 	void	removeFromOutlineBar(EditView*);
-	QTreeWidgetItem*	pathToItem(const QString&);
+	void	currentViewChangedAtOutlineBar(EditView*);
+	QTreeWidgetItem*	pathToOutlineBarItem(const QString&);
+	QTreeWidgetItem*	viewToOutlineBarItem(EditView*);
 
 protected slots:
 	void	onEditedCmdLineEdit(QString);
@@ -228,7 +231,7 @@ public slots:
     void	openRecentFile();
     void	openFavoriteFile();
 	void	tabCloseRequested(int index);
-	void	currentChanged(int index);
+	void	currentViewChanged(int index);
     void	onCharEncodingChanged(const QString&);
     void	onBomChanged(bool);
 	void	onTypeChanged(const QString&);
@@ -315,6 +318,7 @@ private:
     //	上位24bit (uint)time(0) の値の上位24bit、その次にマーク文字8ビット、下位32bit は位置
     QMultiMap<QString, quint64>	m_mapFilePathToMarks;
     int		m_seqGrepView;
+    EditView	*m_currentView;			//	現在ビュー
     EditView	*m_grepView;			//	grep結果出力ビュー
     EditView	*m_outputView;			//	Outputビュー
     EditView*m_lastView;				//	Output にフォーカスが移る前のフォーカスビュー
