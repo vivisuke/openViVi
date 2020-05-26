@@ -772,6 +772,7 @@ void MainWindow::addToOutlineBar(EditView* view)
 		if( top == nullptr ) {
 			top = new QTreeWidgetItem(QStringList(dir.absolutePath()));
 			m_outlineBar->addTopLevelItem(top);
+			top->setData(1, 0, QVariant((qulonglong)0));
 		}
 		top->addChild(item);
 		top->setExpanded(true);
@@ -783,7 +784,19 @@ void MainWindow::removeFromOutlineBar(EditView* view)
 	for (int i = cnt; --i >= 0; ) {
 		auto* item = m_outlineBar->topLevelItem(i);
 		auto* v = (EditView*)item->data(1, 0).toULongLong();
-		if( v == view ) {
+		if( v == nullptr ) {	//	ディレクトリの場合
+			int cnt2 = item->childCount();
+			for (int k = 0; k < cnt2; ++k) {
+				auto* item2 = item->child(k);
+				auto* v = (EditView*)item2->data(1, 0).toULongLong();
+				if( v == view ) {
+					item->removeChild(item2);
+					delete item2;
+					//	undone: 子アイテムが無くなった場合の処理
+					return;
+				}
+			}
+		} else if( v == view ) {
 			//m_outlineBar->removeItemWidget(item, 0);	//	削除できない orz
 			auto item = m_outlineBar->takeTopLevelItem(i);
 			delete item;
