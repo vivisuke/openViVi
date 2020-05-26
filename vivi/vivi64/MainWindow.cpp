@@ -106,6 +106,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//, m_showMatchedBG(false)
 	, m_searchAlgorithm(SSSearch::SAKUSAKU)
 	, m_cmdLineEdit(nullptr)
+	, m_autoCompletionDlg(nullptr)
 	, m_process(nullptr)
 	//, m_docNumber(0)
 	, m_incSearchPos(0)
@@ -792,7 +793,12 @@ void MainWindow::removeFromOutlineBar(EditView* view)
 				if( v == view ) {
 					item->removeChild(item2);
 					delete item2;
-					//	undone: 子アイテムが無くなった場合の処理
+					if( item->childCount() == 0 ) {
+						//	undone: 子アイテムが無くなった場合の処理
+						auto item = m_outlineBar->takeTopLevelItem(i);
+						delete item;
+					}
+					//
 					return;
 				}
 			}
