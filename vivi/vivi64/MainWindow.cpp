@@ -763,9 +763,10 @@ void MainWindow::addToOutlineBar(EditView* view)
 {
 	auto item = new QTreeWidgetItem(QStringList(view->title()));
 	item->setData(1, 0, QVariant((qulonglong)view));
-	item->setIcon(0, QIcon(":/MainWindow/Resources/crop_portrait.png"));
+	item->setIcon(0, QIcon(":/MainWindow/Resources/crop_portrait_gray.png"));
 	if( view->fullPathName().isEmpty() ) {
 		m_outlineBar->addTopLevelItem(item);
+		m_outlineBar->sortItems(0, Qt::AscendingOrder);
 		//top->setExpanded(true);
 	} else {
 		QDir dir(view->fullPathName());
@@ -774,10 +775,12 @@ void MainWindow::addToOutlineBar(EditView* view)
 		if( top == nullptr ) {
 			top = new QTreeWidgetItem(QStringList(dir.absolutePath()));
 			m_outlineBar->addTopLevelItem(top);
+			m_outlineBar->sortItems(0, Qt::AscendingOrder);
 			top->setData(1, 0, QVariant((qulonglong)0));
 			top->setIcon(0, QIcon(":/MainWindow/Resources/folder_black.png"));
 		}
 		top->addChild(item);
+		top->sortChildren(0, Qt::AscendingOrder);
 		top->setExpanded(true);
 	}
 }

@@ -47,5 +47,6 @@
         <file>Resources/boxselect.png</file>
         <file>Resources/crop_portrait.png</file>
         <file>Resources/folder_black.png</file>
+        <file>Resources/crop_portrait_gray.png</file>
     </qresource>
 </RCC>
