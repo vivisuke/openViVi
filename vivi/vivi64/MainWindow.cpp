@@ -1449,6 +1449,7 @@ void MainWindow::on_action_IgnoreCase_triggered()
 #if	1
 	if( hasSearchBoxFocus() ) {	//	検索ボックスにフォーカスがある場合
 		on_action_SearchForward_triggered();
+		m_findLineEdit->setFocus();
 	}
 #else
 	updateSssrc();
@@ -1464,6 +1465,7 @@ void MainWindow::on_action_WordSearch_triggered()
 #if	1
 	if( hasSearchBoxFocus() ) {	//	検索ボックスにフォーカスがある場合
 		on_action_SearchForward_triggered();
+		m_findLineEdit->setFocus();
 	}
 #else
 	updateSssrc();
@@ -1477,6 +1479,7 @@ void MainWindow::on_action_RegExp_triggered()
 	globSettings()->writeSettings();
 	if( hasSearchBoxFocus() ) {	//	検索ボックスにフォーカスがある場合
 		updateSssrc();
+		m_findLineEdit->setFocus();
 	}
 #if	1
 	on_action_SearchForward_triggered();
