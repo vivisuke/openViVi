@@ -6,6 +6,12 @@ open source version of ViVi text editor, which supports standard text editor fea
 
 <img src = "https://github.com/vivisuke/openViVi/blob/master/screen/MainWindow-002.png" width = 600 />
 
+# ■ Windows 版ダウンロード
+
+以下から zip をダウンロードし、解凍・実行してください。
+
+https://github.com/vivisuke/openViVi/releases
+
 # ■ スケジュール・進捗
 - 2020年4月より本格的に開発開始 ~~予定~~
 - 現在（５月）は vi コマンド、作者がドキュメント編集を行うために必要な機能実装、重要問題対処中
@@ -34,11 +40,14 @@ open source version of ViVi text editor, which supports standard text editor fea
   - メニューカスタマイズ
   - 巨大ファイル（１GB超）対応？
 
-# ■ Windows 版ダウンロード
+# ■ 定義
 
-以下から zip をダウンロードし、解凍・実行してください。
-
-https://github.com/vivisuke/openViVi/releases
+|版種別|定義|
+|------|----|
+|開発版|予定された機能を実装していっている状態|
+|アルファ版|予定された機能がとりあえず実装された版、問題（バグ）多め、原則的に新機能実装は行わない|
+|ベータ版|中品質（問題少なめ）、新機能実装は行わない|
+|安定版|高品質、新機能実装は行わない|
 
 # ■ 開発環境
 - Windows 10, Visual Studio 2019, C++17, ~~当面は32~~ 64bitモード only
