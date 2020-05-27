@@ -14,7 +14,7 @@ open source version of ViVi text editor, which supports standard text editor fea
 
 https://github.com/vivisuke/openViVi/releases
 
-## ■ 定義
+## 定義
 
 |版種別|定義|
 |------|----|
