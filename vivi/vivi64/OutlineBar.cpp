@@ -68,9 +68,14 @@ void OutlineBar::keyKPressed()
 	auto* item = currentItem();
 	if( item == nullptr ) return;
 	int ix = indexOfTopLevelItem(item);
-	if( ix > 0 ) {
+	if( ix > 0 ) {	//	トップレベルアイテムの場合
 		item = topLevelItem(ix-1);
-		setCurrentItem(item);
+		int cnt = item->childCount();
+		if( cnt == 0 ) {
+			setCurrentItem(item);
+		} else {
+			setCurrentItem(item->child(cnt-1));
+		}
 	} else if( ix < 0 ) {		//	トップレベルアイテムでない場合
 		auto* pr = item->parent();
 		ix = pr->indexOfChild(item);
