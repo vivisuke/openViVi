@@ -97,6 +97,7 @@ namespace ViCmd {
 		SCROLL_CUR_AT_TOP,			//	z Enter
 		SCROLL_CUR_IN_MIDDLE,		//	z.
 		SCROLL_CUR_AT_BOTTOM,		//	z-
+		FOCUS_OUTLINE_BAR,			//	zo
 		SELECT_CHAR_MODE,		//	v mode
 		SELECT_LINE,				//	V
 		TEXT_OBJECT_I,

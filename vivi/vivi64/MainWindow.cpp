@@ -599,6 +599,10 @@ void MainWindow::viCmdFixed()
 		m_viEngine->processCommandText(text);
 		return;
 	}
+	if( m_viEngine->cmd() == ViCmd::FOCUS_OUTLINE_BAR) {
+		m_outlineBar->setFocus();
+		return;
+	}
 	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
 	if( isEditView(view) ) {
 		view->doViCommand();
@@ -1498,6 +1502,7 @@ void MainWindow::on_action_SearchBackward_triggered()
 	if( isEditView(view) && !pat.isEmpty() ) {
 		//bool word = ui.action_WordSearch->isChecked();
 		view->findPrev(pat /*, word*/);
+		onCursorPosChanged(view);
 	}
 }
 void MainWindow::on_action_SearchForward_triggered()
@@ -1510,6 +1515,7 @@ void MainWindow::on_action_SearchForward_triggered()
 	if( isEditView(view) /*&& !pat.isEmpty()*/ ) {
 		//bool word = ui.action_WordSearch->isChecked();
 		view->findNext(pat /*, word*/);
+		onCursorPosChanged(view);
 	}
 }
 void MainWindow::on_action_Search_triggered()

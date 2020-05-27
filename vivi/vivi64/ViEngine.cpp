@@ -1,4 +1,4 @@
-﻿#include "ViEngine.h"
+#include "ViEngine.h"
 //#include "EditView.h"
 #include <QString>
 #include <QDebug>
@@ -710,6 +710,11 @@ void ViEngine::processSubMode(wchar_t ch)
 		case '-':
 			m_cmd = ViCmd::SCROLL_CUR_AT_BOTTOM;
 			m_moved = true;
+			doCmd();
+			return;
+		case 'o':
+			m_cmd = ViCmd::FOCUS_OUTLINE_BAR;
+			//m_moved = true;		//	???
 			doCmd();
 			return;
 		}
