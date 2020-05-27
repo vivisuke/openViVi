@@ -1,4 +1,4 @@
-﻿#include <assert.h>
+#include <assert.h>
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QMimeData>
@@ -210,10 +210,10 @@ void MainWindow::createDockWindows()
 			this, SLOT(onOutlineItemDblClicked(QTreeWidgetItem*))), 
 	connect(m_outlineBar, SIGNAL(enterPressed()), this, SLOT(onOutlineBarEnterPressed())), 
 	connect(m_outlineBar, SIGNAL(colonPressed()), this, SLOT(onOutlineBarColonPressed())), 
-	connect(m_outlineBar, SIGNAL(keyHPressed()), this, SLOT(onOutlineBarKeyHPressed())), 
-	connect(m_outlineBar, SIGNAL(keyJPressed()), this, SLOT(onOutlineBarKeyJPressed())), 
-	connect(m_outlineBar, SIGNAL(keyKPressed()), this, SLOT(onOutlineBarKeyKPressed())), 
-	connect(m_outlineBar, SIGNAL(keyLPressed()), this, SLOT(onOutlineBarKeyLPressed())), 
+	//connect(m_outlineBar, SIGNAL(keyHPressed()), this, SLOT(onOutlineBarKeyHPressed())), 
+	//connect(m_outlineBar, SIGNAL(keyJPressed()), this, SLOT(onOutlineBarKeyJPressed())), 
+	//connect(m_outlineBar, SIGNAL(keyKPressed()), this, SLOT(onOutlineBarKeyKPressed())), 
+	//connect(m_outlineBar, SIGNAL(keyLPressed()), this, SLOT(onOutlineBarKeyLPressed())), 
 	m_outlineDock->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::LeftDockWidgetArea, m_outlineDock);
 	//
@@ -895,6 +895,7 @@ void MainWindow::onOutlineBarColonPressed()
 	m_viEngine->setCmdLineChar(':');
 	commandLineMode(QChar(':'));
 }
+#if	0
 void MainWindow::onOutlineBarKeyHPressed()
 {
 }
@@ -935,6 +936,7 @@ void MainWindow::onOutlineBarKeyKPressed()
 void MainWindow::onOutlineBarKeyLPressed()
 {
 }
+#endif
 QIcon *MainWindow::typeNameToIcon(const QString& typeName)
 {
     if( typeName == "CPP" )

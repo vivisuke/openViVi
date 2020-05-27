@@ -12,14 +12,15 @@ public:
 protected:
 	void	mouseDoubleClickEvent(QMouseEvent *);
 	void	keyPressEvent(QKeyEvent *);
+	void	keyHPressed();
+	void	keyJPressed();
+	void	keyKPressed();
+	void	keyLPressed();
 
 signals:
 	void	doubleClicked(int);
 	void	doubleClicked(QTreeWidgetItem*);
 	void	enterPressed();
 	void	colonPressed();
-	void	keyHPressed();
-	void	keyJPressed();
-	void	keyKPressed();
-	void	keyLPressed();
+	void	keyQPressed();
 };
