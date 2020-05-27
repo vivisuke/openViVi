@@ -883,6 +883,8 @@ void MainWindow::onOutlineBarEnterPressed()
 }
 void MainWindow::onOutlineBarColonPressed()
 {
+	m_viEngine->setCmdLineChar(':');
+	commandLineMode(QChar(':'));
 }
 QIcon *MainWindow::typeNameToIcon(const QString& typeName)
 {
