@@ -803,6 +803,7 @@ void MainWindow::currentViewChangedAtOutlineBar(EditView* view)
 		}
 	}
 	auto* item = viewToOutlineBarItem(view);
+	m_outlineBar->setCurrentItem(item);
 	if( item != nullptr ) {
 		item->setIcon(0, QIcon(":/MainWindow/Resources/crop_portrait.png"));
 		auto* pr = item->parent();
