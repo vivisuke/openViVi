@@ -51,9 +51,13 @@ void OutlineBar::keyJPressed()
 	if( item == nullptr ) return;
 	int cnt = topLevelItemCount();
 	int ix = indexOfTopLevelItem(item);
-	if( ix >= 0 && ix < cnt - 1) {
-		item = topLevelItem(ix+1);
-		setCurrentItem(item);
+	if( ix >= 0 ) {
+		if( item->childCount() != 0 ) {
+			setCurrentItem(item->child(0));
+		} else if( ix < cnt - 1) {
+			item = topLevelItem(ix+1);
+			setCurrentItem(item);
+		}
 	} else if( ix < 0 ) {		//	トップレベルアイテムでない場合
 		auto* pr = item->parent();
 		ix = pr->indexOfChild(item);
