@@ -619,6 +619,9 @@ void ViEngine::viCommand(wchar_t ch, bool hasSelection)
 		case '\t':
 			m_cmd = ViCmd::TAB_SHIFT;
 			break;
+		case 'q':
+			m_cmd = ViCmd::FOCUS_OUTLINE_BAR;
+			break;
 		default: {
 			//	コマンドエラー
 		}
@@ -712,11 +715,13 @@ void ViEngine::processSubMode(wchar_t ch)
 			m_moved = true;
 			doCmd();
 			return;
+#if	0
 		case 'o':
 			m_cmd = ViCmd::FOCUS_OUTLINE_BAR;
 			//m_moved = true;		//	???
 			doCmd();
 			return;
+#endif
 		}
 		//	invalid command
 		resetStatus();

@@ -601,6 +601,9 @@ void MainWindow::viCmdFixed()
 	}
 	if( m_viEngine->cmd() == ViCmd::FOCUS_OUTLINE_BAR) {
 		m_outlineBar->setFocus();
+		EditView *view = currentWidget();
+		if( view != nullptr )
+			m_outlineBar->setCurrentItem(viewToOutlineBarItem(view));
 		return;
 	}
 	EditView *view = /*m_testView != 0 ? m_testView :*/ currentWidget();
@@ -816,6 +819,7 @@ void MainWindow::addToOutlineBar(EditView* view)
 	auto item = new QTreeWidgetItem(QStringList(view->title()));
 	item->setData(1, 0, QVariant((qulonglong)view));
 	item->setIcon(0, QIcon(":/MainWindow/Resources/crop_portrait.png"));
+	m_outlineBar->setCurrentItem(item);
 	if( view->fullPathName().isEmpty() ) {
 		m_outlineBar->addTopLevelItem(item);
 		m_outlineBar->sortItems(0, Qt::AscendingOrder);
