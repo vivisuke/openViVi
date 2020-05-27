@@ -1437,22 +1437,24 @@ void MainWindow::updateSssrc()
 	auto opt = getSearchOpt();
 	m_sssrc->setup((wchar_t*)pat.data(), pat.size(), opt);
 }
+void MainWindow::on_action_Incremental_triggered()
+{
+	globSettings()->setBoolValue(GlobalSettings::INC_SEARCH, ui.action_Incremental->isChecked());
+	globSettings()->writeSettings();
+}
 void MainWindow::on_action_IgnoreCase_triggered()
 {
 	globSettings()->setBoolValue(GlobalSettings::IGNORE_CASE, ui.action_IgnoreCase->isChecked());
 	globSettings()->writeSettings();
 #if	1
-	on_action_SearchForward_triggered();
+	if( hasSearchBoxFocus() ) {	//	検索ボックスにフォーカスがある場合
+		on_action_SearchForward_triggered();
+	}
 #else
 	updateSssrc();
 	EditView *view = currentWidget();
 	if( isEditView(view) ) view->update();
 #endif
-}
-void MainWindow::on_action_Incremental_triggered()
-{
-	globSettings()->setBoolValue(GlobalSettings::INC_SEARCH, ui.action_Incremental->isChecked());
-	globSettings()->writeSettings();
 }
 void MainWindow::on_action_WordSearch_triggered()
 {
@@ -1460,7 +1462,9 @@ void MainWindow::on_action_WordSearch_triggered()
 	globSettings()->writeSettings();
 	updateSssrc();
 #if	1
-	on_action_SearchForward_triggered();
+	if( hasSearchBoxFocus() ) {	//	検索ボックスにフォーカスがある場合
+		on_action_SearchForward_triggered();
+	}
 #else
 	updateSssrc();
 	EditView *view = currentWidget();
@@ -1471,7 +1475,9 @@ void MainWindow::on_action_RegExp_triggered()
 {
 	globSettings()->setBoolValue(GlobalSettings::REGEXP, ui.action_RegExp->isChecked());
 	globSettings()->writeSettings();
-	updateSssrc();
+	if( hasSearchBoxFocus() ) {	//	検索ボックスにフォーカスがある場合
+		updateSssrc();
+	}
 #if	1
 	on_action_SearchForward_triggered();
 #else
