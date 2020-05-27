@@ -1,65 +1,67 @@
 ﻿vivi.spr.txt
 
-SPR# 状 P Open Close ver     Type  概要
+
+
+SPR# 状 P Open Close ver     Type  概要【スポンサー様名】
 -------------------------------------------------------------------------------
-0001 ◎ C 03/06 03/06 0.001│ToDo│Qt プロジェクト作成
-0002 ◎ C 03/06 03/06 0.001│ToDo│testBuffer サブプロジェクト作成
-0003 ◎ C 03/06 03/08 0.001│ToDo│階層データ構造のバッファ定義（１ページは１メガ？バイトまで）
-0004 ◎ C 03/06 03/08 0.001│ToDo│openViVi プロジェクトは削除
-0005 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::front()
-0006 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::back()
-0007 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::push_back() の型は void に
-0008 ◎ C 03/07 03/07 0.001│ToDo│HireBuffer::front()
-0009 ◎ C 03/07 03/07 0.001│ToDo│HireBuffer::back()
+0001 ◎ C 03/06 03/06 0.001│ToDo│Qt プロジェクト作成【Y.K様】
+0002 ◎ C 03/06 03/06 0.001│ToDo│testBuffer サブプロジェクト作成【Y.K様】
+0003 ◎ C 03/06 03/08 0.001│ToDo│階層データ構造のバッファ定義（１ページは１メガ？バイトまで）【Y.K様】
+0004 ◎ C 03/06 03/08 0.001│ToDo│openViVi プロジェクトは削除【つぼい様】
+0005 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::front()【つぼい様】
+0006 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::back()【つぼい様】
+0007 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::push_back() の型は void に【つぼい様】
+0008 ◎ C 03/07 03/07 0.001│ToDo│HireBuffer::front()【つぼい様】
+0009 ◎ C 03/07 03/07 0.001│ToDo│HireBuffer::back()【つぼい様】
 0010 ● C 03/07            │ToDo│HireBuffer：ページサイズが１メガ？を超えた場合はページ分割
-0011 ◎ C 03/07 03/07 0.001│ToDo│HireBuffer::clear()
-0012 ◎ C 03/07 03/07 0.001│ToDo│HireBuffer::at(int)
-0013 ◎ C 03/07 03/07 0.001│ToDo│HireBuffer::operator[](int)
-0014 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::at() 値ではなく参照を返す
-0015 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::operator[](int)：範囲チェックを行わないように
-0016 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::at(int)：範囲外の場合は "out of range" 例外をスロー
-0017 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::reserve()：メモリ確保できない場合は "length error" 例外をスロー
-0018 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::reserve(0x7fffffff) を実行すると無限ループになる？
+0011 ◎ C 03/07 03/07 0.001│ToDo│HireBuffer::clear()【K.Y様】
+0012 ◎ C 03/07 03/07 0.001│ToDo│HireBuffer::at(int)【K.Y様】
+0013 ◎ C 03/07 03/07 0.001│ToDo│HireBuffer::operator[](int)【K.Y様】
+0014 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::at() 値ではなく参照を返す【K.Y様】
+0015 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::operator[](int)：範囲チェックを行わないように【K.Y様】
+0016 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::at(int)：範囲外の場合は "out of range" 例外をスロー【K.Y様】
+0017 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::reserve()：メモリ確保できない場合は "length error" 例外をスロー【K.Y様】
+0018 ◎ C 03/07 03/07 0.001│ToDo│gap_buffer::reserve(0x7fffffff) を実行すると無限ループになる？【K.Y様】
 0019 ● C 03/07            │ToDo│HireBuffer::operator[](int)：現ページ以外アクセス対応
-0020 ◎ C 03/07 03/08 0.001│ToDo│HireBuffer::capacity(sz)
-0021 ◎ C 03/07 03/08 0.001│ToDo│HireBuffer::reserve(sz)
-0022 ◎ C 03/07 03/08 0.001│ToDo│HireBuffer::insert(ix, ch)
-0023 ◎ C 03/07 03/08 0.001│ToDo│HireBuffer::erase(ix)
-0024 ◎ C 03/07 03/07 0.001│ToDo│vivi：とりあえずトップメニュー作成
-0025 ◎ C 03/07 03/08 0.001│ToDo│HireBuffer::push_back()：ページサイズがリミットを超えた場合は、ページ追加
-0026 ◎ C 03/08 03/08 0.001│ToDo│HireBuffer::pop_back()
-0027 ◎ C 03/08 03/08 0.001│ToDo│HireBuffer：m_buffer は gap_buffer へのポインタを保持に変更
-0028 ◎ C 03/08 03/08 0.001│ToDo│gap_buffer::pop_back()
-0029 ◎ C 03/08 03/08 0.001│ToDo│HireBuffer::reserve(sz)：sz がページサイズを超える場合にも対応
+0020 ◎ C 03/07 03/08 0.001│ToDo│HireBuffer::capacity(sz)【K.Y様】
+0021 ◎ C 03/07 03/08 0.001│ToDo│HireBuffer::reserve(sz)【K.Y様】
+0022 ◎ C 03/07 03/08 0.001│ToDo│HireBuffer::insert(ix, ch)【K.Y様】
+0023 ◎ C 03/07 03/08 0.001│ToDo│HireBuffer::erase(ix)【K.Y様】
+0024 ◎ C 03/07 03/07 0.001│ToDo│vivi：とりあえずトップメニュー作成【K.Y様】
+0025 ◎ C 03/07 03/08 0.001│ToDo│HireBuffer::push_back()：ページサイズがリミットを超えた場合は、ページ追加【K.Y様】
+0026 ◎ C 03/08 03/08 0.001│ToDo│HireBuffer::pop_back()【K.Y様】
+0027 ◎ C 03/08 03/08 0.001│ToDo│HireBuffer：m_buffer は gap_buffer へのポインタを保持に変更【mkogax様】
+0028 ◎ C 03/08 03/08 0.001│ToDo│gap_buffer::pop_back()【mkogax様】
+0029 ◎ C 03/08 03/08 0.001│ToDo│HireBuffer::reserve(sz)：sz がページサイズを超える場合にも対応【mkogax様】
 0030 ● C 03/08            │ToDo│HireBuffer::insert(ix, ch)：現ページ以前への挿入対応
 0031 ● C 03/08            │ToDo│HireBuffer::insert(ix, ch)：現ページ以降への挿入対応
-0032 ◎ C 03/08 03/08 0.001│ToDo│HireBuffer::push_back()：現ページを最後のページに設定
-0033 ◎ C 03/08 03/08 0.001│ToDo│HireBuffer::pop_back()：現ページを最後のページに設定
+0032 ◎ C 03/08 03/08 0.001│ToDo│HireBuffer::push_back()：現ページを最後のページに設定【mkogax様】
+0033 ◎ C 03/08 03/08 0.001│ToDo│HireBuffer::pop_back()：現ページを最後のページに設定【mkogax様】
 0034 ● C 03/08            │ToDo│gap_buffer::push_back(), HireBuffer::push_back() 速度比較
 0035 ● C 03/08            │ToDo│x86, x64 判定：win, gcc 両方に対応
 0036 ● C 03/09            │ToDo│HireBuffer::insert(ix, ch)：現ページに空きが無い場合は、ページ分割
-0037 ◎ C 03/09 03/09 0.001│ToDo│testBufferQt：Qt console アプリとして作成し直し
-0038 ◎ C 03/09 03/09 0.001│ToDo│testBuffe は削除
-0039 ◎ C 03/12 03/12 0.001│ToDo│例外は std::exception を使用するよう修正
-0040 ◎ C 03/16 03/16 0.001│問題│gap_buffer::resize() 後に、pop_back() を繰り返すとクラッシュした
-0041 ◎ C 03/16 03/16 0.001│問題│gap_buffer::resize() に時間がかかりすぎる
-0042 ◎ C 03/16 03/16 0.001│問題│gap_buffer::resize()：第２引数に値を指定できない
-0043 ◎ C 03/16 03/16 0.001│ToDo│gap_buffer::resize() 高速化：char 以外の場合
-0044 ◎ C 03/16 03/16 0.001│ToDo│gap_buffer::push_front(), pop_front()
-0045 ◎ C 03/16 03/16 0.001│問題│gap_buffer::pop_front(), pop_front() を繰り返しコールしたらクラッシュした
-0046 ◎ C 03/31 04/03 0.001│ToDo│gap_buffer::isMatch()：at() ではなく operator[] を使用？
+0037 ◎ C 03/09 03/09 0.001│ToDo│testBufferQt：Qt console アプリとして作成し直し【mkogax様】
+0038 ◎ C 03/09 03/09 0.001│ToDo│testBuffe は削除【mkogax様】
+0039 ◎ C 03/12 03/12 0.001│ToDo│例外は std::exception を使用するよう修正【mkogax様】
+0040 ◎ C 03/16 03/16 0.001│問題│gap_buffer::resize() 後に、pop_back() を繰り返すとクラッシュした【mkogax様】
+0041 ◎ C 03/16 03/16 0.001│問題│gap_buffer::resize() に時間がかかりすぎる【N.W様】
+0042 ◎ C 03/16 03/16 0.001│問題│gap_buffer::resize()：第２引数に値を指定できない【N.W様】
+0043 ◎ C 03/16 03/16 0.001│ToDo│gap_buffer::resize() 高速化：char 以外の場合【N.W様】
+0044 ◎ C 03/16 03/16 0.001│ToDo│gap_buffer::push_front(), pop_front()【N.W様】
+0045 ◎ C 03/16 03/16 0.001│問題│gap_buffer::pop_front(), pop_front() を繰り返しコールしたらクラッシュした【N.W様】
+0046 ◎ C 03/31 04/03 0.001│ToDo│gap_buffer::isMatch()：at() ではなく operator[] を使用？【N.W様】
 0047 ● C 03/31            │問題│gap_buffer::addAt() は意味不明
 0048 ● C 03/31            │ToDo│ものはついでなので、gap_buffer::begin(), end() などを実装しておく？
-0049 ◎ C 03/31 03/31 0.001│ToDo│buffer/lineMgr.h 等を追加
-0050 ◎ C 03/31 04/03 0.001│ToDo│Buffer::operator[](pos) は範囲チェック無し、charAt(pos) は範囲チェック有りに
-0051 ◎ C 04/01 04/01 0.001│問題│デバッグモードで実行しても assert() が実行されない？→ Q_ASSERT() に変更
-0052 ◎ C 04/01 04/01 0.001│ToDo│MainWindow：QtabWidget を配置
-0053 ◎ C 04/01 04/03 0.001│問題│Buffer::lineCount() の返す値が不正？
+0049 ◎ C 03/31 03/31 0.001│ToDo│buffer/lineMgr.h 等を追加【N.W様】
+0050 ◎ C 03/31 04/03 0.001│ToDo│Buffer::operator[](pos) は範囲チェック無し、charAt(pos) は範囲チェック有りに【N.W様】
+0051 ◎ C 04/01 04/01 0.001│問題│デバッグモードで実行しても assert() が実行されない？→ Q_ASSERT() に変更【N.W様】
+0052 ◎ C 04/01 04/01 0.001│ToDo│MainWindow：QtabWidget を配置【N.W様】
+0053 ◎ C 04/01 04/03 0.001│問題│Buffer::lineCount() の返す値が不正？【N.W様】
 0054 ● C 04/02            │ToDo│さくさくエディタ：画面上下・左右分割ソース調査
-0055 ◎ C 04/03 04/03 0.001│ToDo│Buffer：char_t は紛らわしいので wchar_t に変える？
-0056 ◎ C 04/03 04/03 0.001│ToDo│Buffer::deleteText() テスト
-0057 ◎ C 04/03 04/03 0.001│ToDo│Buffer undo/redo テスト
-0058 ◎ C 04/03 04/03 0.001│ToDo│Buffer::isMatched()：at() ではなく operator[] を使用？
+0055 ◎ C 04/03 04/03 0.001│ToDo│Buffer：char_t は紛らわしいので wchar_t に変える？【N.W様】
+0056 ◎ C 04/03 04/03 0.001│ToDo│Buffer::deleteText() テスト【N.W様】
+0057 ◎ C 04/03 04/03 0.001│ToDo│Buffer undo/redo テスト【N.W様】
+0058 ◎ C 04/03 04/03 0.001│ToDo│Buffer::isMatched()：at() ではなく operator[] を使用？【N.W様】
 0059 ◎ C 04/03 04/03 0.001│ToDo│Buffer::isEqual()：at() ではなく operator[] を使用？
 0060 ◎ C 04/03 04/03 0.001│問題│Buffer::insertText(), undo(), redo() するとバッファの最後が不正になる？
 							原因：m_insText[] に保存されているデータが不正？
@@ -657,7 +659,7 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0630 ◎ C 05/27 05/28 0.026│ToDo│q でアウトラインバーにフォーカスを移し、現ビューのアイテム選択
 0631 ● C 05/27            │ToDo│} 挿入時：対応括弧のインデントに合わせる
 0632 ◎ C 05/27 05/27 0.026│問題│検索BOXにフォーカスがあるとき、検索オプションをクリックするとフォーカスがビューに移ってしまう
-0633 ● C 05/27            │ToDo│OutlineBar：kj でカーソル上下移動？
+0633 ◎ C 05/27 05/28 0.026│ToDo│OutlineBar：kj でカーソル上下移動？
 0634 ◎ C 05/27 05/27 0.026│問題│F3 で再検索したときに、ステータスバーのカーソル位置表示が更新されない
 0635 ● C 05/27            │ToDo│grep機能
 0636 ● C 05/27            │問題│:pwd：アクティブなビューのディレクトリが表示されない
@@ -665,7 +667,7 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0638 ● C 05/28            │ToDo│ファイルを閉じてすぐ Ctrl + ^ を実行しても、閉じたファイルがオープンされない
 0639 ◎ C 05/28 05/28 0.026│ToDo│OutlineBar：アクティブビューに対応するアイテムをカレントアイテムにする
 0640 ● C 05/28            │問題│OutlineBar：ファイル新規オープン時に、対応するアイテムがカレントアイテムにならない
-0641 ● C 05/28            │ToDo│
+0641 ● C 05/28            │ToDo│OutlineBar：q で、カレントアイテムに対応するビューにフォーカス移動
 0642 ● C 05/28            │ToDo│
 0643 ● C 05/28            │ToDo│
 0644 ● C 05/28            │ToDo│

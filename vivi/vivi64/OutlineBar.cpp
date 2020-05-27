@@ -1,4 +1,4 @@
-﻿#include <QKeyEvent>
+#include <QKeyEvent>
 #include "OutlineBar.h"
 
 OutlineBar::OutlineBar(QWidget *parent)
@@ -20,6 +20,18 @@ void OutlineBar::keyPressEvent(QKeyEvent *event)
 		return;
 	case Qt::Key_Colon:
 		emit colonPressed();
+		return;
+	case Qt::Key_H:
+		emit keyHPressed();
+		return;
+	case Qt::Key_J:
+		emit keyJPressed();
+		return;
+	case Qt::Key_K:
+		emit keyKPressed();
+		return;
+	case Qt::Key_L:
+		emit keyLPressed();
 		return;
 	}
 	QTreeWidget::keyPressEvent(event);

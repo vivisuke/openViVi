@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QTreeWidget>
 
@@ -18,4 +18,8 @@ signals:
 	void	doubleClicked(QTreeWidgetItem*);
 	void	enterPressed();
 	void	colonPressed();
+	void	keyHPressed();
+	void	keyJPressed();
+	void	keyKPressed();
+	void	keyLPressed();
 };

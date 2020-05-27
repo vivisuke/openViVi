@@ -269,6 +269,10 @@ public slots:
 	void	onOutlineItemDblClicked(QTreeWidgetItem*);
 	void	onOutlineBarEnterPressed();
 	void	onOutlineBarColonPressed();
+	void	onOutlineBarKeyHPressed();
+	void	onOutlineBarKeyJPressed();
+	void	onOutlineBarKeyKPressed();
+	void	onOutlineBarKeyLPressed();
 	
 private:
 	Ui::MainWindowClass ui;
