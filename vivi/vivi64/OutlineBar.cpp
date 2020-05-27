@@ -1,4 +1,4 @@
-#include <QKeyEvent>
+﻿#include <QKeyEvent>
 #include "OutlineBar.h"
 
 OutlineBar::OutlineBar(QWidget *parent)
@@ -60,10 +60,14 @@ void OutlineBar::keyJPressed()
 		}
 	} else if( ix < 0 ) {		//	トップレベルアイテムでない場合
 		auto* pr = item->parent();
-		ix = pr->indexOfChild(item);
-		cnt = pr->childCount();
-		if( ix >= 0 && ix < cnt - 1) {
-			setCurrentItem(pr->child(ix+1));
+		int ix2 = pr->indexOfChild(item);
+		int cnt2 = pr->childCount();
+		if( ix2 >= 0 && ix2 < cnt2 - 1) {
+			setCurrentItem(pr->child(ix2+1));
+		} else {
+			ix = indexOfTopLevelItem(pr);
+			if( ix < cnt - 1 )
+				setCurrentItem(topLevelItem(ix+1));
 		}
 	}
 }
