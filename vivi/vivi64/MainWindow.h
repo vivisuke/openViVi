@@ -231,7 +231,7 @@ public slots:
     void	openRecentFile();
     void	openFavoriteFile();
 	void	tabCloseRequested(int index);
-	void	currentViewChanged(int index);
+	void	tabCurrentChanged(int index);
     void	onCharEncodingChanged(const QString&);
     void	onBomChanged(bool);
 	void	onTypeChanged(const QString&);

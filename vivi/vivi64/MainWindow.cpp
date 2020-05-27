@@ -177,7 +177,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.tabWidget->setMovable(true);				//	タブ移動可能
 	//ui.tabWidget->setTabShape(QTabWidget::Triangular);				//	タブ形状指定
 	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(tabCloseRequested(int)));
-	connect(ui.tabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentViewChanged(int)));
+	connect(ui.tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabCurrentChanged(int)));
 	//
 	//ui.action_New->setIconText(tr("New"));
 	//
@@ -1288,9 +1288,11 @@ void MainWindow::tabCloseRequested(int index)
 		//??delete view;
 	}
 }
-void MainWindow::currentViewChanged(int index)
+void MainWindow::tabCurrentChanged(int index)
 {
 	if (index < 0) return;
+	m_formerTabIndex = m_curTabIndex;
+	m_curTabIndex = index;
 	EditView *view = nthWidget(index);
 	Document* doc = view->document();
 	//	undo/redo
@@ -1916,7 +1918,10 @@ void MainWindow::on_action_PrevTab_triggered()
 }
 void MainWindow::on_action_FormerTab_triggered()
 {
-	assert(0);
+	//assert(0);
+	if( ui.tabWidget->count() < 2 ) return;
+	if( m_formerTabIndex >= 0 && m_formerTabIndex < ui.tabWidget->count() )
+		ui.tabWidget->setCurrentIndex(m_formerTabIndex);
 }
 #if	0
 void MainWindow::onEnterCmdLineEdit()
