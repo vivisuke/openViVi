@@ -33,6 +33,7 @@
 #define		KEY_RECENTFILELIST			"recentFileList"
 #define		KEY_FAVORITEFILELIST		"favoriteFileList"
 #define		KEY_RECENTDIRLIST			"recentDirList"
+#define		KEY_OPENED_FILELIST			"openedFileList"
 
 #define		MAX_FIND_STR_HIST			64
 #define		MAX_CLIPBOARD_HIST		100
@@ -700,6 +701,31 @@ void MainWindow::dropEvent(QDropEvent* event)
 		createView(fileName);
 		//openFile(fileName);
 	}
+}
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+	qDebug() << "closeEvent()";
+	//	オープンしているファイルパスリスト保存
+	QStringList lst;
+	for(int i = 0; i < ui.tabWidget->count(); ++i) {
+		EditView *view = nthWidget(i);
+		if( isEditView(view) ) {
+			if( !view->fullPathName().isEmpty() )
+				lst << view->fullPathName();
+		}
+	}
+    QSettings settings;
+    settings.setValue(KEY_OPENED_FILELIST, lst);
+	//
+	QMainWindow::closeEvent(event);
+}
+void MainWindow::on_action_OpenOpenedFiles_triggered()
+{
+    QSettings settings;
+    QStringList files = settings.value(KEY_OPENED_FILELIST).toStringList();
+    for(const auto& path: files) {
+    	createView(path);
+    }
 }
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
@@ -1471,6 +1497,12 @@ void MainWindow::on_action_SelectAll_triggered()
 	if( isEditView(view) ) {
 		view->selectAll();
 	}
+}
+void MainWindow::on_action_DynamicCompletion_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) )
+		view->completion();
 }
 void MainWindow::on_action_ZenCoding_triggered()
 {

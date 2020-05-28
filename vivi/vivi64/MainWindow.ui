@@ -87,6 +87,7 @@
     <addaction name="separator"/>
     <addaction name="menu_RecentFiles"/>
     <addaction name="menu_FavoriteFiles"/>
+    <addaction name="action_OpenOpenedFiles"/>
     <addaction name="separator"/>
     <addaction name="action_eXit"/>
    </widget>
@@ -102,6 +103,7 @@
     <addaction name="action_Paste"/>
     <addaction name="action_SelectAll"/>
     <addaction name="separator"/>
+    <addaction name="action_DynamicCompletion"/>
     <addaction name="action_ZenCoding"/>
    </widget>
    <widget class="QMenu" name="menu_View">
@@ -603,6 +605,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+,</string>
+   </property>
+  </action>
+  <action name="action_DynamicCompletion">
+   <property name="text">
+    <string>&amp;DynamicCompletion</string>
+   </property>
+  </action>
+  <action name="action_OpenOpenedFiles">
+   <property name="text">
+    <string>OpenOpenedFiles(&amp;9)</string>
    </property>
   </action>
  </widget>

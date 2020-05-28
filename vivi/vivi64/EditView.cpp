@@ -1,4 +1,4 @@
-﻿#include <assert.h>
+#include <assert.h>
 #include <QtGui>
 #include <QTransform>
 //#include <QPainter>
@@ -2632,5 +2632,8 @@ void EditView::setCursorPosition(pos_t pos, int mode)
 	update();
 }
 void EditView::zenCoding()
+{
+}
+void EditView::completion()
 {
 }

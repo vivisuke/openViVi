@@ -127,6 +127,7 @@ protected:
 protected:
 	void	dragEnterEvent(QDragEnterEvent *event);
 	void	dropEvent(QDropEvent* event);
+	void	closeEvent(QCloseEvent *event);
 	void	resizeEvent(QResizeEvent *event);
 	void	execCommand(const QString &cmd);
 	void	updateMapFileLine(EditView *);
@@ -190,6 +191,7 @@ private slots:
 	void	on_action_SaveAs_triggered();
 	void	on_action_Close_triggered();
 	void	on_action_Reload_triggered();
+	void	on_action_OpenOpenedFiles_triggered();
 	void	on_action_AddCurrentFile_triggered();
 	void	on_action_RemoveFile_triggered();
 	void	on_action_cpp_h_triggered();
@@ -200,6 +202,7 @@ private slots:
 	void	on_action_Copy_triggered();
 	void	on_action_Paste_triggered();
 	void	on_action_SelectAll_triggered();
+	void	on_action_DynamicCompletion_triggered();
 	void	on_action_ZenCoding_triggered();
 	void	on_action_IgnoreCase_triggered();
 	void	on_action_WordSearch_triggered();
