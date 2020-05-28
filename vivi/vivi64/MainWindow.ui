@@ -611,6 +611,9 @@
    <property name="text">
     <string>&amp;DynamicCompletion</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
   </action>
   <action name="action_OpenOpenedFiles">
    <property name="text">

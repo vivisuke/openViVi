@@ -424,7 +424,7 @@ int EditView::setupCompletionCandidates(QStringList &lst, const QString &text,
 	pos_t pos = 0;
 	QStringList lstAfter;
 	while( (pos = sss->strstr(*buffer(), pos)) >= 0 ) {
-		if( !isLetterOrNumberOrUnderbar(charAt(pos - 1)) ) {	//	単語直後の場合
+		if( pos != 0 && !isLetterOrNumberOrUnderbar(charAt(pos - 1)) ) {	//	単語直後の場合
 			pos_t pos0 = pos;		//	マッチ位置
 			QString t(text);
 			pos += text.length();
