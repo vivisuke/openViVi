@@ -292,7 +292,6 @@ uchar checkCharEncoding(cuchar *ptr, cuchar *endptr, int &bomLength)
 	return CharEncoding::UTF8;
 }
 
-#if	0
 bool getTextCodec(const QString &fileName, QString &errorString, QTextCodec *&codec,
 					int &bomLength, byte &newLine)
 {
@@ -338,6 +337,7 @@ bool getTextCodec(const QString &fileName, QString &errorString, QTextCodec *&co
 	newLine = checkNewLineCode(ptr, endptr, ce);
 	return true;
 }
+#if	0
 bool loadFile(const QString &fileName, QString &buffer, QString &errorString,
 				uchar *cePtr,		//	文字エンコーディング
 				bool *wbPtr)		//	BOM付き

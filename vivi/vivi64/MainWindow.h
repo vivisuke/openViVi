@@ -74,6 +74,7 @@ public:
 
 public:
 	ViEngine	*viEngine() { return m_viEngine; }
+	TypeSettings	*typeSettingsForType(const QString &);
 	void	resetBoxKeisenMode();
 	void	setMode(int);
 	void	setSearchWordOpt();

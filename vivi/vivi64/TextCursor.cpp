@@ -970,3 +970,18 @@ void TextCursor::insertText(const QString &text)
 	if( !im )
 		m_view->emitModifiedChanged();
 }
+void TextCursor::deletePrevChar(bool vi)
+{
+	if( !hasSelection() ) {
+		if( !position() ) return;
+		movePosition(LEFT, KEEP_ANCHOR);
+		if( !hasSelection() ) return;
+	}
+	pos_t pos = selectionFirst();
+	m_view->deleteText(pos, selectionLast() - pos, /*BS=*/true);
+	setPosition(pos);
+	m_viewLine = m_view->viewLineMgr()->positionToViewLine(pos);
+	m_px = m_view->viewLineOffsetToPx(m_viewLine, pos - m_view->viewLineStartPosition(m_viewLine));
+	m_view->update();
+	m_view->document()->updateView(m_view);
+}

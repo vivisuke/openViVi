@@ -96,6 +96,8 @@
     <ClCompile Include="autoIndent.cpp" />
     <ClCompile Include="charEncoding.cpp" />
     <ClCompile Include="CommandLine.cpp" />
+    <ClCompile Include="completion.cpp" />
+    <ClCompile Include="CompletionWidget.cpp" />
     <ClCompile Include="CTabBar.cpp" />
     <ClCompile Include="CTabWidget.cpp" />
     <ClCompile Include="Document.cpp" />
@@ -136,6 +138,7 @@
     <QtMoc Include="Document.h" />
     <QtMoc Include="FindLineEdit.h" />
     <QtMoc Include="CommandLine.h" />
+    <QtMoc Include="CompletionWidget.h" />
     <ClInclude Include="CTabBar.h" />
     <ClInclude Include="CTabWidget.h" />
     <QtMoc Include="OutlineBar.h" />

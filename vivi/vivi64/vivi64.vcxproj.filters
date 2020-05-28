@@ -124,6 +124,12 @@
     <ClCompile Include="OutlineBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="completion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CompletionWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -163,6 +169,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="OutlineBar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CompletionWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -1,4 +1,4 @@
-#include <assert.h>
+﻿#include <assert.h>
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QMimeData>
@@ -1866,6 +1866,10 @@ void MainWindow::resetBoxKeisenMode()
 {
 	ui.action_BoxSelect->setChecked(false);
 	ui.action_KeisenMode->setChecked(false);
+}
+TypeSettings *MainWindow::typeSettingsForType(const QString &type)
+{
+	return g_settingsMgr.typeSettings(type);
 }
 void MainWindow::setMode(int md)
 {

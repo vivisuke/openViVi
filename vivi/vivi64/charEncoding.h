@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------
+﻿//----------------------------------------------------------------------
 //
 //			File:			"charEncoding.h"
 //			Created:		03-Mar-2011
@@ -63,8 +63,8 @@ bool isDBCSSecondByte(uchar ch);
 uchar	checkCharEncoding(cuchar *, cuchar *, int &bomLength);
 bool	loadFile(const QString& pathName, QString& buf, QString& errMess, uchar& charEncoding, int& bomLength);
 //bool	loadFile(const QString &, QString &, QString &, uchar * = 0, bool * = 0);
-//bool	getTextCodec(const QString &fileName, QString &errorString, QTextCodec *&codec,
-//						int &bomLength, byte &);
+bool	getTextCodec(const QString &fileName, QString &errorString, QTextCodec *&codec,
+						int &bomLength, byte_t &);
 
 byte_t checkNewLineCode(cbyte *ptr, cbyte *endptr, byte_t charCode);
 

@@ -6,6 +6,7 @@
 #include "MainWindow.h"
 #include "Document.h"
 #include "EditView.h"
+#include "tokenizer.h"
 #include "ViewTokenizer.h"
 #include "typeSettings.h"
 #include "globalSettings.h"
@@ -89,13 +90,16 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	//, m_buffer(buffer)
 	//, m_typeSettings(nullptr)
 	, m_lineNumDigits(4)		//	初期値は4桁 1〜9999
-	,m_scrollX0(0)
-	,m_scrollY0(0)
+	, m_scrollX0(0)
+	, m_scrollY0(0)
+	, m_autoCmplPos(0)
+	, m_autoCompletionDlg(nullptr)
 	, m_mouseDragging(false)
 	, m_mouseLineDragging(false)
 	, m_mouseDblClkDragging(false)
 	, m_minMapDragging(false)
 	, m_dispCursor(true)
+	, m_autoCmplAtBegWord(false)
 	//, m_viewLineMgr(new ViewLineMgr(this))
 {
 	Q_ASSERT(doc != nullptr);
@@ -1611,6 +1615,10 @@ const TextCursor* EditView::textCursor() const
 {
 	return m_textCursor;
 }
+int EditView::offsetToPx(int dln, int offset) const
+{
+	return textWidth(lineStartPosition(dln), offset /*, lineStartPosition(dln+1)*/);
+}
 void EditView::pointToLineOffset(const QPoint &pnt, int &vln, int &offset) const
 {
 	vln = qMin(pnt.y() / lineHeight() + m_scrollY0, EOFLine());
@@ -2631,9 +2639,123 @@ void EditView::setCursorPosition(pos_t pos, int mode)
 	makeCursorInView();
 	update();
 }
-void EditView::zenCoding()
+//	挿入・置換処理・削除
+bool EditView::editForVar(const QString &text)
 {
+	if( !text.isEmpty() && !isLetterOrNumberOrUnderbar(text[0]) )
+		return false;
+	QString name = typeSettings()->name();
+	if( name != "CPP" && name != "JAVA" && name != "JS" && name != "C#" && name != "PHP" )
+		return false;
+	if( !m_delForVarPos.empty()
+		&& !m_textCursor->hasSelection()
+		&& m_textCursor->position() == m_delForVarPos[0] )
+	{
+		openUndoBlock();
+		for (int i = m_delForVarPos.size(); --i >= 0; ) {
+			m_textCursor->setPosition(m_delForVarPos[i]);
+			m_textCursor->insertText(text);
+		}
+		closeUndoBlock();
+		m_delForVarPos.clear();
+		return true;
+	}
+	m_delForVarPos.clear();
+	pos_t first = m_textCursor->selectionFirst();
+	//int selLast = m_textCursor->selectionLast;
+	int vln = m_textCursor->selectionFirstLine();
+	if( vln != m_textCursor->selectionLastLine() ) 
+		return false;		//	複数行選択されている場合
+	int ln = viewLineToDocLine(vln);
+	pos_t ls = lineStartPosition(ln);
+	pos_t nxls = lineStartPosition(ln+1);
+	Tokenizer tkn(buffer(), ls, nxls, /*bStr*/true);
+	QString token = tkn.tokenText();
+	if( token != "for" || tkn.nextTokenText() != "(" ||
+		tkn.nextTokenText() != "int" && tkn.tokenText() != "auto" && tkn.tokenText() != "var" )
+	{
+		return false;
+	}
+	token = tkn.nextTokenText();
+	if( name == "PHP" && token == "$" )
+		token = tkn.nextTokenText();
+	pos_t pos = tkn.tokenPosition();
+	if( first < pos ) return false;		//	変数より前から選択されていた場合
+	int endpos = pos + token.size();
+	if( m_textCursor->hasSelection() ) {		//	選択状態の場合
+		//int first = m_textCursor->selectionFirst();
+		pos_t last = m_textCursor->selectionLast();
+		if( first >= endpos || last <= pos )
+			return false;
+		if( last > endpos )			//	変数名以降も選択されていた場合
+			return false;
+		std::vector<int> v;		//	マッチするトークン位置リスト
+		v.push_back(pos);
+		QString t;
+		while (!(t = tkn.nextTokenText()).isEmpty()) {
+			if( t == token && tkn.tokenPosition() >= last ) {		//	選択範囲外で等しい場合
+				v.push_back(tkn.tokenPosition());
+			}
+		}
+		openUndoBlock();
+		for (int i = v.size(); --i >= 0; ) {
+			m_textCursor->setPosition(v[i] + first - pos);
+			m_textCursor->setPosition(v[i] + last - pos, TextCursor::KEEP_ANCHOR);
+			if( text.isEmpty() )
+				m_textCursor->deleteChar();
+			else
+				m_textCursor->insertText(text);
+		}
+		closeUndoBlock();
+		m_delForVarPos.clear();
+		if( first == pos && last == endpos && text.isEmpty() ) {		//	変数全削除の場合
+			for (int i = 0; i < v.size(); ++i) {
+				m_delForVarPos.push_back(v[i] - token.size() * i);
+			}
+		}
+	} else {
+		int cp = m_textCursor->position();
+		if( cp < pos || cp > endpos )
+			return false;
+		std::vector<int> v;		//	マッチするトークン位置リスト
+		v.push_back(pos);
+		QString t;
+		while (!(t = tkn.nextTokenText()).isEmpty()) {
+			if( t == token ) {
+				v.push_back(tkn.tokenPosition());
+			}
+		}
+		openUndoBlock();
+		for (int i = v.size(); --i >= 0; ) {
+			m_textCursor->setPosition(v[i] + cp - pos);
+			m_textCursor->insertText(text);
+		}
+		closeUndoBlock();
+	}
+	return true;
 }
-void EditView::completion()
+void setupCandidates(QStringList &lst, const QString &key, const QString &type)
+{
+	//lst.clear();
+#ifdef		_DEBUG
+	QString dir("C:/user/sse.bin");
+#else
+	QString dir(qApp->applicationDirPath());
+#endif
+	QString fileName = dir + "/autoCmpl/" + type + ".txt";
+	QFile file(fileName);
+	if (!file.open(QIODevice::ReadOnly))
+		return;
+	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+	while( !file.atEnd() ) {
+		QString buf = codec->toUnicode(file.readLine()).trimmed();
+		if( buf.size() > key.size() && buf.startsWith(key)
+			&& !isLetterOrNumberOrUnderbar(buf[key.size()]) )
+		{
+			lst << buf;
+		}
+	}
+}
+void EditView::zenCoding()
 {
 }

@@ -7,13 +7,16 @@
 #include "../buffer/Buffer.h"
 //#include "typeSettings.h"
 //#include "globalSettings.h"
-class MainWindow;
-class TypeSettings;
-class GlobalSettings;
 class Buffer;
+class ViewLineMgr;
 class Document;
 class TextCursor;
-class ViewLineMgr;
+class TypeSettings;
+struct MarkItem;
+class SSSearch;
+class MainWindow;
+class AutoCompletionDlg;
+class GlobalSettings;
 
 struct FallingChar		//	落下中文字
 {
@@ -71,6 +74,7 @@ public:
 	QString	selectedText() const;
 	QString	newLineText() const;
 	int	viewLineOffsetToPx(int vln, int offset) const;
+	int		offsetToPx(int ln, int offset) const;
 	const Document*	document() const { return m_document; }
 	const Buffer	*buffer() const { return m_buffer; }
 	int		positionToLine(pos_t pos) const;
@@ -218,6 +222,29 @@ protected:
 	void	onDelete(bool ctrl, bool shift, bool alt);
 	void	setupFallingChars();
 	void	setupFallingCharsBoxSelected();
+	int		setupCompletionCandidates(QStringList &, const QString &, pos_t);
+	bool setupKeywordsCandidates(QStringList &, const QString &);
+	void	setupKeywordsCandidates(QStringList &, const QString &, const QList<QString> &);
+	void	setupCompletionCandidates(const QString &fileName, SSSearch *srch, QStringList &, const QString &);
+	bool	setupCompletionCandidatesFollowingSpaces(QStringList &);
+	bool	checkFileNameCompletion(QStringList &, QString &, QString &, pos_t &);	//	#include 補完
+	bool	checkSrcFileNameCompletion(QStringList &, QString &, QString &, pos_t &);	//	src=" 補完
+	bool	checkEndTagCompletion(QStringList &, pos_t &);	//	</endtag 補完
+	bool	checkEndBraceCompletion(int);		//	} 補完
+	bool	fileNameCompletion(QStringList &, QString &, pos_t &);
+	bool	clibralyCompletion(QStringList &, const QString &, pos_t &);
+	void	completion(bool);
+	bool	isSpaces(pos_t first, pos_t last) const;
+	void	setupCloseTags(QStringList &);
+	void	showAutoCompletionDlg(const QStringList &, QString = QString(), bool = false, bool = true);
+	void closeAutoCompletionDlg();
+	bool	isAfter(pos_t &, const QString &, pos_t pos = -1);				//	単語 \s+ 直後か？
+	bool	isAfterFor(pos_t &);				//	for \s+ 直後か？
+	bool	isAfterInclude();		//	#include \s* 直後か？
+	bool	isAfterIncludeDQ(pos_t &);		//	#include \s* "... 直後か？
+	void setupHeaders(QStringList &lst, pos_t pos2, const QString &);
+	bool setupWord(QStringList &, QString &, pos_t &);
+	bool editForVar(const QString &);
 protected:
 	void	paintEvent(QPaintEvent *);
 	void	mousePressEvent(QMouseEvent *);
@@ -239,6 +266,16 @@ public slots:
 	int		copy(bool bCut = false, bool append = false);
 	void	paste();
 private slots:
+	void autoCmplKeyPressed(QString);
+	void autoCmplBackSpace();
+	void autoCmplDelete(bool, bool);
+	void autoCmplLeft(bool, bool);
+	void autoCmplRight(bool, bool);
+	void autoCmplZenCoding();
+	void autoCmplPasted();
+	void autoCmplDecided(QString, bool);
+	void autoCmplRejected();
+	void	cmplTextChanged(const QString &);
 	void	onTimer();
 signals:
 	void	modifiedChanged() const;
@@ -314,4 +351,10 @@ private:
 	//QPixmap		m_minMap;
 	//
 	std::vector<FallingChar>	m_fallingChars;	//	落下文字たち
+	//
+	bool	m_autoCmplAtBegWord;			//	単語先頭で自動補完
+	int		m_autoCmplPos;			//	補完開始位置（# で開始した場合は # 位置）
+	QString	m_autoCmplFilter;		//	動的補完フィルター文字列
+	QString	m_autoCmplTyped;		//	動的補完でタイプされた文字列
+	AutoCompletionDlg	*m_autoCompletionDlg;
 };
