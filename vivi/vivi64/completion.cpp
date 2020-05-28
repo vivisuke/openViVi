@@ -1,4 +1,4 @@
-﻿//----------------------------------------------------------------------
+//----------------------------------------------------------------------
 //
 //			File:			"completion.cpp"
 //			Created:		01-10-2013
@@ -532,7 +532,7 @@ void EditView::completion(bool keyword)
 	QRect rct = rect();
 	int vln = m_textCursor->viewLine();
 	int x = offsetToPx(vln, pos - viewLineStartPosition(vln));
-	int y = (vln - m_scrollY0 + 1) * lineHeight() + 2;
+	int y = (vln - m_scrollY0 + 1) * lineHeight() - 1 /*+ 2*/;
 	int ht = cmpl.height();
 	if( y + ht > rct.height() ) {
 		y -= ht + lineHeight() + 2;
