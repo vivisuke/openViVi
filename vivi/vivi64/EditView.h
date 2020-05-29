@@ -190,6 +190,10 @@ public:
 	void	zenCoding();
 	void	completion();
 	void	kwCompletion();
+	void	clearOpenCloseParenPos();
+	void	checkAssocParen();
+	void	checkAssocParen(int vln, pos_t pos);
+	void	checkAssocSharpTag();
 
 protected:
 	void	viFindCharForward(wchar_t qch, bool bPrev, int mvmd, int repCnt);
@@ -307,6 +311,7 @@ private:
 	bool	m_mouseDblClkDragging;		//	単語選択中
 	bool	m_minMapDragging;			//	ミニマップ窓ドラッグ移動中
 	bool	m_dispCursor;
+	bool	m_noDeleteAnimation;		//	一時的に削除アニメーション禁止
 	int		m_scrollX0;			//	水平方向スクロール（0 org カラム位置）
 	int		m_scrollY0;
 	int		m_fontWidth;
@@ -350,6 +355,13 @@ private:
 	//double		m_mmScale;				//	1.0 未満であれば縮小されている
 	//QPixmap		m_minMap;
 	//
+	int		m_openParenPos;				//	対応する括弧強調
+	int		m_openParenViewLine;
+	int		m_closeParenPos;
+	int		m_closeParenViewLine;
+	bool	m_unbalancedAssocParen;		//	対応する括弧が無い or インデントが同じではない
+	int		m_aiCurPos;						//	オートインデント直後のカーソル位置
+	QString		m_aiSpaces;					//	オートインデント空白類
 	std::vector<FallingChar>	m_fallingChars;	//	落下文字たち
 	//
 	bool	m_autoCmplAtBegWord;			//	単語先頭で自動補完

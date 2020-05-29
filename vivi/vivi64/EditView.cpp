@@ -1,4 +1,4 @@
-#include <assert.h>
+﻿#include <assert.h>
 #include <QtGui>
 #include <QTransform>
 //#include <QPainter>
@@ -14,6 +14,8 @@
 #include "viewLineMgr.h"
 #include "charEncoding.h"
 #include "ViEngine.h"
+#include "AutoCompletionDlg.h"
+#include "assocParen.h"
 #include "../buffer/Buffer.h"
 #include "../buffer/bufferUtl.h"
 #include "../buffer/UTF16.h"
@@ -32,6 +34,8 @@
 #define		CURSOR_WD		2
 
 //----------------------------------------------------------------------
+void setupCandidates(QStringList &lst, const QString &key, const QString &type);
+
 inline bool isSpaceChar(wchar_t ch)
 {
 	return ch == ' ' || ch == '\t';
@@ -92,7 +96,8 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	, m_lineNumDigits(4)		//	初期値は4桁 1〜9999
 	, m_scrollX0(0)
 	, m_scrollY0(0)
-	, m_autoCmplPos(0)
+	, m_autoCmplPos(-1)
+	, m_aiCurPos(-1)
 	, m_autoCompletionDlg(nullptr)
 	, m_mouseDragging(false)
 	, m_mouseLineDragging(false)
@@ -100,6 +105,7 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	, m_minMapDragging(false)
 	, m_dispCursor(true)
 	, m_autoCmplAtBegWord(false)
+	, m_noDeleteAnimation(false)
 	//, m_viewLineMgr(new ViewLineMgr(this))
 {
 	Q_ASSERT(doc != nullptr);
@@ -467,6 +473,29 @@ void EditView::resetCursorBlinking()
 	m_dispCursor = true;
 	m_tmCounter = TM_FPS / 2;
 	m_timer.start(1000/TM_FPS);
+}
+void EditView::setupHeaders(QStringList &lst, pos_t pos2, const QString &text)
+{
+	QDir dir = QDir::current();
+	pos_t pos = m_textCursor->position();
+	if( pos2 < pos ) {
+		QString path = getText(*buffer(), pos2, pos-pos2) + text;
+		while( path.startsWith("../") || path.startsWith("..\\") ) {
+			path = path.mid(3);
+			dir.cdUp();
+		}
+		if( !path.isEmpty() )
+			dir.cd(path);
+	}
+	QStringList elst = dir.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
+	foreach(const QString fileName, elst) {
+		if( fileName.endsWith(".h", Qt::CaseInsensitive) )
+			lst += text + fileName + "\"";
+	}
+	elst = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
+	foreach(const QString fileName, elst) {
+		lst += text + fileName;
+	}
 }
 void EditView::setupFallingChars()
 {
@@ -1853,16 +1882,334 @@ bool  EditView::getSelectedLineRange(int &ln1, int &ln2) const
 	else
 		return m_textCursor->getSelectedLineRange(ln1, ln2);
 }
+QStringList merge(const QStringList &sl, const QStringList &sl2)
+{
+	QSet<QString> set;
+	QStringList lst = sl;
+	for (int i = 0; i < sl.size(); ++i) {
+		set += sl[i];
+	}
+	for (int i = 0; i < sl2.size(); ++i) {
+		if( !set.contains(sl2[i]) )
+			lst += sl2[i];
+	}
+	return lst;
+}
 void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 {
+#if	1
+	if( text.isEmpty() )
+		return;
+	if( text == "\t" && shift ) {
+		int ln1, ln2;
+		getSelectedLineRange(ln1, ln2);
+		revIndent(ln1, ln2);
+		return;
+	}
+	//qDebug() << text;
+	if( mainWindow()->viEngine()->mode() == Mode::COMMAND ) {
+		mainWindow()->viEngine()->processCommandText(text, m_textCursor->hasSelection());	//##
+		return;
+	}
+	//const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
+	//const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
+	//const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
+	const bool stmntCmpl = typeSettings()->boolValue(TypeSettings::STATEMENT_COMPLETION);
+	const bool wordCmpl = typeSettings()->boolValue(TypeSettings::WORD_COMPLETION);
+	//const bool stmntCmpl = globSettings()->boolValue(GlobalSettings::STATEMENT_COMPLETION);
+	//const bool wordCmpl = globSettings()->boolValue(GlobalSettings::WORD_COMPLETION);
+	pos_t pos = m_textCursor->position();
+	pos_t lastTokenPos, pos2;
+	//pos_t ls = viewLineStartPosition(m_textCursor->viewLine());
+	QString text0 = text;
+	TypeSettings *ts = typeSettings();
+	const QString typeName = ts->name();
+	int ln = positionToLine(m_textCursor->position());
+	uint flags = buffer()->lineFlags(ln);
+	if( (flags & Buffer::LINEFLAG_IN_SCRIPT) != 0 )
+		ts = mainWindow()->typeSettingsForType("JS");
+	else if( (flags & Buffer::LINEFLAG_IN_PHP) != 0 )
+		ts = mainWindow()->typeSettingsForType("PHP");
+	const bool isCPPType = typeName == "CPP"
+										|| typeName == "C#"
+										|| typeName == "HLSL"
+										|| typeName == "JAVA"
+										|| typeName == "JS"
+										|| typeName == "PHP";
+	bool ai = false;		//	auto indent
+	if( m_autoCompletionDlg != 0 ) {
+		if( text == "\r" || text == "\n" ) {
+			text = m_autoCompletionDlg->text();
+			closeAutoCompletionDlg();
+			int d = m_textCursor->position() - m_autoCmplPos;
+			text = text.mid(d);
+		} else {
+			m_autoCompletionDlg->appendFilterText(text);
+			//if( !m_autoCompletionDlg->count() )
+			//	closeAutoCompletionDlg();
+		}
+	} else if( text == "\r" || text == "\n" ) {
+		//	auto-indent テキスト取得
+		ai = true;
+		text = autoIndentText(/*isCPPType*/);
+		if( !m_textCursor->hasSelection() && lineStartPosition(ln) != m_textCursor->position() ) {
+			//	カーソル以降の空白類削除
+			while( isSpaceChar(charAt(m_textCursor->position())) )
+				m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);
+		}
+	} else if( text == "\t" ) {
+		if( m_textCursor->hasSelection() ) {
+			int ln1, ln2;
+			getSelectedLineRange(ln1, ln2);
+			if( !shift )
+				indent(ln1, ln2);
+			else
+				revIndent(ln1, ln2);
+			//onCursorPosChanged();
+			return;
+		}
+	} else if( isCPPType && text == "#" ) {
+		//##insertSharp();
+	} else if( isCPPType && text == "}" ) {
+		//##insertCloseCurl(text);
+	} else if( stmntCmpl && text == "{" && typeName == "CPP"
+					&& isAfter(lastTokenPos, "do") )
+	{
+		m_autoCmplPos = lastTokenPos;
+		QStringList lst;
+		setupCandidates(lst, "do", "CPP");
+		//setupDo(lst);
+		showAutoCompletionDlg(lst, "do {");
+	} else if( isCPPType && text == "{" ) {
+		//##insertOpenCurl(text);
+	} else if( typeName == "CSS" && text == "{" ) {
+		m_autoCmplPos = m_textCursor->position();
+		QStringList lst;
+		setupCandidates(lst, "{", "CSS");
+		showAutoCompletionDlg(lst, "{");
+	} else 
+#if	0	//##
+	if( !isBoxSelectionMode() && isMultilineSelected() && text == " " ) {
+		insertSpaces(shift);
+		return;
+	} else
+#endif
+	if( isCPPType && text == " " ) {
+		//##insertCaseSpace(text);
+	//} else if( text[0].unicode() == 0x08 && ctrl ) {	//	Ctrl + H
+	//	ctrl = false;	//	ちょっと反則行為
+	//	goto BackSpace;
+	} else if( stmntCmpl && text == "(" && isAfter(lastTokenPos, "for")
+					&& isCPPType )
+	{
+		m_autoCmplPos = lastTokenPos;
+		QStringList lst;
+		setupCandidates(lst, "for", typeName);
+		//setupFor(lst);
+		showAutoCompletionDlg(lst, "for (");
+	} else if( stmntCmpl && text == "(" && isAfter(lastTokenPos, "foreach")
+					&& typeName == "C#" )
+	{
+		m_autoCmplPos = lastTokenPos;
+		QStringList lst;
+		setupCandidates(lst, "foreach", typeName);
+		//setupFor(lst);
+		showAutoCompletionDlg(lst, "foreach (");
+	} else if( stmntCmpl && text == "(" && isAfter(lastTokenPos, "if")
+					&& isCPPType )
+	{
+		m_autoCmplPos = lastTokenPos;
+		QStringList lst;
+		setupCandidates(lst, "if", "CPP");
+		//setupIf(lst);
+		showAutoCompletionDlg(lst, "if (");
+	} else if( stmntCmpl && text == "("
+					&& isCPPType && isAfter(lastTokenPos, "while") )
+	{
+		m_autoCmplPos = lastTokenPos;
+		QStringList lst;
+		setupCandidates(lst, "while", "CPP");
+		//setupWhile(lst);
+		showAutoCompletionDlg(lst, "while (");
+	} else if( stmntCmpl && text == "("
+					&& isCPPType && isAfter(lastTokenPos, "main") )
+	{
+		m_autoCmplPos = lastTokenPos;
+		QStringList lst;
+		setupCandidates(lst, "main", "CPP");
+		//setupMain(lst);
+		showAutoCompletionDlg(lst, "main(");
+	} else if( stmntCmpl && text == "<" && isAfterInclude() ) {
+		m_autoCmplPos = pos;
+		QStringList lst;
+		//##setupLibNames(lst);
+		showAutoCompletionDlg(lst, "<");
+	} else if( stmntCmpl && text == "\"" && isAfterInclude() ) {
+		m_autoCmplPos = pos;
+		QStringList lst;
+		setupHeaders(lst, pos, text);
+		if( !lst.isEmpty() )
+			showAutoCompletionDlg(lst, "\"", false, /*CaseSensitive:*/false);
+	} else if( stmntCmpl && text == "/" && isAfterIncludeDQ(pos2) ) {
+		m_autoCmplPos = pos;
+		QStringList lst;
+		setupHeaders(lst, pos2, text);
+		if( !lst.isEmpty() )
+			showAutoCompletionDlg(lst, "\"");
+	} else if( stmntCmpl && typeName == "HTML"
+		&& text == "/" &&  charAt(pos-1) == '<' )
+	{
+		m_autoCmplPos = pos - 1;
+		QStringList lst;
+		setupCloseTags(lst);
+		if( !lst.isEmpty() )
+			showAutoCompletionDlg(lst, "</", true);
+	} else if( text[0].unicode() < 0x20 || ctrl ) {
+		return;		//	コントロールコードは挿入しない
+	} else if( m_textCursor->hasSelection() /*##&& !isBoxSelectionMode()*/ ) {
+		if( text == "(" ) {
+			insertText("(", ")");
+			return;
+		} else if( text == "[" ) {
+			insertText("[", "]");
+			return;
+		} else if( text == "{" ) {
+			insertText("{", "}");
+			return;
+		}
+	}
+	//##if( !m_noDeleteAnimation && !isBoxSelectionMode() )
+	//##	setupParabolicChars();
+	m_noDeleteAnimation = false;
+	//##if( !isBoxSelectionMode() && mainWindow()->insMode() == MODE_REP ) {
+	//##	m_textCursor->selectOverWriteText(text);
+	//##	//m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR, text.size());
+	//##}
+	if( !editForVar(text) ) {
+		if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) )
+			mainWindow()->viEngine()->processCommandText(text, m_textCursor->hasSelection());
+		else
+			m_textCursor->insertText(text);		//	文字挿入
+	}
+	//emit textInserted(text0);
+	QStringList lst, klst;
+	QString key;
+	if( wordCmpl && m_autoCompletionDlg == 0
+		&& text.size() == 1 &&
+			(isLetterOrNumberOrUnderbar(text[0]) || typeName == "CSS" && text == "-") )
+	{
+		const bool kwCompletion = typeSettings()->boolValue(TypeSettings::KEYWORD_COMPLETION);
+		//const bool kwCompletion = globSettings()->boolValue(GlobalSettings::KEYWORD_COMPLETION);
+		if( setupWord(lst, key, lastTokenPos) && isLetterOrUnderbar(key[0]) ) {
+			m_autoCmplPos = lastTokenPos;
+			if (kwCompletion) {
+				if( setupKeywordsCandidates(klst, key) ) {
+					if( klst.indexOf("for") >= 0 )
+						setupCandidates(klst, "for", typeName);
+					if( klst.indexOf("foreach") >= 0 )
+						setupCandidates(klst, "foreach", typeName);
+					else if( klst.indexOf("if") >= 0 )
+						setupCandidates(klst, "if", typeName);
+					else if( klst.indexOf("switch") >= 0 )
+						setupCandidates(klst, "switch", typeName);
+					else if( klst.indexOf("case") >= 0 )
+						setupCandidates(klst, "case", typeName);
+					else if( klst.indexOf("while") >= 0 )
+						setupCandidates(klst, "while", typeName);
+					else if( klst.indexOf("do") >= 0 )
+						setupCandidates(klst, "do", typeName);
+					else if( klst.indexOf("program") >= 0 )
+						setupCandidates(klst, "program", typeName);
+					else if( klst.indexOf("repeat") >= 0 )
+						setupCandidates(klst, "repeat", typeName);
+					else if( klst.indexOf("begin") >= 0 )
+						setupCandidates(klst, "begin", typeName);
+					lst = merge(klst, lst);		//	重複を削除しつつマージ
+				}
+			}
+			showAutoCompletionDlg(lst, key);
+			m_autoCmplAtBegWord = key == text;
+		} else if( !key.isEmpty() && kwCompletion && setupKeywordsCandidates(klst, key) ) {
+			if( klst.indexOf("for") >= 0 )
+				setupCandidates(klst, "for", typeName);
+			if( klst.indexOf("foreach") >= 0 )
+				setupCandidates(klst, "foreach", typeName);
+			else if( klst.indexOf("if") >= 0 )
+				setupCandidates(klst, "if", typeName);
+			else if( klst.indexOf("switch") >= 0 )
+				setupCandidates(klst, "switch", typeName);
+			else if( klst.indexOf("case") >= 0 )
+				setupCandidates(klst, "case", typeName);
+			else if( klst.indexOf("while") >= 0 )
+				setupCandidates(klst, "while", typeName);
+			else if( klst.indexOf("do") >= 0 )
+				setupCandidates(klst, "do", typeName);
+			else if( klst.indexOf("program") >= 0 )
+				setupCandidates(klst, "program", typeName);
+			else if( klst.indexOf("repeat") >= 0 )
+				setupCandidates(klst, "repeat", typeName);
+			else if( klst.indexOf("begin") >= 0 )
+				setupCandidates(klst, "begin", typeName);
+			pos_t pos = m_textCursor->position();
+			m_autoCmplPos = pos - key.size();
+			qDebug() << m_autoCmplPos;
+			showAutoCompletionDlg(klst, key);
+			m_autoCmplAtBegWord = key == text;
+		}
+	}
+#if	0
+	if( m_autoCompletionDlg != 0 && m_autoCompletionDlg->count() == 1 ) {
+		QString t = getText(*buffer(), m_autoCmplPos, m_textCursor->position() + 1);
+		QString t2 = m_autoCompletionDlg->text();
+		if( t == m_autoCompletionDlg->text() )
+			closeAutoCompletionDlg();
+	}
+#endif
+	if( ai ) {
+		m_aiCurPos = m_textCursor->position();
+		m_aiSpaces = text.mid(newLineText().size());
+	} else
+		m_aiCurPos = -1;
+	QString openParen;
+	if( text == ")" )
+		openParen = "(";
+	else if( text == "}" )
+		openParen = "{";
+	else if( text == "]" )
+		openParen = "[";
+	m_unbalancedAssocParen = false;
+	if( !openParen.isEmpty() ) {
+		m_closeParenPos = m_textCursor->position() - 1;
+		m_closeParenViewLine = m_textCursor->viewLine();
+		m_openParenPos = assocParenPositionBackward(typeSettings(), *buffer(), m_closeParenPos, text[0].unicode(), openParen[0].unicode());
+		m_openParenViewLine = docLineToViewLine(positionToLine(m_openParenPos));
+	} else {
+		clearOpenCloseParenPos();
+		//m_openParenPos = m_closeParenPos = -1;
+		checkAssocParen();
+	}
+	//##updateScrollBarInfo();
+#else
 	if( text.isEmpty() ) return;
 	if( text != "\t" && mainWindow()->mode() == MODE_VI ) {
 		mainWindow()->viEngine()->processCommandText(text, m_textCursor->hasSelection());
 		return;
 	}
 	bool ai = false;
+	const bool stmntCmpl = typeSettings()->boolValue(TypeSettings::STATEMENT_COMPLETION);
+	const bool wordCmpl = typeSettings()->boolValue(TypeSettings::WORD_COMPLETION);
+	const QString typeName = typeSettings()->name();
+	const bool isCPPType = typeName == "CPP"
+										|| typeName == "C#"
+										|| typeName == "HLSL"
+										|| typeName == "JAVA"
+										|| typeName == "JS"
+										|| typeName == "PHP";
 	int ln = positionToLine(m_textCursor->position());
-	if( text == "\t" ) {
+	pos_t pos = m_textCursor->position();
+	pos_t lastTokenPos, pos2;
+	if( m_autoCompletionDlg != 0 ) {	//	補完ダイアログ表示時
+	} else if( text == "\t" ) {
 		if( m_textCursor->hasSelection() ) {
 			int ln1, ln2;
 			getSelectedLineRange(ln1, ln2);
@@ -1881,11 +2228,23 @@ void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 			while( isSpaceChar(charAt(m_textCursor->position())) )
 				m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);
 		}
+	} else if( stmntCmpl && text == "(" && isAfter(lastTokenPos, "for") && isCPPType ) {
+		m_autoCmplPos = lastTokenPos;
+		QStringList lst;
+		setupCandidates(lst, "for", typeName);
+		//setupFor(lst);
+		showAutoCompletionDlg(lst, "for (");
 	}
 		if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) )
 			mainWindow()->viEngine()->processCommandText(text, m_textCursor->hasSelection());
 		else
 			m_textCursor->insertText(text);		//	文字挿入
+#endif
+}
+void EditView::clearOpenCloseParenPos()
+{
+	m_openParenPos = m_closeParenPos = -1;		//	対応括弧強調OFF
+	m_openParenViewLine = m_closeParenViewLine = -1;
 }
 QString EditView::indentText(int ln)
 {
@@ -2532,6 +2891,98 @@ void EditView::openNextLine()
 	makeCursorInView();
 	update();
 }
+void EditView::checkAssocParen()
+{
+	clearOpenCloseParenPos();
+	checkAssocParen(m_textCursor->viewLine(), m_textCursor->position());
+}
+void EditView::checkAssocParen(int vln, pos_t pos)
+{
+	//m_openParenPos = m_closeParenPos = -1;
+	wchar_t dch;
+	wchar_t ch = charAt(pos);
+	bool forward = true;
+	switch( ch ) {
+		case ')':	dch = '(';	forward = false; break;
+		case '(':	dch = ')';	break;
+		case '}':	dch = '{';	forward = false; break;
+		case '{':	dch = '}';	break;
+		case ']':	dch = '[';	forward = false; break;
+		case '[':	dch = ']';	break;
+		case '#': {
+			int ln = positionToLine(pos);
+			if( buffer()->isSpaces(lineStartPosition(ln), pos) ) {
+				checkAssocSharpTag();
+			}
+			return;
+		}
+		case '<': {
+			//pos_t pos = m_textCursor->position();
+			if( typeSettings()->name() == "HTML" &&
+				(isAlpha(charAt(pos+1)) || charAt(pos+1) == '/' && isAlpha(charAt(pos+2))) )
+			{
+				checkAssocSharpTag();
+			}
+			return;
+		}
+		default:
+			return;
+	}
+	m_unbalancedAssocParen = false;
+	if( forward ) {
+		m_openParenPos = pos;
+		m_openParenViewLine = vln;
+		m_closeParenPos = assocParenPositionForward(typeSettings(), *buffer(), m_openParenPos, ch, dch);
+		m_closeParenViewLine = docLineToViewLine(positionToLine(m_closeParenPos));
+		m_unbalancedAssocParen = ch == '{' && m_closeParenPos < 0;
+	} else {
+		m_closeParenPos = pos;
+		m_closeParenViewLine = vln;
+		m_openParenPos = assocParenPositionBackward(typeSettings(), *buffer(), m_closeParenPos, ch, dch);
+		m_openParenViewLine = docLineToViewLine(positionToLine(m_openParenPos));
+		m_unbalancedAssocParen = ch == '}' && m_openParenPos < 0;
+	}
+	if( ch != '{' && ch != '}' || m_unbalancedAssocParen ) return;
+#if		1
+	pos_t pos1 = lineStartPosition(positionToLine(m_openParenPos));
+	pos_t pos2 = lineStartPosition(positionToLine(m_closeParenPos));
+	for(;;) {
+		if( !isSpaceChar(charAt(pos1)) ) {
+			m_unbalancedAssocParen = isSpaceChar(charAt(pos2));
+			break;
+		}
+		if( charAt(pos1++) != charAt(pos2++) ) {
+			m_unbalancedAssocParen = true;
+			break;
+		}
+	}
+#else
+	int ln = positionToLine(m_openParenPos);
+	pos_t ls = lineStartPosition(ln);
+	while( isSpaceChar(charAt(ls)) ) ++ls;
+	int indent1 = ls - lineStartPosition(ln);
+	ln = positionToLine(m_closeParenPos);
+	ls = lineStartPosition(ln);
+	while( isSpaceChar(charAt(ls)) ) ++ls;
+	int indent2 = ls - lineStartPosition(ln);
+	m_unbalancedAssocParen = indent1 != indent2;
+#endif
+}
+void EditView::checkAssocSharpTag()
+{
+	TextCursor cur(*m_textCursor);
+	cur.movePosition(TextCursor::ASSOC_PAREN);
+	if( cur.position() == m_textCursor->position() ) {
+		clearOpenCloseParenPos();
+		//m_openParenPos = m_closeParenPos = -1;
+		return;
+	}
+	m_openParenPos = m_textCursor->position();
+	m_openParenViewLine = m_textCursor->viewLine();
+	m_closeParenPos = cur.position();
+	m_closeParenViewLine = docLineToViewLine(positionToLine(m_closeParenPos));
+	m_unbalancedAssocParen = false;
+}
 void EditView::toggleUpperLowerCase()
 {
 	//	undone: BOX選択モード対応
@@ -2738,7 +3189,7 @@ void setupCandidates(QStringList &lst, const QString &key, const QString &type)
 {
 	//lst.clear();
 #ifdef		_DEBUG
-	QString dir("C:/user/sse.bin");
+	QString dir("G:/bin/sse64");
 #else
 	QString dir(qApp->applicationDirPath());
 #endif

@@ -656,7 +656,7 @@ void EditView::showAutoCompletionDlg(const QStringList &lst, QString ft, bool se
 	QRect rct = rect();
 	int vln = m_textCursor->viewLine();
 	int x = offsetToPx(vln, pos - viewLineStartPosition(vln));
-	int y = (vln - m_scrollY0 + 1) * lineHeight() + 4;
+	int y = (vln - m_scrollY0 + 1) * lineHeight() - 1 /*+ 4*/;
 	int ht = m_autoCompletionDlg->height();
 	if( y + ht > rct.height() ) {
 		y -= ht + lineHeight() + 2;
