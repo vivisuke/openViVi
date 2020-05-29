@@ -2356,7 +2356,7 @@ void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
 		//setupFallingChars();
 	//##if( !editForVar(QString()) )
 		m_textCursor->deleteChar(/*BS=*/true);
-#if	0	//##
+#if	1
 	if( m_autoCompletionDlg != 0 ) {
 		if( m_textCursor->position() <= m_autoCmplPos )
 			closeAutoCompletionDlg();
