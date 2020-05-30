@@ -42,8 +42,11 @@ void OutlineBar::keyHPressed()
 	auto* item = currentItem();
 	if( item == nullptr ) return;
 	auto* pr = item->parent();
-	if( pr != nullptr )
+	if( pr != nullptr ) {
 		setCurrentItem(pr);
+	} else {	//	トップレベルアイテムの場合
+		item->setExpanded(false);	//	折り畳み
+	}
 }
 void OutlineBar::keyJPressed()
 {
