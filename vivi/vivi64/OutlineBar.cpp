@@ -31,6 +31,7 @@ void OutlineBar::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_K:
 		keyKPressed();
 		return;
+	case Qt::Key_Space:
 	case Qt::Key_L:
 		keyLPressed();
 		return;
@@ -104,7 +105,10 @@ void OutlineBar::keyLPressed()
 	int ix = indexOfTopLevelItem(item);
 	if( ix >= 0 ) {		//	トップレベルアイテムの場合
 		if( item->childCount() != 0 ) {
-			setCurrentItem(item->child(0));
+			if( item->isExpanded() )
+				setCurrentItem(item->child(0));
+			else
+				item->setExpanded(true);
 		}
 	}
 }
