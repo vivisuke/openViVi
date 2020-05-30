@@ -610,7 +610,7 @@ bool EditView::zenCodingFromFile(const QString &indent,
 		}
 	}
 #if	_DEBUG
-	fileName = "C:/user/sse.bin/zenCoding.txt";
+	fileName = "G:/bin/sse64/zenCoding.txt";
 #else
 	fileName = qApp->applicationDirPath() + "/zenCoding.txt";
 #endif
