@@ -1971,7 +1971,7 @@ void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 	} else if( isCPPType && text == "#" ) {
 		//##insertSharp();
 	} else if( isCPPType && text == "}" ) {
-		//##insertCloseCurl(text);
+		insertCloseCurl(text);
 	} else if( stmntCmpl && text == "{" && typeName == "CPP"
 					&& isAfter(lastTokenPos, "do") )
 	{
@@ -2245,6 +2245,34 @@ void EditView::clearOpenCloseParenPos()
 {
 	m_openParenPos = m_closeParenPos = -1;		//	対応括弧強調OFF
 	m_openParenViewLine = m_closeParenViewLine = -1;
+}
+bool EditView::isSpaceText(pos_t first, pos_t last)
+{
+	while( first < last ) {
+		if( !isSpaceChar(charAt(first)) )
+			return false;
+		++first;
+	}
+	return true;
+}
+//	} が押された場合の処理
+void EditView::insertCloseCurl(QString &text)
+{
+	if( m_textCursor->hasSelection() ) return;
+	pos_t pos = m_textCursor->position();
+	int ln = document()->positionToLine(pos);
+	pos_t ls = lineStartPosition(ln);
+	if( !isSpaceText(ls, pos) ) return;		//	} より左に空白類以外があればリターン
+	const Buffer &buf = *buffer();
+	int apos = assocParenPositionBackward(typeSettings(), buf, pos, '}', '{');
+	if( apos < 0 ) return;		//	対応する括弧が無い
+	ln = document()->positionToLine(apos);
+	ls = lineStartPosition(ln);
+	int i = ls;
+	while( isSpaceChar(buf[i]) ) ++i;
+	if( i > ls )
+		text = getText(buf, ls, i - ls) + text;		//	参照行のインデントテキストを前に付加
+	m_textCursor->movePosition(TextCursor::BEG_LINE, TextCursor::KEEP_ANCHOR);		//	行頭から選択し、置換
 }
 QString EditView::indentText(int ln)
 {

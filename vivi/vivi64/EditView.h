@@ -197,6 +197,11 @@ public:
 	void	checkAssocParen(int vln, pos_t pos);
 	void	checkAssocSharpTag();
 	bool	isCppType() const;
+	bool	isSpaceText(pos_t first, pos_t last);
+	void	insertSharp();			//	# が押された場合の処理
+	void	insertOpenCurl(QString &);		//	{ が押された場合の処理
+	void	insertCloseCurl(QString &);		//	} が押された場合の処理
+	void	insertCaseSpace(QString &);		//	"case" の直後に 半角空白 が押された場合の処理
 
 protected:
 	void	viFindCharForward(wchar_t qch, bool bPrev, int mvmd, int repCnt);
