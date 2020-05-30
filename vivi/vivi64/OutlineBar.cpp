@@ -82,11 +82,15 @@ void OutlineBar::keyKPressed()
 	int ix = indexOfTopLevelItem(item);
 	if( ix > 0 ) {	//	トップレベルアイテムの場合
 		item = topLevelItem(ix-1);
-		int cnt = item->childCount();
-		if( cnt == 0 ) {
+		if( item->isExpanded() ) {		//	直上アイテムが折り畳まれている場合
+			int cnt = item->childCount();
+			if( cnt == 0 ) {
+				setCurrentItem(item);
+			} else {
+				setCurrentItem(item->child(cnt-1));
+			}
+		} else {		//	直上アイテムが展開されている場合
 			setCurrentItem(item);
-		} else {
-			setCurrentItem(item->child(cnt-1));
 		}
 	} else if( ix < 0 ) {		//	トップレベルアイテムでない場合
 		auto* pr = item->parent();
