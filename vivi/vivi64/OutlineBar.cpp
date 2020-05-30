@@ -56,7 +56,7 @@ void OutlineBar::keyJPressed()
 	int cnt = topLevelItemCount();
 	int ix = indexOfTopLevelItem(item);
 	if( ix >= 0 ) {		//	トップレベルアイテムの場合
-		if( item->childCount() != 0 ) {
+		if( item->isExpanded() && item->childCount() != 0 ) {
 			setCurrentItem(item->child(0));
 		} else if( ix < cnt - 1) {
 			item = topLevelItem(ix+1);
