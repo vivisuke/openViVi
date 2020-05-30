@@ -93,7 +93,7 @@ private:
 	bool	m_bBom;
 	byte_t	m_newLineCode;
 	uchar	m_charEncoding;
-	int		m_bomLength;
+	//int		m_bomLength;
 	TypeSettings	*m_typeSettings;
 	mutable QTextCodec	*m_codec;
 	//QString	m_fullPathName;

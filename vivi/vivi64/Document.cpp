@@ -23,7 +23,8 @@ Document::Document(QString typeName, QObject *parent)
 	: QObject(parent)
 	//, m_typeSettings(nullptr)
 	, m_codec(0)
-	, m_bomLength(0)
+	, m_bBom(false)
+	//, m_bomLength(0)
 	, m_newLineCode(CharEncoding::CRLF)
 	, m_mmSeqNumber(-1)
 	, m_mmScale(1.0)
@@ -240,7 +241,7 @@ bool Document::saveFile() const
 		//errorString = file.errorString();
 		return false;
 	}
-	if( m_bomLength != 0 ) {
+	if( m_bBom ) {
 		QString name = m_codec->name();
 		QByteArray ba;
 		if( name == "UTF-8" ) {

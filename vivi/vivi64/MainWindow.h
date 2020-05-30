@@ -146,6 +146,8 @@ protected:
 	void	makeSureOutputView();
 	void	setEnabledViewMenues(bool);
 	void	clearOutput();
+	void	updateStatusBar();		//	BOM チェックボックス等を更新
+	
 protected:
 	//void	addToOutlineBar(const QString&, const QString&);
 	void	addToOutlineBar(EditView*);

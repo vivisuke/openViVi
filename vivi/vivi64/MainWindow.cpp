@@ -403,12 +403,12 @@ void MainWindow::setupStatusBar()
 	statusBar()->addPermanentWidget(m_curCharCode = new QLabel());			//	カーソル位置文字コード
 	statusBar()->addPermanentWidget(m_lineOffsetLabel = new QLabel());		//	カーソル位置
 	statusBar()->addPermanentWidget(m_bomChkBx = new QCheckBox("BOM"));		//	BOM
+	connect(m_bomChkBx, SIGNAL(toggled(bool)), this, SLOT(onBomChanged(bool)));
 	statusBar()->addPermanentWidget(m_encodingCB = new QComboBox());		//	文字エンコーディング
 	QStringList encList;
 	encList  << "Shift_JIS" << "EUC-JP"<< "UTF-8" << "UTF-16LE" << "UTF-16BE";
 	m_encodingCB->addItems(encList);
-	connect(m_encodingCB, SIGNAL(currentIndexChanged(const QString &)),
-			this, SLOT(onCharEncodingChanged(const QString &)));
+	connect(m_encodingCB, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(onCharEncodingChanged(const QString &)));
 	statusBar()->addPermanentWidget(m_newLineCodeCB = new QComboBox());		//	改行コード
 	QStringList nlList; nlList << "CRLF" << "LF" << "CR";
 	m_newLineCodeCB->addItems(nlList);
@@ -463,11 +463,26 @@ void MainWindow::showMessage(const QString &mess0, int timeout)
 #endif
 	statusBar()->showMessage(mess, timeout);
 }
-void MainWindow::onCharEncodingChanged(const QString &)
+void MainWindow::onCharEncodingChanged(const QString &codecName)
 {
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+		view->document()->setCodecName(codec->fromUnicode(codecName));
+		//##updateCurPosCharCode(view);
+		view->setFocus();
+		if( !m_modeChanging )
+			view->setModified();
+	}
 }
-void MainWindow::onBomChanged(bool)
+void MainWindow::onBomChanged(bool b)
 {
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		view->document()->setBOM(b);
+		if( !m_modeChanging )
+			view->setModified();
+	}
 }
 void MainWindow::onTypeChanged(const QString &type)
 {
@@ -1323,6 +1338,17 @@ void MainWindow::reloadRequested(EditView *view, cchar *codecName)
 		view->jumpToLine(curLine);
 		view->makeCursorInView();
 		view->setModified(false);
+		updateStatusBar();
+	}
+}
+void MainWindow::updateStatusBar()		//	BOM チェックボックス等を更新
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		m_modeChanging = true;		//	未保存フラグが立たないようにおまじない
+		m_encodingCB->setCurrentIndex(view->document()->charEncoding()-1);
+		m_bomChkBx->setCheckState(view->document()->bom() ? Qt::Checked : Qt::Unchecked);
+		m_modeChanging = false;
 	}
 }
 void MainWindow::on_action_RemoveFile_triggered()
@@ -1379,8 +1405,11 @@ void MainWindow::tabCurrentChanged(int index)
 	if( ix < 0 ) ix = 0;
 	m_typeCB->setCurrentIndex(ix);
 	//	文字エンコーディング
+	m_modeChanging = true;		//	未保存フラグが立たないようにおまじない
 	m_encodingCB->setCurrentIndex(doc->charEncoding()-1);
 	m_bomChkBx->setCheckState(doc->bom() ? Qt::Checked : Qt::Unchecked);
+	m_modeChanging = false;
+	
 	//
 	auto* ts = doc->typeSettings();
 	ui.action_LineNumber->setChecked(ts->boolValue(TypeSettings::VIEW_LINENUM));
