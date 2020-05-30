@@ -130,6 +130,9 @@
     <ClCompile Include="CompletionWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="zenCoding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -253,6 +256,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="assocParen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zenCoding.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

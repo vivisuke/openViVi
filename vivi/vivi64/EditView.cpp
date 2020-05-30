@@ -684,7 +684,7 @@ void EditView::mouseMoveEvent(QMouseEvent *event)
 						m_textCursor->movePosition(TextCursor::BEG_WORD, TextCursor::KEEP_ANCHOR);
 					}
 				}
-				//##checkAssocParen();
+				checkAssocParen();
 			}
 #if	0
 			else {
@@ -2354,7 +2354,7 @@ void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
 	if( !m_textCursor->hasSelection() ) return;
 	//##if( !isBoxSelectMode() )
 		//setupFallingChars();
-	//##if( !editForVar(QString()) )
+	if( !editForVar(QString()) )
 		m_textCursor->deleteChar(/*BS=*/true);
 #if	1
 	if( m_autoCompletionDlg != 0 ) {
@@ -2415,7 +2415,7 @@ void EditView::undo()
 		emit modifiedChanged();
 	//##m_textCursor->setBoxSelectMode(false);
 	m_textCursor->setPosition(pos);
-	//##checkAssocParen();
+	checkAssocParen();
 	//##updateScrollBarInfo();
 	makeCursorInView();
 	update();
@@ -2431,7 +2431,7 @@ void EditView::redo()
 		emit modifiedChanged();
 	//##m_textCursor->setBoxSelectMode(false);
 	m_textCursor->setPosition(pos);
-	//##checkAssocParen();
+	checkAssocParen();
 	//##updateScrollBarInfo();
 	makeCursorInView();
 	update();
@@ -2874,7 +2874,7 @@ void EditView::openPrevLine()
 	m_textCursor->insertText(itext);
 	if( !vln )
 		m_textCursor->movePosition(TextCursor::LEFT);
-	//##checkAssocParen();
+	checkAssocParen();
 	makeCursorInView();
 	update();
 }
@@ -2887,7 +2887,7 @@ void EditView::openNextLine()
 	//bool bCPP = name == "CPP" || name == "C#" || name == "JAVA" || name == "JS" || name == "PHP";
 	QString itext = autoIndentText(/*bCPP*/);
 	m_textCursor->insertText(itext);
-	//##checkAssocParen();
+	checkAssocParen();
 	makeCursorInView();
 	update();
 }
@@ -3207,6 +3207,13 @@ void setupCandidates(QStringList &lst, const QString &key, const QString &type)
 		}
 	}
 }
-void EditView::zenCoding()
+bool EditView::isCppType() const
 {
+	const QString typeName = typeSettings()->name();
+	return	typeName == "CPP"
+				|| typeName == "C#"
+				|| typeName == "HLSL"
+				|| typeName == "JAVA"
+				|| typeName == "JS"
+				|| typeName == "PHP";
 }

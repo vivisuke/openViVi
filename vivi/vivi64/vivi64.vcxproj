@@ -119,6 +119,7 @@
     <ClCompile Include="ViEngine.cpp" />
     <ClCompile Include="viewLineMgr.cpp" />
     <ClCompile Include="ViewTokenizer.cpp" />
+    <ClCompile Include="zenCoding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h" />
@@ -131,6 +132,7 @@
     <QtRcc Include="MainWindow.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="zenCoding.h" />
     <QtMoc Include="NamedColorDlg.h" />
     <ClInclude Include="assocParen.h" />
     <QtMoc Include="AutoCompletionDlg.h" />

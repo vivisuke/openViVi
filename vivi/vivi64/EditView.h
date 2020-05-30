@@ -188,12 +188,15 @@ public:
 	uint	lineFlags(int dln) const;
 	void	substitute(int dln1, int dln2, const QString &pat, const QString &rep, const QString &opt);
 	void	zenCoding();
+	bool	zenCodingFromFile(const QString &, const QString &, const QString &, const pos_t);
+	bool	zenCodingFromFile(const QString &, const QString &, const pos_t);
 	void	completion();
 	void	kwCompletion();
 	void	clearOpenCloseParenPos();
 	void	checkAssocParen();
 	void	checkAssocParen(int vln, pos_t pos);
 	void	checkAssocSharpTag();
+	bool	isCppType() const;
 
 protected:
 	void	viFindCharForward(wchar_t qch, bool bPrev, int mvmd, int repCnt);
@@ -249,6 +252,10 @@ protected:
 	void setupHeaders(QStringList &lst, pos_t pos2, const QString &);
 	bool setupWord(QStringList &, QString &, pos_t &);
 	bool editForVar(const QString &);
+	void	zenCodingCPP(const QString &, const QString &, int);
+	void	zenCodingPython(const QString &, const QString &, int);
+	bool zenCodingFor(const QString &, const QString &, int, QChar);
+	
 protected:
 	void	paintEvent(QPaintEvent *);
 	void	mousePressEvent(QMouseEvent *);

@@ -1,0 +1,16 @@
+[settings]
+actTabIndex = 0
+autoOpen = 1
+dispTreeAllFiles = 0
+autoUpdateTags = 1
+autoUpdateDefineList = 1
+autoLoadVizInfo = 2
+viewModule = 0
+extList = 
+todoKeyWord = todo,undone
+memFileColumnWd = 320
+[symbols]
+[globalMarks]
+[files]
+G:/src/VS2019/openViVi/vivi/vivi64/EditView.h
+[ToDo]
