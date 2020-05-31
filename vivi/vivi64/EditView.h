@@ -324,6 +324,7 @@ private:
 	bool	m_minMapDragging;			//	ミニマップ窓ドラッグ移動中
 	bool	m_dispCursor;
 	bool	m_noDeleteAnimation;		//	一時的に削除アニメーション禁止
+	bool	m_noFallingChars;			//	一時的に削除文字落下禁止
 	int		m_scrollX0;			//	水平方向スクロール（0 org カラム位置）
 	int		m_scrollY0;
 	int		m_fontWidth;

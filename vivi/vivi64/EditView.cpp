@@ -106,6 +106,7 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	, m_dispCursor(true)
 	, m_autoCmplAtBegWord(false)
 	, m_noDeleteAnimation(false)
+	, m_noFallingChars(false)
 	//, m_viewLineMgr(new ViewLineMgr(this))
 {
 	Q_ASSERT(doc != nullptr);
@@ -499,6 +500,7 @@ void EditView::setupHeaders(QStringList &lst, pos_t pos2, const QString &text)
 }
 void EditView::setupFallingChars()
 {
+	if( m_noFallingChars ) return;
 	pos_t first = m_textCursor->selectionFirst();
 	int vlnFirst = m_textCursor->selectionFirstLine();
 	pos_t last = m_textCursor->selectionLast();
@@ -2883,7 +2885,9 @@ void EditView::incDec(bool bInc, int d)
 			txt = QString("%1").arg(n, txt.size(), 10, QChar('0'));
 		else
 			txt = QString::number(n);
+		m_noFallingChars = true;
 		m_textCursor->insertText(txt);
+		m_noFallingChars = false;
 		m_textCursor->movePosition(TextCursor::LEFT, TextCursor::MOVE_ANCHOR, txt.size());
 		makeCursorInView();
 		update();
