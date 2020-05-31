@@ -42,12 +42,16 @@
 
 #define		MODE_WIDTH				48
 
+using namespace std;
+
 extern QApplication* g_app;
 
 int	g_docNumber = 0;
 SettingsMgr	g_settingsMgr;
 GlobalSettings	g_globSettings;
 GlobalSettings* globSettings() { return &g_globSettings; }
+
+vector<MainWindow*> g_mainWindows;
 
 //----------------------------------------------------------------------
 /*
@@ -115,6 +119,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//, m_docNumber(0)
 	, m_incSearchPos(0)
 {
+	g_mainWindows.push_back(this);
 	globSettings()->readSettings();
 	ui.setupUi(this);
 	m_viEngine = new ViEngine();
@@ -195,11 +200,22 @@ MainWindow::MainWindow(QWidget *parent)
 	if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) )
 		setMode(MODE_VI);
 	//
-	on_action_New_triggered();
+	if( globSettings()->boolValue(GlobalSettings::OPEN_OPENEDFILES) )
+		on_action_OpenOpenedFiles_triggered();
+	else
+		on_action_New_triggered();
 }
 MainWindow::~MainWindow()
 {
 	//delete m_settingsMgr;
+#if 0
+	for (auto itr = g_mainWindows.begin(); itr != g_mainWindows.end(); ++itr) {
+		if( *itr == this ) {
+			g_mainWindows.erase(itr);
+			break;
+		}
+	}
+#endif
 }
 void MainWindow::createDockWindows()
 {
@@ -733,14 +749,23 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		}
 	}
     QSettings settings;
-    settings.setValue(KEY_OPENED_FILELIST, lst);
+    QString key = KEY_OPENED_FILELIST + QString("-%1").arg(g_mainWindows.size());
+    settings.setValue(key, lst);
 	//
 	QMainWindow::closeEvent(event);
+	//
+	for (auto itr = g_mainWindows.begin(); itr != g_mainWindows.end(); ++itr) {
+		if( *itr == this ) {
+			g_mainWindows.erase(itr);
+			break;
+		}
+	}
 }
 void MainWindow::on_action_OpenOpenedFiles_triggered()
 {
     QSettings settings;
-    QStringList files = settings.value(KEY_OPENED_FILELIST).toStringList();
+    QString key = KEY_OPENED_FILELIST + QString("-%1").arg(g_mainWindows.size());
+    QStringList files = settings.value(key).toStringList();
     for(const auto& path: files) {
     	createView(path);
     }
@@ -1850,7 +1875,7 @@ void MainWindow::updateFindStringCB()
 	m_findStringCB->addItems(strList);
 	m_searching = false;
 }
-byte MainWindow::searchAlgorithm() const	// { return m_searchAlgorithm; }
+byte_t MainWindow::searchAlgorithm() const	// { return m_searchAlgorithm; }
 {
 	if( globSettings()->boolValue(GlobalSettings::REGEXP) )
 		return SSSearch::STD_REGEX;
