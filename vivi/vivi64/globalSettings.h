@@ -2,7 +2,7 @@
 //
 //			File:			"globalSettings.h"
 //			Created:		15-9-2013
-//			Author:			’Ã“cLG
+//			Author:			æ´¥ç”°ä¼¸ç§€
 //			Description:
 //
 //----------------------------------------------------------------------
@@ -30,15 +30,15 @@ public:
 		INC_SEARCH,
 		GREP_SUB_DIR,
 		VIEW_RT_BTM_PICTURE,
-		SYNC_VERT_SCROLL,				//	‰æ–Ê•ªŠ„ŽžF‚’¼ƒXƒNƒ[ƒ‹“¯Šú
-		SYNC_HORZ_SCROLL,				//	‰æ–Ê•ªŠ„ŽžF…•½ƒXƒNƒ[ƒ‹“¯Šú
-		IGNORE_MOC_FILE,				//	’è‹`ˆÊ’u‚ÖƒWƒƒƒ“ƒvFmoc_*.cpp ‚ð–³Ž‹
-		//STATEMENT_COMPLETION,		//	\•¶Ž©“®•âŠ®
-		//WORD_COMPLETION,				//	’PŒêŽ©“®•âŠ®
-		//KEYWORD_COMPLETION,		//	ƒL[ƒ[ƒhŽ©“®•âŠ®
-		WITH_BOM,							//	BOM•t‚«
-		WHOLE_MAP,						//	‘S‘Ìƒ}ƒbƒv•\Ž¦
-		VI_COMMAND,					//	vi ƒRƒ}ƒ“ƒh—LŒø
+		SYNC_VERT_SCROLL,				//	ç”»é¢åˆ†å‰²æ™‚ï¼šåž‚ç›´ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«åŒæœŸ
+		SYNC_HORZ_SCROLL,				//	ç”»é¢åˆ†å‰²æ™‚ï¼šæ°´å¹³ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«åŒæœŸ
+		IGNORE_MOC_FILE,				//	å®šç¾©ä½ç½®ã¸ã‚¸ãƒ£ãƒ³ãƒ—ï¼šmoc_*.cpp ã‚’ç„¡è¦–
+		//STATEMENT_COMPLETION,		//	æ§‹æ–‡è‡ªå‹•è£œå®Œ
+		//WORD_COMPLETION,				//	å˜èªžè‡ªå‹•è£œå®Œ
+		//KEYWORD_COMPLETION,		//	ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰è‡ªå‹•è£œå®Œ
+		WITH_BOM,							//	BOMä»˜ã
+		MINI_MAP,						//	ãƒŸãƒ‹ãƒžãƒƒãƒ—è¡¨ç¤º
+		VI_COMMAND,					//	vi ã‚³ãƒžãƒ³ãƒ‰æœ‰åŠ¹
 		OUTPUT_VIEW,					//	OutputBar/OutputView
 		GREP_VIEW,						//	OutputBar/GrepView
 		N_BOOL,
@@ -48,13 +48,13 @@ public:
 		PICTURE_SCALE,
 		N_INT,
 		
-		PICTURE1_PATH = 0,
-		PICTURE2_PATH,
-		OUTPUT_FONT_NAME,
-		MAIL_ADDRESS,
-		USER_NAME,
-		CERT_CODE,
-		PASS_CODE,
+		//PICTURE1_PATH = 0,
+		//PICTURE2_PATH,
+		OUTPUT_FONT_NAME = 0,
+		//MAIL_ADDRESS,
+		//USER_NAME,
+		//CERT_CODE,
+		//PASS_CODE,
 		ZEN_CODING_PATH,
 		HTDOCS_ROOT,
 		N_TEXT,

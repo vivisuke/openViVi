@@ -2,7 +2,7 @@
 //
 //			File:			"globalSettings.cpp"
 //			Created:		15-9-2013
-//			Author:			í√ìcêLèG
+//			Author:			Ê¥•Áî∞‰º∏ÁßÄ
 //			Description:
 //
 //----------------------------------------------------------------------
@@ -12,7 +12,7 @@
 
 struct KeyBoolItem
 {
-	cchar	*m_key;		//	ÉLÅ[ñº
+	cchar	*m_key;		//	„Ç≠„ÉºÂêç
 	bool		m_value;	//	
 };
 static KeyBoolItem keyBoolTable[] = {
@@ -30,7 +30,7 @@ static KeyBoolItem keyBoolTable[] = {
 	//{"wordCompletion",	true},
 	//{"keywordCompletion",	true},
 	{"withBOM",	true},
-	{"wholeMap",	true},
+	{"MiniMap",	true},
 	{"viCommand",	false},
 	{"grepView",	false},
 	{"outputView",	false},
@@ -38,24 +38,24 @@ static KeyBoolItem keyBoolTable[] = {
 };
 struct KeyTextItem
 {
-	cchar	*m_key;		//	ÉLÅ[ñº
+	cchar	*m_key;		//	„Ç≠„ÉºÂêç
 	cwchar	*m_value;	//	
 };
 static KeyTextItem keyTextTable[] = {
-	{"pict1Path",	L""},
-	{"pict2Path",	L""},
-	{"OutputFontName",	L"ÉÅÉCÉäÉI"},
-	{"MailAddress", L""},
-	{"UserName", L""},
-	{"CertCode", L""},
-	{"PassCode", L""},
+	//{"pict1Path",	L""},
+	//{"pict2Path",	L""},
+	{"OutputFontName",	L"„É°„Ç§„É™„Ç™"},
+	//{"MailAddress", L""},
+	//{"UserName", L""},
+	//{"CertCode", L""},
+	//{"PassCode", L""},
 	{"ZenCodingPath",	L""},
 	{"htdocsRoot",	L""},
 	{0, 0}
 };
 struct KeyEnumItem
 {
-	cchar	*m_key;		//	ÉLÅ[ñº
+	cchar	*m_key;		//	„Ç≠„ÉºÂêç
 	int		m_value;	//	
 } keyEnumTable[] = {
 	{"CharEncoding",	0},
@@ -64,7 +64,7 @@ struct KeyEnumItem
 };
 struct KeyIntItem
 {
-	cchar	*m_key;		//	ÉLÅ[ñº
+	cchar	*m_key;		//	„Ç≠„ÉºÂêç
 	int		m_value;	//	
 };
 static KeyIntItem keyIntTable[] = {

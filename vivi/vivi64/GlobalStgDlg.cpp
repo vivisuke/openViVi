@@ -1,4 +1,4 @@
-#include <QtGui>
+﻿#include <QtGui>
 #include <QFileDialog>
 #include "GlobalStgDlg.h"
 #include "globalSettings.h"
@@ -20,20 +20,20 @@ GlobalStgDlg::GlobalStgDlg(GlobalSettings *globSettings, QWidget *parent)
 	ui.docTypeCB->addItems(lst);
 	ui.docTypeCB->setCurrentIndex(m_globSettings->enumValue(GlobalSettings::DOC_TYPE));
 	ui.docTypeCB->setMaxVisibleItems(ui.docTypeCB->count());
-	ui.pict1FilePath->setText(m_globSettings->textValue(GlobalSettings::PICTURE1_PATH));
-	connect(ui.pict1Ref, SIGNAL(clicked()), this, SLOT(refPict1FilePath()));
-	ui.pict2FilePath->setText(m_globSettings->textValue(GlobalSettings::PICTURE2_PATH));
-	connect(ui.pict2Ref, SIGNAL(clicked()), this, SLOT(refPict2FilePath()));
-	ui.alphaSB->setValue(m_globSettings->intValue(GlobalSettings::PICTURE_OPACITY)/100.0);
-	ui.scaleSB->setValue(m_globSettings->intValue(GlobalSettings::PICTURE_SCALE)/100.0);
-	ui.ZenCodingFilePath->setText(m_globSettings->textValue(GlobalSettings::ZEN_CODING_PATH));
-	connect(ui.ZCFRef, SIGNAL(clicked()), this, SLOT(ZenCodingFilePath()));
+	//ui.pict1FilePath->setText(m_globSettings->textValue(GlobalSettings::PICTURE1_PATH));
+	//connect(ui.pict1Ref, SIGNAL(clicked()), this, SLOT(refPict1FilePath()));
+	//ui.pict2FilePath->setText(m_globSettings->textValue(GlobalSettings::PICTURE2_PATH));
+	//connect(ui.pict2Ref, SIGNAL(clicked()), this, SLOT(refPict2FilePath()));
+	//ui.alphaSB->setValue(m_globSettings->intValue(GlobalSettings::PICTURE_OPACITY)/100.0);
+	//ui.scaleSB->setValue(m_globSettings->intValue(GlobalSettings::PICTURE_SCALE)/100.0);
+	//ui.ZenCodingFilePath->setText(m_globSettings->textValue(GlobalSettings::ZEN_CODING_PATH));
+	//connect(ui.ZCFRef, SIGNAL(clicked()), this, SLOT(ZenCodingFilePath()));
 	ui.htdocsRoot->setText(m_globSettings->textValue(GlobalSettings::HTDOCS_ROOT));
 	connect(ui.htdocsRef, SIGNAL(clicked()), this, SLOT(htdocsRootPath()));
 	//ui.statementCompletion->setChecked(m_globSettings->boolValue(GlobalSettings::STATEMENT_COMPLETION));
 	//ui.wordCompletion->setChecked(m_globSettings->boolValue(GlobalSettings::WORD_COMPLETION));
 	//ui.keywordCompletion->setChecked(m_globSettings->boolValue(GlobalSettings::KEYWORD_COMPLETION));
-	ui.wholeMap->setChecked(m_globSettings->boolValue(GlobalSettings::WHOLE_MAP));
+	ui.MiniMap->setChecked(m_globSettings->boolValue(GlobalSettings::MINI_MAP));
 
 	QFontDatabase db;
 	ui.fontFamilyCB->addItems(db.families());
@@ -62,16 +62,17 @@ void GlobalStgDlg::accept()
 	m_globSettings->setTextValue(GlobalSettings::OUTPUT_FONT_NAME, ui.fontFamilyCB->currentText());
 	m_globSettings->setIntValue(GlobalSettings::OUTPUT_FONT_SIZE, ui.fontSizeSB->value());
 	m_globSettings->setBoolValue(GlobalSettings::OUTPUT_VIEW, ui.outputView->isChecked());
-	m_globSettings->setTextValue(GlobalSettings::PICTURE1_PATH, ui.pict1FilePath->text());
-	m_globSettings->setTextValue(GlobalSettings::PICTURE2_PATH, ui.pict2FilePath->text());
+	//m_globSettings->setTextValue(GlobalSettings::PICTURE1_PATH, ui.pict1FilePath->text());
+	//m_globSettings->setTextValue(GlobalSettings::PICTURE2_PATH, ui.pict2FilePath->text());
 	m_globSettings->setTextValue(GlobalSettings::ZEN_CODING_PATH, ui.ZenCodingFilePath->text());
 	m_globSettings->setTextValue(GlobalSettings::HTDOCS_ROOT, ui.htdocsRoot->text());
 	//qDebug() << m_globSettings->textValue(GlobalSettings::PICTURE1_PATH);
-	m_globSettings->setIntValue(GlobalSettings::PICTURE_OPACITY, (int)(ui.alphaSB->value() * 100));
-	m_globSettings->setIntValue(GlobalSettings::PICTURE_SCALE, (int)(ui.scaleSB->value() * 100));
-	m_globSettings->setBoolValue(GlobalSettings::WHOLE_MAP, ui.wholeMap->isChecked());
+	//m_globSettings->setIntValue(GlobalSettings::PICTURE_OPACITY, (int)(ui.alphaSB->value() * 100));
+	//m_globSettings->setIntValue(GlobalSettings::PICTURE_SCALE, (int)(ui.scaleSB->value() * 100));
+	m_globSettings->setBoolValue(GlobalSettings::MINI_MAP, ui.MiniMap->isChecked());
 	QDialog::accept();
 }
+#if 0
 void GlobalStgDlg::refPict1FilePath()
 {
 	QString fileName = QFileDialog::getOpenFileName(this, "Pictue File Name");
@@ -84,6 +85,7 @@ void GlobalStgDlg::refPict2FilePath()
 	if( !fileName.isEmpty() )
 		ui.pict2FilePath->setText(fileName);
 }
+#endif
 void GlobalStgDlg::ZenCodingFilePath()
 {
 	QString fileName = QFileDialog::getOpenFileName(this, "Zen-Coding File Name");

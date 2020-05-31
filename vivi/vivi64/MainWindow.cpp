@@ -203,6 +203,7 @@ MainWindow::~MainWindow()
 }
 void MainWindow::createDockWindows()
 {
+	//	アウトラインバー
 	m_outlineDock = new QDockWidget(tr("Outline"));
 	m_outlineDock->setObjectName("Outline");
 	m_outlineDock->setWidget(m_outlineBar = new OutlineBar());
@@ -219,6 +220,7 @@ void MainWindow::createDockWindows()
 	m_outlineDock->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::LeftDockWidgetArea, m_outlineDock);
 	//
+	//	アウトプットバー
 	m_outputDock = new QDockWidget(tr("Output"));
 	m_outputDock->setObjectName("Output");
 	m_outputDock->setWidget(m_outputWidget = new QPlainTextEdit());

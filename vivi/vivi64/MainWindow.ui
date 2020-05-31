@@ -482,7 +482,7 @@
     <string>&amp;NextTab</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+T</string>
+    <string>Ctrl+Tab</string>
    </property>
   </action>
   <action name="action_PrevTab">

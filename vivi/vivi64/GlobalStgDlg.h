@@ -18,8 +18,8 @@ public slots:
 	void	accept();
 
 public slots:
-	void	refPict1FilePath();
-	void	refPict2FilePath();
+	//void	refPict1FilePath();
+	//void	refPict2FilePath();
 	void	ZenCodingFilePath();
 	void	htdocsRootPath();
 
