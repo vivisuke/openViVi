@@ -79,6 +79,7 @@ https://github.com/vivisuke/openViVi/releases
 
 # ■ スポンサー
 本プロジェクトは下記スポンサー様のご支援を受けています。ありがとうございます。
+- sempreff様 （2020年5月 ￥3,000)
 - NAO様 （2020年5月 ￥1,000)
 - kiyotosi様 （2020年5月 ￥1,000)
 - umibose様 （2020年5月 ￥20,000)
