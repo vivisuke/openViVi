@@ -32,6 +32,7 @@ static KeyBoolItem keyBoolTable[] = {
 	{"withBOM",	true},
 	{"MiniMap",	true},
 	{"viCommand",	false},
+	{"openOpenedFiles",	true},
 	{"grepView",	false},
 	{"outputView",	false},
 	{0, 0}

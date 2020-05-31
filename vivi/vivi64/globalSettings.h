@@ -23,6 +23,7 @@ class GlobalSettings
 {
 public:
 	enum {
+		//	bool タイプ
 		IGNORE_CASE = 0,
 		WHOLE_WORD_ONLY,
 		REGEXP,
@@ -36,13 +37,15 @@ public:
 		//STATEMENT_COMPLETION,		//	構文自動補完
 		//WORD_COMPLETION,				//	単語自動補完
 		//KEYWORD_COMPLETION,		//	キーワード自動補完
-		WITH_BOM,							//	BOM付き
-		MINI_MAP,						//	ミニマップ表示
+		WITH_BOM,					//	BOM付き
+		MINI_MAP,					//	ミニマップ表示
 		VI_COMMAND,					//	vi コマンド有効
+		OPEN_OPENEDFILES,			//	起動時：終了時ファイル復帰
 		OUTPUT_VIEW,					//	OutputBar/OutputView
 		GREP_VIEW,						//	OutputBar/GrepView
 		N_BOOL,
 		
+		//	int タイプ
 		OUTPUT_FONT_SIZE = 0,
 		PICTURE_OPACITY,
 		PICTURE_SCALE,
