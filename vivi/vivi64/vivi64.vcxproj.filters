@@ -133,6 +133,9 @@
     <ClCompile Include="zenCoding.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GlobalStgDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -177,12 +180,18 @@
     <QtMoc Include="CompletionWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="GlobalStgDlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="TypeStgDlg.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="GlobalStgDlg.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

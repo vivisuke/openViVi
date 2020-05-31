@@ -105,6 +105,7 @@
     <ClCompile Include="ex.cpp" />
     <ClCompile Include="FindLineEdit.cpp" />
     <ClCompile Include="globalSettings.cpp" />
+    <ClCompile Include="GlobalStgDlg.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NamedColorDlg.cpp" />
@@ -125,6 +126,7 @@
     <QtMoc Include="MainWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="GlobalStgDlg.ui" />
     <QtUic Include="MainWindow.ui" />
     <QtUic Include="TypeStgDlg.ui" />
   </ItemGroup>
@@ -132,6 +134,7 @@
     <QtRcc Include="MainWindow.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="GlobalStgDlg.h" />
     <ClInclude Include="zenCoding.h" />
     <QtMoc Include="NamedColorDlg.h" />
     <ClInclude Include="assocParen.h" />

@@ -15,6 +15,7 @@
 #include "EditView.h"
 #include "settingsMgr.h"
 #include "TypeStgDlg.h"
+#include "GlobalStgDlg.h"
 #include "typeSettings.h"
 #include "globalSettings.h"
 #include "charEncoding.h"
@@ -1943,6 +1944,11 @@ void MainWindow::on_action_TypeSettings_triggered()
 }
 void MainWindow::on_action_GlobalSettings_triggered()
 {
+	GlobalStgDlg aDlg(globSettings());
+	aDlg.exec();
+	//##typesettingsChanged(view);
+	//view->typeSettings()->writeSettings();
+	globSettings()->writeSettings();
 }
 void MainWindow::on_action_viCommand_triggered()
 {
