@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------
+﻿//----------------------------------------------------------------------
 //
 //			File:			"completion.cpp"
 //			Created:		01-10-2013
@@ -861,7 +861,9 @@ void EditView::autoCmplDecided(QString text, bool autoClosed)
 		dst += ch;
 	}
 	if( !editForVar(dst) ) {
+		m_noFallingChars = true;
 		insertText(dst);
+		m_noFallingChars = false;
 	} if( !m_autoCmplAtBegWord
 		&& !autoClosed )		//	自動確定の場合は、削除を行わない
 	{
