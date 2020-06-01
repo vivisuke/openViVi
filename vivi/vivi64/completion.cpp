@@ -348,7 +348,7 @@ bool EditView::checkEndBraceCompletion(int ln)
 	update();
 	return false;
 }
-const char *libnames[] = {
+const char *g_libnames[] = {
 	"algorithm", "array", "assert.h", "atomic", "bitset",
 	"cassert", "cctype", "cerrno", "cfenv", "cfloat",
 	"chrono", "cinttypes", "ciso646", "climits", "clocale",
@@ -374,7 +374,7 @@ const char *libnames[] = {
 void setupLibNames(QStringList &lst /*, QString pat*/)
 {
 	lst.clear();
-	for(cchar **pp = &libnames[0]; *pp != 0; ++pp) {
+	for(cchar **pp = &g_libnames[0]; *pp != 0; ++pp) {
 		QString s(*pp);
 		//if( pat.isEmpty() || s.startsWith(pat) )
 			lst += "<" + s + ">";
@@ -384,7 +384,7 @@ bool EditView::clibralyCompletion(QStringList &lst, const QString &pat, pos_t &f
 {
 	//qDebug() << "clibralyCompletion()"; 
 	//first = 0;
-	for(cchar **pp = &libnames[0]; *pp != 0; ++pp) {
+	for(cchar **pp = &g_libnames[0]; *pp != 0; ++pp) {
 		QString s(*pp);
 		if( pat.isEmpty() || s.startsWith(pat) )
 			lst += s;

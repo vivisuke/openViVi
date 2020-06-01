@@ -35,6 +35,7 @@
 
 //----------------------------------------------------------------------
 void setupCandidates(QStringList &lst, const QString &key, const QString &type);
+void setupLibNames(QStringList &lst /*, QString pat = QString()*/);
 
 inline bool isSpaceChar(wchar_t ch)
 {
@@ -2044,7 +2045,7 @@ void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 	} else if( stmntCmpl && text == "<" && isAfterInclude() ) {
 		m_autoCmplPos = pos;
 		QStringList lst;
-		//##setupLibNames(lst);
+		setupLibNames(lst);
 		showAutoCompletionDlg(lst, "<");
 	} else if( stmntCmpl && text == "\"" && isAfterInclude() ) {
 		m_autoCmplPos = pos;

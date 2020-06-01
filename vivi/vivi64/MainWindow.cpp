@@ -1464,6 +1464,7 @@ void MainWindow::tabCurrentChanged(int index)
 		dir.cdUp();
 		qDebug() << dir.absolutePath();
 		QDir::setCurrent(dir.absolutePath());
+		showMessage(dir.absolutePath(), 3000);
 	}
 	currentViewChangedAtOutlineBar(view);
 	m_currentView = view;
