@@ -1794,6 +1794,12 @@ void MainWindow::textSearched(const QString&txt, bool word)
 {
 	ui.action_WordSearch->setChecked(word);
 }
+void MainWindow::on_action_LastModifiedPos_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) )
+		view->jumpToLastModifiedPos();
+}
 void MainWindow::typesettingsChanged(EditView *view)
 {
 	view->typeSettings()->writeSettings();

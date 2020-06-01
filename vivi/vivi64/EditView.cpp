@@ -3249,3 +3249,10 @@ bool EditView::isCppType() const
 				|| typeName == "JS"
 				|| typeName == "PHP";
 }
+void EditView::jumpToLastModifiedPos()
+{
+	m_textCursor->setPosition(buffer()->lastModifiedPos());
+	makeCursorInView(true);
+	resetCursorBlinking();
+	update();
+}

@@ -158,6 +158,7 @@
     <addaction name="action_WordSearch"/>
     <addaction name="action_RegExp"/>
     <addaction name="action_Incremental"/>
+    <addaction name="action_LastModifiedPos"/>
    </widget>
    <widget class="QMenu" name="menu_Tool">
     <property name="title">
@@ -618,6 +619,14 @@
   <action name="action_OpenOpenedFiles">
    <property name="text">
     <string>OpenOpenedFiles(&amp;9)</string>
+   </property>
+  </action>
+  <action name="action_LastModifiedPos">
+   <property name="text">
+    <string>LastModifiedPos</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Left</string>
    </property>
   </action>
  </widget>
