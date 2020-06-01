@@ -216,6 +216,7 @@ private slots:
 	void	on_action_SearchForward_triggered();
 	void	on_action_LastModifiedPos_triggered();
 	void	on_action_Incremental_triggered();
+	void	on_action_Grep_triggered();
 	void	on_action_LineNumber_triggered();
 	void	on_action_BoxSelect_triggered();
 	void	on_action_KeisenMode_triggered();

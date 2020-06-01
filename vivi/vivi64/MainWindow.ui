@@ -158,6 +158,7 @@
     <addaction name="action_WordSearch"/>
     <addaction name="action_RegExp"/>
     <addaction name="action_Incremental"/>
+    <addaction name="action_Grep"/>
     <addaction name="action_LastModifiedPos"/>
    </widget>
    <widget class="QMenu" name="menu_Tool">
@@ -627,6 +628,17 @@
    </property>
    <property name="shortcut">
     <string>Alt+Left</string>
+   </property>
+  </action>
+  <action name="action_Grep">
+   <property name="text">
+    <string>&amp;Grep...</string>
+   </property>
+   <property name="toolTip">
+    <string>Grep - search from files</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F4</string>
    </property>
   </action>
  </widget>

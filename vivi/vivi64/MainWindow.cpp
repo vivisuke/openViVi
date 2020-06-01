@@ -2161,3 +2161,6 @@ void MainWindow::imeOpenStatusChanged()
 {
 	assert(0);
 }
+void MainWindow::on_action_Grep_triggered()
+{
+}
