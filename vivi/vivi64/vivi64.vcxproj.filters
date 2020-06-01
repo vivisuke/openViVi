@@ -136,6 +136,18 @@
     <ClCompile Include="GlobalStgDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="grep.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GrepDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GrepEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GreppingDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -183,6 +195,15 @@
     <QtMoc Include="GlobalStgDlg.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="GrepDlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="GrepEngine.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="GreppingDlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainWindow.ui">
@@ -192,6 +213,12 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="GlobalStgDlg.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="GrepDlg.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="GreppingDlg.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

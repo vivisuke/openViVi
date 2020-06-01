@@ -106,6 +106,10 @@
     <ClCompile Include="FindLineEdit.cpp" />
     <ClCompile Include="globalSettings.cpp" />
     <ClCompile Include="GlobalStgDlg.cpp" />
+    <ClCompile Include="grep.cpp" />
+    <ClCompile Include="GrepDlg.cpp" />
+    <ClCompile Include="GrepEngine.cpp" />
+    <ClCompile Include="GreppingDlg.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NamedColorDlg.cpp" />
@@ -127,6 +131,8 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="GlobalStgDlg.ui" />
+    <QtUic Include="GrepDlg.ui" />
+    <QtUic Include="GreppingDlg.ui" />
     <QtUic Include="MainWindow.ui" />
     <QtUic Include="TypeStgDlg.ui" />
   </ItemGroup>
@@ -135,6 +141,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GlobalStgDlg.h" />
+    <QtMoc Include="GrepDlg.h" />
+    <QtMoc Include="GrepEngine.h" />
+    <QtMoc Include="GreppingDlg.h" />
     <ClInclude Include="zenCoding.h" />
     <QtMoc Include="NamedColorDlg.h" />
     <ClInclude Include="assocParen.h" />

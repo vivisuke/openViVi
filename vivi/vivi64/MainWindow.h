@@ -147,6 +147,7 @@ protected:
 	void	setEnabledViewMenues(bool);
 	void	clearOutput();
 	void	updateStatusBar();		//	BOM チェックボックス等を更新
+	void	grep(bool);
 	
 protected:
 	//void	addToOutlineBar(const QString&, const QString&);
@@ -217,6 +218,7 @@ private slots:
 	void	on_action_LastModifiedPos_triggered();
 	void	on_action_Incremental_triggered();
 	void	on_action_Grep_triggered();
+	void	on_action_GrepCurWord_triggered();
 	void	on_action_LineNumber_triggered();
 	void	on_action_BoxSelect_triggered();
 	void	on_action_KeisenMode_triggered();
@@ -283,6 +285,7 @@ public slots:
 	void	onOutlineBarKeyKPressed();
 	void	onOutlineBarKeyLPressed();
 #endif
+	void	grepFinished(int cnt);
 	
 private:
 	Ui::MainWindowClass ui;

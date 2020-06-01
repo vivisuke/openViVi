@@ -106,7 +106,7 @@ public:
 	QString	textValue(int ix) const { return m_textValues[ix]; }
 	int			enumValue(int ix) const { return m_enumValues[ix]; }
 	QByteArray	defaultCodecName() const;
-	bool	certified() const;
+	//bool	certified() const;
 
 protected:
 	void	init();
