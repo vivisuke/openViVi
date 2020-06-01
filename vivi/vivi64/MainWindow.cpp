@@ -35,6 +35,7 @@
 #define		KEY_FAVORITEFILELIST		"favoriteFileList"
 #define		KEY_RECENTDIRLIST			"recentDirList"
 #define		KEY_OPENED_FILELIST			"openedFileList"
+#define		KEY_MAINWIN_RECT			"mainWindowRect"
 
 #define		MAX_FIND_STR_HIST			64
 #define		MAX_CLIPBOARD_HIST		100
@@ -119,9 +120,17 @@ MainWindow::MainWindow(QWidget *parent)
 	//, m_docNumber(0)
 	, m_incSearchPos(0)
 {
+	ui.setupUi(this);
 	g_mainWindows.push_back(this);
 	globSettings()->readSettings();
-	ui.setupUi(this);
+	//
+    QSettings settings;
+    QString key = KEY_MAINWIN_RECT + QString("-%1").arg(g_mainWindows.size());
+    if( settings.contains(key) ) {
+    	QRect rct = settings.value(key).toRect();
+    	setGeometry(rct);
+    }
+	
 	m_viEngine = new ViEngine();
 	connect(m_viEngine, SIGNAL(modeChanged()), this, SLOT(viModeChanged()));
 	connect(m_viEngine, SIGNAL(insertText(QString)), this, SLOT(insertText(QString)));
@@ -751,9 +760,14 @@ void MainWindow::closeEvent(QCloseEvent *event)
     QSettings settings;
     QString key = KEY_OPENED_FILELIST + QString("-%1").arg(g_mainWindows.size());
     settings.setValue(key, lst);
+    //
+    //	ウィンドウジオメトリ保存
+    auto geo = geometry();
+    key = KEY_MAINWIN_RECT + QString("-%1").arg(g_mainWindows.size());
+    settings.setValue(key, geo);
 	//
 	QMainWindow::closeEvent(event);
-	//
+	//	this を オープンMainWindowリストから削除
 	for (auto itr = g_mainWindows.begin(); itr != g_mainWindows.end(); ++itr) {
 		if( *itr == this ) {
 			g_mainWindows.erase(itr);
