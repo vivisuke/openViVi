@@ -127,7 +127,16 @@
       <item>
        <widget class="QWidget" name="widget_3" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_3">
-         <property name="margin">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
           <number>0</number>
          </property>
          <item>
@@ -169,8 +178,8 @@
             <string>&amp;Ignore Case</string>
            </property>
            <property name="icon">
-            <iconset resource="mainwindow.qrc">
-             <normaloff>:/MainWindow/Resources/icSearch.png</normaloff>:/MainWindow/Resources/icSearch.png</iconset>
+            <iconset>
+             <normaloff>:/MainWindow/Resources/opt_ic.png</normaloff>:/MainWindow/Resources/opt_ic.png</iconset>
            </property>
           </widget>
          </item>
@@ -180,15 +189,24 @@
             <string>Matches Whole Word Only</string>
            </property>
            <property name="icon">
-            <iconset resource="mainwindow.qrc">
-             <normaloff>:/MainWindow/Resources/wordSearch.png</normaloff>:/MainWindow/Resources/wordSearch.png</iconset>
+            <iconset>
+             <normaloff>:/MainWindow/Resources/opt_word.png</normaloff>:/MainWindow/Resources/opt_word.png</iconset>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QWidget" name="widget_5" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
@@ -197,8 +215,8 @@
                <string>RegExp</string>
               </property>
               <property name="icon">
-               <iconset resource="mainwindow.qrc">
-                <normaloff>:/MainWindow/Resources/regexp.png</normaloff>:/MainWindow/Resources/regexp.png</iconset>
+               <iconset>
+                <normaloff>:/MainWindow/Resources/opt_regexp.png</normaloff>:/MainWindow/Resources/opt_regexp.png</iconset>
               </property>
              </widget>
             </item>

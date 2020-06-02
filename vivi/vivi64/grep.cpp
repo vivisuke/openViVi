@@ -80,6 +80,7 @@ void MainWindow::grep(bool curWord)
 	
 	m_grepEngine = new GrepEngine(globSettings());
 	m_grepEngine->moveToThread(&m_thread);
+	connect(this, SIGNAL(doGrep(QString, QString, QString, QString)), m_grepEngine, SLOT(doGrep(QString, QString, QString, QString)));
 	connect(m_grepEngine, SIGNAL(finished(int)), this, SLOT(grepFinished(int)));
 	const QString mess = tr("* grepping '%1' at %2, %3 ...\n")
 					.arg(aDlg.findString()).arg(dirStr).arg(aDlg.extentions());
@@ -104,14 +105,17 @@ void MainWindow::grep(bool curWord)
 	///QMessageBox mb();
 	
 	//m_grepEngine->doGrep(aDlg.findString(), aDlg.extentions(), dirStr);
-	QMetaObject::invokeMethod(m_grepEngine, "doGrep",
+	emit doGrep(aDlg.findString(), aDlg.findString(), dirStr, aDlg.exclude());
+#if	0
+	const bool b = QMetaObject::invokeMethod(m_grepEngine, "doGrep",
 								//Qt::QueuedConnection,
 								//Q_RETURN_ARG(),
 								Q_ARG(QString, aDlg.findString()),
 								Q_ARG(QString, aDlg.extentions()),
 								Q_ARG(QString, dirStr),
 								Q_ARG(QString, aDlg.exclude()));
-	
+#endif
+
 	dlg.exec();
 	if( m_grepEngine != 0 )
 		m_grepEngine->terminate();
@@ -123,7 +127,7 @@ void MainWindow::grepFinished(int cnt)
 	delete m_grepEngine;
 	m_grepEngine = 0;
 	const QString mess = tr("\n* grep finished, %1 line(s) matched.\n").arg(cnt);
-	if( m_grepView == 0 ) {
+	if( true /*m_grepView == 0*/ ) {
 		doOutput(mess);
 	} else {
 		doOutputToGrepView(mess);

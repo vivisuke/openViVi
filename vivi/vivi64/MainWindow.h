@@ -287,6 +287,9 @@ public slots:
 #endif
 	void	grepFinished(int cnt);
 	
+signals:
+	void	doGrep(QString pat, QString ext, QString dirStr, QString exclude);
+	
 private:
 	Ui::MainWindowClass ui;
 	

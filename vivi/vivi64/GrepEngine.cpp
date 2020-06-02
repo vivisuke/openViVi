@@ -1,4 +1,4 @@
-#include <QtGui>
+ï»¿#include <QtGui>
 #include "GrepEngine.h"
 #include "globalSettings.h"
 #include "charEncoding.h"
@@ -19,9 +19,10 @@ GrepEngine::~GrepEngine()
 {
 	delete m_sssrc;
 }
-//	dirStr ˆÈ‰º‚ğ grep ˆ—
+//	dirStr ä»¥ä¸‹ã‚’ grep å‡¦ç†
 void GrepEngine::doGrep(QString pat, QString extentions, QString dirStr, QString exclude)
 {
+	qDebug() << "GrepEngine::doGrep()";
 	if( dirStr.endsWith('/') ) dirStr = dirStr.left(dirStr.size() - 1);
 	uint opt = 0;
 	if( m_globSettings->boolValue(GlobalSettings::IGNORE_CASE) )
@@ -73,7 +74,7 @@ int GrepEngine::doGrepDir(QString pat, QString extentions, QString dirStr, const
 	}
 	return sum;
 }
-//	ƒtƒ@ƒCƒ‹FfullPath ‚©‚ç pat ‚ğŒŸõ
+//	ãƒ•ã‚¡ã‚¤ãƒ«ï¼šfullPath ã‹ã‚‰ pat ã‚’æ¤œç´¢
 int GrepEngine::doGrepFile(const QString &fullPath, const QString &pat, const QRegExp &regexp)
 {
 	if( m_toTerminate ) {
@@ -96,7 +97,7 @@ int GrepEngine::doGrepFile(const QString &fullPath, const QString &pat, const QR
 	Buffer buffer;
 	QByteArray ba;
 	while( !file.atEnd() ) {
-		ba = file.read(1024*1024);	//	undone 1M‹«ŠEˆ—
+		ba = file.read(1024*1024);	//	undone 1Må¢ƒç•Œå‡¦ç†
 		QString buf = codec->toUnicode(ba);
 		if( !buffer.basicInsertText(buffer.size(), (wchar_t *)buf.data(), buf.size()) ) {
 			return 0;

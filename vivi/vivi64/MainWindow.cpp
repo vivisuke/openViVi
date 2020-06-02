@@ -117,6 +117,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_currentView(nullptr)
 	, m_autoCompletionDlg(nullptr)
 	, m_grepEngine(nullptr)
+	, m_grepView(nullptr)
 	, m_process(nullptr)
 	//, m_docNumber(0)
 	, m_incSearchPos(0)
@@ -125,12 +126,15 @@ MainWindow::MainWindow(QWidget *parent)
 	g_mainWindows.push_back(this);
 	globSettings()->readSettings();
 	//
+#ifdef	_DEBUG
+#else
     QSettings settings;
     QString key = KEY_MAINWIN_RECT + QString("-%1").arg(g_mainWindows.size());
     if( settings.contains(key) ) {
     	QRect rct = settings.value(key).toRect();
     	setGeometry(rct);
     }
+#endif
 	
 	m_viEngine = new ViEngine();
 	connect(m_viEngine, SIGNAL(modeChanged()), this, SLOT(viModeChanged()));
@@ -209,6 +213,8 @@ MainWindow::MainWindow(QWidget *parent)
 	//
 	if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) )
 		setMode(MODE_VI);
+	//
+	m_thread.start();		//	メインスレッドと同じプライオリティ
 	//
 	if( globSettings()->boolValue(GlobalSettings::OPEN_OPENEDFILES) )
 		on_action_OpenOpenedFiles_triggered();
@@ -763,9 +769,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.setValue(key, lst);
     //
     //	ウィンドウジオメトリ保存
+#ifdef	_DEBUG
+#else
     auto geo = geometry();
     key = KEY_MAINWIN_RECT + QString("-%1").arg(g_mainWindows.size());
     settings.setValue(key, geo);
+#endif
 	//
 	QMainWindow::closeEvent(event);
 	//	this を オープンMainWindowリストから削除
