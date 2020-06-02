@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtWidgets/QMainWindow>
 #include <QPlainTextEdit>
@@ -198,7 +198,7 @@ private slots:
 	void	on_action_OpenOpenedFiles_triggered();
 	void	on_action_AddCurrentFile_triggered();
 	void	on_action_RemoveFile_triggered();
-	void	on_action_cpp_h_triggered();
+	void	on_action_cpp_h_triggered();				//	Ctrl + \ 
 	void	on_action_eXit_triggered();
 	void	on_action_Undo_triggered();
 	void	on_action_Redo_triggered();
@@ -233,7 +233,7 @@ private slots:
 	void	on_action_ExCommand_triggered();
 	void	on_action_NextTab_triggered();
 	void	on_action_PrevTab_triggered();
-	void	on_action_FormerTab_triggered();
+	void	on_action_FormerTab_triggered();		//	Ctrl + ^
 	//void	on_action_ZenCoding_triggered();
 	//
 public slots:

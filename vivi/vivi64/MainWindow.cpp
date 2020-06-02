@@ -843,6 +843,7 @@ EditView *MainWindow::createView(QString pathName)
 		addToRecentFileList(pathName);
 		updateRecentFileActions();
 	}
+	view->setFullPathName(absPath);
 	addNewView(view, typeNameToIcon(typeName), title, pathName);
 	updateWindowTitle();
 	onCursorPosChanged(view);

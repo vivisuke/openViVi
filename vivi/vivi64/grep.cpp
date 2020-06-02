@@ -96,7 +96,7 @@ void MainWindow::grep(bool curWord)
 		m_outputWidget->clear();
 		doOutput(mess);
 	}
-	GreppingDlg dlg;
+	GreppingDlg dlg;		//	グレップ中ダイアログ
 	//connect(&dlg, SIGNAL(terminate()), m_grepEngine, SLOT(terminate()));
 	connect(m_grepEngine, SIGNAL(greppingDir(const QString &)), &dlg, SLOT(setGreppingDir(const QString &)));
 	connect(m_grepEngine, SIGNAL(finished(int)), &dlg, SLOT(reject()));
