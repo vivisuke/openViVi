@@ -121,6 +121,7 @@ protected:
     bool	maybeSave(EditView *);
 	void	reload(cchar *codecName = 0);
 	void	typesettingsChanged(EditView *view);
+	void	updateSearchOptions();		//	ステータスバーの検索オプション更新
 	void	updateSssrc();
 	void	doNextTab(int n=1);
 	void	doPrevTab(int n=1);

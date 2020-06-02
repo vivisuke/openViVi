@@ -105,8 +105,9 @@ void MainWindow::grep(bool curWord)
 	///QMessageBox mb();
 	
 	//m_grepEngine->doGrep(aDlg.findString(), aDlg.extentions(), dirStr);
-	emit doGrep(aDlg.findString(), aDlg.findString(), dirStr, aDlg.exclude());
-#if	0
+#if	1
+	emit doGrep(aDlg.findString(), aDlg.extentions(), dirStr, aDlg.exclude());
+#else
 	const bool b = QMetaObject::invokeMethod(m_grepEngine, "doGrep",
 								//Qt::QueuedConnection,
 								//Q_RETURN_ARG(),
@@ -137,5 +138,6 @@ void MainWindow::grepFinished(int cnt)
 		m_grepView->setFocus();
 		m_grepView = 0;
 	}
+	updateSearchOptions();	
 }
 

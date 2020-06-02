@@ -1604,6 +1604,12 @@ uint MainWindow::getSearchOpt(bool vi) const
 		opt |= SSSearch::REGEXP;
 	return opt;
 }
+void MainWindow::updateSearchOptions()		//	ステータスバーの検索オプション更新
+{
+	ui.action_IgnoreCase->setChecked(globSettings()->boolValue(GlobalSettings::IGNORE_CASE));
+	ui.action_WordSearch->setChecked(globSettings()->boolValue(GlobalSettings::WHOLE_WORD_ONLY));
+	ui.action_RegExp->setChecked(globSettings()->boolValue(GlobalSettings::REGEXP));
+}
 void MainWindow::updateSssrc()
 {
 	QString pat = m_findStringCB->lineEdit()->text();
@@ -2125,9 +2131,10 @@ void MainWindow::doOutput(const QString &text)		//	アウトプットにテキ�
 	m_outputWidget->textCursor().insertText(text);
 	//assert(0);
 }
-void MainWindow::doOutputToBar(const QString &)		//	アウトプットバーにテキスト出力
+void MainWindow::doOutputToBar(const QString &text)		//	アウトプットバーにテキスト出力
 {
-	assert(0);
+	doOutput(text);
+	//assert(0);
 }
 void MainWindow::doOutputToGrepView(const QString &)		//	grepビューにテキスト出力
 {
