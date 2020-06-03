@@ -269,6 +269,10 @@ void MainWindow::createDockWindows()
 	m_outputDock->setObjectName("Output");
 	m_outputDock->setWidget(m_outputWidget = new QPlainTextEdit());
 	//m_outputWidget->setTabStopDistance(48);		05/22 効かない
+	auto font = m_outputWidget->font();
+	font.setFamily(globSettings()->textValue(GlobalSettings::OUTPUT_FONT_NAME));
+	font.setPointSize(globSettings()->intValue(GlobalSettings::OUTPUT_FONT_SIZE));
+	m_outputWidget->setFont(font);
 	m_outputDock->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::BottomDockWidgetArea, m_outputDock);
 	m_outputDock->hide();		//	undone: 状態保存・復帰
@@ -2031,6 +2035,11 @@ void MainWindow::on_action_GlobalSettings_triggered()
 	//##typesettingsChanged(view);
 	//view->typeSettings()->writeSettings();
 	globSettings()->writeSettings();
+	//
+	auto font = m_outputWidget->font();
+	font.setFamily(globSettings()->textValue(GlobalSettings::OUTPUT_FONT_NAME));
+	font.setPointSize(globSettings()->intValue(GlobalSettings::OUTPUT_FONT_SIZE));
+	m_outputWidget->setFont(font);
 }
 void MainWindow::on_action_viCommand_triggered()
 {
@@ -2145,7 +2154,11 @@ void MainWindow::doOutput(const QString &text)		//	アウトプットにテキ�
 {
 	if( !m_outputDock->isVisible() )
 		m_outputDock->show();
-	m_outputWidget->textCursor().insertText(text);
+	QTextCursor cur = m_outputWidget->textCursor();
+	cur.movePosition(QTextCursor::End);		//	末尾にカーソル移動
+	m_outputWidget->setTextCursor(cur);
+	cur.insertText(text);
+	//m_outputWidget->textCursor().insertText(text);
 	//assert(0);
 }
 void MainWindow::doOutputToBar(const QString &text)		//	アウトプットバーにテキスト出力
