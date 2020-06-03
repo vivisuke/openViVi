@@ -36,6 +36,7 @@
 #define		KEY_RECENTDIRLIST			"recentDirList"
 #define		KEY_OPENED_FILELIST			"openedFileList"
 #define		KEY_MAINWIN_RECT			"mainWindowRect"
+#define		KEY_MAINWIN_MAX				"mainWindowMax"
 
 #define		MAX_FIND_STR_HIST			64
 #define		MAX_CLIPBOARD_HIST		100
@@ -129,10 +130,18 @@ MainWindow::MainWindow(QWidget *parent)
 #ifdef	_DEBUG
 #else
     QSettings settings;
-    QString key = KEY_MAINWIN_RECT + QString("-%1").arg(g_mainWindows.size());
+    bool bMax = false;
+    QString key = KEY_MAINWIN_MAX + QString("-%1").arg(g_mainWindows.size());
     if( settings.contains(key) ) {
-    	QRect rct = settings.value(key).toRect();
-    	setGeometry(rct);
+    	if( (bMax = settings.value(key).toBool()) )
+    		setWindowState(windowState() ^ Qt::WindowMaximized);
+    }
+    if( !bMax ) {
+	    key = KEY_MAINWIN_RECT + QString("-%1").arg(g_mainWindows.size());
+	    if( settings.contains(key) ) {
+	    	QRect rct = settings.value(key).toRect();
+	    	setGeometry(rct);
+	    }
     }
 #endif
 	
@@ -777,6 +786,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
     auto geo = geometry();
     key = KEY_MAINWIN_RECT + QString("-%1").arg(g_mainWindows.size());
     settings.setValue(key, geo);
+    key = KEY_MAINWIN_MAX + QString("-%1").arg(g_mainWindows.size());
+    settings.setValue(key, isMaximized());
 #endif
 	//
 	QMainWindow::closeEvent(event);
