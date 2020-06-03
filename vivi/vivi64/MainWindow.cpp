@@ -223,6 +223,9 @@ MainWindow::MainWindow(QWidget *parent)
 }
 MainWindow::~MainWindow()
 {
+	//m_thread.wait();
+	//m_thread.quit();
+	//m_thread.exit();
 	//delete m_settingsMgr;
 #if 0
 	for (auto itr = g_mainWindows.begin(); itr != g_mainWindows.end(); ++itr) {
@@ -817,7 +820,9 @@ void MainWindow::on_action_New_triggered()
 EditView *MainWindow::createView(QString pathName)
 {
 	//	done: pathName を既にオープンしている場合対応
-    QString absPath = QDir(pathName).absolutePath();
+    QString absPath;
+    if( !pathName.isEmpty() )
+    	absPath = QDir(pathName).absolutePath();
 	int ix = isOpened(absPath);
 	if( ix >= 0 ) {
 		auto* view = nthWidget(ix);
@@ -852,7 +857,8 @@ EditView *MainWindow::createView(QString pathName)
 		addToRecentFileList(pathName);
 		updateRecentFileActions();
 	}
-	view->setFullPathName(absPath);
+	if( !absPath.isEmpty() )
+		view->setFullPathName(absPath);
 	addNewView(view, typeNameToIcon(typeName), title, pathName);
 	updateWindowTitle();
 	onCursorPosChanged(view);
