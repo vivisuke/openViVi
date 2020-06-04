@@ -22,6 +22,7 @@
 #include "FindLineEdit.h"
 #include "TextCursor.h"
 #include "ViEngine.h"
+#include "OutputView.h"
 #include "../buffer/sssearch.h"
 
 #ifdef		WIN32
@@ -267,12 +268,15 @@ void MainWindow::createDockWindows()
 	//	アウトプットバー
 	m_outputDock = new QDockWidget(tr("Output"));
 	m_outputDock->setObjectName("Output");
-	m_outputDock->setWidget(m_outputWidget = new QPlainTextEdit());
+	m_outputDock->setWidget(m_outputWidget = new OutputView());
 	//m_outputWidget->setTabStopDistance(48);		05/22 効かない
 	auto font = m_outputWidget->font();
 	font.setFamily(globSettings()->textValue(GlobalSettings::OUTPUT_FONT_NAME));
 	font.setPointSize(globSettings()->intValue(GlobalSettings::OUTPUT_FONT_SIZE));
 	m_outputWidget->setFont(font);
+	m_outputWidget->setTabStopWidth(4);
+	m_outputWidget->setLineWrapMode(QPlainTextEdit::NoWrap);
+
 	m_outputDock->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::BottomDockWidgetArea, m_outputDock);
 	m_outputDock->hide();		//	undone: 状態保存・復帰

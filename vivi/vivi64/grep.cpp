@@ -21,6 +21,7 @@
 #include "../buffer/Buffer.h"
 #include "../buffer/sssearch.h"
 #include "GrepEngine.h"
+#include "OutputView.h"
 
 bool isEditViewFocused(QWidget* w);
 bool isEditView(const QWidget* w);

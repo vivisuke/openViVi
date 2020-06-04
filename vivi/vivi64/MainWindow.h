@@ -39,6 +39,7 @@ class CommandLine;
 class FindLineEdit;
 class AutoCompletionDlg;
 class QNetworkAccessManager;
+class OutputView;
 
 extern GlobalSettings	g_globSettings;
 GlobalSettings *globSettings();
@@ -361,7 +362,8 @@ private:
 	//QTreeWidget		*m_outlineWidget;
 	OutlineBar		*m_outlineBar;
 	QDockWidget		*m_outputDock;
-	QPlainTextEdit	*m_outputWidget;
+	//QPlainTextEdit	*m_outputWidget;
+	OutputView	*m_outputWidget;
 	
 	QLabel		*m_lineOffsetLabel;
 	QLabel		*m_curCharCode;			//	カーソル位置文字コード

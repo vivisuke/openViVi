@@ -246,7 +246,7 @@ SPR# 状 P Open Close ver     Type  概要【スポンサー様名】
 0237 ◎ C 04/18 04/18 0.002│問題│MainWindow::updateFavoriteFileActions() でクラッシュする
 0238 ◎ C 04/18 04/18 0.002│問題│お気に入りのファイルがオープンされない
 0239 ● C 04/18            │ToDo│View > Outline メニュー追加
-0240 ● C 04/18            │ToDo│View > Output メニュー追加
+0240 ◎ C 04/18 06/05 0.000│ToDo│View > Output メニュー追加
 0241 ● C 04/18            │ToDo│View > FileSystem メニュー追加
 0242 ◎ C 04/18 04/18 0.002│問題│欧文フォントの場合マルチバイト文字が等幅表示されない？
 0243 ◎ C 04/18 04/18 0.002│ToDo│Other > Aboue ViVi：アイコン追加
@@ -762,11 +762,11 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0725 ◎ C 06/04 06/04 0.034│問題│grep：出力の最後にカーソルが移動しない
 0726 ● C 06/04            │ToDo│OutlineBar：ダブルクリックでタグジャンプ
 0727 ◎ C 06/04 06/04 0.034│ToDo│OutputView.h .cpp をプロジェクトに追加
-0728 ● C 06/04            │ToDo│
-0729 ● C 06/04            │ToDo│
-0730 ● C 06/04            │ToDo│
-0731 ● C 06/04            │ToDo│
-0732 ● C 06/04            │ToDo│
-0733 ● C 06/04            │ToDo│
-0734 ● C 06/04            │ToDo│
-0735 ● C 06/04            │ToDo│
+0728 ◎ C 06/05 06/05 0.034│ToDo│OutlineBar：QPlainTextEdit → OutputView に変更
+0729 ◎ C 06/05 06/05 0.034│ToDo│OutlineBar：タブ幅4設定
+0730 ● C 06/05            │ToDo│
+0731 ● C 06/05            │ToDo│
+0732 ● C 06/05            │ToDo│
+0733 ● C 06/05            │ToDo│
+0734 ● C 06/05            │ToDo│
+0735 ● C 06/05            │ToDo│
