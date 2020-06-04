@@ -177,6 +177,7 @@ protected slots:
 	void	onUpCmdLineEdit();
 	void	onDownCmdLineEdit();
     //EditView	*openFile(const QString &fileName, bool forced = false);
+    void	tagJump(const QString &, int);
 
 private slots:
 	void autoCmplKeyPressed(QString);

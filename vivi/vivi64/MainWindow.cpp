@@ -276,6 +276,8 @@ void MainWindow::createDockWindows()
 	m_outputWidget->setFont(font);
 	m_outputWidget->setTabStopWidth(4);
 	m_outputWidget->setLineWrapMode(QPlainTextEdit::NoWrap);
+	connect(m_outputWidget, SIGNAL(tagJump(const QString &, int)),
+				this, SLOT(tagJump(const QString &, int)));
 
 	m_outputDock->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::BottomDockWidgetArea, m_outputDock);
@@ -2212,4 +2214,19 @@ void MainWindow::onRecieved(const QString)
 void MainWindow::imeOpenStatusChanged()
 {
 	assert(0);
+}
+void MainWindow::tagJump(const QString &fullPathName, int ln)
+{
+#if	1
+	EditView *view = createView(fullPathName);
+	if( view != nullptr )
+		view->jumpToLine(ln);
+#else
+	for (int i = 0; i != ui.tabWidget->count(); ++i) {
+		EditView *view = nthWidget(i);
+		if( isEditView(view) && && view->fullPathName() == fullPathName ) {
+			view->jumpToLine(ln);
+		}
+	}
+#endif
 }

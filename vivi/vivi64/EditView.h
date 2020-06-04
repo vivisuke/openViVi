@@ -95,6 +95,7 @@ public:
 	bool 	getSelectedLineRange(int &dln1, int &dln2) const;
 	const TextCursor*	textCursor() const;
 	int	endOfLinePosition(int dln) const;		//	行の改行位置を返す
+
 public:
 	MainWindow	*mainWindow() { return m_mainWindow; }
 	ViewLineMgr *viewLineMgr() { return m_viewLineMgr; }
