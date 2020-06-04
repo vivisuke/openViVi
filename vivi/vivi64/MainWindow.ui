@@ -95,12 +95,19 @@
     <property name="title">
      <string>&amp;Edit</string>
     </property>
+    <widget class="QMenu" name="menu_ExtendedCopy">
+     <property name="title">
+      <string>&amp;ExtendedCopy</string>
+     </property>
+     <addaction name="action_CopyImplementationCode"/>
+    </widget>
     <addaction name="action_Undo"/>
     <addaction name="action_Redo"/>
     <addaction name="separator"/>
     <addaction name="action_Cut"/>
     <addaction name="action_Copy"/>
     <addaction name="action_Paste"/>
+    <addaction name="menu_ExtendedCopy"/>
     <addaction name="action_SelectAll"/>
     <addaction name="separator"/>
     <addaction name="action_DynamicCompletion"/>
@@ -639,6 +646,14 @@
    </property>
    <property name="shortcut">
     <string>Shift+F4</string>
+   </property>
+  </action>
+  <action name="action_CopyImplementationCode">
+   <property name="text">
+    <string>Copy&amp;ImplementationCode</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K, Ctrl+I</string>
    </property>
   </action>
  </widget>

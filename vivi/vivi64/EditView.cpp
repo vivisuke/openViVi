@@ -1,6 +1,7 @@
 ﻿#include <assert.h>
 #include <QtGui>
 #include <QTransform>
+#include <QMessageBox>
 //#include <QPainter>
 #include <QDebug>
 #include "MainWindow.h"
@@ -3256,4 +3257,129 @@ void EditView::jumpToLastModifiedPos()
 	makeCursorInView(true);
 	resetCursorBlinking();
 	update();
+}
+//	C++ メンバ関数宣言から、実装コードスケルトン生成
+void EditView::copyImplCode()
+{
+	pos_t last;
+	pos_t pos;
+	if( !m_textCursor->hasSelection() ) {
+		last = (pos = m_textCursor->position()) + 1;
+	} else {
+		pos = m_textCursor->selectionFirst();
+		last = m_textCursor->selectionLast();
+	}
+	QString implText;		//	実装テキスト
+	while( pos < last ) {
+		QString t = getImplText(pos);
+		if( t.isEmpty() ) return;
+		implText += t;
+	}
+	QClipboard *cb = qApp->clipboard();
+	cb->setText(implText);
+	emit textCopied(implText);
+}
+QString EditView::getImplText(pos_t &pos)
+{	
+	const Buffer &buf = *buffer();
+	const int ln0 = positionToLine(pos);
+	int ln = ln0;
+	const int ls0 = lineStartPosition(ln);
+	int ls = ls0;
+	QString className;
+	while( --ln >= 0 ) {
+		pos_t nxls = ls;
+		ls = lineStartPosition(ln);
+		if( buf[ls] == 'c' ) {	
+			Tokenizer tn(buf, ls, nxls);
+			if( tn.tokenText() == "class"
+				&& tn.nextToken() == Tokenizer::IDENT
+				&& tn.skipSpace() != ';' )
+			{
+				className = tn.tokenText();
+				break;
+			}
+		}
+	}
+	if( className.isEmpty() ) {
+		QMessageBox::warning(this, "ViVi64", tr("class Name was not found."));
+		return QString();
+	}
+	qDebug() << className;
+	//	~<IDENT>"(); "	<COMMENT>
+	//	<TYPE> <IDENT>"(" ... "); "	<COMMENT>
+	//	<TYPE> "opetaor"<opr>"(" ... ")" "; "	<COMMENT>
+	//	")" はバランスする括弧。30行先まで可
+	QString implText;		//	実装テキスト
+	pos_t nxls = lineStartPosition(ln0+1);
+	Tokenizer tn(buf, ls0, nxls);
+#if		1
+	//	undone: operator[]()
+	int start = tn.tokenPosition();
+	for(;;) {
+		if( tn.tokenText() == "~" || tn.tokenText() == "operator")
+			break;
+		QChar ch = tn.skipSpace();
+		if( ch == '(' ) break;		//	<IDENT>"(" を発見した場合
+		if( tn.nextToken() == Tokenizer::END_OF_FILE ) {
+			QMessageBox::warning(this, "SakuSakuEditor",
+											tr("seems not member-function decl."));
+			return QString();
+		}
+	}
+	implText = getText(buf, start, tn.tokenPosition() - start);
+	implText.replace(QRegExp("\\t+"), " ");
+#else
+	for(;;) {
+		QChar ch = tn.skipSpace();
+		if( ch == '(' ) break;
+		implText += tn.tokenText();
+		if( tn.tokenType() == Tokenizer::IDENT && isLetterOrNumberOrUnderbar(ch) )
+			implText += " ";
+		if( tn.nextToken() == Tokenizer::END_OF_FILE ) {
+			QMessageBox::warning(this, "SakuSakuEditor",
+											tr("seems not member-function decl."));
+			return QString();
+		}
+	}
+#endif
+	implText += className;
+	implText += "::";
+	implText += tn.tokenText();
+	//	とりあえず ) まで追加
+	pos = tn.nextPosition();
+	bool bSharp;
+	int dst = assocParenPosition(typeSettings(), buf, pos, bSharp);
+	if( dst < 0 || (ln = positionToLine(dst)) - ln0 > 32 )
+	{
+		QMessageBox::warning(this, "SakuSakuEditor",
+										tr("seems not member-function decl."));
+		return QString();
+	}
+	while( pos < dst )
+		implText += QChar(buf[pos++]);
+	QChar ch;
+	while( pos < buf.size() ) {
+		if( (ch = buf[pos]) == ';' ) break;
+		if( ch == '\r' || ch == '\n' ) {
+			pos = buf.size();
+			break;
+		}
+		implText += ch;
+		++pos;
+	}
+	if( pos >= buf.size() ) {
+		QMessageBox::warning(this, "SakuSakuEditor",
+										tr("seems not member-function decl."));
+		return QString();
+	}
+	++pos;		//	skip ';'
+	while( pos < buf.size() ) {
+		if( (ch = buf[pos++]) == '\r' || ch == '\n' ) break;
+		implText += ch;
+	}
+	while( pos < buf.size() && (buf[pos] == '\r' || buf[pos] == '\n') ) ++pos;
+	
+	implText += newLineText() + "{" + newLineText() + "}" + newLineText();
+	return implText;
 }

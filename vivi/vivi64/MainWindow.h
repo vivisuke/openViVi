@@ -150,6 +150,7 @@ protected:
 	void	clearOutput();
 	void	updateStatusBar();		//	BOM チェックボックス等を更新
 	void	grep(bool);
+	bool	checkUnSaved();
 	
 protected:
 	//void	addToOutlineBar(const QString&, const QString&);
@@ -208,6 +209,7 @@ private slots:
 	void	on_action_Cut_triggered();
 	void	on_action_Copy_triggered();
 	void	on_action_Paste_triggered();
+	void	on_action_CopyImplementationCode_triggered();
 	void	on_action_SelectAll_triggered();
 	void	on_action_DynamicCompletion_triggered();
 	void	on_action_ZenCoding_triggered();

@@ -1601,6 +1601,12 @@ void MainWindow::on_action_Paste_triggered()
 		view->paste();
 	}
 }
+void MainWindow::on_action_CopyImplementationCode_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) )
+		view->copyImplCode();
+}
 void MainWindow::on_action_SelectAll_triggered()
 {
 	EditView *view = currentWidget();

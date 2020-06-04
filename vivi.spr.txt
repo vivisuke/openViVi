@@ -769,7 +769,18 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 									メモ：assocParenPositionBackward() で処理時間を要している
 									メモ：↑ first, pos が範囲外？
 0731 ● C 06/05            │ToDo│Alt + →
-0732 ◎ C 06/05 06/05 0.034│ToDo│OutlineBar > ダブルクリックでタグジャンプ：飛び先が１行ずれる
-0733 ● C 06/05            │ToDo│
-0734 ● C 06/05            │ToDo│
-0735 ● C 06/05            │ToDo│
+0732 ◎ C 06/05 06/05 0.034│問題│OutlineBar > ダブルクリックでタグジャンプ：飛び先が１行ずれる
+0733 ● C 06/05            │ToDo│ミニマップ：.h の場合、public, protected, private エリアがひと目でわかるよう、行頭に色付きライン描画？
+									詳細：public:緑、protected:シアン、private：黄色？
+0734 ◎ C 06/05 06/05 0.035│ToDo│Edit > ExtendedCopy メニュー追加
+0735 ◎ C 06/05 06/05 0.035│ToDo│Edit > ExtendedCopy > CopyImplementationCode Ctrl + K, Ctrl + I 実装
+0736 ● C 06/05            │ToDo│
+0737 ● C 06/05            │ToDo│
+0738 ● C 06/05            │ToDo│
+0739 ● C 06/05            │ToDo│
+0740 ● C 06/05            │ToDo│
+0741 ● C 06/05            │ToDo│
+0742 ● C 06/05            │ToDo│
+0743 ● C 06/05            │ToDo│
+0744 ● C 06/05            │ToDo│
+0745 ● C 06/05            │ToDo│
