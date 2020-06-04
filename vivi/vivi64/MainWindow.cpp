@@ -232,9 +232,9 @@ MainWindow::MainWindow(QWidget *parent)
 }
 MainWindow::~MainWindow()
 {
-	//m_thread.wait();
-	//m_thread.quit();
 	//m_thread.exit();
+	m_thread.quit();
+	m_thread.wait();
 	//delete m_settingsMgr;
 #if 0
 	for (auto itr = g_mainWindows.begin(); itr != g_mainWindows.end(); ++itr) {
