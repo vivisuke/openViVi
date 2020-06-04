@@ -2215,12 +2215,12 @@ void MainWindow::imeOpenStatusChanged()
 {
 	assert(0);
 }
-void MainWindow::tagJump(const QString &fullPathName, int ln)
+void MainWindow::tagJump(const QString &fullPathName, int ln)		//	ln: 1 オリジン
 {
 #if	1
 	EditView *view = createView(fullPathName);
 	if( view != nullptr )
-		view->jumpToLine(ln);
+		view->jumpToLine(ln-1);		//	jumpToLine() の行番号は 0 オリジン
 #else
 	for (int i = 0; i != ui.tabWidget->count(); ++i) {
 		EditView *view = nthWidget(i);
