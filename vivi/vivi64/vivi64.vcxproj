@@ -114,6 +114,7 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NamedColorDlg.cpp" />
     <ClCompile Include="OutlineBar.cpp" />
+    <ClCompile Include="OutputView.cpp" />
     <ClCompile Include="settingsMgr.cpp" />
     <ClCompile Include="TestViCommands.cpp" />
     <ClCompile Include="TextCursor.cpp" />
@@ -144,6 +145,7 @@
     <QtMoc Include="GrepDlg.h" />
     <QtMoc Include="GrepEngine.h" />
     <QtMoc Include="GreppingDlg.h" />
+    <QtMoc Include="OutputView.h" />
     <ClInclude Include="zenCoding.h" />
     <QtMoc Include="NamedColorDlg.h" />
     <ClInclude Include="assocParen.h" />

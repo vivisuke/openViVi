@@ -148,6 +148,9 @@
     <ClCompile Include="GreppingDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OutputView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -202,6 +205,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="GreppingDlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="OutputView.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
