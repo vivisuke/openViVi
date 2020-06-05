@@ -781,6 +781,6 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0740 ◎ C 06/05 06/05 0.035│ToDo│Search > TagJump F9 メニュー追加
 0741 ● C 06/05            │ToDo│* コマンド：単語単位オプションはOFFにし、パターン前後に \b を付加する
 0742 ● C 06/05            │問題│m_output の直後で iW 補完を行い、別の m_output 直後で . を実行すると m_outputWm_outputWidget となった
-0743 ● C 06/05            │ToDo│
+0743 ◎ C 06/05 06/05 0.035│ToDo│SingleApplication クラス追加
 0744 ● C 06/05            │ToDo│
 0745 ● C 06/05            │ToDo│
