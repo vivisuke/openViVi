@@ -144,8 +144,9 @@
    </widget>
    <widget class="QMenu" name="menu_Other">
     <property name="title">
-     <string>&amp;Help</string>
+     <string>&amp;Other</string>
     </property>
+    <addaction name="action_KeyAssign"/>
     <addaction name="action_viTutorial"/>
     <addaction name="action_helpViCommand"/>
     <addaction name="action_helpExCommand"/>
@@ -168,6 +169,7 @@
     <addaction name="action_Grep"/>
     <addaction name="action_LastModifiedPos"/>
     <addaction name="action_TagJump"/>
+    <addaction name="action_AssociatedParen"/>
    </widget>
    <widget class="QMenu" name="menu_Tool">
     <property name="title">
@@ -663,6 +665,22 @@
    </property>
    <property name="shortcut">
     <string>F9</string>
+   </property>
+  </action>
+  <action name="action_AssociatedParen">
+   <property name="text">
+    <string>Associated&amp;Paren</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+]</string>
+   </property>
+  </action>
+  <action name="action_KeyAssign">
+   <property name="text">
+    <string>&amp;KeyAssign</string>
+   </property>
+   <property name="toolTip">
+    <string>KeyAssign</string>
    </property>
   </action>
  </widget>

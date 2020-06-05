@@ -225,12 +225,14 @@ private slots:
 	void	on_action_Grep_triggered();
 	void	on_action_GrepCurWord_triggered();
 	void	on_action_TagJump_triggered();
+	void	on_action_AssociatedParen_triggered();
 	void	on_action_LineNumber_triggered();
 	void	on_action_BoxSelect_triggered();
 	void	on_action_KeisenMode_triggered();
 	void	on_action_TypeSettings_triggered();
 	void	on_action_GlobalSettings_triggered();
 	void	on_action_viCommand_triggered();
+	void	on_action_KeyAssign_triggered();
 	void	on_action_viTutorial_triggered();
 	void	on_action_helpViCommand_triggered();
 	void	on_action_helpExCommand_triggered();

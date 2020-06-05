@@ -366,6 +366,14 @@ void EditView::jumpToLine(int ln, bool vi)		//	ln [0, EOFLine) ドキュメン�
 	//onCursorPosChanged();
 	update();
 }
+void EditView::jumpAssociatedParen()
+{
+	m_textCursor->movePosition(TextCursor::ASSOC_PAREN);
+	checkAssocParen();
+	makeCursorInView();
+	resetCursorBlinking();
+	update();
+}
 //	return:	スクロールしたかどうか
 bool EditView::makeCursorInView(bool bQuarter)
 {

@@ -112,6 +112,7 @@ public:
 	void	doFindText(const QString &, bool fwd);		//	/ ? 検索処理
 	void	curMove(int mv, int n = 1, bool vi = false);
 	void	jumpToLine(int ln, bool vi = false);		//	ln [0, EOFLine) ドキュメント行番号
+	void	jumpAssociatedParen();
 	void	setMark(pos_t pos, char ch);
 	void	markSetUnset();
 	void	clearMark(pos_t pos);

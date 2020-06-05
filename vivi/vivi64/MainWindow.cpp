@@ -774,9 +774,34 @@ void MainWindow::dropEvent(QDropEvent* event)
 		//openFile(fileName);
 	}
 }
+bool MainWindow::checkUnSaved()
+{
+	for(int i = 0; i < ui.tabWidget->count(); ++i) {
+		EditView *view = nthWidget(i);
+		if( isEditView(view) ) {
+			if( view->isModified() ) {
+				QMessageBox::StandardButton ret;
+		        ret = QMessageBox::warning(this, APP_NAME,
+		                     tr("The '%1' has been modified.\n"
+		                        "Do you want to save your changes ?").arg(view->title()),
+		                     QMessageBox::Save | QMessageBox::Discard
+				     | QMessageBox::Cancel);
+		        if (ret == QMessageBox::Save) {
+		            if( !doSave(view) )
+		            	return false;
+		        } else if (ret == QMessageBox::Cancel)
+		            return false;
+			}
+		}
+	}
+	return true;
+}
 void MainWindow::closeEvent(QCloseEvent *event)
 {
 	qDebug() << "closeEvent()";
+	//
+	if( !checkUnSaved() )
+		return;		//	クローズキャンセル
 	//	オープンしているファイルパスリスト保存
 	QStringList lst;
 	for(int i = 0; i < ui.tabWidget->count(); ++i) {
@@ -2067,6 +2092,10 @@ void MainWindow::on_action_viCommand_triggered()
 		m_modeCB->removeItem(MODE_VI);
 	}
 }
+void MainWindow::on_action_KeyAssign_triggered()
+{
+	QDesktopServices::openUrl(QUrl("https://github.com/vivisuke/openViVi/wiki/keyAssign"));
+}
 void MainWindow::on_action_viTutorial_triggered()
 {
 	QDesktopServices::openUrl(QUrl("https://github.com/vivisuke/openViVi/wiki/viTutorial"));
@@ -2243,4 +2272,10 @@ void MainWindow::on_action_TagJump_triggered()
 		m_outputWidget->tagJump();
 	else if( isEditView(view) )
 		view->tagJump();
+}
+void MainWindow::on_action_AssociatedParen_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) )
+		view->jumpAssociatedParen();
 }
