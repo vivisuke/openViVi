@@ -828,3 +828,11 @@ int Buffer::prevEditedPos()
 		--m_epix;
 	return m_editedPos[m_epix];
 }
+bool Buffer::startsWith(pos_t pos, cwchar_t *pat) const
+{
+	while( *pat != '\0' ) {
+		if( operator[](pos++) != *pat++ )
+			return false;
+	}
+	return true;
+}

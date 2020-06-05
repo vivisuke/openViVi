@@ -177,7 +177,7 @@ protected slots:
 	void	fileNameCompletion(QDir &, QString = QString());
 	void	onUpCmdLineEdit();
 	void	onDownCmdLineEdit();
-    //EditView	*openFile(const QString &fileName, bool forced = false);
+    EditView	*openFile(const QString &fileName, bool forced = false);
     void	tagJump(const QString &, int);
 
 private slots:
@@ -224,6 +224,7 @@ private slots:
 	void	on_action_Incremental_triggered();
 	void	on_action_Grep_triggered();
 	void	on_action_GrepCurWord_triggered();
+	void	on_action_TagJump_triggered();
 	void	on_action_LineNumber_triggered();
 	void	on_action_BoxSelect_triggered();
 	void	on_action_KeisenMode_triggered();

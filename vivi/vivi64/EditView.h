@@ -205,6 +205,7 @@ public:
 	void	insertCaseSpace(QString &);		//	"case" の直後に 半角空白 が押された場合の処理
 	void	copyImplCode();
 	QString getImplText(pos_t &pos);
+	void	tagJump();
 
 protected:
 	void	viFindCharForward(wchar_t qch, bool bPrev, int mvmd, int repCnt);
@@ -284,6 +285,7 @@ public slots:
 	void	cut(bool append = false);
 	int		copy(bool bCut = false, bool append = false);
 	void	paste();
+
 private slots:
 	void autoCmplKeyPressed(QString);
 	void autoCmplBackSpace();
@@ -296,6 +298,7 @@ private slots:
 	void autoCmplRejected();
 	void	cmplTextChanged(const QString &);
 	void	onTimer();
+
 signals:
 	void	modifiedChanged() const;
 	void	cursorPosChanged(EditView*, int, int);

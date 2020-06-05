@@ -110,6 +110,7 @@ public:
 	bool	isEqual(pos_t pos, const wchar_t *ptr) const;
 	bool	canUndo() const;
 	bool	canRedo() const;
+	bool	startsWith(pos_t pos, cwchar_t *pat) const;
 	//bool	startsWith(pos_t pos, cwchar_t *pat, ssize_t sz) const;
 	pos_t		strstr(cwchar_t *pat, ssize_t sz, pos_t from = 0, pos_t last = -1, bool ic = false) const;
 	pos_t		strrstr(cwchar_t *pat, ssize_t sz, pos_t from = -1, pos_t last = 0, bool ic = false) const;

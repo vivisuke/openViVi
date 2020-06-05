@@ -168,10 +168,19 @@ void Document::buildMinMap()
 	QPainter painter(&m_minMap);
 	painter.fillRect(QRect(0, 0, MINMAP_LN_WD, ht), ts->color(TypeSettings::LINENUM_BG));
 	//if( lineCount() > 10000 ) return;
-	painter.setPen(ts->color(TypeSettings::TEXT));
+	//painter.setPen(ts->color(TypeSettings::TEXT));
 	bool inBlockComment = false;
+	enum {
+		NONE = 0,
+		PUBLIC,
+		PROTECTED,
+		PRIVATE,
+	};
+	char lastps = NONE, pstate = NONE;
+	int pln = -1;
 	for (int ln = 0; ln < buffer()->lineCount(); ++ln) {
 		int p = buffer()->lineStartPosition(ln);
+		int start = p;
 		int last= buffer()->lineStartPosition(ln+1);
 		int px = MINMAP_LN_WD;
 		if( buffer()->charAt(p) == '\t' ) {
@@ -185,10 +194,29 @@ void Document::buildMinMap()
 				++px;
 			}
 		}
+		const int WD = 4;
+#if 1
+		if( typeName() == "CPP" ) {
+			if( p == start && buffer()->startsWith(p, L"};") ) pstate = NONE;	//	undone: 行末に "};" がある場合対応
+			else if( buffer()->startsWith(p, L"public") ) pstate = PUBLIC;
+			else if( buffer()->startsWith(p, L"protected") ) pstate = PROTECTED;
+			else if( buffer()->startsWith(p, L"private") ) pstate = PRIVATE;
+			if( pln >= 0 ) {
+				//painter.setPen(lastps == PUBLIC ? Qt::green : lastps == PROTECTED ? Qt::cyan : Qt::yellow);
+				//painter.drawLine(0, pln*m_mmScale, 0, (ln-1)*m_mmScale);
+				painter.setPen(Qt::transparent);
+				painter.setBrush(QColor(lastps == PUBLIC ? QColor("#80ff80") : lastps == PROTECTED ? Qt::magenta : Qt::yellow));
+				painter.drawRect(0, pln*m_mmScale, WD, (ln-pln)*m_mmScale);
+			}
+			pln = pstate == NONE ? -1 : ln;
+			lastps = pstate;
+		}
+#endif
 		if( p >= buffer()->size() || isNewLine(buffer()->charAt(p)) ) continue;
 		while( last > p && isNewLine(buffer()->charAt(last - 1)) )
 			--last;
-		painter.drawLine(px, ln*m_mmScale, px + last - p, ln*m_mmScale);
+		painter.setPen(ts->color(TypeSettings::TEXT));
+		painter.drawLine(px+WD, ln*m_mmScale, px + last - p + WD, ln*m_mmScale);
 	}
 }
 int Document::lineStartPosition(pos_t pos) const

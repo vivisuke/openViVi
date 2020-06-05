@@ -869,6 +869,7 @@ EditView *MainWindow::createView(QString pathName)
 	connect(view, SIGNAL(reloadRequest(EditView *)), this, SLOT(reloadRequested(EditView *)));
 	connect(view, SIGNAL(textSearched(const QString&, bool)), this, SLOT(textSearched(const QString&, bool)));
 	connect(view, SIGNAL(textInserted(const QString &)), this, SLOT(textInserted(const QString &)));
+	connect(view, SIGNAL(openFile(const QString &)), this, SLOT(openFile(const QString &)));
 	connect(view, SIGNAL(showMessage(const QString&, int)), this, SLOT(showMessage(const QString&, int)));
 	if( !pathName.isEmpty() ) {
 		if( !loadFile(doc, pathName) ) {
@@ -1186,13 +1187,12 @@ void MainWindow::openFavoriteFile()
     if (action)
 		createView(action->data().toString());
 }
-#if	0
 EditView *MainWindow::openFile(const QString &fileName, bool forced)
 {
-	assert(0);
-	return 0;
+	//assert(0);
+	//return 0;
+	return createView(fileName);
 }
-#endif
 bool MainWindow::loadFile(Document *doc, const QString &pathName, /*cchar *codecName,*/
 										bool bJump)		//	保存カーソル位置にジャンプ
 {
@@ -2235,4 +2235,12 @@ void MainWindow::tagJump(const QString &fullPathName, int ln)		//	ln: 1 オリ�
 		}
 	}
 #endif
+}
+void MainWindow::on_action_TagJump_triggered()
+{
+	EditView *view = currentWidget();
+	if( m_outputWidget->hasFocus() )
+		m_outputWidget->tagJump();
+	else if( isEditView(view) )
+		view->tagJump();
 }

@@ -118,7 +118,7 @@ pos_t assocParenPositionForward(TypeSettings *typeSettings, const Buffer &buffer
 		}
 	}
 }
-pos_t assocParenPositionBackward(TypeSettings *typeSettings, const Buffer &buffer, pos_t pos,
+pos_t assocParenPositionBackward(TypeSettings *typeSettings, const Buffer &buffer, const pos_t pos,
 								wchar_t paren, wchar_t dParen)
 {
 	//	undone: 文字列内の括弧対応
@@ -129,12 +129,13 @@ pos_t assocParenPositionBackward(TypeSettings *typeSettings, const Buffer &buffe
 	const wchar_t *blockCommentBeg = (const wchar_t *)bcBeg.data();
 	const wchar_t *blockCommentEnd = (const wchar_t *)bcEnd.data();
 	const wchar_t *lineComment = (const wchar_t *)lcstr.data();
+	auto sz = buffer.size();
 #if		1
 	int lvl = 1;
 	int ln = buffer.positionToLine(pos);
 	int first = buffer.lineStartPosition(ln);
 	bool inBlockComment = (buffer.lineFlags(ln) & Buffer::LINEFLAG_IN_BLOCK_COMMENT) != 0;
-	while( pos > 0 && first < pos ) {
+	while( pos > 0 && first < pos && first <= sz ) {
 		if( inBlockComment ) {
 			if( buffer.isMatched(blockCommentEnd, first) ) {
 				inBlockComment = false;

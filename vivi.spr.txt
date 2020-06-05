@@ -774,13 +774,13 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 									詳細：public:緑、protected:シアン、private：黄色？
 0734 ◎ C 06/05 06/05 0.035│ToDo│Edit > ExtendedCopy メニュー追加
 0735 ◎ C 06/05 06/05 0.035│ToDo│Edit > ExtendedCopy > CopyImplementationCode Ctrl + K, Ctrl + I 実装
-0736 ● C 06/05            │ToDo│
-0737 ● C 06/05            │ToDo│
-0738 ● C 06/05            │ToDo│
-0739 ● C 06/05            │ToDo│
-0740 ● C 06/05            │ToDo│
-0741 ● C 06/05            │ToDo│
-0742 ● C 06/05            │ToDo│
+0736 ◎ C 06/05 06/05 0.035│ToDo│#include "ファイル名" にて F9 でタグジャンプ
+0737 ● C 06/05            │問題│File > Open：現ファイル・ディレクトリがカレントディレクトリにならないことがある
+0738 ● C 06/05            │問題│SPR#0730：最後が } の行で o で１秒程度固まるが治っていない？
+0739 ● C 06/05            │問題│再読み込みを行うと、スクロール位置がリセットされてしまう？
+0740 ◎ C 06/05 06/05 0.035│ToDo│Search > TagJump F9 メニュー追加
+0741 ● C 06/05            │ToDo│* コマンド：単語単位オプションはOFFにし、パターン前後に \b を付加する
+0742 ● C 06/05            │問題│m_output の直後で iW 補完を行い、別の m_output 直後で . を実行すると m_outputWm_outputWidget となった
 0743 ● C 06/05            │ToDo│
 0744 ● C 06/05            │ToDo│
 0745 ● C 06/05            │ToDo│

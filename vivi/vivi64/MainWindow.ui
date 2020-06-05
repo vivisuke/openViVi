@@ -167,6 +167,7 @@
     <addaction name="action_Incremental"/>
     <addaction name="action_Grep"/>
     <addaction name="action_LastModifiedPos"/>
+    <addaction name="action_TagJump"/>
    </widget>
    <widget class="QMenu" name="menu_Tool">
     <property name="title">
@@ -654,6 +655,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+K, Ctrl+I</string>
+   </property>
+  </action>
+  <action name="action_TagJump">
+   <property name="text">
+    <string>&amp;TagJump</string>
+   </property>
+   <property name="shortcut">
+    <string>F9</string>
    </property>
   </action>
  </widget>

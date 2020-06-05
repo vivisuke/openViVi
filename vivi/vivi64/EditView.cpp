@@ -1429,7 +1429,7 @@ void EditView::drawMinMap(QPainter& pt)
 		pt.drawPixmap(rct, minMap, minMap.rect());
 	}
 	//
-	pt.setOpacity(0.25);
+	pt.setOpacity(0.1);
 	pt.setBrush(Qt::black);
 	if( m_scrollY0 != 0 ) {
 		rct.setHeight(m_scrollY0*scale);
@@ -3383,3 +3383,102 @@ QString EditView::getImplText(pos_t &pos)
 	implText += newLineText() + "{" + newLineText() + "}" + newLineText();
 	return implText;
 }
+void EditView::tagJump()
+{
+	int dln = viewLineToDocLine(m_textCursor->viewLine());
+#if 0	//##
+	if( m_grepView || m_isOutputView ) {
+		QString text = getLineText(dln);
+		//qDebug() << text;
+		if( text.isEmpty() ) return;
+		//if( text[0].isNumber() ) {
+		//	int ix = 1;
+		//	while( text[ix].isNumber() ) ++ix;
+		//	int lineNum = text.left(ix).toInt();
+		//	emit jump(lineNum-1);
+		//	return;
+		//}
+		QString t = text;
+		if( text.startsWith("tag: ") ) {
+			text = text.mid(5);	//	skip "tag: "
+			int ix = text.indexOf('\t');
+			if( ix < 0 ) return;
+			QString sym = text.left(ix);
+			text = text.mid(ix + 1);
+			if( sym[0] == '\"' ) {		//	"ファイル名" がある場合
+				if( (ix = text.indexOf('\t')) < 0 ) return;
+				sym = text.left(ix);
+				text = text.mid(ix + 1);
+			}
+			if( (ix = text.indexOf('\t')) < 0 ) return;
+			QString fileName = text.left(ix);
+			text = text.mid(ix + 1);
+			emit tagsJump(sym, fileName, text);
+			return;
+		} else if( text[0] == '\"' ) {
+			text.clear();
+		} else {
+			do {
+				if( --dln < 0 ) return;
+				t = getLineText(dln);
+			} while( t[0] != '\"' );
+		}
+		int ixDQ = t.indexOf('\"', 1);
+		if( ixDQ < 0 )return;
+		QString filePath = t.mid(1, ixDQ - 1);
+		int lineNum = -1;
+		if( t[ixDQ + 1] == '(' ) {		//	"fileName"(lineNum): の場合
+			int ix = t.indexOf(')', ixDQ);
+			if( ix > 0 )
+				lineNum = t.mid(ixDQ+2, ix - ixDQ - 2).toInt();
+		} else {
+			int ix = text.indexOf(':');
+			if( ix > 0 )
+				lineNum = text.left(ix).toInt();
+		}
+		emit tagJump(filePath, lineNum);
+		return;
+	}
+#endif
+	//pos_t pos = m_textCursor->position();
+	//int ln = m_doc->positionToLine(pos);
+	Tokenizer tkn(*buffer(), lineStartPosition(dln), lineStartPosition(dln+1));
+	if( typeSettings()->name() == "HTML" ) {
+		while( tkn.tokenType() != Tokenizer::END_OF_FILE ) {
+			if( tkn.tokenText() == "href"
+				&& tkn.nextToken() == Tokenizer::SYMBOL && tkn.tokenText() == "="
+				&& tkn.nextToken() == Tokenizer::STRING )
+			{
+				QString fileName = tkn.tokenText().mid(1, tkn.tokenText().size() - 2);
+				//qDebug() << fileName;
+				int ix = fileName.indexOf("#");
+				if( ix > 0 )
+					fileName = fileName.left(ix);
+				if( (ix = fileName.indexOf("?")) > 0 )
+					fileName = fileName.left(ix);
+				QString htdocsRoot = globSettings()->textValue(GlobalSettings::HTDOCS_ROOT);
+				if( !fileName.isEmpty() && fileName[0] == '/' && !htdocsRoot.isEmpty() ) {
+					if( htdocsRoot[htdocsRoot.size() - 1] != '/' )
+						htdocsRoot += '/';
+					fileName = htdocsRoot + fileName;
+				}
+				emit openFile(fileName);
+				return;
+			}
+			tkn.nextToken();
+		}
+	} else if( typeSettings()->name() == "CPP" ) {
+		if( tkn.tokenText() == "#"
+			&& tkn.nextToken() == Tokenizer::IDENT && tkn.tokenText() == "include"
+			&& tkn.nextToken() == Tokenizer::STRING )
+		{
+			QString fileName = tkn.tokenText().mid(1, tkn.tokenText().size() - 2);
+			emit openFile(fileName);
+		}
+	}
+}
+#if	0
+void EditView::tagJump(const QString &, int)
+{
+}
+#endif
