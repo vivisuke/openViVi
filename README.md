@@ -27,6 +27,8 @@ https://github.com/vivisuke/openViVi/releases
 
 問題報告は以下のページにお願いします。
 <br>※ 問題報告はどなたでも可能です。ただし要望的なものはご遠慮ください。
+<br>※ 現在（6月）は作者がopenViViソースコードをストレスなく編集できるようにすることが最優先なので、
+クラッシュバグ以外で作者が特に困らない＆時間を要する問題対処は当面行いません。
 
 https://github.com/vivisuke/openViVi/issues
 
