@@ -1,5 +1,5 @@
 ﻿#include "MainWindow.h"
-#include "singleapplication.h"
+#include "SingleApplication.h"
 #include <QtWidgets/QApplication>
 #include <QDir>
 
@@ -8,8 +8,8 @@ QApplication* g_app = nullptr;
 
 int main(int argc, char *argv[]) 
 {
-	QApplication app(argc, argv);
-	//SingleApplication app(argc, argv);
+	//QApplication app(argc, argv);
+	SingleApplication app(argc, argv, "ViVi64");
 	g_app = &app;
 	//
 	app.setOrganizationName("VisualSoftwareLaboratory");
