@@ -134,6 +134,7 @@ protected:
 	void	dropEvent(QDropEvent* event);
 	void	closeEvent(QCloseEvent *event);
 	void	resizeEvent(QResizeEvent *event);
+	bool	nativeEvent(const QByteArray &eventType, void *message, long *result);
 	void	execCommand(const QString &cmd);
 	void	updateMapFileLine(EditView *);
 	void	updateMapFileMarks(EditView *);

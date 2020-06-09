@@ -3496,3 +3496,7 @@ void EditView::tagJump(const QString &, int)
 {
 }
 #endif
+void EditView::imeOpenStatusChanged()
+{
+	closeAutoCompletionDlg();
+}

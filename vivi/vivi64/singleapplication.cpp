@@ -36,7 +36,7 @@ void SingleApplication::onReadyRead()
 	QString buff = codec->toUnicode(ba);
 	emit onRecieved(buff);
 }
-//	最初に起動されたインスタンスへメッセージ送信
+//	譛蛻昴↓襍ｷ蜍輔＆繧後◆繧､繝ｳ繧ｹ繧ｿ繝ｳ繧ｹ縺ｸ繝｡繝�繧ｻ繝ｼ繧ｸ騾∽ｿ｡
 void SingleApplication::sendMessage(const QString &text)
 {
 	m_localSocket.write(text.toUtf8());
@@ -48,6 +48,7 @@ void SingleApplication::sendMessage(const QString &text)
 bool SingleApplication::winEventFilter( MSG * msg, long * result )
 {
 	if( msg->message == WM_IME_NOTIFY ) {
+		qDebug() << "winEventFilter()";
 		DWORD dwCommand = (DWORD) msg->wParam;
 		if( dwCommand == IMN_SETOPENSTATUS )		//	IME ON
 			emit imeOpenStatusChanged();

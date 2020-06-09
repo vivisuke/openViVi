@@ -854,6 +854,21 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 		m_cmdLineEdit->setGeometry(rct);
 	}
 }
+bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
+{
+	if( eventType == "windows_generic_MSG" ) {
+		MSG* msg = static_cast<MSG *>(message);
+		if( msg->message == WM_IME_NOTIFY ) {
+			qDebug() << "WM_IME_NOTIFY";
+			DWORD dwCommand = (DWORD) msg->wParam;
+			if( dwCommand == IMN_SETOPENSTATUS ) {		//	IME ON
+				qDebug() << "IMN_SETOPENSTATUS";
+				emit imeOpenStatusChanged();
+			}
+		}
+	}
+	return false;
+}
 void MainWindow::on_action_NewWindow_triggered()
 {
 	qDebug() << "on_action_NewWindow_triggered()";
@@ -2244,13 +2259,18 @@ void MainWindow::readyReadStandardError()
 	QString text = codec->toUnicode(ba);
 	doOutput(text);
 }
-void MainWindow::onRecieved(const QString)
+void MainWindow::onRecieved(const QString txt)
 {
-	assert(0);
+	qDebug() << "onRecieved(" << txt << ")";
+	//assert(0);
 }
 void MainWindow::imeOpenStatusChanged()
 {
 	qDebug() << "imeOpenStatusChanged()";
+	m_viEngine->imeOpenStatusChanged();
+	EditView *view = currentWidget();
+	if( isEditView(view) )
+		view->imeOpenStatusChanged();
 	//assert(0);
 }
 void MainWindow::tagJump(const QString &fullPathName, int ln)		//	ln: 1 オリジン

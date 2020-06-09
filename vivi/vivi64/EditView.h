@@ -286,6 +286,7 @@ public slots:
 	void	cut(bool append = false);
 	int		copy(bool bCut = false, bool append = false);
 	void	paste();
+	void	imeOpenStatusChanged();
 
 private slots:
 	void autoCmplKeyPressed(QString);
