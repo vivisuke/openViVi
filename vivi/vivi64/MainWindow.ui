@@ -101,6 +101,13 @@
      </property>
      <addaction name="action_CopyImplementationCode"/>
     </widget>
+    <widget class="QMenu" name="menuExtendedEdit_1">
+     <property name="title">
+      <string>ExtendedEdit(&amp;1)</string>
+     </property>
+     <addaction name="action_SharpIfCommentOut"/>
+     <addaction name="action_SharpIfElseCommentOut"/>
+    </widget>
     <addaction name="action_Undo"/>
     <addaction name="action_Redo"/>
     <addaction name="separator"/>
@@ -112,6 +119,7 @@
     <addaction name="separator"/>
     <addaction name="action_DynamicCompletion"/>
     <addaction name="action_ZenCoding"/>
+    <addaction name="menuExtendedEdit_1"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -681,6 +689,28 @@
    </property>
    <property name="toolTip">
     <string>KeyAssign</string>
+   </property>
+  </action>
+  <action name="action_SharpIfCommentOut">
+   <property name="text">
+    <string>#ifCommentOut(&amp;3)</string>
+   </property>
+   <property name="toolTip">
+    <string>#if CommentOut</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K, Ctrl+3</string>
+   </property>
+  </action>
+  <action name="action_SharpIfElseCommentOut">
+   <property name="text">
+    <string>#if-elseCommentOut(4)</string>
+   </property>
+   <property name="toolTip">
+    <string>#if-else CommentOut</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K, Ctrl+4</string>
    </property>
   </action>
  </widget>

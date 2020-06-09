@@ -3500,3 +3500,38 @@ void EditView::imeOpenStatusChanged()
 {
 	closeAutoCompletionDlg();
 }
+void EditView::sharpIfCommentOut()
+{
+	sharpIfCommentOut(false);
+}
+void EditView::sharpIfElseCommentOut()
+{
+	sharpIfCommentOut(true);
+}
+void EditView::sharpIfCommentOut(bool bElse)
+{
+	int vFirstLine;		//	選択開始行
+	int vLastLine;		//	選択範囲＋１の行
+	if( m_textCursor->hasSelection() ) {
+		//	undone: box 選択状態
+		vFirstLine = m_textCursor->selectionFirstLine();
+		vLastLine = m_textCursor->selectionLastLine();
+		pos_t pos = m_textCursor->selectionLast();
+		if( pos != viewLineStartPosition(vLastLine) )		//	行頭位置でない場合
+			++vLastLine;
+	} else {
+		vFirstLine = m_textCursor->viewLine();
+		vLastLine = vFirstLine + 1;
+	}
+	openUndoBlock();
+	m_textCursor->setPosition(viewLineStartPosition(vLastLine));
+	m_textCursor->insertText("#endif" + newLineText());
+	m_textCursor->setPosition(viewLineStartPosition(vFirstLine));
+	if( bElse ) {
+		m_textCursor->insertText("#if\t1" + newLineText());
+		m_textCursor->insertText("#else" + newLineText());
+	} else {
+		m_textCursor->insertText("#if\t0" + newLineText());
+	}
+	closeUndoBlock();
+}

@@ -1668,6 +1668,16 @@ void MainWindow::on_action_ZenCoding_triggered()
 	if( isEditViewFocused(view) )
 		view->zenCoding();
 }
+void MainWindow::on_action_SharpIfCommentOut_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->sharpIfCommentOut();
+}
+void MainWindow::on_action_SharpIfElseCommentOut_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->sharpIfElseCommentOut();
+}
 uint MainWindow::getSearchOpt(bool vi) const
 {
 	uint opt = 0;

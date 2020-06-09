@@ -207,6 +207,8 @@ public:
 	void	copyImplCode();
 	QString getImplText(pos_t &pos);
 	void	tagJump();
+	void	sharpIfCommentOut();
+	void	sharpIfElseCommentOut();
 
 protected:
 	void	viFindCharForward(wchar_t qch, bool bPrev, int mvmd, int repCnt);
@@ -265,6 +267,7 @@ protected:
 	void	zenCodingCPP(const QString &, const QString &, int);
 	void	zenCodingPython(const QString &, const QString &, int);
 	bool zenCodingFor(const QString &, const QString &, int, QChar);
+	void	sharpIfCommentOut(bool bElse);
 	
 protected:
 	void	paintEvent(QPaintEvent *);
