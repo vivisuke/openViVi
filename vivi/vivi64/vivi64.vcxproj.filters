@@ -154,9 +154,6 @@
     <ClCompile Include="singleapplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="singleapplication_p.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -217,9 +214,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="singleapplication.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="singleapplication_p.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

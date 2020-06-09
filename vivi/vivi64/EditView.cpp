@@ -34,6 +34,8 @@
 
 #define		CURSOR_WD		2
 
+extern QApplication* g_app;
+
 //----------------------------------------------------------------------
 void setupCandidates(QStringList &lst, const QString &key, const QString &type);
 void setupLibNames(QStringList &lst /*, QString pat = QString()*/);
@@ -114,6 +116,7 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	Q_ASSERT(doc != nullptr);
 	//setFocusPolicy(Qt::ClickFocus);
 	setAttribute(Qt::WA_InputMethodEnabled);
+	setFocusPolicy(Qt::StrongFocus);
 	//m_typeSettings = typeSettings == nullptr ? new TypeSettings() : typeSettings;
 	auto typeSettings = doc->typeSettings();
 	qDebug() << "typeSettings type = " << typeSettings->name();
@@ -142,6 +145,8 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	connect(&m_timer, SIGNAL(timeout()), this, SLOT(onTimer()));
 	m_tmCounter = TM_FPS / 2;
 	m_timer.start(1000/TM_FPS);
+	//
+	auto im = g_app->inputMethod();
 }
 EditView::~EditView()
 {
@@ -932,6 +937,7 @@ void EditView::doInsertText(const QString &text, bool ctrl, bool shift, bool alt
 }
 QVariant EditView::inputMethodQuery( Qt::InputMethodQuery query ) const
 {
+	qDebug() << "inputMethodQuery()";
 	if( query == Qt::ImMicroFocus ) {
 			pos_t pos = /*m_toDeleteIMEPreeditText ? m_preeditPos :*/ m_textCursor->position();
 			int vln = m_textCursor->viewLine();

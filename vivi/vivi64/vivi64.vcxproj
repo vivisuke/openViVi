@@ -117,7 +117,6 @@
     <ClCompile Include="OutputView.cpp" />
     <ClCompile Include="settingsMgr.cpp" />
     <ClCompile Include="singleapplication.cpp" />
-    <ClCompile Include="singleapplication_p.cpp" />
     <ClCompile Include="TestViCommands.cpp" />
     <ClCompile Include="TextCursor.cpp" />
     <ClCompile Include="tokenizer.cpp" />
@@ -149,7 +148,6 @@
     <QtMoc Include="GreppingDlg.h" />
     <QtMoc Include="OutputView.h" />
     <QtMoc Include="singleapplication.h" />
-    <QtMoc Include="singleapplication_p.h" />
     <ClInclude Include="zenCoding.h" />
     <QtMoc Include="NamedColorDlg.h" />
     <ClInclude Include="assocParen.h" />

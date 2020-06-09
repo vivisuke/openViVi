@@ -15,6 +15,7 @@
 
 ## dist
 dist/*
+dist2/*
 
 # Mono auto generated files
 mono_crash.*

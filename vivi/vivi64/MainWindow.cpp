@@ -8,6 +8,7 @@
 #include <QDesktopServices>
 #include <QDebug>
 #include "version.h"
+#include "singleapplication.h"
 #include "MainWindow.h"
 #include "CommandLine.h"
 #include "CTabWidget.h"
@@ -48,6 +49,7 @@
 using namespace std;
 
 extern QApplication* g_app;
+//extern SingleApplication* g_app;
 
 int	g_docNumber = 0;
 SettingsMgr	g_settingsMgr;
@@ -2248,7 +2250,8 @@ void MainWindow::onRecieved(const QString)
 }
 void MainWindow::imeOpenStatusChanged()
 {
-	assert(0);
+	qDebug() << "imeOpenStatusChanged()";
+	//assert(0);
 }
 void MainWindow::tagJump(const QString &fullPathName, int ln)		//	ln: 1 オリジン
 {

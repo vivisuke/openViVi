@@ -23,6 +23,8 @@ class FindLineEdit;
 typedef const char cchar;
 //typedef __uint64 pos_t;
 
+#define QAPPLICATION_CLASS QApplication
+
 enum {
 	MODE_INS = 0,
 	MODE_REP,
