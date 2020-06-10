@@ -1637,6 +1637,21 @@ void MainWindow::on_action_Copy_triggered()
 		statusBar()->showMessage(QString(tr("%1 chars copyed")).arg(sz));
 	}
 }
+void MainWindow::on_action_AdditionalCut_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		view->appendCut();
+	}
+}
+void MainWindow::on_action_AdditionalCopy_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		auto sz = view->appendCopy();
+		statusBar()->showMessage(QString(tr("%1 chars copyed additionally")).arg(sz));
+	}
+}
 void MainWindow::on_action_Paste_triggered()
 {
 	EditView *view = currentWidget();
@@ -1673,6 +1688,11 @@ void MainWindow::on_action_MoveLineCmntToPrev_triggered()
 {
 	EditView *view = currentWidget();
 	if (isEditViewFocused(view)) view->moveLineCmtToPrev();
+}
+void MainWindow::on_action_ToggleTrueFalse_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->toggleTrueFalse();
 }
 void MainWindow::on_action_SharpIfCommentOut_triggered()
 {

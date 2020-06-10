@@ -208,8 +208,11 @@ public:
 	QString getImplText(pos_t &pos);
 	void	tagJump();
 	void	moveLineCmtToPrev();	//	現在行に行コメントがあれば、全行に移動
+	//void	toggleTrueFalse();
 	void	sharpIfCommentOut();
 	void	sharpIfElseCommentOut();
+	void	appendCut();
+	int		appendCopy();
 
 protected:
 	void	viFindCharForward(wchar_t qch, bool bPrev, int mvmd, int repCnt);

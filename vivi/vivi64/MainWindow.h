@@ -213,10 +213,13 @@ private slots:
 	void	on_action_Copy_triggered();
 	void	on_action_Paste_triggered();
 	void	on_action_CopyImplementationCode_triggered();
+	void	on_action_AdditionalCut_triggered();
+	void	on_action_AdditionalCopy_triggered();
 	void	on_action_SelectAll_triggered();
 	void	on_action_DynamicCompletion_triggered();
 	void	on_action_ZenCoding_triggered();
 	void	on_action_MoveLineCmntToPrev_triggered();
+	void	on_action_ToggleTrueFalse_triggered();
 	void	on_action_SharpIfCommentOut_triggered();
 	void	on_action_SharpIfElseCommentOut_triggered();
 	void	on_action_IgnoreCase_triggered();

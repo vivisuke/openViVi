@@ -1,6 +1,14 @@
+
+
+
+
+
+
+
 123
 #include <
 
+bool a = false;		//
 uns
 
 #include <

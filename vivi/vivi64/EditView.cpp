@@ -2483,6 +2483,14 @@ void EditView::redo()
 	update();
 	emit updateUndoRedoEnabled();
 }
+void EditView::appendCut()
+{
+	cut(true);
+}
+int EditView::appendCopy()
+{
+	return copy(false, true);
+}
 void EditView::cut(bool append)
 {
 	bool im = isModified();
@@ -2517,7 +2525,7 @@ int EditView::copy(bool bCut, bool append)
 	auto first = m_textCursor->selectionFirst();
 	auto last = m_textCursor->selectionLast();
 	auto sz = last - first;
-	document()->copy(first, sz);
+	document()->copy(first, sz, append);
 	return sz;
 }
 void EditView::paste()
@@ -3535,7 +3543,9 @@ void EditView::moveLineCmtToPrev()	//	現在行に行コメントがあれば、
 	m_textCursor->setPosition(pos);
 	m_textCursor->movePosition(TextCursor::END_LINE, TextCursor::KEEP_ANCHOR);
 	QString text = m_textCursor->selectedText().trimmed() + newLineText();
+	m_noFallingChars = true;
 	m_textCursor->deleteChar();
+	m_noFallingChars = false;
 	m_textCursor->setPosition(lineStart);
 	m_textCursor->insertText(indent + text);
 	closeUndoBlock();
