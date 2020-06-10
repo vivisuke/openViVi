@@ -105,6 +105,7 @@
      <property name="title">
       <string>ExtendedEdit(&amp;1)</string>
      </property>
+     <addaction name="action_MoveLineCmntToPrev"/>
      <addaction name="action_SharpIfCommentOut"/>
      <addaction name="action_SharpIfElseCommentOut"/>
     </widget>
@@ -711,6 +712,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+K, Ctrl+4</string>
+   </property>
+  </action>
+  <action name="action_MoveLineCmntToPrev">
+   <property name="text">
+    <string>MoveLineCmntTo&amp;Prev</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K, Ctrl+P</string>
    </property>
   </action>
  </widget>

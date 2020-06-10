@@ -3500,6 +3500,55 @@ void EditView::imeOpenStatusChanged()
 {
 	closeAutoCompletionDlg();
 }
+void EditView::moveLineCmtToPrev()	//	現在行に行コメントがあれば、全行に移動
+{
+	QString lineComment = typeSettings()->textValue(TypeSettings::LINE_COMMENT);
+	if( lineComment.isEmpty() )
+		return;
+	int vln = m_textCursor->viewLine();
+	int ln = viewLineToDocLine(vln);
+#if	1
+	int lineStart = lineStartPosition(ln);
+	int lineStart2 = lineStartPosition(ln+1);
+	ssize_t sz = lineStart2 - lineStart;
+	ViewTokenizer dt(typeSettings(), buffer(), lineStart, sz, lineStart2);
+	QString token;
+	pos_t pos = 0;
+	for(;;) {
+		token = dt.nextToken();
+		if( token.isEmpty() ) break;
+		if( token == lineComment ) {
+			pos = dt.tokenix();
+			break;
+		}
+		//qDebug() << token;
+	}
+	while( pos > lineStart && isSpaceChar(charAt(pos-1)) )
+		--pos;
+	if( !pos || pos == lineStart )
+		return;		//	行コメントが行頭 or 無かった場合
+	int p = lineStart;
+	while( isSpaceChar(charAt(p)) ) ++p;
+	QString indent = getText(*buffer(), lineStart, p-lineStart);
+	//QString text = getText(buffer(), pos, );
+	openUndoBlock();
+	m_textCursor->setPosition(pos);
+	m_textCursor->movePosition(TextCursor::END_LINE, TextCursor::KEEP_ANCHOR);
+	QString text = m_textCursor->selectedText().trimmed() + newLineText();
+	m_textCursor->deleteChar();
+	m_textCursor->setPosition(lineStart);
+	m_textCursor->insertText(indent + text);
+	closeUndoBlock();
+	//updateScrollBarInfo();
+	update();
+#else
+	Tokenizer tkn(*buffer(), lineStartPosition(ln), lineStartPosition(ln+1), true, typeSettings());
+	while( tkn.tokenType() != Tokenizer::END_OF_FILE ) {
+		qDebug() << tkn.tokenText();
+		tkn.nextToken();
+	}
+#endif
+}
 void EditView::sharpIfCommentOut()
 {
 	sharpIfCommentOut(false);

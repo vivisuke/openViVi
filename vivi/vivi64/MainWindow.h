@@ -216,6 +216,7 @@ private slots:
 	void	on_action_SelectAll_triggered();
 	void	on_action_DynamicCompletion_triggered();
 	void	on_action_ZenCoding_triggered();
+	void	on_action_MoveLineCmntToPrev_triggered();
 	void	on_action_SharpIfCommentOut_triggered();
 	void	on_action_SharpIfElseCommentOut_triggered();
 	void	on_action_IgnoreCase_triggered();

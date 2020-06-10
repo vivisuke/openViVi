@@ -207,6 +207,7 @@ public:
 	void	copyImplCode();
 	QString getImplText(pos_t &pos);
 	void	tagJump();
+	void	moveLineCmtToPrev();	//	現在行に行コメントがあれば、全行に移動
 	void	sharpIfCommentOut();
 	void	sharpIfElseCommentOut();
 
