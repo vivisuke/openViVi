@@ -884,14 +884,15 @@ EditView *MainWindow::createView(QString pathName)
 {
 	//	done: pathName を既にオープンしている場合対応
     QString absPath;
-    if( !pathName.isEmpty() )
+    if( !pathName.isEmpty() ) {		//	パス名指定がある場合、新規文書の場合は空
     	absPath = QDir(pathName).absolutePath();
-	int ix = isOpened(absPath);
-	if( ix >= 0 ) {
-		auto* view = nthWidget(ix);
-		ui.tabWidget->setCurrentIndex(ix);
-		return view;
-	}
+		int ix = isOpened(absPath);
+		if( ix >= 0 ) {
+			auto* view = nthWidget(ix);
+			ui.tabWidget->setCurrentIndex(ix);
+			return view;
+		}
+    }
 	QFileInfo info(pathName);
 	QString typeName, title;
 	if( !pathName.isEmpty() ) {
