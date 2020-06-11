@@ -2298,6 +2298,10 @@ void MainWindow::readyReadStandardError()
 void MainWindow::onRecieved(const QString txt)
 {
 	qDebug() << "onRecieved(" << txt << ")";
+	if( txt.isEmpty() || txt == ":" )
+		on_action_NewWindow_triggered();
+	else {
+	}
 	//assert(0);
 }
 void MainWindow::imeOpenStatusChanged()

@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
 		}
 		LocalFree(argvw);
 		QString a = files.join("\t");
+		if( a.isEmpty() ) a = ":";		//	引数無しの場合は ":" を送る → 新規メインウィンドウ表示
 		app.sendMessage(a);
 		return 0;
 	}
