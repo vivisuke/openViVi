@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QAbstractNativeEventFilter>
 #include <QDebug>
+#include <windows.h>
 
 QApplication* g_app = nullptr;
 //SingleApplication* g_app = nullptr;
@@ -27,8 +28,35 @@ public:
 int main(int argc, char *argv[]) 
 {
 	//QApplication app(argc, argv);
-	SingleApplication app(argc, argv, "ViVi64");
-	g_app = &app;
+	QString uniqKeyString = "ViVi64";		//	ローカルサーバ名
+#ifdef	_DEBUG
+	uniqKeyString += "_DEBUG";
+#endif
+	SingleApplication app(argc, argv, uniqKeyString);
+	//
+    QStringList files;
+#if	0	//def	_DEBUG
+	app.isFirstApp();		//	listen 起動のためにコール
+#else
+	if( !app.isFirstApp() /*&& argc > 1*/ ) {		//	~~ファイル指定ありの場合~~
+		int nArgs = 0;
+		wchar_t **argvw = CommandLineToArgvW(GetCommandLine(), &nArgs);
+		for(int i = 1; i < nArgs; ++i) {
+			QString a((QChar *)argvw[i]);
+			if( argvw[i][0] != '-' ) {
+				QDir path(a);;
+				//if( !path.isAbsolute() )
+				//	path.makeAbsolute();
+				files += path.absolutePath();
+			} else
+				files += a;
+		}
+		LocalFree(argvw);
+		QString a = files.join("\t");
+		app.sendMessage(a);
+		return 0;
+	}
+#endif
 	//app.installNativeEventFilter(new WinNativeEventFilter());
 	//
 	app.setOrganizationName("VisualSoftwareLaboratory");

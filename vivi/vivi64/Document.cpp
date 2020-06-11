@@ -178,6 +178,7 @@ void Document::buildMinMap()
 	};
 	char lastps = NONE, pstate = NONE;
 	int pln = -1;
+	const auto sz = buffer()->size();
 	for (int ln = 0; ln < buffer()->lineCount(); ++ln) {
 		int p = buffer()->lineStartPosition(ln);
 		int start = p;
@@ -197,10 +198,12 @@ void Document::buildMinMap()
 		const int WD = 4;
 #if 1
 		if( typeName() == "CPP" ) {
-			if( p == start && buffer()->startsWith(p, L"};") ) pstate = NONE;	//	undone: 行末に "};" がある場合対応
-			else if( buffer()->startsWith(p, L"public") ) pstate = PUBLIC;
-			else if( buffer()->startsWith(p, L"protected") ) pstate = PROTECTED;
-			else if( buffer()->startsWith(p, L"private") ) pstate = PRIVATE;
+			if (p < sz) {
+				if (p == start && buffer()->startsWith(p, L"};")) pstate = NONE;	//	undone: 行末に "};" がある場合対応
+				else if (buffer()->startsWith(p, L"public")) pstate = PUBLIC;
+				else if (buffer()->startsWith(p, L"protected")) pstate = PROTECTED;
+				else if (buffer()->startsWith(p, L"private")) pstate = PRIVATE;
+			}
 			if( pln >= 0 ) {
 				//painter.setPen(lastps == PUBLIC ? Qt::green : lastps == PROTECTED ? Qt::cyan : Qt::yellow);
 				//painter.drawLine(0, pln*m_mmScale, 0, (ln-1)*m_mmScale);
