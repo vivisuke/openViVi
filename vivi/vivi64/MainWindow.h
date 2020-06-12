@@ -80,7 +80,8 @@ public:
 	TypeSettings	*typeSettingsForType(const QString &);
 	void	resetBoxKeisenMode();
 	void	setMode(int);
-	void	setSearchWordOpt();
+	void	setSearchWordOpt(bool b=true);
+	void	setSearchRegExpOpt(bool b=true);
 	void	hideCmdLineEdit();
 	void	commandLineMode(QChar = ':');
 	bool	hasSearchBoxFocus();		//	検索ボックスがフォーカスを持っているか？

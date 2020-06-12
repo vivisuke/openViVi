@@ -1818,10 +1818,16 @@ void MainWindow::on_action_Search_triggered()
 	m_findStringCB->lineEdit()->setSelection(0, txt.size());
 	m_findStringCB->lineEdit()->setFocus();
 }
-void MainWindow::setSearchWordOpt()
+void MainWindow::setSearchWordOpt(bool b)
 {
-	ui.action_WordSearch->setChecked(true);
-	globSettings()->setBoolValue(GlobalSettings::WHOLE_WORD_ONLY, true);
+	ui.action_WordSearch->setChecked(b);
+	globSettings()->setBoolValue(GlobalSettings::WHOLE_WORD_ONLY, b);
+	globSettings()->writeSettings();
+}
+void MainWindow::setSearchRegExpOpt(bool b)
+{
+	ui.action_RegExp->setChecked(b);
+	globSettings()->setBoolValue(GlobalSettings::REGEXP, b);
 	globSettings()->writeSettings();
 }
 void MainWindow::on_action_SearchCurWord_triggered()
