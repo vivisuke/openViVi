@@ -2597,7 +2597,8 @@ bool EditView::saveFile() const
 }
 bool EditView::searchCurWord(QString &txt, bool vi)
 {
-	if( m_textCursor->hasSelection() ) {
+	const bool hadSelection = m_textCursor->hasSelection();
+	if( hadSelection ) {
 		int ln1 = positionToLine(m_textCursor->selectionFirst());
 		int ln2 = positionToLine(m_textCursor->selectionLast());
 		if( ln1 != ln2 ) m_textCursor->clearSelection();
@@ -2612,7 +2613,8 @@ bool EditView::searchCurWord(QString &txt, bool vi)
 	int ln2 = positionToLine(last = m_textCursor->selectionLast());
 	if( ln1 != ln2 ) return false;
 	txt = document()->text(first, last - first);
-	if( vi ) txt = "\\b" + txt + "\\b";
+	if( !hadSelection && vi )
+		txt = "\\b" + txt + "\\b";
 	mainWindow()->setFindString(txt);
 	mainWindow()->setMatchedString(txt);
 	if( txt.isEmpty() ) return false;
