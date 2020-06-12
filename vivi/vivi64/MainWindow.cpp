@@ -56,6 +56,8 @@ SettingsMgr	g_settingsMgr;
 GlobalSettings	g_globSettings;
 GlobalSettings* globSettings() { return &g_globSettings; }
 
+extern QString escapeRegExpSpecialChars(const QString txt);
+
 vector<MainWindow*> g_mainWindows;
 
 //----------------------------------------------------------------------
@@ -1812,6 +1814,8 @@ void MainWindow::on_action_Search_triggered()
 	QString txt;
 	if( view->hasSelectionInALine() ) {
 		txt = view->selectedText();
+		if( globSettings()->boolValue(GlobalSettings::REGEXP) )
+			txt = escapeRegExpSpecialChars(txt);
 		m_findStringCB->lineEdit()->setText(txt);
 	} else
 		txt = m_findStringCB->lineEdit()->text();
