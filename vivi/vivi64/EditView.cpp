@@ -90,6 +90,20 @@ QString getText(const Buffer &buffer, int pos, int sz)
 	return text;
 }
 #endif
+QString escapeRegExpSpecialChars(const QString txt0)
+{
+	QString txt;
+	for(int i = 0; i < txt0.size();) {
+		QChar ch = txt0[i++];
+		if( ch == '(' || ch == ')' || ch == '[' || ch == ']' || ch == '|'
+			|| ch == '+' || ch == '*' || ch == '?' || ch == '.' || ch == '\\' )
+		{
+			txt += QChar('\\');
+		}
+		txt += ch;
+	}
+	return txt;
+}
 //----------------------------------------------------------------------
 EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeSettings*/)
 	: m_mainWindow(mainWindow)
@@ -2615,15 +2629,17 @@ bool EditView::searchCurWord(QString &txt, bool vi)
 	txt = document()->text(first, last - first);
 	if( !hadSelection && vi )
 		txt = "\\b" + txt + "\\b";
-	mainWindow()->setFindString(txt);
-	mainWindow()->setMatchedString(txt);
+	//mainWindow()->setFindString(txt);
+	//mainWindow()->setMatchedString(txt);
 	if( txt.isEmpty() ) return false;
 	//uint opt = 0;
-#if	0	//##
-	if( mainWindow()->globSettings()->boolValue(GlobalSettings::REGEXP) ) {
+#if	1	//##
+	if( vi || globSettings()->boolValue(GlobalSettings::REGEXP) ) {
 		txt = escapeRegExpSpecialChars(txt);
 	}
 #endif
+	mainWindow()->setFindString(txt);
+	mainWindow()->setMatchedString(txt);
 	auto opt = mainWindow()->getSearchOpt();
 	opt |= SSSearch::WHOLE_WORD_ONLY;
 	bool rc = findForward(txt, opt, false, true, vi);
