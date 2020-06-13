@@ -2670,8 +2670,9 @@ bool EditView::searchCurWord(QString &txt, bool vi)
 		txt = "\\b" + txt + "\\b";
 	mainWindow()->setFindString(txt);
 	mainWindow()->setMatchedString(txt);
+	mainWindow()->setSearchWordOpt(!hadSelection);		//	非選択状態ならば、単語単位検索オプションON
 	auto opt = mainWindow()->getSearchOpt();
-	opt |= SSSearch::WHOLE_WORD_ONLY;
+	//opt |= SSSearch::WHOLE_WORD_ONLY;
 	bool rc = findForward(txt, opt, false, true, vi);
 	//emit textSearched(txt, !vi);
 	resetCursorBlinking();
