@@ -237,6 +237,7 @@ protected:
 	void	drawMatchedBG(QPainter &, int ln, int py);
 	void	drawCurWordBG(QPainter &, int ln, int py);
 	void	drawEmphasizedBG(QPainter &, int ln, int py, int &eix);
+	void	drawAssocParenBG(QPainter &);
 	void	drawAssocParenBG(QPainter &, int vln, int py);
 	void	drawSelection(QPainter&);
 	void	drawMinMap(QPainter&);

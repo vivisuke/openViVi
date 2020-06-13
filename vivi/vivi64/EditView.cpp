@@ -918,6 +918,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	viEngine->resetRedoRecording();
 	onCursorPosChanged();
 	makeCursorInView();
+	checkAssocParen();
 	update();
 }
 void EditView::onEscape(bool ctrl, bool shift, bool alt)
@@ -1016,6 +1017,7 @@ void EditView::paintEvent(QPaintEvent *event)
 	drawPreeditString(pt);
 	drawMatchedBG(pt);
 	drawSelection(pt);
+	drawAssocParenBG(pt);
 	drawCursor(pt);				//	テキストカーソル表示
 	drawTextArea(pt);			//	テキストエリア描画
 	drawMinMap(pt);				//	ミニマップ描画
@@ -1119,7 +1121,16 @@ void EditView::drawMatchedBG(QPainter &pt, int vln, int py)
 		++pos;
 	}
 }
+void EditView::drawAssocParenBG(QPainter &pt)
+{
+	const auto rct = rect();
+	int py = 0;
+	for (int ln = m_scrollY0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
+		drawAssocParenBG(pt, ln, py);
+	}
+}
 //	m_openParenPos, m_closeParenPos が行vlnにある場合は背景を強調
+//		m_unbalancedAssocParen は checkAssocParen() で設定される
 void EditView::drawAssocParenBG(QPainter &painter, int vln, int py)
 {
 	if( m_openParenPos < 0 ) return;
@@ -1130,12 +1141,12 @@ void EditView::drawAssocParenBG(QPainter &painter, int vln, int py)
 	if( m_openParenPos >= ls && m_openParenPos < nxls ) {
 		int px1 = textWidth(ls, m_openParenPos - ls /*, nxls*/);
 		int px2 = textWidth(ls, m_openParenPos - ls + 1 /*, nxls*/);
-		painter.fillRect(QRect(px1 - hv, py, px2 - px1, lineHeight()), col);
+		painter.fillRect(QRect(px1 - hv + m_lineNumAreaWidth, py, px2 - px1, lineHeight()), col);
 	}
 	if( m_closeParenPos >= ls && m_closeParenPos < nxls ) {
 		int px1 = textWidth(ls, m_closeParenPos - ls /*, nxls*/);
 		int px2 = textWidth(ls, m_closeParenPos - ls + 1 /*, nxls*/);
-		painter.fillRect(QRect(px1 - hv, py, px2 - px1, lineHeight()), col);
+		painter.fillRect(QRect(px1 - hv + m_lineNumAreaWidth, py, px2 - px1, lineHeight()), col);
 	}
 }
 void EditView::drawSelection(QPainter& pt)
