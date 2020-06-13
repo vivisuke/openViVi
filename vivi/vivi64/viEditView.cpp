@@ -582,6 +582,6 @@ void EditView::doViCommand()		//	viEngine が保有する vi コマンドを実�
 	}
 	//##updateScrollBarInfo();
 	makeCursorInView();
-	//##checkAssocParen();
+	checkAssocParen();
 	update();
 }
