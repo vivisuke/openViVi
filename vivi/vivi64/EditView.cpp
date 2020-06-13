@@ -1017,7 +1017,7 @@ void EditView::paintEvent(QPaintEvent *event)
 	drawMatchedBG(pt);
 	drawSelection(pt);
 	drawCursor(pt);				//	テキストカーソル表示
-	drawTextArea(pt);			//	テキストエイア描画
+	drawTextArea(pt);			//	テキストエリア描画
 	drawMinMap(pt);				//	ミニマップ描画
 	drawLineCursor(pt);			//	行カーソル表示
 	//	行番号部分背景描画
@@ -1117,6 +1117,25 @@ void EditView::drawMatchedBG(QPainter &pt, int vln, int py)
 		pt.fillRect(QRect(px1 - hv, py, px2 - px1, lineHeight()),
 							typeSettings()->color(TypeSettings::MATCHED_BG));
 		++pos;
+	}
+}
+//	m_openParenPos, m_closeParenPos が行vlnにある場合は背景を強調
+void EditView::drawAssocParenBG(QPainter &painter, int vln, int py)
+{
+	if( m_openParenPos < 0 ) return;
+	const int hv = m_scrollX0;
+	pos_t ls = viewLineStartPosition(vln);
+	pos_t nxls = viewLineStartPosition(vln + 1);
+	QColor col = m_unbalancedAssocParen ? QColor("red") : typeSettings()->color(TypeSettings::MATCHE_PAREN_BG);
+	if( m_openParenPos >= ls && m_openParenPos < nxls ) {
+		int px1 = textWidth(ls, m_openParenPos - ls /*, nxls*/);
+		int px2 = textWidth(ls, m_openParenPos - ls + 1 /*, nxls*/);
+		painter.fillRect(QRect(px1 - hv, py, px2 - px1, lineHeight()), col);
+	}
+	if( m_closeParenPos >= ls && m_closeParenPos < nxls ) {
+		int px1 = textWidth(ls, m_closeParenPos - ls /*, nxls*/);
+		int px2 = textWidth(ls, m_closeParenPos - ls + 1 /*, nxls*/);
+		painter.fillRect(QRect(px1 - hv, py, px2 - px1, lineHeight()), col);
 	}
 }
 void EditView::drawSelection(QPainter& pt)

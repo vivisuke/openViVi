@@ -811,8 +811,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	for(int i = 0; i < ui.tabWidget->count(); ++i) {
 		EditView *view = nthWidget(i);
 		if( isEditView(view) ) {
-			if( !view->fullPathName().isEmpty() )
-				lst << view->fullPathName();
+			if( !view->fullPathName().isEmpty() ) {
+				if( i == ui.tabWidget->currentIndex() )
+					lst << "* " + view->fullPathName();		//	カレントビュー
+				else
+					lst << view->fullPathName();
+			}
 		}
 	}
     QSettings settings;
@@ -843,9 +847,16 @@ void MainWindow::on_action_OpenOpenedFiles_triggered()
     QSettings settings;
     QString key = KEY_OPENED_FILELIST + QString("-%1").arg(g_mainWindows.size());
     QStringList files = settings.value(key).toStringList();
-    for(const auto& path: files) {
+    int cur = -1;
+    for(auto& path: files) {
+    	if( path.startsWith("* ") ) {
+    		path = path.mid(2);
+    		cur = ui.tabWidget->count();		//	カレント文書のタブIX
+    	}
     	createView(path);
     }
+    if( cur >= 0 )
+    	ui.tabWidget->setCurrentIndex(cur);
 }
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
