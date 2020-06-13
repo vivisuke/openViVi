@@ -9,21 +9,6 @@
 QApplication* g_app = nullptr;
 //SingleApplication* g_app = nullptr;
 
-#if	0
-class WinNativeEventFilter: public QAbstractNativeEventFilter
-{
-public:
-    bool nativeEventFilter(const QByteArray &eventType, void *message, long *) override
-    {
-    	//qDebug() << "nativeEventFilter()";
-    	if (eventType == "windows_generic_MSG") {
-	    	qDebug() << "windows_generic_MSG";
-	    	windows_generic_MSG* ev = static_cast<windows_generic_MSG *>(message);
-    	}
-        return false;
-    }
-};
-#endif
 
 int main(int argc, char *argv[]) 
 {
@@ -48,8 +33,9 @@ int main(int argc, char *argv[])
 				//if( !path.isAbsolute() )
 				//	path.makeAbsolute();
 				files += path.absolutePath();
-			} else
+			} else {
 				files += a;
+			}
 		}
 		LocalFree(argvw);
 		QString a = files.join("\t");

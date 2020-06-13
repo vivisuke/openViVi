@@ -1,4 +1,4 @@
-#include "ViEngine.h"
+﻿#include "ViEngine.h"
 //#include "EditView.h"
 #include <QString>
 #include <QDebug>
@@ -117,7 +117,11 @@ void ViEngine::appendInsertedText(const QString &text)
 	if( m_redoRecording ) {
 		//if( text[0] == 'H' )
 		//	qDebug() << "appendInsertedText" << text;
+		if (text == "args") {
+			qDebug() << "text == 'args'";
+		}
 		m_insertedText += text;
+		qDebug() << "m_insertedText = '" << m_insertedText << "', text = '" << text << "'";
 	}
 }
 void ViEngine::removeFromInsertedText(const QString &text)

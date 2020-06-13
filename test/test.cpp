@@ -1,7 +1,7 @@
 
 
-
-
+hoge )
+if( ) {
 
 
 
@@ -14,6 +14,16 @@ uns
 #include <
 fo
 11111
+void MainWindow::onRecieved(const QString args)
+{
+	qDebug() << "onRecieved(" << txt << ")";
+	if( txt.isEmpty() || txt == ":" )
+		on_action_NewWindow_triggered();
+	else {
+		auto lst = txt.split("\t");
+	}
+	//assert(0);
+}
 
 22222
 main() {

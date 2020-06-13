@@ -832,7 +832,8 @@ void EditView::autoCmplDecided(QString text, bool autoClosed)
 	//	mainWindow()->viEngine()->appendInsertedText(text.mid(sz));
 	//}
 	m_textCursor->setPosition(m_autoCmplPos, TextCursor::KEEP_ANCHOR);		//	既に入力済みの部分を選択
-	//QString t0 = m_textCursor->selectedText();
+	QString t0 = m_textCursor->selectedText();
+	mainWindow()->viEngine()->removeFromInsertedText(t0);
 	///mainWindow()->viEngine()->removeFromInsertedText(m_autoCmplFilter);
 	//if( text.startsWith(t0) )
 	//	mainWindow()->viEngine()->appendInsertedText(text.mid(t0.size()));

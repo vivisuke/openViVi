@@ -2316,12 +2316,13 @@ void MainWindow::readyReadStandardError()
 	QString text = codec->toUnicode(ba);
 	doOutput(text);
 }
-void MainWindow::onRecieved(const QString txt)
+void MainWindow::onRecieved(const QString args)
 {
-	qDebug() << "onRecieved(" << txt << ")";
-	if( txt.isEmpty() || txt == ":" )
+	qDebug() << "onRecieved(" << args << ")";
+	if( args.isEmpty() || args == ":" )
 		on_action_NewWindow_triggered();
 	else {
+		auto lst = args.split("\t");
 	}
 	//assert(0);
 }
