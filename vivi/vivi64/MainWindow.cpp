@@ -2323,6 +2323,8 @@ void MainWindow::onRecieved(const QString args)
 		on_action_NewWindow_triggered();
 	else {
 		auto lst = args.split("\t");
+		for(const auto& path: lst)
+			createView(path);
 	}
 	//assert(0);
 }
