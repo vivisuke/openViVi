@@ -1223,7 +1223,7 @@ void MainWindow::on_action_Open_triggered()
 			<< tr("TSV files (*.tsv)")
 			<< tr("HLSL files (*.fx)");
 	QStringList fileNameList = QFileDialog::getOpenFileNames(this, tr("Open File"),
-																QString(), filter.join(";;"));
+																curdir, filter.join(";;"));
 	if( fileNameList.isEmpty() ) return;
 	foreach(const QString &pathName, fileNameList) {
 		qDebug() << "pathName = " << pathName;
