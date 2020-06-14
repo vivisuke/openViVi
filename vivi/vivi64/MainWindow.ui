@@ -170,6 +170,12 @@
     <property name="title">
      <string>&amp;Search</string>
     </property>
+    <widget class="QMenu" name="menuTagsJump">
+     <property name="title">
+      <string>TagsJump</string>
+     </property>
+     <addaction name="action_TagsJump"/>
+    </widget>
     <addaction name="action_Search"/>
     <addaction name="action_SearchCurWord"/>
     <addaction name="action_SearchForward"/>
@@ -182,6 +188,7 @@
     <addaction name="action_LastModifiedPos"/>
     <addaction name="action_TagJump"/>
     <addaction name="action_AssociatedParen"/>
+    <addaction name="menuTagsJump"/>
    </widget>
    <widget class="QMenu" name="menu_Tool">
     <property name="title">
@@ -747,6 +754,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+C</string>
+   </property>
+  </action>
+  <action name="action_TagsJump">
+   <property name="text">
+    <string>TagsJum&amp;p</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+]</string>
    </property>
   </action>
  </widget>

@@ -2360,6 +2360,12 @@ void MainWindow::on_action_TagJump_triggered()
 	else if( isEditView(view) )
 		view->tagJump();
 }
+void MainWindow::on_action_TagsJump_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) )
+		view->tagsJump();
+}
 void MainWindow::on_action_AssociatedParen_triggered()
 {
 	EditView *view = currentWidget();

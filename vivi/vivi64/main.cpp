@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 {
 	//QApplication app(argc, argv);
 	QString uniqKeyString = "ViVi64";		//	ローカルサーバ名
-#ifdef	_DEBUG
+#if	0	//def	_DEBUG
 	uniqKeyString += "_DEBUG";
 #endif
 	SingleApplication app(argc, argv, uniqKeyString);
@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 #if	0	//def	_DEBUG
 	app.isFirstApp();		//	listen 起動のためにコール
 #else
+	bool opt_mi = false;	//	マルチインスタンスオプション
 	if( !app.isFirstApp() /*&& argc > 1*/ ) {		//	~~ファイル指定ありの場合~~
 		int nArgs = 0;
 		wchar_t **argvw = CommandLineToArgvW(GetCommandLine(), &nArgs);
@@ -33,15 +34,19 @@ int main(int argc, char *argv[])
 				//if( !path.isAbsolute() )
 				//	path.makeAbsolute();
 				files += path.absolutePath();
+			} else if( a == L"-mi" ) {
+				opt_mi = true;
 			} else {
 				files += a;
 			}
 		}
 		LocalFree(argvw);
-		QString a = files.join("\t");
-		if( a.isEmpty() ) a = ":";		//	引数無しの場合は ":" を送る → 新規メインウィンドウ表示
-		app.sendMessage(a);
-		return 0;
+		if( !opt_mi ) {
+			QString a = files.join("\t");
+			if( a.isEmpty() ) a = ":";		//	引数無しの場合は ":" を送る → 新規メインウィンドウ表示
+			app.sendMessage(a);
+			return 0;
+		}
 	}
 #endif
 	//app.installNativeEventFilter(new WinNativeEventFilter());

@@ -89,6 +89,7 @@ public:
 	void	clearMatchedString() { m_matchedString.clear(); }
 	void	setMatchedString(const QString& txt) { m_matchedString = txt; }
 	void	setCurrentView(EditView*);
+	void	tagsJump(QString, QString);
 
 protected:
 	//bool	focusNextPrevChild(bool next);
@@ -235,6 +236,7 @@ private slots:
 	void	on_action_Grep_triggered();
 	void	on_action_GrepCurWord_triggered();
 	void	on_action_TagJump_triggered();
+	void	on_action_TagsJump_triggered();
 	void	on_action_AssociatedParen_triggered();
 	void	on_action_LineNumber_triggered();
 	void	on_action_BoxSelect_triggered();

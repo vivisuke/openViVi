@@ -3455,6 +3455,23 @@ QString EditView::getImplText(pos_t &pos)
 	implText += newLineText() + "{" + newLineText() + "}" + newLineText();
 	return implText;
 }
+void EditView::tagsJump()
+{
+	TextCursor cur(*m_textCursor);
+	cur.movePosition(TextCursor::BEG_WORD);
+	cur.movePosition(TextCursor::END_WORD, TextCursor::KEEP_ANCHOR);
+	if( !cur.hasSelection() ) return;
+	QString text = cur.selectedText();
+	if( !isLetterOrUnderbar(text[0]) ) return;		//	英字で始まる単語でない場合
+	QString dirStr = QDir::currentPath();;
+	QString path = fullPathName();
+	if( !path.isEmpty() ) {
+		QDir dir(path);
+		dir.cdUp();
+		dirStr = dir.absolutePath();
+	}
+	mainWindow()->tagsJump(text, dirStr);
+}
 void EditView::tagJump()
 {
 	int dln = viewLineToDocLine(m_textCursor->viewLine());
