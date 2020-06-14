@@ -2372,3 +2372,6 @@ void MainWindow::on_action_AssociatedParen_triggered()
 	if( isEditView(view) )
 		view->jumpAssociatedParen();
 }
+void MainWindow::tagsJump(QString, QString)
+{
+}
