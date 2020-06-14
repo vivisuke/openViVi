@@ -3,6 +3,9 @@
 hoge )
 if( ) {
 
+	QString curdir = QDir::currentPath();
+	qDebug() << "cur = " << cur;
+	
 abc_xyz_txt
 
 abc_xyz_txttxt

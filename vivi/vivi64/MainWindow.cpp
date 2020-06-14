@@ -1196,6 +1196,8 @@ const EditView *MainWindow::nthWidget(int ix) const
 void MainWindow::on_action_Open_triggered()
 {
 	qDebug() << "on_action_Open_triggered()";
+	QString curdir = QDir::currentPath();
+	qDebug() << "curdir = " << curdir;
 	QStringList filter;
 	filter	<< tr("all files (*.*)")
 			<< tr("Text files (*.txt)")

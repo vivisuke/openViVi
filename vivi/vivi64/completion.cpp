@@ -474,7 +474,7 @@ bool EditView::isSpaces(pos_t first, pos_t last) const
 	}
 	return true;
 }
-//	動的補?E
+//	動的補完
 void EditView::completion(bool keyword)
 {
 	bool im = isModified();
@@ -729,8 +729,8 @@ bool EditView::isAfterIncludeDQ(pos_t &p)
 void EditView::autoCmplKeyPressed(QString text)
 {
 	if( text[0].unicode() >= 0x20 && text[0].unicode() < 0x7f || text == "\t" ) {
-		//if( mainWindow()->viEngine()->isRedoRecording() )
-		//	mainWindow()->viEngine()->appendInsertedText(text);
+		//if( viEngine()->isRedoRecording() )
+		//	viEngine()->appendInsertedText(text);
 		m_autoCmplTyped += text;
 		if( !editForVar(text) )
 			insertText(text);
@@ -825,18 +825,30 @@ void EditView::autoCmplPasted()
 //			ViEngine::insertedText = "ab"
 void EditView::autoCmplDecided(QString text, bool autoClosed)
 {
+	qDebug() << "*** autoCmplDecided(text = " << text << ", autoClosed = " << autoClosed << ")";
 	qDebug() << "m_autoCmplFilter = " << m_autoCmplFilter << ", m_autoCmplTyped = " << m_autoCmplTyped;
-	qDebug() << "text = " << text << "ViEngine::insertedText = " << mainWindow()->viEngine()->insertedText();
+	qDebug() << "text = " << text << "ViEngine::insertedText = " << viEngine()->insertedText();
+	qDebug() << "insertedText = '" << viEngine()->insertedText() << "'";
 	//if( autoClosed ) {
-	//	const int sz = mainWindow()->viEngine()->insertedText().size();
-	//	mainWindow()->viEngine()->appendInsertedText(text.mid(sz));
+	//	const int sz = viEngine()->insertedText().size();
+	//	viEngine()->appendInsertedText(text.mid(sz));
 	//}
+#if	0
+	text = text.mid(m_autoCmplFilter.size());
+#else
+	auto pos0 = m_textCursor->position();
 	m_textCursor->setPosition(m_autoCmplPos, TextCursor::KEEP_ANCHOR);		//	既に入力済みの部分を選択
 	QString t0 = m_textCursor->selectedText();
-	mainWindow()->viEngine()->removeFromInsertedText(t0);
-	///mainWindow()->viEngine()->removeFromInsertedText(m_autoCmplFilter);
+	//if (autoClosed) {
+		qDebug() << "t0 = " << t0;
+		text = text.mid(t0.size());
+		m_textCursor->setPosition(pos0);	//	選択解除
+	//}
+	//viEngine()->removeFromInsertedText(t0);
+#endif
+	///viEngine()->removeFromInsertedText(m_autoCmplFilter);
 	//if( text.startsWith(t0) )
-	//	mainWindow()->viEngine()->appendInsertedText(text.mid(t0.size()));
+	//	viEngine()->appendInsertedText(text.mid(t0.size()));
 	QString t = autoIndentText();
 	QString dst;
 	pos_t pos = -1;

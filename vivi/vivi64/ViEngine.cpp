@@ -117,8 +117,11 @@ void ViEngine::appendInsertedText(const QString &text)
 	if( m_redoRecording ) {
 		//if( text[0] == 'H' )
 		//	qDebug() << "appendInsertedText" << text;
-		if (text == "args") {
-			qDebug() << "text == 'args'";
+		//if (text == "args") {
+		//	qDebug() << "text == 'args'";
+		//}
+		if (text == "curdir") {
+			qDebug() << "text == 'curdir'";
 		}
 		m_insertedText += text;
 		qDebug() << "m_insertedText = '" << m_insertedText << "', text = '" << text << "'";

@@ -17,6 +17,7 @@ class SSSearch;
 class MainWindow;
 class AutoCompletionDlg;
 class GlobalSettings;
+class ViEngine;
 
 struct FallingChar		//	落下中文字
 {
@@ -277,6 +278,7 @@ protected:
 	void	zenCodingPython(const QString &, const QString &, int);
 	bool zenCodingFor(const QString &, const QString &, int, QChar);
 	void	sharpIfCommentOut(bool bElse);
+	ViEngine	*viEngine();
 	
 protected:
 	void	paintEvent(QPaintEvent *);

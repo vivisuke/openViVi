@@ -626,7 +626,7 @@ void EditView::focusOutEvent( QFocusEvent * event )
 }
 void EditView::mousePressEvent(QMouseEvent *event)
 {
-	mainWindow()->viEngine()->resetRedoRecording();
+	viEngine()->resetRedoRecording();
 	if( mainWindow()->mode() == MODE_EX ) {
 		mainWindow()->setMode(MODE_VI);
 	}
@@ -800,7 +800,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 {
 	auto rct = rect();
 	int nLines = rct.height() / m_lineHeight;
-	ViEngine *viEngine = mainWindow()->viEngine();
+	//ViEngine *viEngine = viEngine();
 	const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
 	const bool shift = (event->modifiers() & Qt::ShiftModifier) != 0;
 	const bool alt = (event->modifiers() & Qt::AltModifier) != 0;
@@ -888,8 +888,8 @@ void EditView::keyPressEvent(QKeyEvent *event)
 			onBackSpace(ctrl, shift, alt);
 			break;
 #if	0
-		if( mainWindow()->viEngine()->mode() != Mode::COMMAND ) {
-			mainWindow()->viEngine()->onBackSpace();
+		if( viEngine()->mode() != Mode::COMMAND ) {
+			viEngine()->onBackSpace();
 			onBackSpace(ctrl, shift, alt);
 			break;
 		}
@@ -915,7 +915,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 		return;
 	}
 	}
-	viEngine->resetRedoRecording();
+	viEngine()->resetRedoRecording();
 	onCursorPosChanged();
 	makeCursorInView();
 	checkAssocParen();
@@ -930,7 +930,7 @@ void EditView::onEscape(bool ctrl, bool shift, bool alt)
 	mainWindow()->clearMatchedString();
 	auto md = mainWindow()->mode();
 	if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) && (md == MODE_INS || md == MODE_REP) ) {
-		mainWindow()->viEngine()->processCommand(0x1b);
+		viEngine()->processCommand(0x1b);
 		//mainWindow()->setMode(MODE_VI);
 		//update();
 	} else if( md == MODE_VI ) {
@@ -1969,8 +1969,8 @@ void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 		return;
 	}
 	//qDebug() << text;
-	if( mainWindow()->viEngine()->mode() == Mode::COMMAND ) {
-		mainWindow()->viEngine()->processCommandText(text, m_textCursor->hasSelection());	//##
+	if( viEngine()->mode() == Mode::COMMAND ) {
+		viEngine()->processCommandText(text, m_textCursor->hasSelection());	//##
 		return;
 	}
 	//const bool ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
@@ -2149,7 +2149,7 @@ void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 	//##}
 	if( !editForVar(text) ) {
 		if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) )
-			mainWindow()->viEngine()->processCommandText(text, m_textCursor->hasSelection());
+			viEngine()->processCommandText(text, m_textCursor->hasSelection());
 		else
 			m_textCursor->insertText(text);		//	文字挿入
 	}
@@ -2254,7 +2254,7 @@ void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 #else
 	if( text.isEmpty() ) return;
 	if( text != "\t" && mainWindow()->mode() == MODE_VI ) {
-		mainWindow()->viEngine()->processCommandText(text, m_textCursor->hasSelection());
+		viEngine()->processCommandText(text, m_textCursor->hasSelection());
 		return;
 	}
 	bool ai = false;
@@ -2298,7 +2298,7 @@ void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 		showAutoCompletionDlg(lst, "for (");
 	}
 		if( globSettings()->boolValue(GlobalSettings::VI_COMMAND) )
-			mainWindow()->viEngine()->processCommandText(text, m_textCursor->hasSelection());
+			viEngine()->processCommandText(text, m_textCursor->hasSelection());
 		else
 			m_textCursor->insertText(text);		//	文字挿入
 #endif
@@ -2352,13 +2352,13 @@ QString EditView::autoIndentText(/*bool,*/ bool nxline)
 }
 void EditView::indent(int ln1, int ln2, bool vi)
 {
-	//##if( !mainWindow()->viEngine()->isUndoBlockOpened() )
+	//##if( !viEngine()->isUndoBlockOpened() )
 		openUndoBlock();
 	for(int ln = ln1; ln <= ln2; ++ln) {
 		pos_t pos = lineStartPosition(ln);
 		document()->insertText(pos, QString((QChar *)L"\t"));
 	}
-	//##if( !mainWindow()->viEngine()->isUndoBlockOpened() )
+	//##if( !viEngine()->isUndoBlockOpened() )
 		closeUndoBlock();
 	if( !vi ) {
 		//##m_textCursor->setMode(TextCursor::NOMAL_MODE);
@@ -2370,7 +2370,7 @@ void EditView::indent(int ln1, int ln2, bool vi)
 void EditView::revIndent(int ln1, int ln2, bool vi)
 {
 	int nTab = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
-	//##if( !mainWindow()->viEngine()->isUndoBlockOpened() )
+	//##if( !viEngine()->isUndoBlockOpened() )
 		openUndoBlock();
 	for(int ln = ln1; ln <= ln2; ++ln) {
 		const pos_t ls = lineStartPosition(ln);
@@ -2385,7 +2385,7 @@ void EditView::revIndent(int ln1, int ln2, bool vi)
 				document()->deleteText(ls, nsp);
 		}
 	}
-	//##if( !mainWindow()->viEngine()->isUndoBlockOpened() )
+	//##if( !viEngine()->isUndoBlockOpened() )
 		closeUndoBlock();
 	if( !vi ) {
 		//##m_textCursor->setMode(TextCursor::NOMAL_MODE);
@@ -2430,7 +2430,7 @@ void EditView::insertTextRaw(pos_t pos, const QString &text)
 }
 void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
 {
-	mainWindow()->viEngine()->onBackSpace();
+	viEngine()->onBackSpace();
 #if	1
 	if( isBoxSelectMode() ) {
 	} else if( !m_textCursor->hasSelection() ) {
@@ -3660,4 +3660,8 @@ void EditView::sharpIfCommentOut(bool bElse)
 		m_textCursor->insertText("#if\t0" + newLineText());
 	}
 	closeUndoBlock();
+}
+ViEngine *EditView::viEngine()
+{
+	return mainWindow()->viEngine();
 }
