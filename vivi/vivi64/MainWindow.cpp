@@ -1731,9 +1731,13 @@ void MainWindow::on_action_SharpIfElseCommentOut_triggered()
 }
 void MainWindow::on_action_Encomment_triggered()
 {
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->encomment();
 }
 void MainWindow::on_action_Decomment_triggered()
 {
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->decomment();
 }
 void MainWindow::on_action_BlockComment_triggered()
 {

@@ -3682,9 +3682,75 @@ ViEngine *EditView::viEngine()
 }
 void EditView::encomment()
 {
+	QString cmtText = typeSettings()->textValue(TypeSettings::LINE_COMMENT);
+	if( cmtText.isEmpty() ) return;
+	//if( m_typeSettings->name() != "CPP"
+	//	&& m_typeSettings->name() != "C#"
+	//	&& m_typeSettings->name() != "F#"
+	//	&& m_typeSettings->name() != "JS"
+	//	&& m_typeSettings->name() != "PHP"
+	//	&& m_typeSettings->name() != "JAVA" )
+	//{
+	//	return;
+	//}
+	pos_t first = m_textCursor->selectionFirst();
+	int ln = document()->positionToLine(first);
+	pos_t last = m_textCursor->selectionLast();
+	int lnLast = document()->positionToLine(last);
+	if( last > lineStartPosition(lnLast) )		//	行頭まで選択されていた場合
+		++lnLast;
+	const int tw = typeSettings()->intValue(TypeSettings::TAB_WIDTH);
+	int nmax = INT_MAX;
+	for(int l = ln; l < lnLast; ++l) {
+		pos_t pos = lineStartPosition(l);
+		while( isSpaceChar(charAt(pos)) ) ++pos;
+		int i = pos - lineStartPosition(l);
+		if( (nmax = qMin(nmax, i)) == 0 )
+			break;
+	}
+	openUndoBlock();
+	for(; ln < lnLast; ++ln) {
+		pos_t pos = lineStartPosition(ln);
+		m_textCursor->setPosition(pos);
+		if( nmax != 0 )
+			m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::MOVE_ANCHOR, nmax);
+		m_textCursor->insertText(cmtText);
+	}
+	closeUndoBlock();
 }
 void EditView::decomment()
 {
+	QString cmtText = typeSettings()->textValue(TypeSettings::LINE_COMMENT);
+	if( cmtText.isEmpty() ) return;
+	//if( m_typeSettings->name() != "CPP"
+	//	&& m_typeSettings->name() != "C#"
+	//	&& m_typeSettings->name() != "F#"
+	//	&& m_typeSettings->name() != "JS"
+	//	&& m_typeSettings->name() != "PHP"
+	//	&& m_typeSettings->name() != "JAVA" )
+	//{
+	//	return;
+	//}
+	pos_t first = m_textCursor->selectionFirst();
+	int ln = document()->positionToLine(first);
+	pos_t last = m_textCursor->selectionLast();
+	int lnLast = document()->positionToLine(last);
+	if( last > lineStartPosition(lnLast) )		//	行頭まで選択されていた場合
+		++lnLast;
+	openUndoBlock();
+	for(; ln < lnLast; ++ln) {
+		pos_t pos = lineStartPosition(ln);
+		while( isSpaceChar(charAt(pos)) ) ++pos;
+		//if( charAt(pos) == '/' && charAt(pos+1) == '/' )
+		if( startsWith(*buffer(), pos, cmtText) )
+		{
+			m_textCursor->setPosition(pos);
+			m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR, cmtText.size());
+			setupFallingChars();
+			m_textCursor->deleteChar();
+		}
+	}
+	closeUndoBlock();
 }
 void EditView::blockComment()
 {

@@ -831,8 +831,8 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0787 ◎ B 06/15 06/15 0.041│問題│curdir が他の箇所にあるとき、cur 直後で idir Esc を実行後、他の cur 直後で . を実行すると curdicurdir となる
 0788 ● C 06/15            │問題│grep を行ったパスが履歴に追加されない
 0789 ◎ C 06/15 06/15 0.042│ToDo│ツールバーの Main, Search, Other を非表示にし、終了・再起動すると全てが表示されてしまう
-0790 ● C 06/15            │ToDo│Edit > Comment > Encomment Ctrl + K, Ctrl + C
-0791 ● C 06/15            │ToDo│Edit > Comment > Decomment Ctrl + K, Ctrl + U
+0790 ◎ C 06/15 06/15 0.042│ToDo│Edit > Comment > Encomment Ctrl + K, Ctrl + C
+0791 ◎ C 06/15 06/15 0.042│ToDo│Edit > Comment > Decomment Ctrl + K, Ctrl + U
 0792 ◎ C 06/15 06/15 0.042│ToDo│Edit > Comment > BlockComment Ctrl + -
 0793 ◎ C 06/15 06/15 0.042│問題│検索 Ctrl + F 実行時に SearchToolBar が強制表示されない
 0794 ◎ C 06/15 06/15 0.042│問題│検索ツールバー非表示状態で Ctrl + F Esc：検索ツールバーが表示されたまま
