@@ -1729,6 +1729,17 @@ void MainWindow::on_action_SharpIfElseCommentOut_triggered()
 	EditView *view = currentWidget();
 	if( isEditViewFocused(view) ) view->sharpIfElseCommentOut();
 }
+void MainWindow::on_action_Encomment_triggered()
+{
+}
+void MainWindow::on_action_Decomment_triggered()
+{
+}
+void MainWindow::on_action_BlockComment_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->blockComment();
+}
 uint MainWindow::getSearchOpt(bool vi) const
 {
 	uint opt = 0;

@@ -224,6 +224,9 @@ private slots:
 	void	on_action_ToggleTrueFalse_triggered();
 	void	on_action_SharpIfCommentOut_triggered();
 	void	on_action_SharpIfElseCommentOut_triggered();
+	void	on_action_Encomment_triggered();
+	void	on_action_Decomment_triggered();
+	void	on_action_BlockComment_triggered();
 	void	on_action_IgnoreCase_triggered();
 	void	on_action_WordSearch_triggered();
 	void	on_action_RegExp_triggered();

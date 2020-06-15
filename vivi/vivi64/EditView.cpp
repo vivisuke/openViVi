@@ -2420,8 +2420,23 @@ void EditView::insertText(const QString &text0)
 	resetCursorBlinking();
 	update();
 }
-void EditView::insertText(const QString &, const QString &)		//	選択領域の前後に文字挿入
+//	選択領域の前後に文字挿入
+void EditView::insertText(const QString &text1, const QString &text2)
 {
+	pos_t first = m_textCursor->selectionFirst();
+	pos_t last = m_textCursor->selectionLast();
+	openUndoBlock();
+	m_textCursor->setPosition(last);
+	m_textCursor->insertText(text2);
+	m_textCursor->setPosition(first);
+	m_textCursor->insertText(text1);
+	closeUndoBlock();
+	m_textCursor->setPosition(first);
+	m_textCursor->setPosition(last + text1.size() + text2.size(), TextCursor::KEEP_ANCHOR);
+	//##updateScrollBarInfo();
+	makeCursorInView();
+	resetCursorBlinking();
+	update();
 }
 void EditView::insertTextRaw(pos_t pos, const QString &text)
 {
@@ -3664,4 +3679,27 @@ void EditView::sharpIfCommentOut(bool bElse)
 ViEngine *EditView::viEngine()
 {
 	return mainWindow()->viEngine();
+}
+void EditView::encomment()
+{
+}
+void EditView::decomment()
+{
+}
+void EditView::blockComment()
+{
+	if( !m_textCursor->hasSelection() ) return;
+	TypeSettings *typeStg = typeSettings();
+	int ln = positionToLine(m_textCursor->selectionFirst());
+	uint flags = buffer()->lineFlags(ln);
+#if 0		//##
+	if( typeStg->name() == "HTML" ) {
+		if( (flags & Buffer::LINEFLAG_IN_SCRIPT) != 0 && m_jsTypeSettings )
+			typeStg = m_jsTypeSettings;
+		else if( (flags & Buffer::LINEFLAG_IN_PHP) != 0 && m_phpTypeSettings )
+			typeStg = m_phpTypeSettings;
+	}
+#endif
+	insertText(typeStg->textValue(TypeSettings::BLOCK_COMMENT_BEG),
+					typeStg->textValue(TypeSettings::BLOCK_COMMENT_END));
 }
