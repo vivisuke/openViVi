@@ -112,6 +112,14 @@
      <addaction name="action_SharpIfElseCommentOut"/>
      <addaction name="action_ToggleTrueFalse"/>
     </widget>
+    <widget class="QMenu" name="menuComment">
+     <property name="title">
+      <string>Comment(&amp;-)</string>
+     </property>
+     <addaction name="action_Encomment"/>
+     <addaction name="action_Decomment"/>
+     <addaction name="action_BlockComment"/>
+    </widget>
     <addaction name="action_Undo"/>
     <addaction name="action_Redo"/>
     <addaction name="separator"/>
@@ -124,6 +132,7 @@
     <addaction name="action_DynamicCompletion"/>
     <addaction name="action_ZenCoding"/>
     <addaction name="menuExtendedEdit_1"/>
+    <addaction name="menuComment"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -762,6 +771,30 @@
    </property>
    <property name="shortcut">
     <string>Alt+]</string>
+   </property>
+  </action>
+  <action name="action_Encomment">
+   <property name="text">
+    <string>&amp;Encomment</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K, Ctrl+C</string>
+   </property>
+  </action>
+  <action name="action_Decomment">
+   <property name="text">
+    <string>&amp;Decomment</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K, Ctrl+U</string>
+   </property>
+  </action>
+  <action name="action_BlockComment">
+   <property name="text">
+    <string>&amp;BlockComment</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
    </property>
   </action>
  </widget>

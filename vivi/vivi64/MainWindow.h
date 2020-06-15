@@ -227,10 +227,10 @@ private slots:
 	void	on_action_IgnoreCase_triggered();
 	void	on_action_WordSearch_triggered();
 	void	on_action_RegExp_triggered();
-	void	on_action_Search_triggered();
-	void	on_action_SearchCurWord_triggered();
-	void	on_action_SearchBackward_triggered();
-	void	on_action_SearchForward_triggered();
+	void	on_action_Search_triggered();			//	Ctrl + F
+	void	on_action_SearchCurWord_triggered();	//	Ctrl + F3
+	void	on_action_SearchBackward_triggered();	//	Shift + F3
+	void	on_action_SearchForward_triggered();	//	F3
 	void	on_action_LastModifiedPos_triggered();
 	void	on_action_Incremental_triggered();
 	void	on_action_Grep_triggered();
@@ -319,6 +319,7 @@ private:
 	bool	m_searching;			//	検索中
 	bool	m_incSearched;			//	インクリメンタルサーチ済み
 	bool	m_modeChanging;			//	モード変更中
+	bool	m_searchToolBarVisible;
 	//bool	m_showMatchedBG;		//	マッチ背景強調 at vi mode
 	QString	m_matchedString;		//	マッチ強調文字列
 	byte_t	m_searchAlgorithm;

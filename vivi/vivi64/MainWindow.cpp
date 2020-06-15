@@ -39,6 +39,9 @@
 #define		KEY_OPENED_FILELIST			"openedFileList"
 #define		KEY_MAINWIN_RECT			"mainWindowRect"
 #define		KEY_MAINWIN_MAX				"mainWindowMax"
+#define		KEY_MAIN_TOOLBAR			"mainToolBar"
+#define		KEY_SEARCH_TOOLBAR			"searchToolBar"
+#define		KEY_OTHER_TOOLBAR			"otherToolBar"
 
 #define		MAX_FIND_STR_HIST			64
 #define		MAX_CLIPBOARD_HIST		100
@@ -132,9 +135,9 @@ MainWindow::MainWindow(QWidget *parent)
 	g_mainWindows.push_back(this);
 	globSettings()->readSettings();
 	//
+    QSettings settings;
 #ifdef	_DEBUG
 #else
-    QSettings settings;
     bool bMax = false;
     QString key = KEY_MAINWIN_MAX + QString("-%1").arg(g_mainWindows.size());
     if( settings.contains(key) ) {
@@ -202,6 +205,9 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.mainToolBar->setWindowTitle(tr("MainToolBar"));
 	ui.searchToolBar->setWindowTitle(tr("SearchToolBar"));
 	ui.otherToolBar->setWindowTitle(tr("OtherToolBar"));
+	ui.mainToolBar->setVisible(settings.value(KEY_MAIN_TOOLBAR, true).toBool());
+	ui.searchToolBar->setVisible(settings.value(KEY_SEARCH_TOOLBAR, true).toBool());
+	ui.otherToolBar->setVisible(settings.value(KEY_OTHER_TOOLBAR, true).toBool());
 	//
 	createDockWindows();
 	//	デザイナでタブの消し方がわからないので、ここで消しておく
@@ -832,6 +838,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
     key = KEY_MAINWIN_MAX + QString("-%1").arg(g_mainWindows.size());
     settings.setValue(key, isMaximized());
 #endif
+	//	ツールバー状態保存
+    settings.setValue(KEY_MAIN_TOOLBAR, ui.mainToolBar->isVisible());
+    settings.setValue(KEY_SEARCH_TOOLBAR, ui.searchToolBar->isVisible());
+    settings.setValue(KEY_OTHER_TOOLBAR, ui.otherToolBar->isVisible());
 	//
 	QMainWindow::closeEvent(event);
 	//	this を オープンMainWindowリストから削除
@@ -1824,6 +1834,9 @@ void MainWindow::on_action_Search_triggered()
 {
 	EditView *view = currentWidget();
 	if( !isEditView(view) ) return;
+	if( !(m_searchToolBarVisible = ui.searchToolBar->isVisible()) ) {
+		ui.searchToolBar->setVisible(true);
+	}
 	QString txt;
 	if( view->hasSelectionInALine() ) {
 		txt = view->selectedText();
@@ -1860,6 +1873,8 @@ void MainWindow::on_action_SearchCurWord_triggered()
 void MainWindow::onEscFindLineEdit()
 {
 	//assert(0);
+	if( !m_searchToolBarVisible )
+		ui.searchToolBar->setVisible(false);
 	EditView *view = currentWidget();
 	if( view != nullptr ) {
 		m_matchedString.clear();	//	マッチ強調終了
