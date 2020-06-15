@@ -279,6 +279,10 @@ protected:
 	bool zenCodingFor(const QString &, const QString &, int, QChar);
 	void	sharpIfCommentOut(bool bElse);
 	ViEngine	*viEngine();
+	void	doKeisenLeft(bool = false);
+	void	doKeisenRight(bool = false);
+	void	doKeisenUp(bool = false);
+	void	doKeisenDown(bool = false);
 	
 protected:
 	void	paintEvent(QPaintEvent *);
