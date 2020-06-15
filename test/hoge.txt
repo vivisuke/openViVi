@@ -1,1 +1,4 @@
-hogehogehogehoge
+hoge 'ｄ' あいうえお
+hoge '' あいうえお
+hoge ｄ' あいうえお
+hogehogehoge

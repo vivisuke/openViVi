@@ -987,6 +987,7 @@ void EditView::inputMethodEvent(QInputMethodEvent * event)
 	if( !text.isEmpty() ) {		//	■ IME入力が確定した場合
 		m_preeditString.clear();
 		m_textCursor->insertText(text);
+		emit textInserted(text);
 	}
 	m_preeditString = event->preeditString();
 	if( !m_preeditString.isEmpty() ) {		//	■ 変換候補ありの場合
