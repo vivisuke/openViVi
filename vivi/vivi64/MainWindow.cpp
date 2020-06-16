@@ -931,7 +931,8 @@ EditView *MainWindow::createView(QString pathName)		//	新規文書作成時：p
 	Document *doc = new Document(typeName);
 	doc->setTitle(title);
 	if( pathName.isEmpty() ) {	//	新規文書作成の場合
-		doc->setCharEncoding(globSettings()->enumValue(GlobalSettings::CHAR_ENCODING));	//	グローバル設定参照
+		int ix = globSettings()->enumValue(GlobalSettings::CHAR_ENCODING);	//	グローバル設定参照
+		doc->setCharEncoding(ix);
 		doc->setBOM(globSettings()->boolValue(GlobalSettings::WITH_BOM));	//	グローバル設定参照
 	}
 	//Buffer* buffer = doc->buffer();
@@ -1503,7 +1504,7 @@ void MainWindow::updateStatusBar()		//	BOM チェックボックス等を更新
 	EditView *view = currentWidget();
 	if( isEditView(view) ) {
 		m_modeChanging = true;		//	未保存フラグが立たないようにおまじない
-		m_encodingCB->setCurrentIndex(view->document()->charEncoding()-1);
+		m_encodingCB->setCurrentIndex(view->document()->charEncoding() /*-1*/);
 		m_bomChkBx->setCheckState(view->document()->bom() ? Qt::Checked : Qt::Unchecked);
 		m_modeChanging = false;
 	}

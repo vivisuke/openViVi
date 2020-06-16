@@ -36,7 +36,7 @@ extern uchar	UTF16BE_BOM[];
 
 namespace CharEncoding {
 	enum {
-		UNKNOWN = 0,
+		UNKNOWN = -1,
 		UTF8,
 		UTF16LE,
 		UTF16BE,
