@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------
+﻿//----------------------------------------------------------------------
 //
 //			File:			"globalSettings.cpp"
 //			Created:		15-9-2013
@@ -137,8 +137,21 @@ void GlobalSettings::readSettings()
 		m_enumValues[i] = v;
 	}
 }
+QByteArray GlobalSettings::codecName(int enc) const
+{
+	switch( enc ) {
+	default:
+	case CHAR_ENC_UTF_8:	return QByteArray("UTF-8");
+	case CHAR_ENC_UTF_16LE:	return QByteArray("UTF-16LE");
+	case CHAR_ENC_UTF_16BE:	return QByteArray("UTF-16BE");
+	case CHAR_ENC_SJIS:	return QByteArray("Shift_JIS");
+	case CHAR_ENC_EUC:	return QByteArray("EUC");
+	}
+}
 QByteArray GlobalSettings::defaultCodecName() const
 {
+	return codecName(enumValue(CHAR_ENCODING));
+#if	0
 	switch( enumValue(CHAR_ENCODING) ) {
 		default:
 		case CHAR_ENC_UTF_8:	return QByteArray("UTF-8");
@@ -147,4 +160,5 @@ QByteArray GlobalSettings::defaultCodecName() const
 		case CHAR_ENC_SJIS:	return QByteArray("Shift_JIS");
 		case CHAR_ENC_EUC:	return QByteArray("EUC");
 	}
+#endif
 }

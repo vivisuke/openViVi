@@ -473,7 +473,10 @@ void MainWindow::setupStatusBar()
 	connect(m_bomChkBx, SIGNAL(toggled(bool)), this, SLOT(onBomChanged(bool)));
 	statusBar()->addPermanentWidget(m_encodingCB = new QComboBox());		//	文字エンコーディング
 	QStringList encList;
-	encList  << "Shift_JIS" << "EUC-JP"<< "UTF-8" << "UTF-16LE" << "UTF-16BE";
+	//encList  << "Shift_JIS" << "EUC-JP"<< "UTF-8" << "UTF-16LE" << "UTF-16BE";
+	for (int enc = 0; enc != GlobalSettings::N_CHAR_ENC; ++enc) {
+		encList << globSettings()->codecName(enc);
+	}
 	m_encodingCB->addItems(encList);
 	connect(m_encodingCB, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(onCharEncodingChanged(const QString &)));
 	statusBar()->addPermanentWidget(m_newLineCodeCB = new QComboBox());		//	改行コード
@@ -903,7 +906,7 @@ void MainWindow::on_action_New_triggered()
 	qDebug() << "on_action_New_triggered()";
 	createView();
 }
-EditView *MainWindow::createView(QString pathName)
+EditView *MainWindow::createView(QString pathName)		//	新規文書作成時：pathName は空
 {
 	//	done: pathName を既にオープンしている場合対応
     QString absPath;
@@ -918,14 +921,19 @@ EditView *MainWindow::createView(QString pathName)
     }
 	QFileInfo info(pathName);
 	QString typeName, title;
-	if( !pathName.isEmpty() ) {
+	if( !pathName.isEmpty() ) {		//	ファイルオープン
 		typeName = g_settingsMgr.typeNameForExt(getExtension(pathName));
 		title = info.fileName();
-	} else {
+	} else {	//	新規文書作成
+		typeName = "Default";		//	undone: グローバル設定参照
 		title = tr("Untitled-%1").arg(++g_docNumber);
 	}
 	Document *doc = new Document(typeName);
 	doc->setTitle(title);
+	if( pathName.isEmpty() ) {	//	新規文書作成の場合
+		doc->setCharEncoding(globSettings()->enumValue(GlobalSettings::CHAR_ENCODING));	//	グローバル設定参照
+		doc->setBOM(globSettings()->boolValue(GlobalSettings::WITH_BOM));	//	グローバル設定参照
+	}
 	//Buffer* buffer = doc->buffer();
 	//auto* typeSettings = new TypeSettings(typeName);
 	EditView* view = new EditView(this, doc /*, typeSettings*/);	//QPlainTextEdit();	//createView();
@@ -949,6 +957,7 @@ EditView *MainWindow::createView(QString pathName)
 		view->setFullPathName(absPath);
 	addNewView(view, typeNameToIcon(typeName), title, pathName);
 	updateWindowTitle();
+	updateStatusBar();
 	onCursorPosChanged(view);
 	//	done: タイトルをアウトラインバーに追加
 	addToOutlineBar(view);

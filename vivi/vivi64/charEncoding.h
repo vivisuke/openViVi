@@ -37,11 +37,11 @@ extern uchar	UTF16BE_BOM[];
 namespace CharEncoding {
 	enum {
 		UNKNOWN = 0,
-		SJIS,
-		EUC,
 		UTF8,
 		UTF16LE,
 		UTF16BE,
+		SJIS,
+		EUC,
 	};
 	enum {
 		CRLF = 0,
