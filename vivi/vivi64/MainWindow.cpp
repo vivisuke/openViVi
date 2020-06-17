@@ -236,7 +236,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//
 	m_thread.start();		//	メインスレッドと同じプライオリティ
 	//
-#if	1
+#if	0
 	on_action_New_triggered();
 #else
 	if( globSettings()->boolValue(GlobalSettings::OPEN_OPENEDFILES) )
@@ -1508,7 +1508,8 @@ void MainWindow::updateStatusBar()		//	BOM チェックボックス等を更新
 	EditView *view = currentWidget();
 	if( isEditView(view) ) {
 		m_modeChanging = true;		//	未保存フラグが立たないようにおまじない
-		m_encodingCB->setCurrentIndex(view->document()->charEncoding() /*-1*/);
+		int ix = view->document()->charEncoding();
+		m_encodingCB->setCurrentIndex(ix);
 		m_bomChkBx->setCheckState(view->document()->bom() ? Qt::Checked : Qt::Unchecked);
 		m_modeChanging = false;
 	}
@@ -1568,7 +1569,7 @@ void MainWindow::tabCurrentChanged(int index)
 	m_typeCB->setCurrentIndex(ix);
 	//	文字エンコーディング
 	m_modeChanging = true;		//	未保存フラグが立たないようにおまじない
-	m_encodingCB->setCurrentIndex(doc->charEncoding()-1);
+	m_encodingCB->setCurrentIndex(doc->charEncoding());
 	m_bomChkBx->setCheckState(doc->bom() ? Qt::Checked : Qt::Unchecked);
 	m_modeChanging = false;
 	
