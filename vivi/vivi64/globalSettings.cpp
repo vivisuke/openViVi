@@ -145,8 +145,8 @@ QByteArray GlobalSettings::codecName(int enc) const
 	case CharEncoding::UTF8:	return QByteArray("UTF-8");
 	case CharEncoding::UTF16LE:	return QByteArray("UTF-16LE");
 	case CharEncoding::UTF16BE:	return QByteArray("UTF-16BE");
-	case CharEncoding::SJIS:	return QByteArray("Shift_JIS");
-	case CharEncoding::EUC:	return QByteArray("EUC");
+	case CharEncoding::SJIS:	return QByteArray("Shift-JIS");
+	case CharEncoding::EUC:	return QByteArray("EUC-JP");
 	}
 }
 QByteArray GlobalSettings::defaultCodecName() const

@@ -125,8 +125,12 @@ void Document::setTitle(const QString &title)
 {
 	m_title = title;
 }
-void Document::setCodecName(const QByteArray &)
+void Document::setCodecName(const QByteArray &codecName)
 {
+	qDebug() << "*** setCodecName(codecName = " << codecName << ")";
+	m_codec = QTextCodec::codecForName(codecName);
+	if( m_codec != nullptr )
+		qDebug() << "codecName = " << m_codec->name();
 }
 void Document::setBOM(bool bBom)
 {
@@ -272,8 +276,9 @@ bool Document::saveFile() const
 		//errorString = file.errorString();
 		return false;
 	}
+	QString name = m_codec->name();
 	if( m_bBom ) {
-		QString name = m_codec->name();
+		//QString name = m_codec->name();
 		QByteArray ba;
 		if( name == "UTF-8" ) {
 			ba += 0xef;

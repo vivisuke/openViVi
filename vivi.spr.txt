@@ -846,8 +846,8 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0802 ◎ C 06/17 06/17 0.043│ToDo│CharEncoding::XXX と GlobalSettings::CHAR_ENC_XXX の値を（とりあえず）合わせておく
 0803 ◎ C 06/17 06/18 0.043│ToDo│GlobalSettings::CHAR_ENC_XXX は廃止し、CharEncoding::XXX のみを用いる
 0804 ● C 06/18            │ToDo│文字コードがSJIS, EUCの場合は、BOMチェックボックスをディセーブルした方がよい？
-0805 ● C 06/18            │ToDo│
-0806 ● C 06/18            │ToDo│
+0805 ◎ C 06/18 06/18 0.043│問題│文字コードをEUCに設定し、保存・クローズ・オープンするとUTF-8になっている
+0806 ◎ C 06/18 06/18 0.043│問題│なんということでしょう、Document::setCodecName() の中身が無い！
 0807 ● C 06/18            │ToDo│
 0808 ● C 06/18            │ToDo│
 0809 ● C 06/18            │ToDo│
