@@ -42,6 +42,7 @@ namespace CharEncoding {
 		UTF16BE,
 		SJIS,
 		EUC,
+		N_CHAR_ENC,
 	};
 	enum {
 		CRLF = 0,

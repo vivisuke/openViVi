@@ -1,9 +1,9 @@
-//----------------------------------------------------------------------
+ï»¿//----------------------------------------------------------------------
 //
 //			File:			"charEncoding.cpp"
 //			Created:		03-Mar-2011
-//			Author:			’Ã“cLG
-//			Description:	•¶šƒR[ƒh”»’èŠÖ”À‘•
+//			Author:			æ´¥ç”°ä¼¸ç§€
+//			Description:	æ–‡å­—ã‚³ãƒ¼ãƒ‰åˆ¤å®šé–¢æ•°å®Ÿè£…
 //
 //----------------------------------------------------------------------
 
@@ -19,7 +19,7 @@
 
 #define		EUC_KANA_LEADBYTE		((uchar)0x8e)
 
-bool const DBCStable1[0x100] = {		//	‚c‚a•¶š‚Ìƒtƒ@[ƒXƒgƒoƒCƒg‚©‚Ç‚¤‚©
+bool const DBCStable1[0x100] = {		//	ï¼¤ï¼¢æ–‡å­—ã®ãƒ•ã‚¡ãƒ¼ã‚¹ãƒˆãƒã‚¤ãƒˆã‹ã©ã†ã‹
 /* 0 */	0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,
 /* 1 */	0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,
 /* 2 */	0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,
@@ -38,7 +38,7 @@ bool const DBCStable1[0x100] = {		//	‚c‚a•¶š‚Ìƒtƒ@[ƒXƒgƒoƒCƒg‚©‚Ç‚¤‚©
 /* f */	1, 1, 1, 1, 1, 1, 1, 1,  1, 1, 1, 1, 1, 1, 0, 0,
 };
 
-bool const DBCStable2[0x100] = {		//	‚c‚a•¶š‚ÌƒZƒJƒ“ƒhƒoƒCƒg‚©‚Ç‚¤‚©
+bool const DBCStable2[0x100] = {		//	ï¼¤ï¼¢æ–‡å­—ã®ã‚»ã‚«ãƒ³ãƒ‰ãƒã‚¤ãƒˆã‹ã©ã†ã‹
 /* 0 */	0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,
 /* 1 */	0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,
 /* 2 */	0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0,
@@ -125,35 +125,35 @@ uchar checkCharEncoding(cuchar *ptr, cuchar *endptr, int &bomLength)
 	bomLength = 0;
 	cuchar *ptr0 = ptr;
 
-	bool	psEUC = true;		//	EUC ‚Ì‰Â”\«‚ ‚è
-	bool	psSJIS = true;		//	SJIS ‚Ì‰Â”\«‚ ‚è
-	bool	psUTF8 = true;		//	UTF-8‚Ì‰Â”\«‚ ‚è
-	bool	psUTF16LE = true;		//	UTF-16‚Ì‰Â”\«‚ ‚è
-	bool	psUTF16BE = true;		//	UTF-16‚Ì‰Â”\«‚ ‚è
-	bool	EUCKana = false;	//	EUC_KANA_LEADBYTE ‚ª‚ ‚Á‚½ê‡
-	bool	dbSJIS = false;		//	SJISƒ_ƒuƒ‹ƒoƒCƒg•¶š”­Œ©
-	bool	hanKanaSJIS = false;	//	SJIS ”¼ŠpƒJƒi‚ª‚ ‚Á‚½ê‡
-	bool	ansi = false;		//	ANSI •¶š‚ª‚ ‚Á‚½ê‡
-	int		nthEUC = 0;			//	‰½•¶š–Ú‚©
+	bool	psEUC = true;		//	EUC ã®å¯èƒ½æ€§ã‚ã‚Š
+	bool	psSJIS = true;		//	SJIS ã®å¯èƒ½æ€§ã‚ã‚Š
+	bool	psUTF8 = true;		//	UTF-8ã®å¯èƒ½æ€§ã‚ã‚Š
+	bool	psUTF16LE = true;		//	UTF-16ã®å¯èƒ½æ€§ã‚ã‚Š
+	bool	psUTF16BE = true;		//	UTF-16ã®å¯èƒ½æ€§ã‚ã‚Š
+	bool	EUCKana = false;	//	EUC_KANA_LEADBYTE ãŒã‚ã£ãŸå ´åˆ
+	bool	dbSJIS = false;		//	SJISãƒ€ãƒ–ãƒ«ãƒã‚¤ãƒˆæ–‡å­—ç™ºè¦‹
+	bool	hanKanaSJIS = false;	//	SJIS åŠè§’ã‚«ãƒŠãŒã‚ã£ãŸå ´åˆ
+	bool	ansi = false;		//	ANSI æ–‡å­—ãŒã‚ã£ãŸå ´åˆ
+	int		nthEUC = 0;			//	ä½•æ–‡å­—ç›®ã‹
 	int		nthSJIS = 0;
 	int		nthUTF8 = 0;
-	int		nextNthUTF8;		//	3ƒoƒCƒg UTF-8 ‚©‚Ç‚¤‚©i2:3 byte, 0:2bytej
-	int	unixRetCount = 0;	//	0x0a ‚Å‚Ì‰üs‚Ì”
-	int dosRetCount = 0;	//	0x0d 0x0a ‚Å‚Ì‰üs‚Ì”
-	int macRetCount = 0;	//	0x0d ‚Å‚Ì‰üs‚Ì”
+	int		nextNthUTF8;		//	3ãƒã‚¤ãƒˆ UTF-8 ã‹ã©ã†ã‹ï¼ˆ2:3 byte, 0:2byteï¼‰
+	int	unixRetCount = 0;	//	0x0a ã§ã®æ”¹è¡Œã®æ•°
+	int dosRetCount = 0;	//	0x0d 0x0a ã§ã®æ”¹è¡Œã®æ•°
+	int macRetCount = 0;	//	0x0d ã§ã®æ”¹è¡Œã®æ•°
 	int zeroCount[] = {0, 0};
-	int	nByteSJIS = 0;		//	SJIS ‚Æ‚µ‚Ä‰ğß‰Â”\‚È2ƒoƒCƒg•¶š‚ÌƒoƒCƒg”
-	int	nByteEUC = 0;		//	EUC ‚Æ‚µ‚Ä‰ğß‰Â”\‚È2ƒoƒCƒg•¶š‚ÌƒoƒCƒg”
-	int	nByteUTF8 = 0;		//	UTF8 ‚Æ‚µ‚Ä‰ğß‰Â”\‚È2ƒoƒCƒgˆÈã•¶š‚ÌƒoƒCƒg”
+	int	nByteSJIS = 0;		//	SJIS ã¨ã—ã¦è§£é‡ˆå¯èƒ½ãª2ãƒã‚¤ãƒˆæ–‡å­—ã®ãƒã‚¤ãƒˆæ•°
+	int	nByteEUC = 0;		//	EUC ã¨ã—ã¦è§£é‡ˆå¯èƒ½ãª2ãƒã‚¤ãƒˆæ–‡å­—ã®ãƒã‚¤ãƒˆæ•°
+	int	nByteUTF8 = 0;		//	UTF8 ã¨ã—ã¦è§£é‡ˆå¯èƒ½ãª2ãƒã‚¤ãƒˆä»¥ä¸Šæ–‡å­—ã®ãƒã‚¤ãƒˆæ•°
 
 	if( endptr - ptr > 0x100000 )
-		endptr = ptr + 0x100000;		//	Å‘å1024ƒLƒ‚ğŒŸ¸
-	endptr -= 2;	//	ptr + 1, ptr + 2 ‚Ü‚ÅƒAƒNƒZƒX‚·‚é‰Â”\«‚ª‚ ‚é‚½‚ß
+		endptr = ptr + 0x100000;		//	æœ€å¤§1024ã‚­ãƒ­ã‚’æ¤œæŸ»
+	endptr -= 2;	//	ptr + 1, ptr + 2 ã¾ã§ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚
 	uchar uch;
 	while( ptr < endptr ) {
 		if( (uch = (uchar)*ptr++) >= 0x80 ) {
-			if( psSJIS ) {			//	SJIS ‚Ì‰Â”\«‚ªc‚Á‚Ä‚¢‚é
-				if( nthSJIS == 0 ) {		//	Å‰‚ÌƒoƒCƒg
+			if( psSJIS ) {			//	SJIS ã®å¯èƒ½æ€§ãŒæ®‹ã£ã¦ã„ã‚‹
+				if( nthSJIS == 0 ) {		//	æœ€åˆã®ãƒã‚¤ãƒˆ
 					if( isDBCSLeadByte(uch) && isDBCSSecondByte((uchar)*ptr) ) {
 						dbSJIS = true;
 						nthSJIS = 1;
@@ -170,7 +170,7 @@ uchar checkCharEncoding(cuchar *ptr, cuchar *endptr, int &bomLength)
 				} else
 					nthSJIS = 0;
 			}
-			if( psEUC ) {			//	EUC ‚Ì‰Â”\«‚ªc‚Á‚Ä‚¢‚é
+			if( psEUC ) {			//	EUC ã®å¯èƒ½æ€§ãŒæ®‹ã£ã¦ã„ã‚‹
 				if( nthEUC == 0 ) {
 					if( uch < 0x80 ) {
 						++nByteEUC;
@@ -193,17 +193,17 @@ uchar checkCharEncoding(cuchar *ptr, cuchar *endptr, int &bomLength)
 					nthEUC = 0;
 				}
 			}
-			if( psUTF8 ) {			//	UTF-8 ‚Ì‰Â”\«‚ªc‚Á‚Ä‚¢‚é
+			if( psUTF8 ) {			//	UTF-8 ã®å¯èƒ½æ€§ãŒæ®‹ã£ã¦ã„ã‚‹
 				switch( nthUTF8 ) {
 				case 0:
-					if( (uch & 0xe0) == 0xc0 ) {	//	2ƒoƒCƒgƒR[ƒh‚Ì1•¶š–Ú
+					if( (uch & 0xe0) == 0xc0 ) {	//	2ãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰ã®1æ–‡å­—ç›®
 						if( ((uchar)*ptr & 0xc0) == 0x80 ) {
 							nextNthUTF8 = 0;
 							nthUTF8 = 1;
 							nByteUTF8 += 2;
 						} else
 							psUTF8 = false;
-					} else if( (uch & 0xf0) == 0xe0 ) {	//	3ƒoƒCƒgƒR[ƒh‚Ì1•¶š–Ú
+					} else if( (uch & 0xf0) == 0xe0 ) {	//	3ãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰ã®1æ–‡å­—ç›®
 						if( ((uchar)*ptr & 0xc0) == 0x80 && ((uchar)ptr[1] & 0xc0) == 0x80) {
 							nextNthUTF8 = 2;
 							nthUTF8 = 1;
@@ -232,24 +232,24 @@ uchar checkCharEncoding(cuchar *ptr, cuchar *endptr, int &bomLength)
 			if( uch == 0 ) {
 				zeroCount[(ptr - ptr0 - 1)&1] += 1;
 				if(  ptr[1] == 0 && ptr[3] == 0 && ptr[5] == 0 ) {
-					//	0x00 ‚ª‚Ğ‚Æ‚Â‚¨‚«‚É‘±‚­ê‡‚Í UNICODE ‚Æ‚¢‚¤‚±‚Æ‚É‚µ‚Ä‚¨‚­	//##
+					//	0x00 ãŒã²ã¨ã¤ãŠãã«ç¶šãå ´åˆã¯ UNICODE ã¨ã„ã†ã“ã¨ã«ã—ã¦ãŠã	//##
 					return zeroCount[0] <= zeroCount[1] ? CharEncoding::UTF16LE : CharEncoding::UTF16BE;
 				}
 			}
 			if( uch >= ' ' && uch < 0x7f )
 				ansi = true;
 			if( uch < ' ' ) {
-				//	UTF-16LE ‚È‚ç‚ÍŸ‚Ì•¶š‚Í 0x00 ‚Ì‚Í‚¸
+				//	UTF-16LE ãªã‚‰ã¯æ¬¡ã®æ–‡å­—ã¯ 0x00 ã®ã¯ãš
 				if( ptr < endptr && *ptr != '\0' )
 					psUTF16LE = false;
-				//	UTF-16LE ‚È‚ç‚Í‘O‚Ì•¶š‚Í 0x00 ‚Ì‚Í‚¸
+				//	UTF-16LE ãªã‚‰ã¯å‰ã®æ–‡å­—ã¯ 0x00 ã®ã¯ãš
 				if( ptr - 2 >= ptr0 && ptr[-2] != '\0' )
 					psUTF16LE = false;
 			}
 		}
 		switch( uch ) {
 #if 0
-		//	JIS ‚Í“––ÊƒTƒ|[ƒg‚µ‚È‚¢
+		//	JIS ã¯å½“é¢ã‚µãƒãƒ¼ãƒˆã—ãªã„
 		case 0x1b:
 			if( ptr + 1 < endptr &&
 				(ptr[0] == '(' && (ptr[1] == 'B' || ptr[1] == 'J') ||
@@ -283,7 +283,7 @@ uchar checkCharEncoding(cuchar *ptr, cuchar *endptr, int &bomLength)
 		if( !psEUC && psUTF8 ) return CharEncoding::UTF8;
 	}
 
-	if( psSJIS && dbSJIS && !psEUC ) return CharEncoding::SJIS;			//	ƒ_ƒuƒ‹ƒoƒCƒg•¶š‚ğŠÜ‚ñ‚Å‚¢‚½ê‡
+	if( psSJIS && dbSJIS && !psEUC ) return CharEncoding::SJIS;			//	ãƒ€ãƒ–ãƒ«ãƒã‚¤ãƒˆæ–‡å­—ã‚’å«ã‚“ã§ã„ãŸå ´åˆ
 #if 0
 	if( stgMgr->getGlobSettings()->getBoolValue(GLOBSTG_ASCII_LF_SJIS) )
 		return CharEncoding::SJIS;
@@ -339,8 +339,8 @@ bool getTextCodec(const QString &fileName, QString &errorString, QTextCodec *&co
 }
 #if	0
 bool loadFile(const QString &fileName, QString &buffer, QString &errorString,
-				uchar *cePtr,		//	•¶šƒGƒ“ƒR[ƒfƒBƒ“ƒO
-				bool *wbPtr)		//	BOM•t‚«
+				uchar *cePtr,		//	æ–‡å­—ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°
+				bool *wbPtr)		//	BOMä»˜ã
 {
 	QDir path(fileName);
 	QFile file(path.path());
@@ -388,8 +388,8 @@ bool loadFile(const QString &fileName, QString &buffer, QString &errorString,
 }
 #endif
 bool loadFile(const QString& pathName, QString& buffer, QString& errorMess,
-				uchar& charEncoding,		//	•¶šƒGƒ“ƒR[ƒfƒBƒ“ƒO
-				int& bomLength)		//	BOM•t‚«
+				uchar& charEncoding,		//	æ–‡å­—ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°
+				int& bomLength)		//	BOMä»˜ã
 {
 	QDir path(pathName);
 	QFile file(path.path());
@@ -404,6 +404,7 @@ bool loadFile(const QString& pathName, QString& buffer, QString& errorMess,
 	cuchar *endptr = ptr + ba.size();
 	//int bomLength;
 	uchar ce = charEncoding = checkCharEncoding(ptr, endptr, bomLength);
+	qDebug() << "charEncoding = " << (int)charEncoding;
 	cchar *codecName = 0;
 	switch( ce ) {
 	case CharEncoding::UTF8:
@@ -435,14 +436,14 @@ bool loadFile(const QString& pathName, QString& buffer, QString& errorMess,
 	//if( wbPtr != 0 ) *wbPtr = bomLength != 0;
 	return true;
 }
-//	‰üsƒR[ƒh”»•Ê
-//		0x0d 0x0a ‚ğ”­Œ©‚µ‚½ê‡ ¨ CharEncoding::CRLF
-//		0x0d ‚Ü‚½‚Í 0x0a ‚ğæ‚É4ŒÂ”­Œ© ¨ CharEncoding::CR ‚Ü‚½‚Í CharEncoding::LF
-//		‚»‚êˆÈŠO CharEncoding::UNKNOWN
+//	æ”¹è¡Œã‚³ãƒ¼ãƒ‰åˆ¤åˆ¥
+//		0x0d 0x0a ã‚’ç™ºè¦‹ã—ãŸå ´åˆ â†’ CharEncoding::CRLF
+//		0x0d ã¾ãŸã¯ 0x0a ã‚’å…ˆã«4å€‹ç™ºè¦‹ â†’ CharEncoding::CR ã¾ãŸã¯ CharEncoding::LF
+//		ãã‚Œä»¥å¤– CharEncoding::UNKNOWN
 byte checkNewLineCode(cbyte *ptr, cbyte *endptr, byte charCode)
 {
 	if( endptr - ptr > 0x10000 )
-		endptr = ptr + 0x10000;		//	Å‘å64ƒLƒ‚ğŒŸ¸
+		endptr = ptr + 0x10000;		//	æœ€å¤§64ã‚­ãƒ­ã‚’æ¤œæŸ»
 	int count_0D = 0;
 	int count_0A = 0;
 	if( charCode == CharEncoding::UTF16LE ) {

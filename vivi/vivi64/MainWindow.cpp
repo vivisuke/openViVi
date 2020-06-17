@@ -236,10 +236,14 @@ MainWindow::MainWindow(QWidget *parent)
 	//
 	m_thread.start();		//	メインスレッドと同じプライオリティ
 	//
+#if	1
+	on_action_New_triggered();
+#else
 	if( globSettings()->boolValue(GlobalSettings::OPEN_OPENEDFILES) )
 		on_action_OpenOpenedFiles_triggered();
 	else
 		on_action_New_triggered();
+#endif
 }
 MainWindow::~MainWindow()
 {
@@ -474,7 +478,7 @@ void MainWindow::setupStatusBar()
 	statusBar()->addPermanentWidget(m_encodingCB = new QComboBox());		//	文字エンコーディング
 	QStringList encList;
 	//encList  << "Shift_JIS" << "EUC-JP"<< "UTF-8" << "UTF-16LE" << "UTF-16BE";
-	for (int enc = 0; enc != GlobalSettings::N_CHAR_ENC; ++enc) {
+	for (int enc = 0; enc != CharEncoding::N_CHAR_ENC; ++enc) {
 		encList << globSettings()->codecName(enc);
 	}
 	m_encodingCB->addItems(encList);

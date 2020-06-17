@@ -67,12 +67,14 @@ public:
 		N_ENUM,
 	};
 	enum {
+#if	0
 		CHAR_ENC_UTF_8 = 0,
 		CHAR_ENC_UTF_16LE,
 		CHAR_ENC_UTF_16BE,
 		CHAR_ENC_SJIS,
 		CHAR_ENC_EUC,
 		N_CHAR_ENC,
+#endif
 		
 		DOC_TYPE_DEFAULT = 0,
 		DOC_TYPE_CPP,

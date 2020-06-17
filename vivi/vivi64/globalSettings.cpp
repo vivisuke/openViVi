@@ -8,6 +8,7 @@
 //----------------------------------------------------------------------
 
 #include "globalSettings.h"
+#include "charEncoding.h"
 #include <QSettings>
 
 struct KeyBoolItem
@@ -141,11 +142,11 @@ QByteArray GlobalSettings::codecName(int enc) const
 {
 	switch( enc ) {
 	default:
-	case CHAR_ENC_UTF_8:	return QByteArray("UTF-8");
-	case CHAR_ENC_UTF_16LE:	return QByteArray("UTF-16LE");
-	case CHAR_ENC_UTF_16BE:	return QByteArray("UTF-16BE");
-	case CHAR_ENC_SJIS:	return QByteArray("Shift_JIS");
-	case CHAR_ENC_EUC:	return QByteArray("EUC");
+	case CharEncoding::UTF8:	return QByteArray("UTF-8");
+	case CharEncoding::UTF16LE:	return QByteArray("UTF-16LE");
+	case CharEncoding::UTF16BE:	return QByteArray("UTF-16BE");
+	case CharEncoding::SJIS:	return QByteArray("Shift_JIS");
+	case CharEncoding::EUC:	return QByteArray("EUC");
 	}
 }
 QByteArray GlobalSettings::defaultCodecName() const
