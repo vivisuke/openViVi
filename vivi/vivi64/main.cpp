@@ -66,5 +66,7 @@ int main(int argc, char *argv[])
 	QObject::connect(&app, SIGNAL(onRecieved(const QString)), &w, SLOT(onRecieved(const QString)));
 	w.show();
 	//
+	w.onRecieved(files.join("\t"));
+	//
 	return app.exec();
 }

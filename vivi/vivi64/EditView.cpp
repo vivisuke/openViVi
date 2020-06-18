@@ -1441,9 +1441,42 @@ int EditView::drawTokenText(QPainter& pt,
 								//QColor& col)
 								bool bold)
 {
-	int wd = 0;	 tabwd;
+	int wd = 0;	 //tabwd;
 	int sx = m_scrollX0 * m_fontWidth;
 	//pt.setPen(col);
+#if	1
+	auto x = px + peDX;
+	for (int i = 0; i != token.size();) {
+		if (token[i] < 0x100) {
+			QString txt = token[i++];
+			while( i != token.size() && token[i] < 0x100 ) txt += token[i++];
+			pt.drawText(x - sx, py, txt);
+			if( bold )
+				pt.drawText(x - sx + 1, py, txt);
+			x += chWidth * txt.size();
+			wd += chWidth * txt.size();
+		} else {
+			QString txt = token[i];
+			int w = 2;
+			if( isSrgtPirFirstChar(token[i]) && isSrgtPirSecondChar(token[i+1]) ) {		//	サロゲートペア
+				txt += token[++i];
+				w = 4;
+			}
+			++i;
+			//if (txt == " ") {
+			//	x += chWidth;
+			//	wd += chWidth;
+			//} else
+			//{
+				pt.drawText(x - sx, py + descent - m_lineHeight, chWidth * w, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
+				if( bold )
+					pt.drawText(x - sx + 1, py + descent - m_lineHeight, chWidth * w, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
+				x += chWidth * w;
+				wd += chWidth * w;
+			//}
+		}
+	}
+#else
 	if (token[0] < 0x100) {
 		//pt.setFont(m_font);
 		pt.drawText(px + peDX - sx, py, token);
@@ -1473,6 +1506,7 @@ int EditView::drawTokenText(QPainter& pt,
 			}
 		}
 	}
+#endif
 	return !tabwd ? wd : tabwd;
 }
 void EditView::drawMinMap(QPainter& pt)

@@ -236,7 +236,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//
 	m_thread.start();		//	メインスレッドと同じプライオリティ
 	//
-#if	0
+#if	1
 	on_action_New_triggered();
 #else
 	if( globSettings()->boolValue(GlobalSettings::OPEN_OPENEDFILES) )
@@ -2366,12 +2366,16 @@ void MainWindow::readyReadStandardError()
 void MainWindow::onRecieved(const QString args)
 {
 	qDebug() << "onRecieved(" << args << ")";
-	if( args.isEmpty() || args == ":" )
+	if( args.isEmpty() ) {
+	} else if( args == ":" ) {
 		on_action_NewWindow_triggered();
-	else {
+	} else {
 		auto lst = args.split("\t");
-		for(const auto& path: lst)
-			createView(path);
+		for(const auto& path: lst) {
+			if( !path.isEmpty() && path[0] == '-' ) {
+			} else
+				createView(path);
+		}
 	}
 	//assert(0);
 }
