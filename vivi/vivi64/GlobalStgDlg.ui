@@ -217,9 +217,9 @@
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="QCheckBox" name="OpenOpenedFiles">
+       <widget class="QCheckBox" name="OpenOpenedDocs">
         <property name="text">
-         <string>OpenOpenedFiles</string>
+         <string>OpenOpenedDocs</string>
         </property>
        </widget>
       </item>

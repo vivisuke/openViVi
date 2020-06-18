@@ -239,8 +239,8 @@ MainWindow::MainWindow(QWidget *parent)
 #if	1
 	on_action_New_triggered();
 #else
-	if( globSettings()->boolValue(GlobalSettings::OPEN_OPENEDFILES) )
-		on_action_OpenOpenedFiles_triggered();
+	if( globSettings()->boolValue(GlobalSettings::OPEN_OPENED_DOCS) )
+		on_action_OpenOpenedDocs_triggered();
 	else
 		on_action_New_triggered();
 #endif
@@ -859,7 +859,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		}
 	}
 }
-void MainWindow::on_action_OpenOpenedFiles_triggered()
+void MainWindow::on_action_OpenOpenedDocs_triggered()
 {
     QSettings settings;
     QString key = KEY_OPENED_FILELIST + QString("-%1").arg(g_mainWindows.size());

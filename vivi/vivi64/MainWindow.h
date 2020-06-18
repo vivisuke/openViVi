@@ -204,7 +204,7 @@ private slots:
 	void	on_action_SaveAs_triggered();
 	void	on_action_Close_triggered();
 	void	on_action_Reload_triggered();
-	void	on_action_OpenOpenedFiles_triggered();
+	void	on_action_OpenOpenedDocs_triggered();
 	void	on_action_AddCurrentFile_triggered();
 	void	on_action_RemoveFile_triggered();
 	void	on_action_cpp_h_triggered();				//	Ctrl + \ 

@@ -34,7 +34,7 @@ GlobalStgDlg::GlobalStgDlg(GlobalSettings *globSettings, QWidget *parent)
 	//ui.wordCompletion->setChecked(m_globSettings->boolValue(GlobalSettings::WORD_COMPLETION));
 	//ui.keywordCompletion->setChecked(m_globSettings->boolValue(GlobalSettings::KEYWORD_COMPLETION));
 	ui.MiniMap->setChecked(m_globSettings->boolValue(GlobalSettings::MINI_MAP));
-	ui.OpenOpenedFiles->setChecked(m_globSettings->boolValue(GlobalSettings::OPEN_OPENEDFILES));
+	ui.OpenOpenedDocs->setChecked(m_globSettings->boolValue(GlobalSettings::OPEN_OPENED_DOCS));
 
 	QFontDatabase db;
 	ui.fontFamilyCB->addItems(db.families());
@@ -71,7 +71,7 @@ void GlobalStgDlg::accept()
 	//m_globSettings->setIntValue(GlobalSettings::PICTURE_OPACITY, (int)(ui.alphaSB->value() * 100));
 	//m_globSettings->setIntValue(GlobalSettings::PICTURE_SCALE, (int)(ui.scaleSB->value() * 100));
 	m_globSettings->setBoolValue(GlobalSettings::MINI_MAP, ui.MiniMap->isChecked());
-	m_globSettings->setBoolValue(GlobalSettings::OPEN_OPENEDFILES, ui.OpenOpenedFiles->isChecked());
+	m_globSettings->setBoolValue(GlobalSettings::OPEN_OPENED_DOCS, ui.OpenOpenedDocs->isChecked());
 	QDialog::accept();
 }
 #if 0

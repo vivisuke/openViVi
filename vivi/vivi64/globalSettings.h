@@ -40,7 +40,7 @@ public:
 		WITH_BOM,					//	BOM付き
 		MINI_MAP,					//	ミニマップ表示
 		VI_COMMAND,					//	vi コマンド有効
-		OPEN_OPENEDFILES,			//	起動時：終了時ファイル復帰
+		OPEN_OPENED_DOCS,			//	起動時：終了時ファイル復帰
 		OUTPUT_VIEW,					//	OutputBar/OutputView
 		GREP_VIEW,						//	OutputBar/GrepView
 		N_BOOL,
