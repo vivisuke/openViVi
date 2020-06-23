@@ -1,5 +1,9 @@
 
-
+main()
+{
+	for
+	return 0;
+}
 hoge )
 if( ) {
 

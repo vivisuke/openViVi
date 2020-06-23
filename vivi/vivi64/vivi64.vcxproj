@@ -110,6 +110,7 @@
     <ClCompile Include="GrepDlg.cpp" />
     <ClCompile Include="GrepEngine.cpp" />
     <ClCompile Include="GreppingDlg.cpp" />
+    <ClCompile Include="keisen.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NamedColorDlg.cpp" />

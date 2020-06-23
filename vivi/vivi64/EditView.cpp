@@ -1031,11 +1031,11 @@ void EditView::paintEvent(QPaintEvent *event)
 	pt.drawRect(rct);
 #endif
 	//
-	drawPreeditString(pt);
 	drawMatchedBG(pt);
 	drawSelection(pt);
 	drawAssocParenBG(pt);
 	drawCursor(pt);				//	テキストカーソル表示
+	drawPreeditString(pt);
 	drawTextArea(pt);			//	テキストエリア描画
 	drawMinMap(pt);				//	ミニマップ描画
 	drawLineCursor(pt);			//	行カーソル表示
@@ -1131,8 +1131,18 @@ void EditView::drawMatchedBG(QPainter &pt, int vln, int py)
 	while( (pos = sssrc.strstr(*buffer(), pos, last)) >= 0 ) {
 		//const int plen = sssrc.patSize();
 		const int matchLength = sssrc.matchLength();
-		const int px1 = textWidth(lineStart, pos - lineStart /*, last*/) + m_lineNumAreaWidth;
-		const int px2 = textWidth(lineStart, pos + matchLength - lineStart /*, last*/) + m_lineNumAreaWidth;
+		int px1 = textWidth(lineStart, pos - lineStart /*, last*/) + m_lineNumAreaWidth;
+		int px2 = textWidth(lineStart, pos + matchLength - lineStart /*, last*/) + m_lineNumAreaWidth;
+		if( !m_preeditString.isEmpty() &&		//	IME 変換中
+			m_textCursor->position() >= lineStart && m_textCursor->position() < last )	//	現行にカーソルがある場合
+		{
+			if( m_textCursor->position() <= pos ) {
+				px1 += m_preeditWidth;
+				px2 += m_preeditWidth;
+			} else if( m_textCursor->position() < pos + matchLength ) {
+				px2 += m_preeditWidth;
+			}
+		}
 		pt.fillRect(QRect(px1 - hv, py, px2 - px1, lineHeight()),
 							typeSettings()->color(TypeSettings::MATCHED_BG));
 		++pos;
