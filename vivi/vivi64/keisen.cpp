@@ -115,4 +115,75 @@ static void toKeisenString(QString &str, uchar state, int hankakuSpace)
 	str = "??";
 }
 
+//
+//		現在の状態から罫線を引いた状態を計算する
+//
+//		state:		現在の罫線状態
+//		dir:		罫線を引く方向（KT_XXX_MASK）
+//		type:		KT_XXX_THIN または KT_XXX_THICK
+//
+static void toKeisenString(QString &str, uchar state,
+								uchar dir, uchar type,
+								int destArraw, int hankakuSpace)
+{
+	uchar opdir, optype;		//	反対側のマスクと線種
+	uchar dir2, type2;			//	dir から９０度ずらしたマスクと線種
+	uchar dir3, type3;			//	dir から－９０度ずらしたマスクと線種
+	opdir = (dir >> 4) | (dir << 4);
+	optype = (type >> 4) | (type << 4);
+	dir2 = (dir >> 2) | (dir << 6);
+	dir3 = (dir >> 6) | (dir << 2);
+	type2 = state & dir2;
+	type3 = state & dir3;
+	type3 = (type3<<4) | (type3>>4);				//	比較のために180度回転
+	if( !type2 && !type3 ) {						//	直角方向に罫線が無い場合
+		if( !(state & opdir) &&						//	３方向に罫線なし
+			destArraw )								//	罫線矢印モード
+		{
+			switch( dir ) {
+			case KT_LEFT_MASK:		str = QString("→"); break;
+			case KT_RIGHT_MASK:		str = QString("←"); break;
+			case KT_DOWN_MASK:		str = QString("↑"); break;
+			case KT_UP_MASK:		str = QString("↓"); break;
+			}
+			return;
+		}
+		state = (state & (uchar)~(dir|opdir)) | type | optype;
+	} else {
+		state = (state & (uchar)~dir) | type;
+		if( type != 0 ) {							//	罫線を引く場合
+			if( state & opdir ) {					//	反対方向に罫線が存在する場合
+				state = (state & (uchar)~opdir) | optype;
+				if( type2 && type3 && type2 != type3 )
+					state = (state & (uchar)~(dir2|dir3)) |
+									(type>>2) | (type<<6) | (type>>6) | (type<<2);
+			} else {
+				if( type2 != type3 ) {				//	直角方向の罫線が異なる場合
+					if( type2 )
+						state = (state & (uchar)~dir2) | (type>>2) | (type<<6);
+					if( type3 )
+						state = (state & (uchar)~dir3) | (type>>6) | (type<<2);
+				}
+			}
+		} else {									//	罫線を消す場合
+			if( type2 && type3 ) {					//	両方の直角方向に罫線がある
+				if( type2 != type3 )				//	通常はありえない
+					state = (state & (uchar)~dir2) | type3;
+			} else {
+				if( (optype = (state & opdir)) != 0 ) {	//	逆方向に罫線がある
+					if( type2 )
+						state = (state & (uchar)~dir2) | (optype>>6) | (optype<<2);
+					if( type3 )
+						state = (state & (uchar)~dir3) | (optype>>2) | (optype<<6);
+				} else {
+					if( type3 )
+						state = (state & (uchar)~dir2) | type3;
+					else
+						state = (state & (uchar)~dir3) | (type2<<4) | (type2>>4);
+				}
+			}
+		}
+	}
+	toKeisenString(str, state, hankakuSpace);
+}
 
