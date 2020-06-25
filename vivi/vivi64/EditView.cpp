@@ -1032,14 +1032,14 @@ void EditView::paintEvent(QPaintEvent *event)
 	pt.drawRect(rct);
 #endif
 	//
-	drawMatchedBG(pt);
-	drawSelection(pt);
-	drawAssocParenBG(pt);
-	drawCursor(pt);				//	テキストカーソル表示
-	drawPreeditString(pt);
-	drawTextArea(pt);			//	テキストエリア描画
-	drawMinMap(pt);				//	ミニマップ描画
-	drawLineCursor(pt);			//	行カーソル表示
+	paintMatchedBG(pt);
+	paintSelection(pt);
+	paintAssocParenBG(pt);
+	paintCursor(pt);				//	テキストカーソル表示
+	paintPreeditString(pt);
+	paintTextArea(pt);			//	テキストエリア描画
+	paintMinMap(pt);				//	ミニマップ描画
+	paintLineCursor(pt);			//	行カーソル表示
 	//	行番号部分背景描画
 	pt.setOpacity(1.0);
 	QColor col = typeSettings()->color(TypeSettings::LINENUM_BG);
@@ -1047,7 +1047,7 @@ void EditView::paintEvent(QPaintEvent *event)
 	pt.setBrush(col);
 	rct.setWidth(m_lineNumAreaWidth);
 	pt.drawRect(rct);
-	drawLineNumberArea(pt);		//	行番号エリア描画
+	paintLineNumberArea(pt);		//	行番号エリア描画
 	//
 #if 0
 	pt.setOpacity(1.0);
@@ -1070,7 +1070,7 @@ void EditView::paintEvent(QPaintEvent *event)
 		pt.setTransform(QTransform());	//	回転リセット
 	}
 }
-void EditView::drawLineNumberArea(QPainter& pt)
+void EditView::paintLineNumberArea(QPainter& pt)
 {
 	auto rct = rect();
 	pt.setPen(typeSettings()->color(TypeSettings::LINENUM));
@@ -1097,7 +1097,7 @@ void EditView::drawLineNumberArea(QPainter& pt)
 		pt.drawText(px, py+m_baseLineDY, number);
 	}
 }
-void EditView::drawMatchedBG(QPainter&pt)
+void EditView::paintMatchedBG(QPainter&pt)
 {
 	auto pat = mainWindow()->matchedString();
 	if (pat.isEmpty()) return;
@@ -1118,7 +1118,7 @@ void EditView::drawMatchedBG(QPainter&pt)
 	for (int ln = m_scrollY0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
 		px = m_lineNumAreaWidth;
 		auto startIX = buffer()->lineStartPosition(ln);
-		drawMatchedBG(pt, ln, py);
+		paintMatchedBG(pt, ln, py);
 	}
 }
 void EditView::adjustPx1Px2(const int& lineStart, const int& last, const pos_t& pos, int& px1, int& px2, const int& matchLength)
@@ -1135,7 +1135,7 @@ void EditView::adjustPx1Px2(const int& lineStart, const int& last, const pos_t& 
 		}
 	}
 }
-void EditView::drawMatchedBG(QPainter &pt, int vln, int py)
+void EditView::paintMatchedBG(QPainter &pt, int vln, int py)
 {
 	SSSearch &sssrc = mainWindow()->sssrc();
 	const int hv = m_scrollX0 * m_fontWidth;
@@ -1154,17 +1154,17 @@ void EditView::drawMatchedBG(QPainter &pt, int vln, int py)
 		++pos;
 	}
 }
-void EditView::drawAssocParenBG(QPainter &pt)
+void EditView::paintAssocParenBG(QPainter &pt)
 {
 	const auto rct = rect();
 	int py = 0;
 	for (int ln = m_scrollY0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
-		drawAssocParenBG(pt, ln, py);
+		paintAssocParenBG(pt, ln, py);
 	}
 }
 //	m_openParenPos, m_closeParenPos が行vlnにある場合は背景を強調
 //		m_unbalancedAssocParen は checkAssocParen() で設定される
-void EditView::drawAssocParenBG(QPainter &painter, int vln, int py)
+void EditView::paintAssocParenBG(QPainter &painter, int vln, int py)
 {
 	if( m_openParenPos < 0 ) return;
 	const int hv = m_scrollX0;
@@ -1182,7 +1182,7 @@ void EditView::drawAssocParenBG(QPainter &painter, int vln, int py)
 		painter.fillRect(QRect(px1 - hv + m_lineNumAreaWidth, py, px2 - px1, lineHeight()), col);
 	}
 }
-void EditView::drawSelection(QPainter& pt)
+void EditView::paintSelection(QPainter& pt)
 {
 	if( !m_textCursor->hasSelection() ) return;
 	auto rct = rect();
@@ -1223,7 +1223,7 @@ void EditView::drawSelection(QPainter& pt)
 	QRect r2(m_lineNumAreaWidth, py1, px9 - m_lineNumAreaWidth /*- m_scrollX0*m_fontWidth*/, m_lineHeight);
 	pt.drawRect(r2);
 }
-void EditView::drawTextArea(QPainter& pt)
+void EditView::paintTextArea(QPainter& pt)
 {
 	if( m_preeditString.isEmpty() ) m_preeditWidth = 0;
 	auto rct = rect();
@@ -1240,7 +1240,7 @@ void EditView::drawTextArea(QPainter& pt)
 		px = m_lineNumAreaWidth;
 		auto startIX = buffer()->lineStartPosition(ln);
 		auto lnsz = buffer()->lineSize(ln);
-		drawLineText(pt, px, py+m_baseLineDY, ln, startIX, lnsz, startIX+lnsz, inBlockComment, inLineComment, quotedText);
+		paintLineText(pt, px, py+m_baseLineDY, ln, startIX, lnsz, startIX+lnsz, inBlockComment, inLineComment, quotedText);
 		if( inBlockComment )
 			document()->setLineFlag(ln+1, Buffer::LINEFLAG_IN_BLOCK_COMMENT);
 		else
@@ -1263,7 +1263,7 @@ void EditView::drawTextArea(QPainter& pt)
 //	１行表示
 //
 //			
-void EditView::drawLineText(QPainter &pt,
+void EditView::paintLineText(QPainter &pt,
 							int &px,
 							int py,			//	ベースライン位置（行Top + m_fontHeight）
 							int ln,			//	論理行番号, 0 org
@@ -1394,43 +1394,43 @@ void EditView::drawLineText(QPainter &pt,
 				tlast <= m_textCursor->selectionFirst() )			//	選択範囲より前
 			{
 				pt.setPen(col);
-				px += drawTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+				px += paintTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
 			} else {	//	選択状態にかかっている場合
 				//if( tkn.tokenix() >= m_textCursor->selectionFirst() && tkn.ix() < m_textCursor->selectionLast() ) {
 				//	//	token 全体が選択状態の場合
 				//	pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
-				//	px += drawTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+				//	px += paintTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
 				//} else
 				//{
 					if( tkn.tokenix() < m_textCursor->selectionFirst() ) {	//	途中から選択状態の場合
 						int len = m_textCursor->selectionFirst() - tkn.tokenix();
 						if( m_textCursor->selectionLast() < tlast ) {		//	途中まで選択状態の場合
 							pt.setPen(col);
-							px += drawTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
 							int len2 = m_textCursor->selectionLast() - m_textCursor->selectionFirst();
 							pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
 							//auto t1 = token.mid(len, len2);
-							px += drawTokenText(pt, token.mid(len, len2), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.mid(len, len2), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
 							pt.setPen(col);
 							//auto t2 = token.mid(len+len2);
-							px += drawTokenText(pt, token.mid(len+len2), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.mid(len+len2), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
 						} else {
 							pt.setPen(col);
-							px += drawTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
 							pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
-							px += drawTokenText(pt, token.mid(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.mid(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
 						}
 					} else {		//	最初から選択状態の場合
 						if( m_textCursor->selectionLast() < tlast ) {		//	途中まで選択状態の場合
 							pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
 							int len = m_textCursor->selectionLast() - tkn.tokenix();
-							px += drawTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
 							pt.setPen(col);
-							px += drawTokenText(pt, token.mid(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.mid(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
 						} else {
 							//	token 全体が選択状態の場合
 							pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
-							px += drawTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
 						}
 					}
 				//}
@@ -1445,7 +1445,7 @@ void EditView::drawLineText(QPainter &pt,
 			token = tkn.nextToken();
 	}
 }
-int EditView::drawTokenText(QPainter& pt,
+int EditView::paintTokenText(QPainter& pt,
 								QString& token,
 								int& clmn,
 								int& px,
@@ -1525,7 +1525,7 @@ int EditView::drawTokenText(QPainter& pt,
 #endif
 	return !tabwd ? wd : tabwd;
 }
-void EditView::drawMinMap(QPainter& pt)
+void EditView::paintMinMap(QPainter& pt)
 {
 	//	全体マップ QPixmap 作成後に編集されている場合
 	if( buffer()->seqNumber() > document()->mmSeqNumber() )
@@ -1595,7 +1595,7 @@ void EditView::drawPreeditBG(QPainter&)
 {
 }
 #endif
-void EditView::drawPreeditString(QPainter&pt)
+void EditView::paintPreeditString(QPainter&pt)
 {
 	if( m_preeditString.isEmpty() ) return;
 	QFontMetrics fm(m_font);
@@ -1623,7 +1623,7 @@ void EditView::drawPreeditString(QPainter&pt)
 	pt.drawText(px, py+m_baseLineDY /*-m_descent*/, m_preeditString);
 }
 //	行カーソル表示
-void EditView::drawLineCursor(QPainter &pt)
+void EditView::paintLineCursor(QPainter &pt)
 {
 	if( !typeSettings()->boolValue(TypeSettings::LINE_CURSOR) ) return;
 	int vln = m_textCursor->viewLine();
@@ -1639,7 +1639,7 @@ void EditView::drawLineCursor(QPainter &pt)
 		pt.drawLine(0, py, wd, py);
 	}
 }
-void EditView::drawCursor(QPainter& pt)
+void EditView::paintCursor(QPainter& pt)
 {
 	if( !m_dispCursor ) return;
 	pt.setOpacity(1.0);
