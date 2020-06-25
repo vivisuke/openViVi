@@ -100,5 +100,19 @@ uchar keisenTable[] = {
 	/*	U+254b	╋	*/	KT_UP_THICK | KT_DOWN_THICK | KT_LEFT_THICK | KT_RIGHT_THICK,
 };
 
+static void toKeisenString(QString &str, uchar state, int hankakuSpace)
+{
+	if( !state ) {
+		str = hankakuSpace ? "  " : "　";
+		return;
+	}
+	for(int i=0;i<=KT_CODE_END-KT_CODE_BEG;++i) {
+		if( keisenTable[i] == state ) {
+			str = QString((wchar_t)(i + KT_CODE_BEG));
+			return;
+		}
+	}
+	str = "??";
+}
 
 

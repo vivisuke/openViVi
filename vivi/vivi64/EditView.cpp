@@ -1121,6 +1121,20 @@ void EditView::drawMatchedBG(QPainter&pt)
 		drawMatchedBG(pt, ln, py);
 	}
 }
+void EditView::adjustPx1Px2(const int& lineStart, const int& last, const pos_t& pos, int& px1, int& px2, const int& matchLength)
+{
+	if (!m_preeditString.isEmpty() &&		//	IME 変換中
+		m_textCursor->position() >= lineStart && m_textCursor->position() < last)	//	現行にカーソルがある場合
+	{
+		if (m_textCursor->position() <= pos) {
+			px1 += m_preeditWidth;
+			px2 += m_preeditWidth;
+		}
+		else if (m_textCursor->position() < pos + matchLength) {
+			px2 += m_preeditWidth;
+		}
+	}
+}
 void EditView::drawMatchedBG(QPainter &pt, int vln, int py)
 {
 	SSSearch &sssrc = mainWindow()->sssrc();
@@ -1134,16 +1148,7 @@ void EditView::drawMatchedBG(QPainter &pt, int vln, int py)
 		const int matchLength = sssrc.matchLength();
 		int px1 = textWidth(lineStart, pos - lineStart /*, last*/) + m_lineNumAreaWidth;
 		int px2 = textWidth(lineStart, pos + matchLength - lineStart /*, last*/) + m_lineNumAreaWidth;
-		if( !m_preeditString.isEmpty() &&		//	IME 変換中
-			m_textCursor->position() >= lineStart && m_textCursor->position() < last )	//	現行にカーソルがある場合
-		{
-			if( m_textCursor->position() <= pos ) {
-				px1 += m_preeditWidth;
-				px2 += m_preeditWidth;
-			} else if( m_textCursor->position() < pos + matchLength ) {
-				px2 += m_preeditWidth;
-			}
-		}
+		adjustPx1Px2(lineStart, last, pos, px1, px2, matchLength);
 		pt.fillRect(QRect(px1 - hv, py, px2 - px1, lineHeight()),
 							typeSettings()->color(TypeSettings::MATCHED_BG));
 		++pos;

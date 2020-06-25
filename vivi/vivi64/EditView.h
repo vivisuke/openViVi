@@ -236,6 +236,7 @@ protected:
 	void	drawCursor(QPainter&);
 	void	drawLineCursor(QPainter&);
 	void	drawMatchedBG(QPainter&);
+	void adjustPx1Px2(const int& lineStart, const int& last, const pos_t& pos, int& px1, int& px2, const int& matchLength);
 	void	drawMatchedBG(QPainter &, int ln, int py);
 	void	drawCurWordBG(QPainter &, int ln, int py);
 	void	drawEmphasizedBG(QPainter &, int ln, int py, int &eix);
