@@ -230,7 +230,7 @@ protected:
 	void	paintTextArea(QPainter&);
 	void	paintLineText(QPainter&, int&, int, int, pos_t, int, pos_t, bool&, bool&, QString&);
 	int		paintTokenText(QPainter& pt, QString& token, int& clmn, int& px, int py, int peDX, int wd,
-							const int chWidth, const int descent /*, QColor& col*/ , bool bold);
+							const int chWidth, const int descent , QColor& col , bool bold);
 	void	paintPreeditString(QPainter&);
 	//void	drawPreeditBG(QPainter&);
 	void	paintCursor(QPainter&);

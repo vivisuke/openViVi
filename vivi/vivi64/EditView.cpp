@@ -1394,43 +1394,43 @@ void EditView::paintLineText(QPainter &pt,
 				tlast <= m_textCursor->selectionFirst() )			//	選択範囲より前
 			{
 				pt.setPen(col);
-				px += paintTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+				px += paintTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent, col, bold);
 			} else {	//	選択状態にかかっている場合
 				//if( tkn.tokenix() >= m_textCursor->selectionFirst() && tkn.ix() < m_textCursor->selectionLast() ) {
 				//	//	token 全体が選択状態の場合
 				//	pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
-				//	px += paintTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+				//	px += paintTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent, col, bold);
 				//} else
 				//{
 					if( tkn.tokenix() < m_textCursor->selectionFirst() ) {	//	途中から選択状態の場合
 						int len = m_textCursor->selectionFirst() - tkn.tokenix();
 						if( m_textCursor->selectionLast() < tlast ) {		//	途中まで選択状態の場合
 							pt.setPen(col);
-							px += paintTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent, col, bold);
 							int len2 = m_textCursor->selectionLast() - m_textCursor->selectionFirst();
 							pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
 							//auto t1 = token.mid(len, len2);
-							px += paintTokenText(pt, token.mid(len, len2), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.mid(len, len2), clmn, px, py, peDX, tabwd, chWidth, descent, col, bold);
 							pt.setPen(col);
 							//auto t2 = token.mid(len+len2);
-							px += paintTokenText(pt, token.mid(len+len2), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.mid(len+len2), clmn, px, py, peDX, tabwd, chWidth, descent, col, bold);
 						} else {
 							pt.setPen(col);
-							px += paintTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent, col, bold);
 							pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
-							px += paintTokenText(pt, token.mid(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.mid(len), clmn, px, py, peDX, tabwd, chWidth, descent, col, bold);
 						}
 					} else {		//	最初から選択状態の場合
 						if( m_textCursor->selectionLast() < tlast ) {		//	途中まで選択状態の場合
 							pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
 							int len = m_textCursor->selectionLast() - tkn.tokenix();
-							px += paintTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.left(len), clmn, px, py, peDX, tabwd, chWidth, descent, col, bold);
 							pt.setPen(col);
-							px += paintTokenText(pt, token.mid(len), clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token.mid(len), clmn, px, py, peDX, tabwd, chWidth, descent, col, bold);
 						} else {
 							//	token 全体が選択状態の場合
 							pt.setPen(typeSettings()->color(TypeSettings::SEL_TEXT));
-							px += paintTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent /*, col*/ , bold);
+							px += paintTokenText(pt, token, clmn, px, py, peDX, tabwd, chWidth, descent, col, bold);
 						}
 					}
 				//}
@@ -1454,7 +1454,7 @@ int EditView::paintTokenText(QPainter& pt,
 								int tabwd,
 								const int chWidth,
 								const int descent,		//	フォントのベースライン下高さ
-								//QColor& col)
+								QColor& col,
 								bool bold)
 {
 	int wd = 0;	 //tabwd;
