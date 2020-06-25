@@ -1479,17 +1479,16 @@ int EditView::paintTokenText(QPainter& pt,
 				w = 4;
 			}
 			++i;
-			//if (txt == " ") {
-			//	x += chWidth;
-			//	wd += chWidth;
-			//} else
-			//{
-				pt.drawText(x - sx, py + descent - m_lineHeight, chWidth * w, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
-				if( bold )
-					pt.drawText(x - sx + 1, py + descent - m_lineHeight, chWidth * w, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
-				x += chWidth * w;
-				wd += chWidth * w;
-			//}
+			if( txt[0] == L'　' ) {
+				txt[0] = L'□';
+				pt.setPen(typeSettings()->color(TypeSettings::ZEN_SPACE));
+			}
+			pt.drawText(x - sx, py + descent - m_lineHeight, chWidth * w, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
+			if( bold )
+				pt.drawText(x - sx + 1, py + descent - m_lineHeight, chWidth * w, m_lineHeight, Qt::AlignHCenter | Qt::AlignBottom, txt);
+			x += chWidth * w;
+			wd += chWidth * w;
+			pt.setPen(col);
 		}
 	}
 #else
