@@ -46,6 +46,9 @@ class OutputView;
 extern GlobalSettings	g_globSettings;
 GlobalSettings *globSettings();
 
+#define	KEISEN_THIN			0
+#define	KEISEN_THICK		10
+
 enum {
 	NEWLINE_CRLF = 0,
 	NEWLINE_LF,
@@ -68,6 +71,7 @@ public:
 	uint	getSearchOpt(bool vi = false) const;
 	bool	isBoxSelectMode() const;	// { return ui.action_BoxSelect->isChecked(); }
 	bool	isKeisenMode() const;		// { return ui.action_Keisen->isChecked(); }
+	int		keisenType() const		{ return m_keisenType; }
 	//bool	willShowMatchedMG() const { return m_showMatchedBG; }
 	QString	findString() const { return m_findString; }
 	const ViEngine	*viEngine() const { return m_viEngine; }
@@ -323,6 +327,7 @@ private:
 	bool	m_incSearched;			//	インクリメンタルサーチ済み
 	bool	m_modeChanging;			//	モード変更中
 	bool	m_searchToolBarVisible;
+	int		m_keisenType;			//	KEISEN_THIN | THICK	細い・太い罫線
 	//bool	m_showMatchedBG;		//	マッチ背景強調 at vi mode
 	QString	m_matchedString;		//	マッチ強調文字列
 	byte_t	m_searchAlgorithm;

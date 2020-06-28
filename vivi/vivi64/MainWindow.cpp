@@ -120,6 +120,7 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_incSearched(false)
 	, m_searching(false)
 	, m_modeChanging(false)
+	, m_keisenType(KEISEN_THIN)
 	//, m_showMatchedBG(false)
 	, m_searchAlgorithm(SSSearch::SAKUSAKU)
 	, m_cmdLineEdit(nullptr)
@@ -236,7 +237,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//
 	m_thread.start();		//	メインスレッドと同じプライオリティ
 	//
-#if	1
+#if	0
 	on_action_New_triggered();
 #else
 	if( globSettings()->boolValue(GlobalSettings::OPEN_OPENED_DOCS) )

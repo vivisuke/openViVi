@@ -1,3 +1,3 @@
 ﻿#pragma once
 
-#define		VERSION_STR		"0.044 dev"
+#define		VERSION_STR		"0.045 dev"

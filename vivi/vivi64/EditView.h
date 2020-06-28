@@ -215,6 +215,14 @@ public:
 	void	sharpIfElseCommentOut();
 	void	appendCut();
 	int		appendCopy();
+	
+	void	drawKeisen(int, bool=false);		//	罫線モードで罫線を引く
+	void	drawKeisenLeft(bool=false);			//	罫線モードで罫線を引く
+	void	drawKeisenRight(bool=false);		//	罫線モードで罫線を引く
+	void	drawKeisenUp(bool=false, bool=true);			//	罫線モードで罫線を引く
+	void	drawKeisenDown(bool=false, bool=true);			//	罫線モードで罫線を引く
+	void	drawKeisenNextPrevLine(QString&, int);
+	void	getAroundKeisenState(uchar&, uchar&, uchar&, uchar&, uchar&);
 
 protected:
 	void	viFindCharForward(wchar_t qch, bool bPrev, int mvmd, int repCnt);

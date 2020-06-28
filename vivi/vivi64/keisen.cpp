@@ -7,7 +7,9 @@
 //
 //--------------------------------------------------------------------------
 
+#include "mainWindow.h"
 #include "editView.h"
+#include "textCursor.h"
 
 typedef unsigned char uint8;
 
@@ -185,5 +187,179 @@ static void toKeisenString(QString &str, uchar state,
 		}
 	}
 	toKeisenString(str, state, hankakuSpace);
+}
+void EditView::drawKeisen(int key, bool erase)		//	罫線モードで罫線を引く
+{
+	//##clearSelectMode();
+	switch( key ) {
+	case Qt::Key_Up:
+		drawKeisenUp(erase);
+		break;
+	case Qt::Key_Down:
+		drawKeisenDown(erase);
+		break;
+	case Qt::Key_Left:
+		drawKeisenLeft(erase);
+		break;
+	case Qt::Key_Right:
+		drawKeisenRight(erase);
+		break;
+	}
+}
+void EditView::drawKeisenLeft(bool erase)			//	罫線モードで罫線を引く
+{
+	int length = 0, eolOffset = 0 /*, indent*/;
+#if	0	//##
+	ctchar *ptr = NULL;
+	if( getViewLineMgr()->getLineText(getViewCursor()->getLine(), ptr, length) )
+		eolOffset = getEOLOffset(ptr, length);
+	if( getViewCursor()->getColumn() /*- indent*/ < 2 )
+		return;
+#endif
+	QString kstr1, kstr2;
+	//{
+		uchar type = 0;
+		if( !erase ) {
+			switch( mainWindow()->keisenType() ) {
+			case KEISEN_THIN:		type = KT_LEFT_THIN;	break;
+			case KEISEN_THICK:		type = KT_LEFT_THICK;	break;
+			//case KEISEN_HANKAKU:	type = KT_LEFT_THIN;	break;
+			}
+		}
+		uchar state, up, down, left, right;
+		getAroundKeisenState(state, up, down, left, right);
+#if	0	//##
+		toKeisenString(kstr2, state, KT_LEFT_MASK, type, 0, theApp.m_padHankakuSpc);
+		toKeisenString(kstr1, left, KT_RIGHT_MASK, type>>4,
+							!erase && true /*m_option->isValid(VWOPT_KEISEN_ARRAW) ? 1 : 0*/,
+							theApp.m_padHankakuSpc);
+		if( !erase || getViewCursor()->getOffset() < eolOffset )		//	改行位置以外の場合
+			kstr1 += kstr2;
+	//}
+	int c1 = getViewCursor()->getColumn() - 2;
+	int line = getViewCursor()->getLine();
+	int offset1 = getViewLineMgr()->columnToOffset(line, ptr, ptr+eolOffset, c1);
+	int offset = offset1;
+	if( c1 < getViewCursor()->getColumn() - 2 ) {
+		if( theApp.m_padHankakuSpc ) {
+			while( (c1 += 1) <= getViewCursor()->getColumn() - 2 ) {
+				kstr1 = _T(" ") + kstr1;		//	半角空白
+				offset += 1;
+			}
+		} else {
+			if( (getViewCursor()->getColumn() - c1) & 1 ) {
+				kstr1 = _T(" ") + kstr1;
+				offset += 1;
+			}
+			while( (c1 += 2) <= getViewCursor()->getColumn() - 2 ) {
+				kstr1 = _T("　") + kstr1;		//	全角空白
+				offset += 2;
+			}
+		}
+	}
+	STextPos pos1(getViewCursor()->getLine(), offset1);
+	int c2 = getViewCursor()->getColumn() + 2;
+	int offset2 = getViewLineMgr()->columnToOffset(line, ptr, ptr+eolOffset, c2);
+	if( c2 < getViewCursor()->getColumn() + 2 && ptr[offset2] != '\t' && getViewCursor()->getOffset() < eolOffset )
+		kstr1 += " ";
+	STextPos pos2(getViewCursor()->getLine(), offset2);
+	doReplaceTextNoKeisenProtect(pos1, pos2, kstr1);
+	invalidateCursor();
+	getViewCursor()->m_line = line;
+	getViewCursor()->m_offset = offset;
+	getViewCursor()->updateColumn();
+	makeCursorInView();
+	invalidateCursor();
+#endif
+}
+void EditView::drawKeisenRight(bool)		//	罫線モードで罫線を引く
+{
+}
+void EditView::drawKeisenUp(bool erase, bool bUndoBlock)			//	罫線モードで罫線を引く
+{
+}
+void EditView::drawKeisenDown(bool, bool)			//	罫線モードで罫線を引く
+{
+}
+void EditView::drawKeisenNextPrevLine(QString&, int)
+{
+}
+//		キャレット位置、その周りの罫線の状態を返す
+void EditView::getAroundKeisenState(uchar &state,
+									 uchar &up, uchar &down,
+									 uchar &left, uchar &right)
+{
+	state = up = down = left = right = 0;
+	int offset, c2;
+	ushort code;
+	int length = 0/*, indent*/;
+	int pos = m_textCursor->position();
+#if	0	//##
+	const tchar *ptr = NULL;
+	int line = getViewCursor()->getLine();
+	if( line > 1 ) {		//	ひとつ上の状態
+		VERIFY( getViewLineMgr()->getLineText(getViewCursor()->getLine()-1, ptr, length) );
+		c2 = getViewCursor()->getColumn();
+		offset = getViewLineMgr()->columnToOffset(line, ptr, ptr+length, c2);
+#ifdef	_UNICODE
+		if( c2 == getViewCursor()->getColumn() ) {
+			code = ptr[offset];
+			if( code >= KT_CODE_BEG && code <= KT_CODE_END )
+				state = ((up = keisenTable[code - KT_CODE_BEG]) & KT_DOWN_MASK) << 4;
+		}
+#else
+		if( c2 == getViewCursor()->getColumn() && isDBCSLeadByte(ptr[offset]) ) {
+			code = ((uchar)ptr[offset] << 8) + (uchar)ptr[offset+1];
+			if( code >= KT_CODE_BEG && code <= KT_CODE_END )
+				state = ((up = keisenTable[code - KT_CODE_BEG]) & KT_DOWN_MASK) << 4;
+		}
+#endif
+	}
+	if( getViewCursor()->getLine() < getViewLineMgr()->getLineCount() ) {		//	ひとつ下の状態
+		VERIFY( getViewLineMgr()->getLineText(getViewCursor()->getLine()+1, ptr, length) );
+		c2 = getViewCursor()->getColumn();
+		offset = getViewLineMgr()->columnToOffset(line, ptr, ptr+length, c2);
+#ifdef	_UNICODE
+		if( c2 == getViewCursor()->getColumn() ) {
+			code = ptr[offset];
+			if( code >= KT_CODE_BEG && code <= KT_CODE_END )
+				state |= ((down = keisenTable[code - KT_CODE_BEG]) & KT_UP_MASK) >> 4;
+		}
+#else
+		if( c2 == getViewCursor()->getColumn() && isDBCSLeadByte(ptr[offset]) ) {
+			code = ((uchar)ptr[offset] << 8) + (uchar)ptr[offset+1];
+			if( code >= KT_CODE_BEG && code <= KT_CODE_END )
+				state |= ((down = keisenTable[code - KT_CODE_BEG]) & KT_UP_MASK) >> 4;
+		}
+#endif
+	}
+	if( !getViewLineMgr()->getLineText(getViewCursor()->getLine(), ptr, length /*, indent*/) ) return;
+#ifdef	_UNICODE
+	if( getViewCursor()->getOffset() > 0 ) {
+		code = ptr[getViewCursor()->getOffset()-1];
+		if( code >= KT_CODE_BEG && code <= KT_CODE_END )
+			state |= ((left = keisenTable[code - KT_CODE_BEG]) & KT_RIGHT_MASK) << 4;
+	}
+#else
+	if( getViewCursor()->getOffset() >= 2 && getDBCharType(ptr, getViewCursor()->getOffset()-2) == CT_DOUBLEBYTE1 ) {
+		code = ((uchar)ptr[getViewCursor()->getOffset()-2] << 8) + (uchar)ptr[getViewCursor()->getOffset()-1];
+		if( code >= KT_CODE_BEG && code <= KT_CODE_END )
+			state |= ((left = keisenTable[code - KT_CODE_BEG]) & KT_RIGHT_MASK) << 4;
+	}
+#endif
+#ifdef	_UNICODE
+	if( getViewCursor()->getOffset() + 1 < length ) {
+		code = ptr[getViewCursor()->getOffset()+1];
+		if( code >= KT_CODE_BEG && code <= KT_CODE_END )
+			state |= ((right = keisenTable[code - KT_CODE_BEG]) & KT_LEFT_MASK) >> 4;
+	}
+#else
+	if( getViewCursor()->getOffset() <= length - 4 && getDBCharType(ptr, getViewCursor()->getOffset()+2) == CT_DOUBLEBYTE1 ) {
+		code = ((uchar)ptr[getViewCursor()->getOffset()+2] << 8) + (uchar)ptr[getViewCursor()->getOffset()+3];
+		if( code >= KT_CODE_BEG && code <= KT_CODE_END )
+			state |= ((right = keisenTable[code - KT_CODE_BEG]) & KT_LEFT_MASK) >> 4;
+	}
+#endif
+#endif
 }
 
