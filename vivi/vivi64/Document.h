@@ -76,7 +76,7 @@ public:
 	const TypeSettings	*typeSettings() const { return m_typeSettings; }
 	Buffer	*buffer() { return m_buffer; }
 	const Buffer	*buffer() const { return m_buffer; }
-	int		positionToLine(pos_t pos) const;
+	int		positionToLine(pos_t pos) const;	//	0 org.
 	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
 	void	insertText(pos_t pos, const QString &);
 	void	updateView(EditView *);

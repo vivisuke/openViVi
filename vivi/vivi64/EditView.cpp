@@ -811,7 +811,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_Left:
 		//viEngine->resetRedoRecording();
 		if( mainWindow()->isKeisenMode() && (ctrl || shift)) {
-			doKeisenLeft(shift);
+			drawKeisenLeft(shift);
 		} else {
 			if( ctrl )
 				m_textCursor->movePosition(TextCursor::PREV_WORD, mvmd);
@@ -826,7 +826,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_Right:
 		//viEngine->resetRedoRecording();
 		if( mainWindow()->isKeisenMode() && (ctrl || shift)) {
-			doKeisenRight(shift);
+			drawKeisenRight(shift);
 		} else {
 			if( ctrl )
 				m_textCursor->movePosition(TextCursor::NEXT_WORD, mvmd);
@@ -841,7 +841,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_Up:
 		//viEngine->resetRedoRecording();
 		if( mainWindow()->isKeisenMode() && (ctrl || shift)) {
-			doKeisenUp(shift);
+			drawKeisenUp(shift);
 		} else {
 			m_textCursor->movePosition(TextCursor::UP, mvmd);
 		}
@@ -849,7 +849,7 @@ void EditView::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_Down:
 		//viEngine->resetRedoRecording();
 		if( mainWindow()->isKeisenMode() && (ctrl || shift)) {
-			doKeisenDown(shift);
+			drawKeisenDown(shift);
 		} else {
 			m_textCursor->movePosition(TextCursor::DOWN, mvmd);
 		}
@@ -3835,6 +3835,7 @@ void EditView::blockComment()
 	insertText(typeStg->textValue(TypeSettings::BLOCK_COMMENT_BEG),
 					typeStg->textValue(TypeSettings::BLOCK_COMMENT_END));
 }
+#if	0
 void EditView::doKeisenLeft(bool erase)
 {
 }
@@ -3847,3 +3848,4 @@ void EditView::doKeisenUp(bool erase)
 void EditView::doKeisenDown(bool erase)
 {
 }
+#endif

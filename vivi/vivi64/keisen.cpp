@@ -10,6 +10,7 @@
 #include "mainWindow.h"
 #include "editView.h"
 #include "textCursor.h"
+#include "document.h"
 
 typedef unsigned char uint8;
 
@@ -272,13 +273,13 @@ void EditView::drawKeisenLeft(bool erase)			//	罫線モードで罫線を引く
 	invalidateCursor();
 #endif
 }
-void EditView::drawKeisenRight(bool)		//	罫線モードで罫線を引く
+void EditView::drawKeisenRight(bool erase)		//	罫線モードで罫線を引く
 {
 }
 void EditView::drawKeisenUp(bool erase, bool bUndoBlock)			//	罫線モードで罫線を引く
 {
 }
-void EditView::drawKeisenDown(bool, bool)			//	罫線モードで罫線を引く
+void EditView::drawKeisenDown(bool erase, bool)			//	罫線モードで罫線を引く
 {
 }
 void EditView::drawKeisenNextPrevLine(QString&, int)
@@ -293,28 +294,22 @@ void EditView::getAroundKeisenState(uchar &state,
 	int offset, c2;
 	ushort code;
 	int length = 0/*, indent*/;
-	int pos = m_textCursor->position();
-#if	0	//##
-	const tchar *ptr = NULL;
-	int line = getViewCursor()->getLine();
+	pos_t pos = m_textCursor->position();
+	int line = document()->positionToLine(pos);
+	pos_t start = lineStartPosition(line);	//	行先頭位置
+	//const tchar *ptr = NULL;
+	//int line = getViewCursor()->getLine();
 	if( line > 1 ) {		//	ひとつ上の状態
-		VERIFY( getViewLineMgr()->getLineText(getViewCursor()->getLine()-1, ptr, length) );
-		c2 = getViewCursor()->getColumn();
-		offset = getViewLineMgr()->columnToOffset(line, ptr, ptr+length, c2);
-#ifdef	_UNICODE
-		if( c2 == getViewCursor()->getColumn() ) {
-			code = ptr[offset];
+		//VERIFY( getViewLineMgr()->getLineText(getViewCursor()->getLine()-1, ptr, length) );
+		//##c2 = getViewCursor()->getColumn();
+		//##offset = pos - start;
+		//##if( c2 == getViewCursor()->getColumn() ) {
+			code = buffer()->charAt(pos);
 			if( code >= KT_CODE_BEG && code <= KT_CODE_END )
 				state = ((up = keisenTable[code - KT_CODE_BEG]) & KT_DOWN_MASK) << 4;
-		}
-#else
-		if( c2 == getViewCursor()->getColumn() && isDBCSLeadByte(ptr[offset]) ) {
-			code = ((uchar)ptr[offset] << 8) + (uchar)ptr[offset+1];
-			if( code >= KT_CODE_BEG && code <= KT_CODE_END )
-				state = ((up = keisenTable[code - KT_CODE_BEG]) & KT_DOWN_MASK) << 4;
-		}
-#endif
+		//##}
 	}
+#if	0	//##
 	if( getViewCursor()->getLine() < getViewLineMgr()->getLineCount() ) {		//	ひとつ下の状態
 		VERIFY( getViewLineMgr()->getLineText(getViewCursor()->getLine()+1, ptr, length) );
 		c2 = getViewCursor()->getColumn();

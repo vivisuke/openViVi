@@ -54,7 +54,7 @@ public:
 	int		lineStartRaw(int ln) const { return m_lv[ln].m_lineStart; }
 	uint	lineFlags(int ln) const { return ln < m_lv.size() ? m_lv[ln].m_flags : 0; }
 	//	ポジション → （ポジションを含む行の）行インデックス変換
-	int	positionToLine(int pos) const
+	int	positionToLine(int pos) const	//	0 org
 	{
 		if( lineCount() <= 1 ) return 0;
 #if 1
