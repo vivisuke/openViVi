@@ -9,6 +9,7 @@
 
 #include "mainWindow.h"
 #include "editView.h"
+#include "viewLineMgr.h"
 #include "textCursor.h"
 #include "document.h"
 
@@ -275,6 +276,18 @@ void EditView::drawKeisenLeft(bool erase)			//	罫線モードで罫線を引く
 }
 void EditView::drawKeisenRight(bool erase)		//	罫線モードで罫線を引く
 {
+		uchar type;
+		if( erase )
+			type = 0;
+		else {
+			switch( mainWindow()->keisenType() ) {
+			case KEISEN_THIN:		type = KT_RIGHT_THIN;	break;
+			case KEISEN_THICK:		type = KT_RIGHT_THICK;	break;
+			//case KEISEN_HANKAKU:	type = KT_RIGHT_THIN;	break;
+			}
+		}
+		uchar state, up, down, left, right;
+		getAroundKeisenState(state, up, down, left, right);
 }
 void EditView::drawKeisenUp(bool erase, bool bUndoBlock)			//	罫線モードで罫線を引く
 {
@@ -299,15 +312,24 @@ void EditView::getAroundKeisenState(uchar &state,
 	pos_t start = lineStartPosition(line);	//	行先頭位置
 	//const tchar *ptr = NULL;
 	//int line = getViewCursor()->getLine();
-	if( line > 1 ) {		//	ひとつ上の状態
+	if( line > 0 ) {		//	ひとつ上の状態
 		//VERIFY( getViewLineMgr()->getLineText(getViewCursor()->getLine()-1, ptr, length) );
 		//##c2 = getViewCursor()->getColumn();
 		//##offset = pos - start;
 		//##if( c2 == getViewCursor()->getColumn() ) {
-			code = buffer()->charAt(pos);
+		TextCursor cur(*textCursor());
+		cur.movePosition(TextCursor::UP);
+			code = buffer()->charAt(cur.position());
 			if( code >= KT_CODE_BEG && code <= KT_CODE_END )
 				state = ((up = keisenTable[code - KT_CODE_BEG]) & KT_DOWN_MASK) << 4;
 		//##}
+	}
+	if( line != viewLineMgr()->EOFLine() ) {
+		TextCursor cur(*textCursor());
+		cur.movePosition(TextCursor::DOWN);
+			code = buffer()->charAt(cur.position());
+			if( code >= KT_CODE_BEG && code <= KT_CODE_END )
+				state = ((down = keisenTable[code - KT_CODE_BEG]) & KT_DOWN_MASK) << 4;
 	}
 #if	0	//##
 	if( getViewCursor()->getLine() < getViewLineMgr()->getLineCount() ) {		//	ひとつ下の状態
@@ -358,3 +380,4 @@ void EditView::getAroundKeisenState(uchar &state,
 #endif
 }
 
+///////

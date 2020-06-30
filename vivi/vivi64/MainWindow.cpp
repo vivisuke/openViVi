@@ -2175,8 +2175,10 @@ void MainWindow::on_action_BoxSelect_triggered()
 }
 void MainWindow::on_action_KeisenMode_triggered()
 {
-	if( ui.action_KeisenMode->isChecked() )
+	const bool checked = ui.action_KeisenMode->isChecked();
+	if( checked )
 		ui.action_BoxSelect->setChecked(false);
+	showMessage(tr("keisen mode: ") + (checked ? "ON" : "OFF"), 2000);
 }
 void MainWindow::on_action_TypeSettings_triggered()
 {
