@@ -160,6 +160,8 @@ protected:
 	void	updateStatusBar();		//	BOM チェックボックス等を更新
 	void	grep(bool);
 	bool	checkUnSaved();
+	void	readSettings();
+	void	writeSettings();
 	
 protected:
 	//void	addToOutlineBar(const QString&, const QString&);

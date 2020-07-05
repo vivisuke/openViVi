@@ -829,7 +829,7 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0785 ◎ C 06/15 06/15 0.041│問題│MainWindow::tagsJump() が未定義というビルドエラーが出る
 0786 ● C 06/15            │ToDo│起動時オプション -noOpenOpenedDocs サポート
 0787 ◎ B 06/15 06/15 0.041│問題│curdir が他の箇所にあるとき、cur 直後で idir Esc を実行後、他の cur 直後で . を実行すると curdicurdir となる
-0788 ● C 06/15            │問題│grep を行ったパスが履歴に追加されない
+0788 ◎ B 06/15 07/06 0.045│問題│grep を行ったパスが履歴に追加されない
 0789 ◎ C 06/15 06/15 0.042│問題│ツールバーの Main, Search, Other を非表示にし、終了・再起動すると全てが表示されてしまう
 0790 ◎ C 06/15 06/15 0.042│ToDo│Edit > Comment > Encomment Ctrl + K, Ctrl + C
 0791 ◎ C 06/15 06/15 0.042│ToDo│Edit > Comment > Decomment Ctrl + K, Ctrl + U
@@ -871,9 +871,9 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0825 ○ C 06/29 06/29      │問題│罫線モードで Ctrl + → 押下しても、drawKeisenRight() がコールされない
 0825 ● C 06/30            │問題│zenCodingUser.txt が効かない？
 0825 ◎ C 07/01 07/01 0.045│ToDo│罫線モードON/OFF時：ステータスバーに状態表示した方がよい（ツールバー非表示の場合向け）
-0825 ● C 07/01            │ToDo│
-0825 ● C 07/01            │ToDo│
-0825 ● C 07/01            │ToDo│
-0825 ● C 07/01            │ToDo│
-0825 ● C 07/01            │ToDo│
-0825 ● C 07/01            │ToDo│
+0825 ● C 07/02            │ToDo│EditView::viewLineOffsetToClmn(vln, offset) 追加（カラム：0 org.）
+0825 ◎ C 07/06 07/06 0.045│ToDo│MainWindow::writeSettings() 追加
+0825 ◎ C 07/06 07/06 0.045│ToDo│MainWindow::readSettings() 追加
+0825 ● C 07/06            │ToDo│
+0825 ● C 07/06            │ToDo│
+0825 ● C 07/06            │ToDo│

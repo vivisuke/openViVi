@@ -134,7 +134,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
 	ui.setupUi(this);
 	g_mainWindows.push_back(this);
-	globSettings()->readSettings();
+	readSettings();
+	//globSettings()->readSettings();
 	//
     QSettings settings;
 #ifdef	_DEBUG
@@ -814,12 +815,23 @@ bool MainWindow::checkUnSaved()
 	}
 	return true;
 }
-void MainWindow::closeEvent(QCloseEvent *event)
+void MainWindow::readSettings()
 {
-	qDebug() << "closeEvent()";
+	QSettings settings;
+	restoreGeometry(settings.value("geometry").toByteArray());
+	restoreState(settings.value("windowState").toByteArray());
+	m_grepDirHist = settings.value("grepDirHist", QStringList()).toStringList();
+	m_exCmdHist = settings.value("exCmdHistHist", QStringList()).toStringList();
+	globSettings()->readSettings();
+}
+void MainWindow::writeSettings()
+{
+    QSettings settings;
+	settings.setValue("geometry", saveGeometry());
+	settings.setValue("windowState", saveState());
+	settings.setValue("grepDirHist", m_grepDirHist);
+	settings.setValue("exCmdHist", m_exCmdHist);
 	//
-	if( !checkUnSaved() )
-		return;		//	クローズキャンセル
 	//	オープンしているファイルパスリスト保存
 	QStringList lst;
 	for(int i = 0; i < ui.tabWidget->count(); ++i) {
@@ -833,7 +845,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 			}
 		}
 	}
-    QSettings settings;
     QString key = KEY_OPENED_FILELIST + QString("-%1").arg(g_mainWindows.size());
     settings.setValue(key, lst);
     //
@@ -850,6 +861,14 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.setValue(KEY_MAIN_TOOLBAR, ui.mainToolBar->isVisible());
     settings.setValue(KEY_SEARCH_TOOLBAR, ui.searchToolBar->isVisible());
     settings.setValue(KEY_OTHER_TOOLBAR, ui.otherToolBar->isVisible());
+}
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+	qDebug() << "closeEvent()";
+	//
+	if( !checkUnSaved() )
+		return;		//	クローズキャンセル
+	writeSettings();
 	//
 	QMainWindow::closeEvent(event);
 	//	this を オープンMainWindowリストから削除
