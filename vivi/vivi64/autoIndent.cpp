@@ -229,7 +229,7 @@ QString autoIndentText(TypeSettings *typeSettings,
 		wchar_t nxChar = 0;		//	カーソル位置文字
 		for(pos_t pos = pos0; pos < buffer.size() && isSpaceChar(nxChar = buffer[pos]); ++pos) {}
 		if( offset >= indent + firstToken.size()
-			&& (isCppIndentWord(firstToken) || firstToken == "case")
+			&& (isCppIndentWord(firstToken) && nxChar == '(' || firstToken == "case")
 			&& nxChar != '{' )		//	{ 直前で改行した場合
 		{
 			text += "\t";

@@ -862,6 +862,7 @@ void EditView::autoCmplDecided(QString text, bool autoClosed)
 			else if( ch == 'n' ) {
 				insertText(dst);
 				insertText(t);
+				//insertText("\n");
 				dst.clear();
 				continue;
 			} else if( ch == 'c' ) {
