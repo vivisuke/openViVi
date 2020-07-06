@@ -867,7 +867,8 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0822 ◎ C 06/25 06/25 0.044│ToDo│EditView::paintTokenText() の col 引数復活
 0823 ◎ C 06/26 06/29 0.045│ToDo│起動時：終了時文書自動オープンが動作していない
 0824 ◎ C 06/26 06/29 0.045│ToDo│EditView::drawKeisen(), drawKeisenXXX() 追加
-0825 ● C 06/26            │問題│未保存文書がある時に、終了しようとした場合の確認ダイアログで Esc を押した場合は、終了を中止した方がよい？、
+0825 ◎ A 06/26 07/06 0.046│問題│未保存文書がある時に、終了しようとした場合の確認ダイアログで Esc を押した場合は、終了を中止した方がよい？、
+									メモ：MainWindow::closeEvent() は中断しているのに、終了してしまう
 0825 ◎ C 06/29 06/29 0.045│ToDo│EditView::doKeisenXXX() は削除し、drawKeisenXXX() をコール
 0825 ○ C 06/29 06/29      │問題│罫線モードで Ctrl + → 押下しても、drawKeisenRight() がコールされない
 0825 ● C 06/30            │問題│zenCodingUser.txt が効かない？
@@ -875,6 +876,6 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0825 ● C 07/02            │ToDo│EditView::viewLineOffsetToClmn(vln, offset) 追加（カラム：0 org.）
 0825 ◎ C 07/06 07/06 0.045│ToDo│MainWindow::writeSettings() 追加
 0825 ◎ C 07/06 07/06 0.045│ToDo│MainWindow::readSettings() 追加
-0825 ● C 07/06            │ToDo│
+0825 ● C 07/06            │問題│for( の直後で構文補完を行うと for((... と ( が２つになってしまう
 0825 ● C 07/06            │ToDo│
 0825 ● C 07/06            │ToDo│

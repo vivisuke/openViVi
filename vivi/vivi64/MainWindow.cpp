@@ -866,8 +866,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
 	qDebug() << "closeEvent()";
 	//
-	if( !checkUnSaved() )
+	if( !checkUnSaved() ) {
+		event->ignore();
 		return;		//	クローズキャンセル
+	}
 	writeSettings();
 	//
 	QMainWindow::closeEvent(event);
