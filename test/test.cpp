@@ -3,6 +3,8 @@ main()
 {
 	for
 	return 0;
+	return;
+	zyx
 }
 hoge )
 if( ) {

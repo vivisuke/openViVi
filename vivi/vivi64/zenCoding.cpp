@@ -610,11 +610,20 @@ bool EditView::zenCodingFromFile(const QString &indent,
 		}
 	}
 #if	_DEBUG
-	fileName = "G:/bin/sse64/zenCoding.txt";
+	QString dir = "G:/src/VS2019/openViVi/dist";
 #else
-	fileName = qApp->applicationDirPath() + "/zenCoding.txt";
+	QString dir = qApp->applicationDirPath();
+	//fileName = qApp->applicationDirPath() + "/zenCoding.txt";
+	//if( !zenCodingFromFile(fileName, indent, keyText, pos) ) return false;
+	//fileName = qApp->applicationDirPath() + "/zenCodingUser.txt";
+	//return zenCodingFromFile(fileName, indent, keyText, pos);
 #endif
+	fileName = dir + "/zenCodingUser.txt";
+	if( zenCodingFromFile(fileName, indent, keyText, pos) ) return true;
+	fileName = dir + "/zenCoding.txt";
 	return zenCodingFromFile(fileName, indent, keyText, pos);
+	//bool b2 = zenCodingFromFile(fileName, indent, keyText, pos);
+	//return b1 || b2;
 }
 bool EditView::zenCodingFromFile(const QString &fileName,
 													const QString &indent,

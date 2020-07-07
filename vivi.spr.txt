@@ -869,13 +869,23 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0824 ◎ C 06/26 06/29 0.045│ToDo│EditView::drawKeisen(), drawKeisenXXX() 追加
 0825 ◎ A 06/26 07/06 0.046│問題│未保存文書がある時に、終了しようとした場合の確認ダイアログで Esc を押した場合は、終了を中止した方がよい？、
 									メモ：MainWindow::closeEvent() は中断しているのに、終了してしまう
-0825 ◎ C 06/29 06/29 0.045│ToDo│EditView::doKeisenXXX() は削除し、drawKeisenXXX() をコール
-0825 ○ C 06/29 06/29      │問題│罫線モードで Ctrl + → 押下しても、drawKeisenRight() がコールされない
-0825 ● C 06/30            │問題│zenCodingUser.txt が効かない？
-0825 ◎ C 07/01 07/01 0.045│ToDo│罫線モードON/OFF時：ステータスバーに状態表示した方がよい（ツールバー非表示の場合向け）
-0825 ● C 07/02            │ToDo│EditView::viewLineOffsetToClmn(vln, offset) 追加（カラム：0 org.）
-0825 ◎ C 07/06 07/06 0.045│ToDo│MainWindow::writeSettings() 追加
-0825 ◎ C 07/06 07/06 0.045│ToDo│MainWindow::readSettings() 追加
-0825 ● C 07/06            │問題│for( の直後で構文補完を行うと for((... と ( が２つになってしまう
-0825 ● C 07/06            │ToDo│
-0825 ● C 07/06            │ToDo│
+0826 ◎ C 06/29 06/29 0.045│ToDo│EditView::doKeisenXXX() は削除し、drawKeisenXXX() をコール
+0827 ○ C 06/29 06/29      │問題│罫線モードで Ctrl + → 押下しても、drawKeisenRight() がコールされない
+0828 ◎ C 06/30 07/07 0.046│問題│zenCodingUser.txt が効かない？
+0829 ◎ C 07/01 07/01 0.045│ToDo│罫線モードON/OFF時：ステータスバーに状態表示した方がよい（ツールバー非表示の場合向け）
+0830 ● C 07/02            │ToDo│EditView::viewLineOffsetToClmn(vln, offset) 追加（カラム：0 org.）
+0831 ◎ C 07/06 07/06 0.045│ToDo│MainWindow::writeSettings() 追加
+0832 ◎ C 07/06 07/06 0.045│ToDo│MainWindow::readSettings() 追加
+0833 ● C 07/06            │問題│for( の直後で構文補完を行うと for((... と ( が２つになってしまう
+0834 ● C 07/07            │問題│アプリ終了・再起動でウィンドウサイズが保存・復帰されない
+0835 ● C 07/07            │ToDo│
+0836 ● C 07/07            │ToDo│
+0837 ● C 07/07            │ToDo│
+0838 ● C 07/07            │ToDo│
+0839 ● C 07/07            │ToDo│
+0840 ● C 07/07            │ToDo│
+0841 ● C 07/07            │ToDo│
+0842 ● C 07/07            │ToDo│
+0843 ● C 07/07            │ToDo│
+0844 ● C 07/07            │ToDo│
+0845 ● C 07/07            │ToDo│
