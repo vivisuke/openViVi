@@ -830,7 +830,8 @@ int Buffer::prevEditedPos()
 }
 bool Buffer::startsWith(pos_t pos, cwchar_t *pat) const
 {
-	while( *pat != '\0' ) {
+	//if (pos >= size()) return false;
+	while( *pat != '\0' && pos < size() ) {
 		if( operator[](pos++) != *pat++ )
 			return false;
 	}

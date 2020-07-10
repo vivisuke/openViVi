@@ -138,7 +138,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//globSettings()->readSettings();
 	//
     QSettings settings;
-#ifdef	_DEBUG
+#if	0	//def	_DEBUG
 #else
     bool bMax = false;
     QString key = KEY_MAINWIN_MAX + QString("-%1").arg(g_mainWindows.size());
@@ -849,7 +849,7 @@ void MainWindow::writeSettings()
     settings.setValue(key, lst);
     //
     //	ウィンドウジオメトリ保存
-#ifdef	_DEBUG
+#if	0	//def	_DEBUG
 #else
     auto geo = geometry();
     key = KEY_MAINWIN_RECT + QString("-%1").arg(g_mainWindows.size());
