@@ -994,9 +994,10 @@ void EditView::inputMethodEvent(QInputMethodEvent * event)
 	if( !m_preeditString.isEmpty() ) {		//	■ 変換候補ありの場合
 		qDebug() << "  start = " << event->replacementStart () <<
 					", len = " << event->replacementLength ();
-		qDebug() << "  insertText " << m_preeditString;
+		qDebug() << "  preeditString " << m_preeditString;
 		if( m_textCursor->hasSelection() )
 			m_textCursor->deleteChar();
+		resetCursorBlinking();
 		update();
 	}
 	QWidget::inputMethodEvent( event );
@@ -1013,6 +1014,7 @@ void EditView::paintEvent(QPaintEvent *event)
 	const auto descent = fm.descent();
 	qDebug() << "descent = " << descent;
 #endif
+	m_preeditWidth = fm.width(m_preeditString);
 	//qDebug() << "lineCount = " << buffer()->lineCount();
 	QPainter pt(this);
 	//QPainter pt2(&m_textAreaPixmap);
@@ -1596,7 +1598,10 @@ void EditView::drawPreeditBG(QPainter&)
 #endif
 void EditView::paintPreeditString(QPainter&pt)
 {
-	if( m_preeditString.isEmpty() ) return;
+	if( m_preeditString.isEmpty() ) {
+		m_preeditWidth = 0;
+		return;
+	}
 	QFontMetrics fm(m_font);
 	pt.setOpacity(1.0);
 	pos_t pos = m_textCursor->position();
