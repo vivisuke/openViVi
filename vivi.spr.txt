@@ -886,8 +886,8 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0838 ◎ C 07/14 07/14 0.047│ToDo│Transform 文字変換 (X) メニュー追加
 0839 ◎ C 07/14 07/14 0.047│ToDo│Transform > TabToSpace メニュー追加
 0840 ◎ C 07/14 07/14 0.047│ToDo│Transform > SpaceToTab メニュー追加
-0841 ● C 07/15            │ToDo│Transform > TabToSpace 機能実装
+0841 ◎ C 07/15 07/15 0.047│ToDo│Transform > TabToSpace 機能実装
 0842 ◎ C 07/15 07/15 0.047│問題│2>> の後、. を実行すると1行しかシフトされない
-0843 ● C 07/15            │ToDo│
+0843 ◎ C 07/15 07/15 0.047│ToDo│convert.cpp 追加
 0844 ● C 07/15            │ToDo│
 0845 ● C 07/15            │ToDo│

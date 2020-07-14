@@ -157,6 +157,9 @@
     <ClCompile Include="keisen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="convert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">

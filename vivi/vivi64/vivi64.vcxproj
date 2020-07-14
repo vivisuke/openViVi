@@ -98,6 +98,7 @@
     <ClCompile Include="CommandLine.cpp" />
     <ClCompile Include="completion.cpp" />
     <ClCompile Include="CompletionWidget.cpp" />
+    <ClCompile Include="convert.cpp" />
     <ClCompile Include="CTabBar.cpp" />
     <ClCompile Include="CTabWidget.cpp" />
     <ClCompile Include="Document.cpp" />

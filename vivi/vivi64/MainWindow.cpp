@@ -1734,6 +1734,12 @@ void MainWindow::on_action_SelectAll_triggered()
 		view->selectAll();
 	}
 }
+void MainWindow::on_action_TabToSpace_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) )
+		view->convert_tabSpace();
+}
 void MainWindow::on_action_DynamicCompletion_triggered()
 {
 	EditView *view = currentWidget();
