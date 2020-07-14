@@ -120,6 +120,13 @@
      <addaction name="action_Decomment"/>
      <addaction name="action_BlockComment"/>
     </widget>
+    <widget class="QMenu" name="menuTransform_X">
+     <property name="title">
+      <string>Transform(&amp;X)</string>
+     </property>
+     <addaction name="action_TabToSpace"/>
+     <addaction name="action_SpaceToTab"/>
+    </widget>
     <addaction name="action_Undo"/>
     <addaction name="action_Redo"/>
     <addaction name="separator"/>
@@ -129,6 +136,7 @@
     <addaction name="menu_ExtendedCopy"/>
     <addaction name="action_SelectAll"/>
     <addaction name="separator"/>
+    <addaction name="menuTransform_X"/>
     <addaction name="action_DynamicCompletion"/>
     <addaction name="action_ZenCoding"/>
     <addaction name="menuExtendedEdit_1"/>
@@ -795,6 +803,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="action_TabToSpace">
+   <property name="text">
+    <string>TabTo&amp;Space</string>
+   </property>
+  </action>
+  <action name="action_SpaceToTab">
+   <property name="text">
+    <string>SpaceTo&amp;Tab</string>
    </property>
   </action>
  </widget>
