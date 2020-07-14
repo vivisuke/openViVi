@@ -1437,6 +1437,7 @@ bool MainWindow::doSaveAs(EditView *view)
 											filter.join(";;"),
 											selptr);
 	if( fileName.isEmpty() ) return false;
+	removeFromOutlineBar(view);
 	QString ext = getExtension(fileName);
 	if( !ext.isEmpty() && ext != ext0 ) {
 		TypeSettings *typeSettings = g_settingsMgr.typeSettingsForExt(ext);
@@ -1450,6 +1451,7 @@ bool MainWindow::doSaveAs(EditView *view)
 	addToRecentFileList(fileName);
 	updateRecentFileActions();
 	updateTabText(view);
+	addToOutlineBar(view);
 	return true;
 }
 bool MainWindow::maybeSave()

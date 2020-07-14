@@ -120,6 +120,10 @@ void Document::setTypeSettings(TypeSettings* typeSettings)
 void Document::setPathName(const QString &pathName)
 {
 	m_fullPathName = pathName;
+	if( !pathName.isEmpty() ) {
+		QFileInfo info(pathName);
+		setTitle(info.fileName());
+	}
 }
 void Document::setTitle(const QString &title)
 {
