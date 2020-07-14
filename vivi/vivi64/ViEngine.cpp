@@ -311,6 +311,7 @@ void ViEngine::viCommand(wchar_t ch, bool hasSelection)
 		case '>':
 			m_editCmd = true;
 			if( hasSelection || m_subMode == '>' ) {
+				m_redoCmd = ">";
 				m_cmd = ViCmd::SHIFT_RIGHT;
 				break;
 			} else {
@@ -322,6 +323,7 @@ void ViEngine::viCommand(wchar_t ch, bool hasSelection)
 		case '<':
 			m_editCmd = true;
 			if( hasSelection || m_subMode == '<' ) {
+				m_redoCmd = "<";
 				m_cmd = ViCmd::SHIFT_LEFT;
 				break;
 			} else {
@@ -664,6 +666,10 @@ void ViEngine::processSubMode(wchar_t ch)
 	if (m_subMode == '>') {
 		switch (ch) {
 		case '>':
+			if (!m_redoing) {
+				m_lastRepeatCount = repeatCount();
+				m_redoCmd = ">>";
+			}
 			m_cmd = ViCmd::SHIFT_RIGHT;
 			doCmd();
 			return;
@@ -675,6 +681,10 @@ void ViEngine::processSubMode(wchar_t ch)
 	if (m_subMode == '<') {
 		switch (ch) {
 		case '<':
+			if (!m_redoing) {
+				m_lastRepeatCount = repeatCount();
+				m_redoCmd = "<<";
+			}
 			m_cmd = ViCmd::SHIFT_LEFT;
 			doCmd();
 			return;
