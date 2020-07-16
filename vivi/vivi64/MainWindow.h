@@ -68,6 +68,7 @@ public:
 	SSSearch	&sssrc() { return *m_sssrc; }
 	SSSearch	&sssrc2() { return *m_sssrc2; }		//	カーソル位置単語検索用
 	int		newLineType() const;
+	QString	newLineText() const;
 	uint	getSearchOpt(bool vi = false) const;
 	bool	isBoxSelectMode() const;	// { return ui.action_BoxSelect->isChecked(); }
 	bool	isKeisenMode() const;		// { return ui.action_Keisen->isChecked(); }

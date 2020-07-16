@@ -528,6 +528,15 @@ int MainWindow::newLineType() const
 {
 	return m_newLineCodeCB->currentIndex();
 }
+QString MainWindow::newLineText() const
+{
+	switch( m_newLineCodeCB->currentIndex() ) {
+	default:
+	case NEWLINE_CRLF:	return "\r\n";
+	case NEWLINE_LF:	return "\n";
+	case NEWLINE_CR:	return "\r";
+	}
+}
 void MainWindow::showMessage(const QString &mess0, int timeout)
 {
 	QString mess = mess0;
