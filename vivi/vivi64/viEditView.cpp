@@ -138,7 +138,7 @@ void EditView::viYankLine()
 	if( !cur.hasSelection() ) return;
 	QString txt = cur.selectedText();
 	if( !txt.isEmpty() && txt.back() != '\n' && txt.back() != '\r' )
-		txt += "\n";		
+		txt += mainWindow()->newLineText();		
 	mainWindow()->viEngine()->setYankText(txt, true);
 	showMessage(tr("%1 lines, %2 characters are yanked.").arg(repCnt).arg(txt.size()));
 }
