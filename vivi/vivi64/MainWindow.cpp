@@ -138,6 +138,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//globSettings()->readSettings();
 	//
     QSettings settings;
+#if	0
 #if	0	//def	_DEBUG
 #else
     bool bMax = false;
@@ -153,6 +154,7 @@ MainWindow::MainWindow(QWidget *parent)
 	    	setGeometry(rct);
 	    }
     }
+#endif
 #endif
 	
 	m_viEngine = new ViEngine();
@@ -828,7 +830,23 @@ void MainWindow::readSettings()
 {
 	QSettings settings;
 	restoreGeometry(settings.value("geometry").toByteArray());
-	restoreState(settings.value("windowState").toByteArray());
+	restoreState(settings.value("windowState").toByteArray());		//	toolbars and dockwidgets
+#if	0	//def	_DEBUG
+#else
+    bool bMax = false;
+    QString key = KEY_MAINWIN_MAX + QString("-%1").arg(g_mainWindows.size());
+    if( settings.contains(key) ) {
+    	if( (bMax = settings.value(key).toBool()) )
+    		setWindowState(windowState() ^ Qt::WindowMaximized);
+    }
+    if( !bMax ) {
+	    key = KEY_MAINWIN_RECT + QString("-%1").arg(g_mainWindows.size());
+	    if( settings.contains(key) ) {
+	    	QRect rct = settings.value(key).toRect();
+	    	setGeometry(rct);
+	    }
+    }
+#endif
 	m_grepDirHist = settings.value("grepDirHist", QStringList()).toStringList();
 	m_exCmdHist = settings.value("exCmdHistHist", QStringList()).toStringList();
 	globSettings()->readSettings();
@@ -837,7 +855,7 @@ void MainWindow::writeSettings()
 {
     QSettings settings;
 	settings.setValue("geometry", saveGeometry());
-	settings.setValue("windowState", saveState());
+	settings.setValue("windowState", saveState());		//	toolbars and dockwidgets
 	settings.setValue("grepDirHist", m_grepDirHist);
 	settings.setValue("exCmdHist", m_exCmdHist);
 	//
