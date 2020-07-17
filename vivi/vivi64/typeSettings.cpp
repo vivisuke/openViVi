@@ -359,6 +359,36 @@ struct KeyTextItem keyTextTableJS[] = {
 	{"ShortTextSel9",	L""},
 	{0, false}
 };
+struct KeyTextItem keyTextTableTS[] = {
+	{"FontName",	L"Courier New"},
+	{"LineComment",	L"//"},
+	{"BlockCommentBeg",	L"/*"},
+	{"BlockCommentEnd",	L"*/"},
+	{"KeyWord1File",	L"TypeScript.txt"},
+	{"KeyWord2File",	L""},
+	{"KeyWord3File",	L""},
+	{"ShortText0",		L""},
+	{"ShortText1",		L""},
+	{"ShortText2",		L""},
+	{"ShortText3",		L""},
+	{"ShortText4",		L""},
+	{"ShortText5",		L""},
+	{"ShortText6",		L""},
+	{"ShortText7",		L""},
+	{"ShortText8",		L""},
+	{"ShortText9",		L""},
+	{"ShortTextSel0",	L""},
+	{"ShortTextSel1",	L""},
+	{"ShortTextSel2",	L""},
+	{"ShortTextSel3",	L""},
+	{"ShortTextSel4",	L""},
+	{"ShortTextSel5",	L""},
+	{"ShortTextSel6",	L""},
+	{"ShortTextSel7",	L""},
+	{"ShortTextSel8",	L""},
+	{"ShortTextSel9",	L""},
+	{0, false}
+};
 struct KeyTextItem keyTextTableHLSL[] = {
 	{"FontName",	L"Courier New"},
 	{"LineComment",	L"//"},
@@ -616,6 +646,8 @@ const KeyTextItem *tableForType(const QString &typeName)
 		return keyTextTableJAVA;
 	else if( typeName == "JS" )
 		return keyTextTableJS;
+	else if( typeName == "TS" )
+		return keyTextTableTS;
 	else if( typeName == "PERL" )
 		return keyTextTablePERL;
 	else if( typeName == "PASCAL" )

@@ -15,7 +15,7 @@ GlobalStgDlg::GlobalStgDlg(GlobalSettings *globSettings, QWidget *parent)
 	ui.withBOM->setChecked(m_globSettings->boolValue(GlobalSettings::WITH_BOM));
 	lst.clear();
 	lst << "Default" << "CPP" << "C#" << "CSS" << "F#" << "HLSL" << "HTML"
-			<< "JAVA" << "JS" << "LOG" << "MARKDN" << "PASCAL" << "PERL" << "PHP"
+			<< "JAVA" << "JS" << "TS" << "LOG" << "MARKDN" << "PASCAL" << "PERL" << "PHP"
 			<< "PYTHON" << "RUBY" << "SQL" << "TXT";
 	ui.docTypeCB->addItems(lst);
 	ui.docTypeCB->setCurrentIndex(m_globSettings->enumValue(GlobalSettings::DOC_TYPE));
