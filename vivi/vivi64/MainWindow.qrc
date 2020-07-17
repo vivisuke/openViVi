@@ -49,5 +49,6 @@
         <file>Resources/folder_black.png</file>
         <file>Resources/crop_portrait_gray.png</file>
         <file>Resources/JAVA.png</file>
+        <file>Resources/TS.png</file>
     </qresource>
 </RCC>

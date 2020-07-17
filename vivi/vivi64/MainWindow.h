@@ -412,6 +412,7 @@ private:
 	QIcon	*m_iconHTML;
 	QIcon	*m_iconJAVA;
 	QIcon	*m_iconJS;			//	JavaScript
+	QIcon	*m_iconTS;			//	TypeScript
 	QIcon	*m_iconPASCAL;
 	QIcon	*m_iconPERL;
 	QIcon	*m_iconPHP;

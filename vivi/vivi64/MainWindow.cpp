@@ -432,6 +432,8 @@ void MainWindow::setIcon(const QString &fileName, QAction *action)
     	action->setIcon(*m_iconJAVA);
     else if( typeName == "JS" )
     	action->setIcon(*m_iconJS);
+    else if( typeName == "TS" )
+    	action->setIcon(*m_iconTS);
     else if( typeName == "PASCAL" )
     	action->setIcon(*m_iconPASCAL);
     else if( typeName == "PERL" )
@@ -462,6 +464,7 @@ void MainWindow::setupIcons()
 	m_iconHTML = new QIcon(":/MainWindow/Resources/HTML.png");
 	m_iconJAVA = new QIcon(":/MainWindow/Resources/JAVA.png");
 	m_iconJS = new QIcon(":/MainWindow/Resources/JS.png");
+	m_iconTS = new QIcon(":/MainWindow/Resources/TS.png");
 	m_iconLOG = new QIcon(":/MainWindow/Resources/LOG.png");
 	m_iconPASCAL = new QIcon(":/MainWindow/Resources/PASCAL.png");
 	m_iconPERL = new QIcon(":/MainWindow/Resources/PERL.png");
@@ -502,6 +505,7 @@ void MainWindow::setupStatusBar()
 	m_typeCB->addItem(*m_iconHTML, "HTML");
 	m_typeCB->addItem(*m_iconJAVA, "JAVA");
 	m_typeCB->addItem(*m_iconJS, "JS");
+	m_typeCB->addItem(*m_iconTS, "TS");
 	m_typeCB->addItem(*m_iconLOG, "LOG");
 	m_typeCB->addItem(*m_iconMARKDN, "MARKDN");
 	m_typeCB->addItem(*m_iconPASCAL, "PASCAL");
@@ -1206,6 +1210,8 @@ QIcon *MainWindow::typeNameToIcon(const QString& typeName)
     	return m_iconJAVA;
     else if( typeName == "JS" )
     	return m_iconJS;
+    else if( typeName == "TS" )
+    	return m_iconTS;
     else if( typeName == "PASCAL" )
     	return m_iconPASCAL;
     else if( typeName == "PERL" )
