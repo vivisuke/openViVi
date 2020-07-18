@@ -37,6 +37,7 @@ TypeSettings *SettingsMgr::typeSettings(int type)
 		case GlobalSettings::DOC_TYPE_HTML:	typeName = "HTML";	break;
 		case GlobalSettings::DOC_TYPE_JAVA:	typeName = "JAVA";	break;
 		case GlobalSettings::DOC_TYPE_JS:	typeName = "JS";	break;
+		case GlobalSettings::DOC_TYPE_TS:	typeName = "TS";	break;
 		case GlobalSettings::DOC_TYPE_LOG:	typeName = "LOG";	break;
 		case GlobalSettings::DOC_TYPE_MARKDOWN:	typeName = "MARKDN";	break;
 		case GlobalSettings::DOC_TYPE_PASCAL:	typeName = "PASCAL";	break;
@@ -59,6 +60,7 @@ int SettingsMgr::typeNameToType(const QString &name) const
 	if( name == "HTML" ) return GlobalSettings::DOC_TYPE_HTML;
 	if( name == "JAVA") return GlobalSettings::DOC_TYPE_JAVA;
 	if( name == "JS" ) return GlobalSettings::DOC_TYPE_JS;
+	if( name == "TS" ) return GlobalSettings::DOC_TYPE_TS;
 	if( name == "LOG") return GlobalSettings::DOC_TYPE_LOG;
 	if( name == "MARKDN") return GlobalSettings::DOC_TYPE_MARKDOWN;
 	if( name == "PASCAL") return GlobalSettings::DOC_TYPE_PASCAL;
@@ -81,6 +83,7 @@ QString SettingsMgr::defaultExt(int type)
 		case GlobalSettings::DOC_TYPE_HTML:	return"html";
 		case GlobalSettings::DOC_TYPE_JAVA:	return"java";
 		case GlobalSettings::DOC_TYPE_JS:	return"js";
+		case GlobalSettings::DOC_TYPE_TS:	return"ts";
 		case GlobalSettings::DOC_TYPE_LOG:	return"log";
 		case GlobalSettings::DOC_TYPE_MARKDOWN:	return"md";
 		case GlobalSettings::DOC_TYPE_PASCAL:	return"pas";
@@ -130,6 +133,7 @@ void SettingsMgr::readSettings()
 			<< "CSS = css"
 			<< "MARKDN = md"
 			<< "JS = js"
+			<< "TS = ts"
 			<< "JAVA = java"
 			<< "PASCAL = pas,inc,int"
 			<< "PERL = cgi,pl,pm,t"
