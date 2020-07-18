@@ -36,7 +36,7 @@ GrepDlg::GrepDlg(GlobalSettings *globSettings, const QStringList &grepDirHist, i
     			<< "*.cgi;*.pm;*.pl;*.t"				//	6
     			<< "*.py"								//	7
     			<< "*.html;*.htm;*.php,*phtml"	//	8
-    			<< "*.js"								//	9
+    			<< "*.js;*.ts"								//	9
     			<< "*.css"								//	10
     			<< "*.fs,*fsi,*fsx,*fsscript,*ml,*mli"	//	11
     			<< "*.log"								//	12
@@ -76,7 +76,7 @@ void GrepDlg::setTypeName(const QString &typeName)
 		ui.extensions->setCurrentIndex(7);
 	else if( typeName == "HTML" || typeName == "PHP" )
 		ui.extensions->setCurrentIndex(8);
-	else if( typeName == "JS" )
+	else if( typeName == "JS" || typeName == "TS" )
 		ui.extensions->setCurrentIndex(9);
 	else if( typeName == "CSS" )
 		ui.extensions->setCurrentIndex(10);
