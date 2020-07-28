@@ -423,7 +423,7 @@ void EditView::doViCommand()		//	viEngine が保有する vi コマンドを実�
 			break;
 		case ViCmd::DELETE_CHAR:
 			if( !m_textCursor->hasSelection() )
-				m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR, repCnt, /*vi:*/true);
+				m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR, repCnt, /*vi:*/false);
 			if( m_textCursor->hasSelection() ) {
 				//if( mainWindow()->viEngine()->cdy() != 'c' )
 				//	openUndoBlock();
