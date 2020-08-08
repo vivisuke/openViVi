@@ -1633,6 +1633,7 @@ void MainWindow::tabCurrentChanged(int index)
 	//
 	auto* ts = doc->typeSettings();
 	ui.action_LineNumber->setChecked(ts->boolValue(TypeSettings::VIEW_LINENUM));
+	ui.action_LineBreakWinWidth->setChecked(view->typeSettings()->boolValue(TypeSettings::LINE_BREAK_WIN_WIDTH));
 	//
 	updateWindowTitle();
 	//
@@ -2064,7 +2065,7 @@ void MainWindow::typesettingsChanged(EditView *view)
 {
 	view->typeSettings()->writeSettings();
 	view->typeSettings()->loadKeyWords();
-#if 0	//##
+#if 1	//##
 	const bool b = view->typeSettings()->boolValue(TypeSettings::VIEW_LINENUM);
 	ui.action_LineNumber->setChecked(b);
 	onViewLineNumberChanged(view->typeName(), b);
@@ -2075,7 +2076,7 @@ void MainWindow::typesettingsChanged(EditView *view)
 		EditView *ptr = nthWidget(i);
 		if( isEditView(ptr) && ptr->typeName() == view->typeName() ) {
 			ptr->updateFont();
-			view->document()->buildWholeMap();
+			view->document()->buildMinMap();
 		}
 	}
 #endif
@@ -2177,6 +2178,15 @@ void MainWindow::onViewLineNumberChanged(const QString &typeName, bool b)
 		EditView *view = nthWidget(i);
 		if( isEditView(view) && view->typeName() == typeName )
 			view->setLineNumberVisible(b);
+	}
+}
+void MainWindow::on_action_LineBreakWinWidth_triggered()
+{
+	bool b = ui.action_LineBreakWinWidth->isChecked();
+	EditView *view = currentWidget();
+	if( isEditView(view) ) {
+		view->typeSettings()->setBoolValue(TypeSettings::LINE_BREAK_WIN_WIDTH, b);
+		view->setLineBreak(b);
 	}
 }
 int MainWindow::isOpened(const QString& pathName) const		//	既にオープンされていれば、MDITabs インデックスを返す、-1 for not opened

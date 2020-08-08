@@ -250,6 +250,7 @@ private slots:
 	void	on_action_TagsJump_triggered();
 	void	on_action_AssociatedParen_triggered();
 	void	on_action_LineNumber_triggered();
+	void	on_action_LineBreakWinWidth_triggered();
 	void	on_action_BoxSelect_triggered();
 	void	on_action_KeisenMode_triggered();
 	void	on_action_TypeSettings_triggered();

@@ -1,9 +1,9 @@
-//----------------------------------------------------------------------
+ï»¿//----------------------------------------------------------------------
 //
 //			File:			"gap_buffer.h"
 //			Created:		10-Jun-2013
-//			Author:			’Ã“cLG
-//			Description:	“r’†‚ÉƒMƒƒƒbƒv‚ğ‚Âƒf[ƒ^\‘¢AƒeƒLƒXƒgƒf[ƒ^ŠÇ—‚ÌÅ‰º‘wƒNƒ‰ƒX
+//			Author:			æ´¥ç”°ä¼¸ç§€
+//			Description:	é€”ä¸­ã«ã‚®ãƒ£ãƒƒãƒ—ã‚’æŒã¤ãƒ‡ãƒ¼ã‚¿æ§‹é€ ã€ãƒ†ã‚­ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿ç®¡ç†ã®æœ€ä¸‹å±¤ã‚¯ãƒ©ã‚¹
 //
 //----------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ typedef const char cchar;
 //typedef unsigned int uint;
 //typedef size_t index_t;
 
-//	ƒCƒ“ƒfƒbƒNƒXAƒTƒCƒY‚ÌŒ^‚Í•„†•t‚« int 
+//	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã€ã‚µã‚¤ã‚ºã®å‹ã¯ç¬¦å·ä»˜ã int 
 
 template<typename Type>
 class gap_buffer
@@ -49,15 +49,15 @@ public:
 #ifdef		_WIN64
 	typedef __int64 size_type;
 	typedef __int64 ssize_t;
-	typedef __int64 difference_type;	//	ƒMƒƒƒbƒv‚ª–³‚¢‚Æ‚İ‚È‚µ‚½ê‡‚ÌƒCƒ“ƒfƒbƒNƒX·
-	typedef __int64 index_type;			//	ƒoƒbƒtƒ@ƒCƒ“ƒfƒbƒNƒX [0, size()]
-	typedef __int64 pos_t;					//	ƒoƒbƒtƒ@ƒCƒ“ƒfƒbƒNƒX [0, size()]
+	typedef __int64 difference_type;	//	ã‚®ãƒ£ãƒƒãƒ—ãŒç„¡ã„ã¨ã¿ãªã—ãŸå ´åˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å·®
+	typedef __int64 index_type;			//	ãƒãƒƒãƒ•ã‚¡ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ [0, size()]
+	typedef __int64 pos_t;					//	ãƒãƒƒãƒ•ã‚¡ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ [0, size()]
 #else
 	typedef __int32 size_type;
 	typedef __int32 ssize_t;
-	typedef __int32 difference_type;	//	ƒMƒƒƒbƒv‚ª–³‚¢‚Æ‚İ‚È‚µ‚½ê‡‚ÌƒCƒ“ƒfƒbƒNƒX·
-	typedef __int32 index_type;			//	ƒoƒbƒtƒ@ƒCƒ“ƒfƒbƒNƒX [0, size()]
-	typedef __int32 pos_t;					//	ƒoƒbƒtƒ@ƒCƒ“ƒfƒbƒNƒX [0, size()]
+	typedef __int32 difference_type;	//	ã‚®ãƒ£ãƒƒãƒ—ãŒç„¡ã„ã¨ã¿ãªã—ãŸå ´åˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å·®
+	typedef __int32 index_type;			//	ãƒãƒƒãƒ•ã‚¡ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ [0, size()]
+	typedef __int32 pos_t;					//	ãƒãƒƒãƒ•ã‚¡ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ [0, size()]
 #endif
 	typedef Type& reference;
 	typedef const Type& const_reference;
@@ -100,13 +100,13 @@ public:
 	pos_t gapIndex() const { return m_gapIndex; }
 	void setGapIndex(pos_t gapIndex) const { move_gap(gapIndex); }
 	ssize_t gapSize() const { return m_gapSize; }
-	value_type operator[](pos_t ix) const {	//	operator[] ‚Í”ÍˆÍƒ`ƒFƒbƒN‚ğs‚í‚È‚¢
+	value_type operator[](pos_t ix) const {	//	operator[] ã¯ç¯„å›²ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã‚ãªã„
 		assert( ix >= 0 && ix < size() );
 		if( ix >= m_gapIndex ) ix += m_gapSize;
 		return m_data[ix];
 		//return at(ix);
 	}
-	value_type &operator[](pos_t ix) {	//	operator[] ‚Í”ÍˆÍƒ`ƒFƒbƒN‚ğs‚í‚È‚¢
+	value_type &operator[](pos_t ix) {	//	operator[] ã¯ç¯„å›²ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã‚ãªã„
 		assert( ix >= 0 && ix < size() );
 		if( ix >= m_gapIndex ) ix += m_gapSize;
 		return m_data[ix];
@@ -115,7 +115,7 @@ public:
 	value_type at(pos_t ix) const
 	{
 		if( ix < 0 || ix >= size() ) {
-			//	done: out_of_range —áŠOƒXƒ[
+			//	done: out_of_range ä¾‹å¤–ã‚¹ãƒ­ãƒ¼
 			throw out_of_range("gap_buffer: out of range");
 			//throw (cchar*)"gap_buffer: out of range";
 			//return value_type();
@@ -126,7 +126,7 @@ public:
 	value_type& at(pos_t ix)
 	{
 		if( ix < 0 || ix >= size() ) {
-			//	done: out_of_range —áŠOƒXƒ[
+			//	done: out_of_range ä¾‹å¤–ã‚¹ãƒ­ãƒ¼
 			throw out_of_range("gap_buffer: out of range");
 			//throw (cchar*)"gap_buffer: out of range";
 			//static value_type t;
@@ -149,7 +149,7 @@ public:
 		else
 			return m_data + ix;
 	}
-	size_type get_data(pos_t ix, pointer buf, int bufSize) const		//	[ix, ix+bufSize) ‚ğ buf ‚ÉƒRƒs[
+	size_type get_data(pos_t ix, pointer buf, int bufSize) const		//	[ix, ix+bufSize) ã‚’ buf ã«ã‚³ãƒ”ãƒ¼
 	{
 		//Q_ASSERT( bufSize > 0 );
 		if( bufSize <= 0 ) return 0;
@@ -157,7 +157,7 @@ public:
 		if( bufSize > size() - ix ) bufSize = size() - ix;
 		ssize_t copiedSize = 0;
 		if( ix < m_gapIndex ) {
-			if( ix + bufSize <= m_gapIndex ) {	//	ƒf[ƒ^‚ª‘O”¼•”‚É‘S‚Ä‚ ‚éê‡
+			if( ix + bufSize <= m_gapIndex ) {	//	ãƒ‡ãƒ¼ã‚¿ãŒå‰åŠéƒ¨ã«å…¨ã¦ã‚ã‚‹å ´åˆ
 				memcpy((void *)buf, (void *)(m_data + ix), bufSize*sizeof(value_type));
 				return bufSize;
 			}
@@ -230,12 +230,12 @@ public:
 	}
 	value_type& front()
 	{
-		//	undone: ƒf[ƒ^‚ª–³‚¢ê‡‘Î‰
+		//	undone: ãƒ‡ãƒ¼ã‚¿ãŒç„¡ã„å ´åˆå¯¾å¿œ
 		return m_data[0];
 	}
 	value_type& back()
 	{
-		//	undone: ƒf[ƒ^‚ª–³‚¢ê‡‘Î‰
+		//	undone: ãƒ‡ãƒ¼ã‚¿ãŒç„¡ã„å ´åˆå¯¾å¿œ
 		//return m_data[m_size - 1];
 		return ref(m_size - 1);
 	}
@@ -252,13 +252,13 @@ public:
 			return;
 		size_type s = size();
 		if( sz == s ) return;
-		if( sz < s ) {			//	Œ»ƒTƒCƒY‚ª sz ‚æ‚è¬‚³‚¢ê‡
-			move_gap(size());		//	ƒMƒƒƒbƒv‚ğ––”ö‚ÉˆÚ“®
+		if( sz < s ) {			//	ç¾ã‚µã‚¤ã‚ºãŒ sz ã‚ˆã‚Šå°ã•ã„å ´åˆ
+			move_gap(size());		//	ã‚®ãƒ£ãƒƒãƒ—ã‚’æœ«å°¾ã«ç§»å‹•
 			m_gapIndex -= s - sz; 
 			m_gapSize += s - sz;
 			m_size = sz;
 		} else {
-			move_gap(s);		//	ƒMƒƒƒbƒv‚ğÅŒã‚ÉˆÚ“®
+			move_gap(s);		//	ã‚®ãƒ£ãƒƒãƒ—ã‚’æœ€å¾Œã«ç§»å‹•
 			auto diff = sz - s;
 #if	1
 				pointer ptr = m_data + m_gapIndex;
@@ -286,7 +286,7 @@ public:
 	{
 		size_t cp = capacity();
 		if( sz <= cp ) return true;
-		const ssize_t cp0 = cp;		//	ˆÈ‘O‚ÌƒLƒƒƒpƒVƒeƒB
+		const ssize_t cp0 = cp;		//	ä»¥å‰ã®ã‚­ãƒ£ãƒ‘ã‚·ãƒ†ã‚£
 		if( !cp ) cp = DEFAULT_BUFFER_SIZE;
 		while( sz > cp )
 			cp += cp;
@@ -301,21 +301,21 @@ public:
 			//throw (cchar*)"gap_buffer: length error";
 			//return false;
 		}
-		if( !m_data ) {		//	ƒoƒbƒtƒ@‚ª‹ó‚¾‚Á‚½ê‡
+		if( !m_data ) {		//	ãƒãƒƒãƒ•ã‚¡ãŒç©ºã ã£ãŸå ´åˆ
 			m_data = data;
 			m_size = m_gapIndex = 0;
 			m_gapSize = cp;
 			return true;
 		}
-		//	ƒMƒƒƒbƒvˆÊ’u‚ğˆÛ‚µ‚Äƒf[ƒ^ƒRƒs[
+		//	ã‚®ãƒ£ãƒƒãƒ—ä½ç½®ã‚’ç¶­æŒã—ã¦ãƒ‡ãƒ¼ã‚¿ã‚³ãƒ”ãƒ¼
 		//
 		//       gap   gap+gapSize   size+gapSize
-		//       «    «            «
-		//	   ¡¡¡       
+		//       â†“    â†“            â†“
+		//	â–¡â–¡â–¡â– â– â– â–¡â–¡â–¡â–¡â–¡â–¡â–¡
 		//	
 		if( m_gapIndex != 0 )
 			memcpy((void *)data, (void *)m_data, m_gapIndex*sizeof(value_type));
-		ssize_t n = m_size - m_gapIndex;	//	ƒf[ƒ^Œã”¼•”•ªƒTƒCƒY
+		ssize_t n = m_size - m_gapIndex;	//	ãƒ‡ãƒ¼ã‚¿å¾ŒåŠéƒ¨åˆ†ã‚µã‚¤ã‚º
 		//Q_ASSERT( n >= 0 );
 		const ssize_t oldGS = m_gapSize;
 		m_gapSize += cp - cp0;
@@ -346,7 +346,7 @@ public:
 	void push_back(value_type v)
 	{
 		if (!reserve(size() + 1)) {
-			//	undone: —áŠO‚ğƒXƒ[H
+			//	undone: ä¾‹å¤–ã‚’ã‚¹ãƒ­ãƒ¼ï¼Ÿ
 			return;
 		}
 		move_gap(size());
@@ -472,25 +472,25 @@ private:
 		if( ix < 0 ) ix = 0;
 		else if( ix > size() ) ix = size();
 		if( ix < m_gapIndex ) {
-			//  ix < ƒMƒƒƒbƒvˆÊ’u ‚Ìê‡:
+			//  ix < ã‚®ãƒ£ãƒƒãƒ—ä½ç½® ã®å ´åˆ:
 			//
-			//	      ¡¡¡¡¡   
-			//        ª„            „ 
-			//        ix„¤„Ÿ„Ÿ„Ÿ„Ÿ„¢ „ 
-			//        «          « „ 
-			//	   ¡¡¡¡¡      
+			//	â–¡â–¡â–¡â–¡â–¡â–¡â– â– â– â– â– â–¡â–¡â–¡
+			//        â†‘â”‚           â”‚
+			//        ixâ””â”€â”€â”€â”€â” â”‚
+			//        â†“          â†“ â”‚
+			//	â–¡â–¡â–¡â– â– â– â– â– â–¡â–¡â–¡â–¡â–¡â–¡
 			move_data_backward(	ix + m_gapSize,		//	dst
 								ix,					//	src
 								m_gapIndex - ix);
 		} else {
 			//       gap   ix  gap + gap
-			//       «    «  «
-			//	   ¡¡¡¡¡      
-			//       „            „  „ 
-			//       „  „¡„Ÿ„Ÿ„Ÿ„Ÿ„£ „ 
-			//       „  «           „ 
-			//	      ¡¡¡¡¡   
-			//             ª
+			//       â†“    â†“  â†“
+			//	â–¡â–¡â–¡â– â– â– â– â– â–¡â–¡â–¡â–¡â–¡â–¡
+			//       â”‚           â”‚ â”‚
+			//       â”‚ â”Œâ”€â”€â”€â”€â”˜ â”‚
+			//       â”‚ â†“           â”‚
+			//	â–¡â–¡â–¡â–¡â–¡â–¡â– â– â– â– â– â–¡â–¡â–¡
+			//             â†‘
 			//             ix
 			move_data_forward(	m_gapIndex,				//	dst
 								m_gapIndex + m_gapSize,	//	src
@@ -500,23 +500,23 @@ private:
 	}
 
 private:
-	pointer		m_data;		//	ƒoƒbƒtƒ@æ“ªƒAƒhƒŒƒX
-	mutable size_type	m_gapIndex;	//	ƒMƒƒƒbƒvˆÊ’u
-	mutable size_type	m_gapSize;	//	ƒMƒƒƒbƒvƒTƒCƒY
-	size_type	m_size;		//	ƒf[ƒ^ƒg[ƒ^ƒ‹ƒTƒCƒY
-	//  «data  «gapIndex
-	//  „¡„Ÿ„Ÿ„Ÿ„¦„Ÿ„Ÿ„Ÿ„Ÿ„¦„Ÿ„Ÿ„Ÿ„Ÿ„¢
-	//	„       „ gapSize „         „ 
-	//  „¤„Ÿ„Ÿ„Ÿ„¨„Ÿ„Ÿ„Ÿ„Ÿ„¨„Ÿ„Ÿ„Ÿ„Ÿ„£
-	//   ©„Ÿ„Ÿ„Ÿ capacity „Ÿ„Ÿ„Ÿ„Ÿ¨
+	pointer		m_data;		//	ãƒãƒƒãƒ•ã‚¡å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹
+	mutable size_type	m_gapIndex;	//	ã‚®ãƒ£ãƒƒãƒ—ä½ç½®
+	mutable size_type	m_gapSize;	//	ã‚®ãƒ£ãƒƒãƒ—ã‚µã‚¤ã‚º
+	size_type	m_size;		//	ãƒ‡ãƒ¼ã‚¿ãƒˆãƒ¼ã‚¿ãƒ«ã‚µã‚¤ã‚º
+	//  â†“data  â†“gapIndex
+	//  â”Œâ”€â”€â”€â”¬â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”
+	//	â”‚      â”‚gapSize â”‚        â”‚
+	//  â””â”€â”€â”€â”´â”€â”€â”€â”€â”´â”€â”€â”€â”€â”˜
+	//   â†â”€â”€â”€ capacity â”€â”€â”€â”€â†’
 
-	//pointer	m_first;		//   «first   «gapBegi n   «gapEnd        «m_last
-	//pointer	m_gapBegin;		//„¡„Ÿ„Ÿ„Ÿ„Ÿ„¦„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„¦„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„¢  
-	//pointer	m_gapEnd;		//„   data  „     gap     „      data     „ 
-	//pointer	m_last;			//„¤„Ÿ„Ÿ„Ÿ„Ÿ„¨„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„¨„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„Ÿ„£
+	//pointer	m_first;		//   â†“first   â†“gapBegi n   â†“gapEnd        â†“m_last
+	//pointer	m_gapBegin;		//â”Œâ”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”  
+	//pointer	m_gapEnd;		//â”‚  data  â”‚    gap     â”‚     data     â”‚
+	//pointer	m_last;			//â””â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”˜
 
-	//std::vector<Type>	m_findString;		//	ŒŸõ•¶š—ñ
-	//int		m_skipTable[0x100];				//	ŒŸõƒXƒLƒbƒvƒe[ƒuƒ‹ for ‰ºˆÊƒoƒCƒg
+	//std::vector<Type>	m_findString;		//	æ¤œç´¢æ–‡å­—åˆ—
+	//int		m_skipTable[0x100];				//	æ¤œç´¢æ™‚ã‚¹ã‚­ãƒƒãƒ—ãƒ†ãƒ¼ãƒ–ãƒ« for ä¸‹ä½ãƒã‚¤ãƒˆ
 
 	friend class TestClass;
 };

@@ -153,6 +153,7 @@
      <addaction name="separator"/>
     </widget>
     <addaction name="action_LineNumber"/>
+    <addaction name="action_LineBreakWinWidth"/>
     <addaction name="menu_ColorTheme"/>
    </widget>
    <widget class="QMenu" name="menu_Window">
@@ -813,6 +814,14 @@
   <action name="action_SpaceToTab">
    <property name="text">
     <string>SpaceTo&amp;Tab</string>
+   </property>
+  </action>
+  <action name="action_LineBreakWinWidth">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>LineBreak&amp;WinWidth</string>
    </property>
   </action>
  </widget>

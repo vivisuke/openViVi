@@ -104,6 +104,7 @@ public:
 	void	clearLineFlags();
 	void	setModified(bool = true);
 	void	setLineNumberVisible(bool);
+	void	setLineBreak(bool b);
 	void	setPlainText(const QString&);
 	Document*	document() { return m_document; }
 	Buffer	*buffer() { return m_buffer; }

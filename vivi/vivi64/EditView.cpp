@@ -165,7 +165,7 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 EditView::~EditView()
 {
 	delete m_buffer;
-	//delete m_viewLineMgr;
+	delete m_viewLineMgr;
 }
 bool EditView::isKeisenMode() const
 {
@@ -497,6 +497,9 @@ void EditView::setLineNumberVisible(bool b)
 	m_lineNumberVisible = b;
 	updateLineNumberInfo();
 	update();
+}
+void EditView::setLineBreak(bool b)
+{
 }
 void EditView::resetCursorBlinking()
 {
@@ -1614,6 +1617,7 @@ void EditView::paintPreeditString(QPainter&pt)
 		return;		//	画面外の場合
 	int hv = 0;		//horizontalScrollBar()->value();
 	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth;
+	py -= m_scrollX0 * m_fontWidth;
 	int ht = fm.ascent();
 	//const auto descent = fm.descent();
 	m_preeditWidth = fm.width(m_preeditString);
