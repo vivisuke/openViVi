@@ -83,7 +83,8 @@ public:
 	int		viewLineToDocLine(int vln) const;
 	int		viewLineToDocLine(int vln, int &offset) const;
 	int		viewLineStartPosition(int vln) const;
-	const ViewLineMgr *viewLineMgr() const { return m_viewLineMgr; }
+	//const ViewLineMgr *viewLineMgr() const { return m_viewLineMgr; }
+	const ViewLineMgr *viewLineMgr() const { return &(*m_viewLineMgr); }
 	int		lineStartPosition(int ln) const;
 	int		fontHeight() const { return m_fontHeight; }
 	int		lineHeight() const { return m_lineHeight; }
@@ -99,7 +100,7 @@ public:
 
 public:
 	MainWindow	*mainWindow() { return m_mainWindow; }
-	ViewLineMgr *viewLineMgr() { return m_viewLineMgr; }
+	ViewLineMgr *viewLineMgr() { return &(*m_viewLineMgr); }
 	TextCursor*	textCursor() { return m_textCursor; }
 	void	clearLineFlags();
 	void	setModified(bool = true);
@@ -391,7 +392,8 @@ private:
 	TextCursor	*m_textCursor;
 	//TextCursor	*m_svTextCursor;
 	//
-	ViewLineMgr	*m_viewLineMgr;
+	//ViewLineMgr	*m_viewLineMgr;
+	std::unique_ptr<ViewLineMgr>	m_viewLineMgr;
 	Document	*m_document;
 	Buffer		*m_buffer;				//	ポイントのみで、非所有
 	QFont		m_font;

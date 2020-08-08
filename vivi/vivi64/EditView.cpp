@@ -141,7 +141,8 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	m_lineNumAreaWidget.setParent(this);
 	m_lineNumAreaWidget.setCursor(Qt::ArrowCursor);
 	//m_lineNumAreaWidget.installEventFiler(this);
-	m_viewLineMgr = new ViewLineMgr(this);
+	//m_viewLineMgr = new ViewLineMgr(this);
+	m_viewLineMgr = unique_ptr<ViewLineMgr>(new ViewLineMgr(this));
 	//	テキストエリア
 	//m_textAreaWidget.setParent(this);
 	//m_textAreaWidget.setCursor(Qt::IBeamCursor);
@@ -165,7 +166,7 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 EditView::~EditView()
 {
 	delete m_buffer;
-	delete m_viewLineMgr;
+	//delete m_viewLineMgr;
 }
 bool EditView::isKeisenMode() const
 {
