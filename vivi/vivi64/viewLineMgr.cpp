@@ -358,7 +358,7 @@ void ViewLineMgr::doLineBreakAll()
 }
 void ViewLineMgr::doLineBreak(int dln, int &vln)
 {
-#if	0
+#if	0		//##
 	if( m_lv[vln].m_offset < 0 )
 		m_lv[vln].m_offset = 0;
 #if	1

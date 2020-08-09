@@ -416,7 +416,7 @@ bool EditView::makeCursorInView(bool bQuarter)
 	//int nLine = viewport()->rect().height() / lineHeight();		//	表示可能行数
 	int nLine = rect().height() / lineHeight();		//	表示可能行数
 	int anchor = m_textCursor->anchor();
-#if	0
+#if	1
 	if( m_viewLineMgr->isLineBreakMode() ) {
 		//	表示範囲を折り返し処理
 		bool lineBreaked = false;
