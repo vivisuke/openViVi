@@ -909,9 +909,9 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0861 ◎ C 08/09 08/09 0.049│問題│EditView::m_viewLineMgr がデストラクタで delete されていない
 0862 ◎ C 08/09 08/09 0.049│ToDo│EditView::m_viewLineMgr：スマートポインタに変更？
 0863 ◎ C 08/09 08/09 0.049│問題│画面右端折返し設定が保存・復帰されない
-0864 ● C 08/09            │問題│ViewLineMgr::doLineBreak() の中身がコメントアウトされたまま
+0864 ◎ C 08/09 08/09 0.049│問題│ViewLineMgr::doLineBreak() の中身がコメントアウトされたまま
 0865 ◎ C 08/09 08/09 0.049│問題│ViewLineMgr::doLineBreak() がコールされていない
 									原因：EditView::makeCursorInView() から ViewLineMgr::ensureLineBreak() がコールされていない
-0866 ● C 08/09            │ToDo│
+0866 ◎ C 08/09 08/09 0.049│問題│EditView::lineNumberAreaWidth() が未定義
 0867 ● C 08/09            │ToDo│
 0868 ● C 08/09            │ToDo│
