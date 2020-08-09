@@ -110,6 +110,7 @@ public:
 	Document*	document() { return m_document; }
 	Buffer	*buffer() { return m_buffer; }
 	bool	makeCursorInView(bool bQuarter = false);
+	void	updateScrollBarInfo();
 	void	doViCommand();		//	viEngine が保有する vi コマンドを実行
 	void	doFindText(const QString &);		//	/ ? 検索処理
 	void	doFindText(const QString &, bool fwd);		//	/ ? 検索処理

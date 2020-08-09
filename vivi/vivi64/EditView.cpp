@@ -394,6 +394,9 @@ void EditView::jumpAssociatedParen()
 	resetCursorBlinking();
 	update();
 }
+void EditView::updateScrollBarInfo()
+{
+}
 //	return:	スクロールしたかどうか
 bool EditView::makeCursorInView(bool bQuarter)
 {
@@ -501,6 +504,13 @@ void EditView::setLineNumberVisible(bool b)
 }
 void EditView::setLineBreak(bool b)
 {
+	pos_t pos = m_textCursor->position();
+	m_viewLineMgr->setLineBreak(b);
+	//m_textCursor->updateViewLine();
+	m_textCursor->setPosition(pos);
+	makeCursorInView();
+	updateScrollBarInfo();
+	update();
 }
 void EditView::resetCursorBlinking()
 {
@@ -2326,7 +2336,7 @@ void EditView::insertTextSub(QString text, bool ctrl, bool shift, bool alt)
 		//m_openParenPos = m_closeParenPos = -1;
 		checkAssocParen();
 	}
-	//##updateScrollBarInfo();
+	updateScrollBarInfo();
 #else
 	if( text.isEmpty() ) return;
 	if( text != "\t" && mainWindow()->mode() == MODE_VI ) {
@@ -2491,7 +2501,7 @@ void EditView::insertText(const QString &text0)
 #endif
 	m_textCursor->insertText(text);
 	emit textInserted(text);
-	//##updateScrollBarInfo();
+	updateScrollBarInfo();
 	makeCursorInView();
 	resetCursorBlinking();
 	update();
@@ -2509,7 +2519,7 @@ void EditView::insertText(const QString &text1, const QString &text2)
 	closeUndoBlock();
 	m_textCursor->setPosition(first);
 	m_textCursor->setPosition(last + text1.size() + text2.size(), TextCursor::KEEP_ANCHOR);
-	//##updateScrollBarInfo();
+	updateScrollBarInfo();
 	makeCursorInView();
 	resetCursorBlinking();
 	update();
@@ -2597,7 +2607,7 @@ void EditView::undo()
 	//##m_textCursor->setBoxSelectMode(false);
 	m_textCursor->setPosition(pos);
 	checkAssocParen();
-	//##updateScrollBarInfo();
+	updateScrollBarInfo();
 	makeCursorInView();
 	update();
 	emit updateUndoRedoEnabled();
@@ -2613,7 +2623,7 @@ void EditView::redo()
 	//##m_textCursor->setBoxSelectMode(false);
 	m_textCursor->setPosition(pos);
 	checkAssocParen();
-	//##updateScrollBarInfo();
+	updateScrollBarInfo();
 	makeCursorInView();
 	update();
 	emit updateUndoRedoEnabled();
@@ -2641,7 +2651,7 @@ void EditView::cut(bool append)
 	m_textCursor->deleteChar();
 	if( !im )
 		emit modifiedChanged();
-	//##updateScrollBarInfo();
+	updateScrollBarInfo();
 	makeCursorInView();
 	update();
 	emit updateUndoRedoEnabled();
@@ -3005,7 +3015,7 @@ void EditView::joinLines(int nLines, bool vi)
 #endif
 	}
 	closeUndoBlock();
-	//##updateScrollBarInfo();
+	updateScrollBarInfo();
 	if( vi )
 		m_textCursor->setPosition(newPos);
 	else {
@@ -3276,7 +3286,7 @@ void EditView::substitute(int dln1, int dln2, const QString &before, const QStri
 		emit modifiedChanged();
 	if( lineBreaked )
 		viewLineMgr()->setLineBreak(true);
-	//##updateScrollBarInfo();
+	updateScrollBarInfo();
 	makeCursorInView();
 	update();
 }
@@ -3707,7 +3717,7 @@ void EditView::moveLineCmtToPrev()	//	現在行に行コメントがあれば、
 	m_textCursor->setPosition(lineStart);
 	m_textCursor->insertText(indent + text);
 	closeUndoBlock();
-	//updateScrollBarInfo();
+	updateScrollBarInfo();
 	update();
 #else
 	Tokenizer tkn(*buffer(), lineStartPosition(ln), lineStartPosition(ln+1), true, typeSettings());

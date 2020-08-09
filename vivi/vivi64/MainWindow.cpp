@@ -2186,6 +2186,7 @@ void MainWindow::on_action_LineBreakWinWidth_triggered()
 	EditView *view = currentWidget();
 	if( isEditView(view) ) {
 		view->typeSettings()->setBoolValue(TypeSettings::LINE_BREAK_WIN_WIDTH, b);
+		view->typeSettings()->writeSettings();
 		view->setLineBreak(b);
 	}
 }
