@@ -143,6 +143,7 @@ EditView::EditView(MainWindow* mainWindow, Document *doc /*, TypeSettings* typeS
 	//m_lineNumAreaWidget.installEventFiler(this);
 	//m_viewLineMgr = new ViewLineMgr(this);
 	m_viewLineMgr = unique_ptr<ViewLineMgr>(new ViewLineMgr(this));
+	m_viewLineMgr->setLineBreak(typeSettings->boolValue(TypeSettings::LINE_BREAK_WIN_WIDTH));
 	//	テキストエリア
 	//m_textAreaWidget.setParent(this);
 	//m_textAreaWidget.setCursor(Qt::IBeamCursor);
@@ -191,6 +192,22 @@ void EditView::onResized()
 	rct.setWidth(wd - m_lineNumAreaWidth - MINMAP_WIDTH);
 	m_textAreaWidget.setGeometry(rct);
 #endif
+	if( m_viewLineMgr->isLineBreakMode() ) {
+		int vln = m_scrollY0;	// verticalScrollBar()->value();		//	画面最上部行
+		int dln = viewLineToDocLine(vln);
+		//qDebug() << "dln = " << dln;
+		pos_t pos = m_textCursor->position();
+		m_viewLineMgr->doLineBreakAll();
+		//##verticalScrollBar()->setValue(dln);
+		//qDebug() << "v = " << verticalScrollBar()->value();
+		m_textCursor->setPosition(pos);
+		//qDebug() << "v = " << verticalScrollBar()->value();
+		//makeCursorInView();
+		//qDebug() << "v = " << verticalScrollBar()->value();
+		updateScrollBarInfo();
+		//qDebug() << "v = " << verticalScrollBar()->value();
+		update();
+	}
 }
 void EditView::setPlainText(const QString& txt)
 {

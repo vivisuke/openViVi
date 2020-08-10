@@ -15,6 +15,8 @@
 class Buffer;
 class EditView;
 
+//		ViewLineMgr が管理するビュー行のための構造体
+//		論理行番号。論理行内オフセット情報を持つ
 struct ViewLine
 {
 public:

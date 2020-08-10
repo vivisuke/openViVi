@@ -98,7 +98,8 @@ int ViewLineMgr::viewLineToDocLine(int vln, int &offset) const
 	if( vln < 0 ) vln = 0;
 	offset = m_lv.at(vln).m_offset;
 	if( offset < 0 ) offset = 0;
-	return m_lv.at(vln).m_docLine;
+	return m_lv[vln].m_docLine;
+	//return m_lv.at(vln).m_docLine;
 }
 int ViewLineMgr::positionToViewLine(pos_t pos) const
 {
@@ -312,6 +313,7 @@ void ViewLineMgr::setLineBreak(bool b)
 }
 void ViewLineMgr::doLineBreakAll()
 {
+	qDebug() << "*** doLineBreakAll() ***\n";
 #if	1
 	if( m_lv.isEmpty() ) {
 		const int cnt = m_buffer->lineCount();

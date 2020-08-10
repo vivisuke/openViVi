@@ -913,5 +913,15 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0865 ◎ C 08/09 08/09 0.049│問題│ViewLineMgr::doLineBreak() がコールされていない
 									原因：EditView::makeCursorInView() から ViewLineMgr::ensureLineBreak() がコールされていない
 0866 ◎ C 08/09 08/09 0.049│問題│EditView::lineNumberAreaWidth() が未定義
-0867 ● C 08/09            │ToDo│
-0868 ● C 08/09            │ToDo│
+0867 ● C 08/09            │問題│画面右端折返し ON のときに、ViewLineMgr::m_lineBreak が true になっていない？
+0868 ● C 08/10            │ToDo│ViewLineMgr::viewLineToDocLine()：すでに行番号範囲チェックを行っているので、at() ではなく operator[]() を使用
+0869 ◎ C 08/10 08/10 0.049│問題│起動・自動オープン時：画面右端折返し ON のときに、ViewLineMgr::m_lineBreak が true になっていない
+0870 ● C 08/10            │ToDo│
+0871 ● C 08/10            │ToDo│
+0872 ● C 08/10            │ToDo│
+0873 ● C 08/10            │ToDo│
+0874 ● C 08/10            │ToDo│
+0875 ● C 08/10            │ToDo│
+0876 ● C 08/10            │ToDo│
+0877 ● C 08/10            │ToDo│
+0878 ● C 08/10            │ToDo│
