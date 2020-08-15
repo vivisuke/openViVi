@@ -434,6 +434,7 @@ bool EditView::makeCursorInView(bool bQuarter)
 	int nLine = rect().height() / lineHeight();		//	表示可能行数
 	int anchor = m_textCursor->anchor();
 #if	1
+#if	0
 	if( m_viewLineMgr->isLineBreakMode() ) {
 		//	表示範囲を折り返し処理
 		bool lineBreaked = false;
@@ -493,6 +494,7 @@ bool EditView::makeCursorInView(bool bQuarter)
 		m_scrollX0 = (px - wd + HS_MARGIN) / m_fontWidth;
 		scrolled = true;
 	}
+#endif
 #endif
 	return scrolled;
 }

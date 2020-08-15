@@ -205,7 +205,7 @@ protected:
 //private:
 public:
 	Buffer	*m_buffer;		//	編集バッファ
-	int		m_cur;
+	int		m_cur;			//	m_stack 現在位置
 	int		m_savePointCur;		//	モディファイ状態の場所（保存ポイント）
 	int		m_lastDelTextSize;		//	最後の削除文字長
 	int		m_lastInsTextSize;
