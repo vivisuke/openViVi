@@ -28,6 +28,48 @@ void EditView::convert_to_lt_gt()
 }
 void EditView::convert_lt_gt_to()
 {
+	int first = m_textCursor->selectionFirst();
+	int last = m_textCursor->selectionLast();
+	if( first == last ) {
+		first = 0;
+		last = bufferSize();
+	}
+	openUndoBlock();
+	while( first < last ) {
+		wchar_t ch = charAt(first++);
+		int sz = 0;
+		QString to;
+		if( ch == '&' && first < last ) {
+			wchar_t ch2 = charAt(first);
+#if		0
+			if( ch2 == '&' ) {
+				sz = 2;
+				to = "&";
+			} else 
+#endif
+			if( first + 2 < last && charAt(first+1) == 't' && charAt(first+2) == ';' ) {
+				if( ch2 == 'l' ) {
+					sz = 4;
+					to = "<";
+				} else if( ch2 == 'g' ) {
+					sz = 4;
+					to = ">";
+				}
+			} else if( ch2 == 'a' && first + 3 < last && charAt(first+1) == 'm'
+					&& charAt(first+2) == 'p' && charAt(first+3) == ';' )
+			{
+				sz = 5;
+				to = "&";
+			}
+			if( !to.isEmpty() ) {
+				m_textCursor->setPosition(first-1);
+				m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR, sz);
+				m_textCursor->insertText(to);
+				last += to.size() - sz;
+			}
+		}
+	}
+	closeUndoBlock();
 }
 void EditView::convert_tabSpace()
 {
