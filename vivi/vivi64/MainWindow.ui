@@ -124,6 +124,9 @@
      <property name="title">
       <string>Transform(&amp;X)</string>
      </property>
+     <addaction name="action_to_lt_gt"/>
+     <addaction name="action_lt_gt_to"/>
+     <addaction name="separator"/>
      <addaction name="action_TabToSpace"/>
      <addaction name="action_SpaceToTab"/>
     </widget>
@@ -804,6 +807,19 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="action_to_lt_gt">
+   <property name="text">
+    <string>&lt; &gt; to &amp;&amp;lt; &amp;&amp;gt; (&amp;M)</string>
+   </property>
+   <property name="toolTip">
+    <string>transform &lt; &gt; to &amp;lt; &amp;gt;</string>
+   </property>
+  </action>
+  <action name="action_lt_gt_to">
+   <property name="text">
+    <string>&amp;&amp;lt; &amp;&amp;gt; to &lt; &gt; (&amp;N)</string>
    </property>
   </action>
   <action name="action_TabToSpace">

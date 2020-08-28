@@ -33,6 +33,7 @@ public:
 public:
 	bool	isEmpty() const;		//	テーブルが空か？
 	int	size() const;				//	テーブルサイズ
+	int	viewLineCount() const;
 	int	EOFLine() const;
 	int	viewLineToDocLine(int ln) const;
 	int	docLineToViewLine(int ln) const;

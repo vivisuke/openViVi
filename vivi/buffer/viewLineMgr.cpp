@@ -14,6 +14,14 @@ int ViewLineMgr::size() const				//	テーブルサイズ
 {
 	return m_lv.size();
 }
+int ViewLineMgr::viewLineCount() const
+{
+	if (m_lv.isEmpty()) {
+		return m_buffer->lineCount();
+	} else
+		return size();
+	
+}
 void ViewLineMgr::clear()
 {
 	m_lv.clear();

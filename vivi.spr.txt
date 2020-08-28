@@ -917,11 +917,16 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0868 ● C 08/10            │ToDo│ViewLineMgr::viewLineToDocLine()：すでに行番号範囲チェックを行っているので、at() ではなく operator[]() を使用
 0869 ◎ C 08/10 08/10 0.049│問題│起動・自動オープン時：画面右端折返し ON のときに、ViewLineMgr::m_lineBreak が true になっていない
 0870 ◎ A 08/14 08/15 0.049│問題│画面右端折返しモード：jk↑↓ でカーソル上下移動できない
-0871 ● C 08/14            │ToDo│
-0872 ● C 08/14            │ToDo│
-0873 ● C 08/14            │ToDo│
-0874 ● C 08/14            │ToDo│
-0875 ● C 08/14            │ToDo│
-0876 ● C 08/14            │ToDo│
-0877 ● C 08/14            │ToDo│
-0878 ● C 08/14            │ToDo│
+0871 ● C 08/17            │ToDo│UndoMgr：バッファ位置型を int → pos_t に変更
+0872 ● C 08/17            │ToDo│UndoMgr::doUndo()：挿入・削除処理などを関数化
+0873 ● C 08/17            │ToDo│gap_buffer::pos_t を unsigned に変更？
+0874 ● C 08/19            │問題│画面右端折返しモード：行番号表示が不正
+0875 ● C 08/19            │ToDo│EditView::paintXXX() を paint.cpp に分割
+0876 ◎ C 08/28 08/28 0.049│ToDo│HTML特殊文字エンコード・デコードメニュー追加
+0877 ● C 08/28            │ToDo│
+0878 ● C 08/28            │ToDo│
+0879 ● C 08/28            │ToDo│
+0880 ● C 08/28            │ToDo│
+0881 ● C 08/28            │ToDo│
+0882 ● C 08/28            │ToDo│
+0883 ● C 08/28            │ToDo│

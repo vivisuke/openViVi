@@ -417,6 +417,7 @@ void EditView::updateScrollBarInfo()
 //	return:	スクロールしたかどうか
 bool EditView::makeCursorInView(bool bQuarter)
 {
+	int anchor = m_textCursor->anchor();
 	pos_t pos = m_textCursor->position();
 	int dln = positionToLine(pos);
 	int vln = m_textCursor->viewLine();
@@ -432,9 +433,7 @@ bool EditView::makeCursorInView(bool bQuarter)
 		m_textCursor->movePosition(TextCursor::END_DOC);
 	//int nLine = viewport()->rect().height() / lineHeight();		//	表示可能行数
 	int nLine = rect().height() / lineHeight();		//	表示可能行数
-	int anchor = m_textCursor->anchor();
 #if	1
-#if	0
 	if( m_viewLineMgr->isLineBreakMode() ) {
 		//	表示範囲を折り返し処理
 		bool lineBreaked = false;
@@ -494,7 +493,6 @@ bool EditView::makeCursorInView(bool bQuarter)
 		m_scrollX0 = (px - wd + HS_MARGIN) / m_fontWidth;
 		scrolled = true;
 	}
-#endif
 #endif
 	return scrolled;
 }
@@ -1112,24 +1110,50 @@ void EditView::paintLineNumberArea(QPainter& pt)
     int mg = m_fontWidth*2;		//.width("88");
     int mg4 = mg / 4;
 	int py = 0 /*DRAW_Y_OFFSET*/;
-	int limit = buffer()->lineCount() + (buffer()->isBlankEOFLine() ? 1 : 0);
-	for (int ln = 1 + m_scrollY0; ln <= limit && py < rct.height(); ++ln, py+=m_lineHeight) {
-		//	行番号、行編集・保存済みフラグ表示
-		uint flags = buffer()->lineFlags(ln-1);
-		if( (flags & Buffer::LINEFLAG_MODIFIED) != 0 ) {
-			if( (flags & Buffer::LINEFLAG_SAVED) != 0 ) {
-				pt.fillRect(QRect(m_lineNumAreaWidth - mg + mg4, py, mg4, lineHeight()),
-									typeSettings()->color(TypeSettings::LINENUM_SAVED));
-			} else {
-				pt.fillRect(QRect(m_lineNumAreaWidth - mg + mg4, py, mg4, lineHeight()),
-									typeSettings()->color(TypeSettings::LINENUM_MODIFIED));
+	if( !m_viewLineMgr->isLineBreakMode() ) {		//	非折返しモード
+		int limit = buffer()->lineCount() + (buffer()->isBlankEOFLine() ? 1 : 0);
+		for (int ln = 1 + m_scrollY0; ln <= limit && py < rct.height(); ++ln, py+=m_lineHeight) {
+			//	行番号、行編集・保存済みフラグ表示
+			uint flags = buffer()->lineFlags(ln-1);
+			if( (flags & Buffer::LINEFLAG_MODIFIED) != 0 ) {
+				if( (flags & Buffer::LINEFLAG_SAVED) != 0 ) {
+					pt.fillRect(QRect(m_lineNumAreaWidth - mg + mg4, py, mg4, lineHeight()),
+										typeSettings()->color(TypeSettings::LINENUM_SAVED));
+				} else {
+					pt.fillRect(QRect(m_lineNumAreaWidth - mg + mg4, py, mg4, lineHeight()),
+										typeSettings()->color(TypeSettings::LINENUM_MODIFIED));
+				}
+			}
+			//qDebug() << "line flags = " << flags;
+			//
+			QString number = QString::number(ln);
+			int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
+			pt.drawText(px, py+m_baseLineDY, number);
+		}
+	} else {	//	折返しモード
+		int limit = m_viewLineMgr->size() + (buffer()->isBlankEOFLine() ? 1 : 0);
+		for (int vln = 1 + m_scrollY0; vln <= limit && py < rct.height(); ++vln, py+=m_lineHeight) {
+			//	論理行番号、行編集・保存済みフラグ表示
+			int offset;
+			int ln = m_viewLineMgr->viewLineToDocLine(vln, offset);
+			uint flags = buffer()->lineFlags(ln-1);
+			if( (flags & Buffer::LINEFLAG_MODIFIED) != 0 ) {
+				if( (flags & Buffer::LINEFLAG_SAVED) != 0 ) {
+					pt.fillRect(QRect(m_lineNumAreaWidth - mg + mg4, py, mg4, lineHeight()),
+										typeSettings()->color(TypeSettings::LINENUM_SAVED));
+				} else {
+					pt.fillRect(QRect(m_lineNumAreaWidth - mg + mg4, py, mg4, lineHeight()),
+										typeSettings()->color(TypeSettings::LINENUM_MODIFIED));
+				}
+			}
+			//qDebug() << "line flags = " << flags;
+			//
+			if( !offset ) {
+				QString number = QString::number(ln);
+				int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
+				pt.drawText(px, py+m_baseLineDY, number);
 			}
 		}
-		//qDebug() << "line flags = " << flags;
-		//
-		QString number = QString::number(ln);
-		int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
-		pt.drawText(px, py+m_baseLineDY, number);
 	}
 }
 void EditView::paintMatchedBG(QPainter&pt)

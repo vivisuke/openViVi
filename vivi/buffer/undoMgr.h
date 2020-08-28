@@ -26,6 +26,7 @@ class Buffer;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int uint;
+typedef 
 
 /*
 	ひとつのアクションは UndoAction オブジェクトで表される
