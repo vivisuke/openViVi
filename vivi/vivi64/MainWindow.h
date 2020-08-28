@@ -225,6 +225,8 @@ private slots:
 	void	on_action_AdditionalCut_triggered();
 	void	on_action_AdditionalCopy_triggered();
 	void	on_action_SelectAll_triggered();
+	void	on_action_to_lt_gt_triggered();
+	void	on_action_lt_gt_to_triggered();
 	void	on_action_TabToSpace_triggered();
 	void	on_action_DynamicCompletion_triggered();
 	void	on_action_ZenCoding_triggered();

@@ -1770,6 +1770,16 @@ void MainWindow::on_action_SelectAll_triggered()
 		view->selectAll();
 	}
 }
+void MainWindow::on_action_to_lt_gt_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_to_lt_gt();
+}
+void MainWindow::on_action_lt_gt_to_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_lt_gt_to();
+}
 void MainWindow::on_action_TabToSpace_triggered()
 {
 	EditView *view = currentWidget();

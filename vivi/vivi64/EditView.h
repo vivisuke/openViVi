@@ -219,6 +219,8 @@ public:
 	void	sharpIfElseCommentOut();
 	void	appendCut();
 	int		appendCopy();
+	void	convert_to_lt_gt();
+	void	convert_lt_gt_to();
 	void	convert_tabSpace();
 	
 	void	drawKeisen(int, bool=false);		//	罫線モードで罫線を引く

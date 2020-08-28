@@ -1,5 +1,34 @@
 ﻿#include "editView.h"
 
+void EditView::convert_to_lt_gt()
+{
+	int first = m_textCursor->selectionFirst();
+	int last = m_textCursor->selectionLast();
+	if( first == last ) {
+		first = 0;
+		last = bufferSize();
+	}
+	openUndoBlock();
+	while( first < last ) {
+		wchar_t ch = charAt(first++);
+		QString to;
+		switch( ch ) {
+			case '<':	to = "&lt;";	break;
+			case '>':	to = "&gt;";	break;
+			case '&':	to = "&amp;";	break;
+		}
+		if( !to.isEmpty() ) {
+			m_textCursor->setPosition(first);
+			m_textCursor->movePosition(TextCursor::LEFT, TextCursor::KEEP_ANCHOR);
+			m_textCursor->insertText(to);
+			last += to.size() - 1;
+		}
+	}
+	closeUndoBlock();
+}
+void EditView::convert_lt_gt_to()
+{
+}
 void EditView::convert_tabSpace()
 {
 	int first = m_textCursor->selectionFirst();
