@@ -1435,7 +1435,7 @@ void EditView::paintLineText(QPainter &pt,
 					col = typeSettings()->color(TypeSettings::NEWLINE);
 					break;
 				case ViewTokenizer::HTML_SPECIAL_CHARS:
-					col = typeSettings()->color(TypeSettings::URL);		//	暫定コード
+					col = typeSettings()->color(TypeSettings::EOF_MARK);		//	暫定コード
 					break;
 				case ViewTokenizer::COMMENT:
 					//if( !inBlockComment ) {
@@ -2818,8 +2818,11 @@ bool EditView::searchCurWord(QString &txt, bool vi)
 		txt = escapeRegExpSpecialChars(txt);
 	}
 #endif
-	if (!hadSelection && vi)
-		txt = "\\b" + txt + "\\b";
+	if (!hadSelection && vi && !txt.isEmpty() ) {
+		//txt = "\\b" + txt + "\\b";
+		if( txt[0].unicode() < 0x100 ) txt = "\\b" + txt;
+		if( txt.back().unicode() < 0x100 ) txt += "\\b";
+	}
 	mainWindow()->setFindString(txt);
 	mainWindow()->setMatchedString(txt);
 	mainWindow()->setSearchWordOpt(!hadSelection);		//	非選択状態ならば、単語単位検索オプションON
