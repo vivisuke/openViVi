@@ -1350,6 +1350,8 @@ void EditView::paintLineText(QPainter &pt,
 	if( !m_preeditString.isEmpty() && ln == m_textCursor->viewLine() )
 		curpos = m_textCursor->position();
 	ViewTokenizer tkn(typeSettings(), buffer(), ls, vlnsz, nxdls /*, curpos*/);
+	if( ln == m_textCursor->viewLine() )	//	undone: 折返しモード対応
+		tkn.setCursorLine();
 	tkn.setInLineComment(inLineComment);
 	tkn.setInBlockComment(inBlockComment);
 	QString token = tkn.nextToken();
