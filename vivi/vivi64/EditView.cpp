@@ -1434,6 +1434,9 @@ void EditView::paintLineText(QPainter &pt,
 				case ViewTokenizer::NEWLINE:
 					col = typeSettings()->color(TypeSettings::NEWLINE);
 					break;
+				case ViewTokenizer::HTML_SPECIAL_CHARS:
+					col = typeSettings()->color(TypeSettings::URL);		//	暫定コード
+					break;
 				case ViewTokenizer::COMMENT:
 					//if( !inBlockComment ) {
 						if( token == typeSettings()->textValue(TypeSettings::BLOCK_COMMENT_BEG) ) {
@@ -1495,6 +1498,9 @@ void EditView::paintLineText(QPainter &pt,
 						}
 					}
 				//}
+			}
+			if (tkn.tokenType() == ViewTokenizer::HTML_SPECIAL_CHARS) {
+				px += (tkn.m_orgText.size() - 1) * chWidth;
 			}
 		}
 		//
