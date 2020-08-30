@@ -2,7 +2,7 @@
 //
 //			File:			"undoMgr.cpp"
 //			Created:		16-Jun-2013
-//			Author:			’Ã“cLG
+//			Author:			æ´¥ç”°ä¼¸ç§€
 //			Description:
 //
 //----------------------------------------------------------------------
@@ -90,7 +90,7 @@ void UndoMgr::closeBlock()
 	int last = m_stack.size() - 1;
 	m_stack[last]->m_flags ^= UndoAction::FLAG_BLOCK;
 }
-//	Œ»ó‘Ô‚ð”ñƒ‚ƒfƒBƒtƒ@ƒCó‘Ô‚Æ‚·‚éi•Û‘¶Žž‚ÉƒR[ƒ‹‚³‚ê‚éj
+//	ç¾çŠ¶æ…‹ã‚’éžãƒ¢ãƒ‡ã‚£ãƒ•ã‚¡ã‚¤çŠ¶æ…‹ã¨ã™ã‚‹ï¼ˆä¿å­˜æ™‚ã«ã‚³ãƒ¼ãƒ«ã•ã‚Œã‚‹ï¼‰
 void UndoMgr::onSaved()
 {
 	m_savePointCur = m_cur;
@@ -107,7 +107,7 @@ void UndoMgr::onSaved()
 			int msz = (p->m_lc + bits - 1) / bits;
 			int ix = p->m_ix + p->m_size;
 			for(int i = 0; i < msz; ++i) {
-				m_delText[ix] &= 0x5555;	//	reset Saved ƒtƒ‰ƒO
+				m_delText[ix] &= 0x5555;	//	reset Saved ãƒ•ãƒ©ã‚°
 			}
 			break;
 		}
@@ -162,7 +162,7 @@ bool UndoMgr::push_back(UndoAction *ptr)
 			}
 			m_insText.resize(ix);
 			m_stack.resize(m_cur);
-			//	undone •s—v‚È ins, del ƒoƒbƒtƒ@‚ðíœ
+			//	undone ä¸è¦ãª ins, del ãƒãƒƒãƒ•ã‚¡ã‚’å‰Šé™¤
 		}
 		m_stack.push_back(ptr);
 	} catch(...) {
@@ -178,7 +178,7 @@ bool UndoMgr::push_back(UndoAction *ptr)
 	++m_cur;
 	return true;
 }
-void UndoMgr::prohibitMergeUndo()			//	‘}“üƒ}[ƒW‹ÖŽ~
+void UndoMgr::prohibitMergeUndo()			//	æŒ¿å…¥ãƒžãƒ¼ã‚¸ç¦æ­¢
 {
 	if( m_cur != 0 ) {
 		UndoActionInsert *ptr = (UndoActionInsert *)m_stack[m_cur - 1];
@@ -186,10 +186,10 @@ void UndoMgr::prohibitMergeUndo()			//	‘}“üƒ}[ƒW‹ÖŽ~
 			ptr->m_prohibitMerge = true;
 	}
 }
-bool UndoMgr::push_back_insText(int pos, int sz, int ln)
+bool UndoMgr::push_back_insText(pos_t pos, int sz, int ln)
 {
 #if	1
-	//	undone: ‰üsˆÈŠO‚Ì•¶Žš‚ð˜A‘±‚µ‚½êŠ‚É‘}“ü‚µ‚½ê‡‚ÍAUndoActionInsert ‚ð
+	//	undone: æ”¹è¡Œä»¥å¤–ã®æ–‡å­—ã‚’é€£ç¶šã—ãŸå ´æ‰€ã«æŒ¿å…¥ã—ãŸå ´åˆã¯ã€UndoActionInsert ã‚’
 	if( m_cur != 0 && !isNewLine(m_buffer->charAt(pos)) ) {
 		UndoActionInsert *ptr = (UndoActionInsert *)m_stack[m_cur - 1];
 		if( ptr->m_type == UndoAction::ACT_INSERT && !ptr->m_prohibitMerge
@@ -207,7 +207,7 @@ bool UndoMgr::push_back_insText(int pos, int sz, int ln)
 	UndoActionInsert *act = newActInsert();
 #endif
 	if( act == 0 )
-		return false;	//	ƒƒ‚ƒŠ•s‘«
+		return false;	//	ãƒ¡ãƒ¢ãƒªä¸è¶³
 	act->m_pos = pos;
 	act->m_size = sz;
 	act->m_ln = ln;
@@ -223,13 +223,13 @@ bool UndoMgr::push_back_insText(int pos, int sz, int ln)
 	push_back(act);
 	return true;
 }
-bool UndoMgr::push_back_delText(int pos, int sz, bool BS, int ln)
+bool UndoMgr::push_back_delText(pos_t pos, int sz, bool BS, int ln)
 {
 	const int ix = m_delText.size();
 	int ln2 = m_buffer->positionToLine(pos + sz);
 	const int bits = sizeof(wchar_t) * 8 / 2;
 	int msz = (ln2 - ln + 1 + bits - 1) / bits;
-	m_delText.resize(ix + sz + msz);		//	íœ•¶Žš—pƒoƒbƒtƒ@—e—ÊŠm•Û
+	m_delText.resize(ix + sz + msz);		//	å‰Šé™¤æ–‡å­—ç”¨ãƒãƒƒãƒ•ã‚¡å®¹é‡ç¢ºä¿
 	m_buffer->getText(pos, &m_delText[ix], sz);
 #if USE_BOOST_POOL
 	UndoActionDelete *act = m_actDelPool.construct();
@@ -244,7 +244,7 @@ bool UndoMgr::push_back_delText(int pos, int sz, bool BS, int ln)
 	act->m_size = sz;
 	act->m_ix = ix;
 	act->m_ln = ln;
-	act->m_lc = ln2 - ln + 1;		//	íœsî•ñs”
+	act->m_lc = ln2 - ln + 1;		//	å‰Šé™¤è¡Œæƒ…å ±è¡Œæ•°
 	int mix = ix + sz;
 	wchar_t mask = 1;
 	for(int i = 0; ln <= ln2; ++i, ++ln) {
@@ -265,13 +265,13 @@ bool UndoMgr::push_back_delText(int pos, int sz, bool BS, int ln)
 	push_back(act);
 	return true;
 }
-UndoActionReplace *UndoMgr::push_back_repText(int pos, int dsz, int isz, int ln)
+UndoActionReplace *UndoMgr::push_back_repText(pos_t pos, int dsz, int isz, int ln)
 {
 	const int ix = m_delText.size();
 	int ln2 = m_buffer->positionToLine(pos + dsz);
 	const int bits = sizeof(wchar_t) * 8 / 2;
 	int msz = (ln2 - ln + 1 + bits - 1) / bits;
-	m_delText.resize(ix + dsz + msz);		//	íœ•¶Žš—pƒoƒbƒtƒ@—e—ÊŠm•Û
+	m_delText.resize(ix + dsz + msz);		//	å‰Šé™¤æ–‡å­—ç”¨ãƒãƒƒãƒ•ã‚¡å®¹é‡ç¢ºä¿
 	m_buffer->getText(pos, &m_delText[ix], dsz);
 #if USE_BOOST_POOL
 	UndoActionReplace *act = m_actRepPool.construct();
@@ -284,7 +284,7 @@ UndoActionReplace *UndoMgr::push_back_repText(int pos, int dsz, int isz, int ln)
 	act->m_ln = ln;
 	act->m_sizeDel = dsz;
 	act->m_ixDel = ix;
-	act->m_lcDel = ln2 - ln + 1;		//	íœsî•ñs”
+	act->m_lcDel = ln2 - ln + 1;		//	å‰Šé™¤è¡Œæƒ…å ±è¡Œæ•°
 	act->m_sizeIns = isz;
 	int mix = ix + dsz;
 	wchar_t mask = 1;
@@ -316,7 +316,7 @@ void UndoMgr::setLcIns(int)
 #endif
 int UndoMgr::undo()
 {
-	int pos = 0;
+	pos_t pos = 0;
 	ushort flag = 0;
 	do {
 		if( !m_cur ) return false;
@@ -461,7 +461,7 @@ int UndoMgr::undo()
 }
 int UndoMgr::redo()
 {
-	int pos = 0;
+	pos_t pos = 0;
 	ushort flag = 0;
 	//bool modified = false;
 	do {

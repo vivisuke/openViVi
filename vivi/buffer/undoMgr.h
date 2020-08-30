@@ -26,7 +26,19 @@ class Buffer;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int uint;
-typedef 
+#ifdef		_WIN64
+	typedef __int64 size_type;
+	typedef __int64 ssize_t;
+	typedef __int64 difference_type;	//	ギャップが無いとみなした場合のインデックス差
+	typedef __int64 index_type;			//	バッファインデックス [0, size()]
+	typedef __int64 pos_t;					//	バッファインデックス [0, size()]
+#else
+	typedef __int32 size_type;
+	typedef __int32 ssize_t;
+	typedef __int32 difference_type;	//	ギャップが無いとみなした場合のインデックス差
+	typedef __int32 index_type;			//	バッファインデックス [0, size()]
+	typedef __int32 pos_t;					//	バッファインデックス [0, size()]
+#endif
 
 /*
 	ひとつのアクションは UndoAction オブジェクトで表される
@@ -60,7 +72,7 @@ public:
 		, m_flags(flags)
 		{}
 #if 0
-	UndoAction(int type = 0, int pos = 0, int size = 0, int ix = 0)
+	UndoAction(int type = 0, pos pos = 0, int size = 0, int ix = 0)
 		: m_type(type)
 		, m_flags(0)
 		, m_pos(pos)
@@ -72,7 +84,7 @@ public:
 };
 struct UndoActionInsert : public UndoAction
 {
-	int		m_pos;		//	挿入・削除位置
+	pos_t	m_pos;		//	挿入・削除位置
 	int		m_size;		//	挿入・削除文字数（for UTF16）
 	int		m_ix;		//	挿入・削除文字列のUndoバッファインデックス
 	int		m_ln;		//	pos の行番号 0 org
@@ -82,7 +94,7 @@ struct UndoActionInsert : public UndoAction
 	bool	m_prohibitMerge;	//	マージ禁止
 	//std::vector<bool>	m_mdfyFlags;
 public:
-	UndoActionInsert(int pos = 0, int size = 0 /*, uchar flags = 0*/)
+	UndoActionInsert(pos_t pos = 0, int size = 0 /*, uchar flags = 0*/)
 		: UndoAction(ACT_INSERT /*, flags*/)
 		, m_pos(pos)
 		, m_size(size)
@@ -93,7 +105,7 @@ public:
 };
 struct UndoActionDelete : public UndoAction
 {
-	int		m_pos;		//	挿入・削除位置
+	pos_t	m_pos;		//	挿入・削除位置
 	int		m_size;		//	挿入・削除文字数（for UTF16）
 	int		m_ix;		//	挿入・削除文字列のUndoバッファインデックス
 	int		m_ln;		//	pos の行番号 0 org
@@ -101,7 +113,7 @@ struct UndoActionDelete : public UndoAction
 	//int		m_mdfyIX;	//	行情報保存位置
 	//std::vector<bool>	m_mdfyFlags;
 public:
-	UndoActionDelete(int pos = 0, int size = 0, int ix = 0, bool BS = false)
+	UndoActionDelete(pos_t pos = 0, int size = 0, int ix = 0, bool BS = false)
 		: UndoAction(ACT_DELETE, (BS ? FLAG_BS : 0))
 		, m_pos(pos)
 		, m_size(size)
@@ -111,7 +123,7 @@ public:
 };
 struct UndoActionReplace : public UndoAction
 {
-	int		m_pos;		//	挿入・削除位置
+	pos_t	m_pos;		//	挿入・削除位置
 	int		m_ln;		//	pos の行番号 0 org
 	int		m_sizeIns;	//	挿入文字数（for UTF16）
 	int		m_ixIns;	//	挿入文字列のUndoバッファインデックス
@@ -120,7 +132,7 @@ struct UndoActionReplace : public UndoAction
 	int		m_ixDel;	//	削除文字列のUndoバッファインデックス
 	int		m_lcDel;	//	削除行数
 public:
-	UndoActionReplace(int pos = 0, int ln = 0,
+	UndoActionReplace(pos_t pos = 0, int ln = 0,
 						int sizeIns = 0, int ixIns = 0, int lcIns = 0,
 						int sizeDel = 0, int ixDel = 0, int lcDel = 0)
 		: UndoAction(ACT_REPLACE /*, flags*/)
@@ -185,9 +197,9 @@ public:
 	int		undo();
 	int		redo();
 	bool	push_back(UndoAction *);
-	bool	push_back_delText(int, int, bool BS, int ln);
-	bool	push_back_insText(int, int, int ln);
-	UndoActionReplace	*push_back_repText(int, int dsz, int isz, int ln);
+	bool	push_back_delText(pos_t, int, bool BS, int ln);
+	bool	push_back_insText(pos_t, int, int ln);
+	UndoActionReplace	*push_back_repText(pos_t, int dsz, int isz, int ln);
 	void	setLcIns(int);
 	void	openBlock();
 	void	closeBlock();
