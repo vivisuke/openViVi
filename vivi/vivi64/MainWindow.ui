@@ -120,6 +120,22 @@
      <addaction name="action_Decomment"/>
      <addaction name="action_BlockComment"/>
     </widget>
+    <widget class="QMenu" name="menu_ShortText">
+     <property name="title">
+      <string>&amp;ShortText</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="action_ShortText1"/>
+     <addaction name="action_ShortText2"/>
+     <addaction name="action_ShortText3"/>
+     <addaction name="action_ShortText4"/>
+     <addaction name="action_ShortText5"/>
+     <addaction name="action_ShortText6"/>
+     <addaction name="action_ShortText7"/>
+     <addaction name="action_ShortText8"/>
+     <addaction name="action_ShortText9"/>
+     <addaction name="action_ShortText0"/>
+    </widget>
     <widget class="QMenu" name="menuTransform_X">
      <property name="title">
       <string>Transform(&amp;X)</string>
@@ -139,6 +155,7 @@
     <addaction name="menu_ExtendedCopy"/>
     <addaction name="action_SelectAll"/>
     <addaction name="separator"/>
+    <addaction name="menu_ShortText"/>
     <addaction name="menuTransform_X"/>
     <addaction name="action_DynamicCompletion"/>
     <addaction name="action_ZenCoding"/>
@@ -807,6 +824,86 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="action_ShortText1">
+   <property name="text">
+    <string>ShortText&amp;1</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+1</string>
+   </property>
+  </action>
+  <action name="action_ShortText2">
+   <property name="text">
+    <string>ShortText&amp;2</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+2</string>
+   </property>
+  </action>
+  <action name="action_ShortText3">
+   <property name="text">
+    <string>ShortText&amp;3</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+3</string>
+   </property>
+  </action>
+  <action name="action_ShortText4">
+   <property name="text">
+    <string>ShortText&amp;4</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+4</string>
+   </property>
+  </action>
+  <action name="action_ShortText5">
+   <property name="text">
+    <string>ShortText&amp;5</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+5</string>
+   </property>
+  </action>
+  <action name="action_ShortText6">
+   <property name="text">
+    <string>ShortText&amp;6</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+6</string>
+   </property>
+  </action>
+  <action name="action_ShortText7">
+   <property name="text">
+    <string>ShortText&amp;7</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+7</string>
+   </property>
+  </action>
+  <action name="action_ShortText8">
+   <property name="text">
+    <string>ShortText&amp;8</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+8</string>
+   </property>
+  </action>
+  <action name="action_ShortText9">
+   <property name="text">
+    <string>ShortText&amp;9</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+9</string>
+   </property>
+  </action>
+  <action name="action_ShortText0">
+   <property name="text">
+    <string>ShortText&amp;0</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+0</string>
    </property>
   </action>
   <action name="action_to_lt_gt">
