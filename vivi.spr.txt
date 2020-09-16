@@ -913,7 +913,7 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0865 ◎ C 08/09 08/09 0.049│問題│ViewLineMgr::doLineBreak() がコールされていない
 									原因：EditView::makeCursorInView() から ViewLineMgr::ensureLineBreak() がコールされていない
 0866 ◎ C 08/09 08/09 0.049│問題│EditView::lineNumberAreaWidth() が未定義
-0867 ● C 08/09            │問題│画面右端折返しモード：ViewLineMgr::m_lineBreak が true になっていない？
+0867 ◎ C 08/09 09/16 0.050│問題│画面右端折返しモード：ViewLineMgr::m_lineBreak が true になっていない？
 0868 ● C 08/10            │ToDo│ViewLineMgr::viewLineToDocLine()：すでに行番号範囲チェックを行っているので、at() ではなく operator[]() を使用
 0869 ◎ C 08/10 08/10 0.049│問題│起動・自動オープン時：画面右端折返し ON のときに、ViewLineMgr::m_lineBreak が true になっていない
 0870 ◎ A 08/14 08/15 0.049│問題│画面右端折返しモード：jk↑↓ でカーソル上下移動できない
@@ -942,7 +942,7 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0891 ● C 09/16            │問題│折返しモード：論理行番号が正しく表示されていない
 0892 ◎ C 09/16 09/16 0.050│ToDo│EditView::paintXXX() を paint.cpp に移動
 0893 ◎ C 09/16 09/16 0.050│問題│行番号 10 が１カラム右にずれている
-0894 ● C 09/16            │ToDo│
+0894 ◎ C 09/16 09/17 0.050│問題│折返しモード：折り返された行テキストが表示されない
 0895 ● C 09/16            │ToDo│
 0896 ● C 09/16            │ToDo│
 0897 ● C 09/16            │ToDo│

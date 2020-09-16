@@ -284,11 +284,13 @@ void EditView::paintTextArea(QPainter& pt)
 	bool inBlockComment = (document()->lineFlags(m_scrollY0) & Buffer::LINEFLAG_IN_BLOCK_COMMENT) != 0;
 	//bool inLineComment = false;
 	QString quotedText;
-	for (int ln = m_scrollY0; ln < buffer()->lineCount() && py < rct.height(); ++ln, py+=m_lineHeight) {
+	for (int vln = m_scrollY0; vln < buffer()->lineCount() && py < rct.height(); ++vln, py+=m_lineHeight) {
 		bool inLineComment = false;		//	undone: 折返し行対応
+		int ln, offset;
+		ln = viewLineMgr()->viewLineToDocLine(vln, offset);
 		px = m_lineNumAreaWidth;
-		auto startIX = buffer()->lineStartPosition(ln);
-		auto lnsz = buffer()->lineSize(ln);
+		auto startIX = buffer()->lineStartPosition(ln) + offset;
+		auto lnsz = viewLineMgr()->viewLineSize(vln);		//buffer()->lineSize(ln);
 		paintLineText(pt, px, py+m_baseLineDY, ln, startIX, lnsz, startIX+lnsz, inBlockComment, inLineComment, quotedText);
 		if( inBlockComment )
 			document()->setLineFlag(ln+1, Buffer::LINEFLAG_IN_BLOCK_COMMENT);
