@@ -174,6 +174,11 @@ void EditView::doTest()
 	qDebug() << "*** doTest() ***\n";
 	qDebug() << "viewLineMgr:\n";
 	qDebug() << "size = " << viewLineMgr()->size();
+	for (int i = 0; i != viewLineMgr()->size(); ++i) {
+		int dln, offset;
+		dln = viewLineMgr()->viewLineToDocLine(i, offset);
+		qDebug() << "dln = " << dln << ", offset = " << offset;
+	}
 }
 bool EditView::isKeisenMode() const
 {

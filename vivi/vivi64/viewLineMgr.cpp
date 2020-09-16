@@ -348,7 +348,7 @@ void ViewLineMgr::doLineBreakAll()
 	clear();
 	int vln = 0;
 	for(int dln = 0; dln <= m_buffer->lineCount(); ++dln, ++vln) {
-#if	1
+#if	0
 		m_lv.insert(vln, ViewLine(dln, -1));
 #else
 		m_lv.insert(vln, ViewLine(dln, 0));
