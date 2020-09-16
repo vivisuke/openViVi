@@ -314,12 +314,12 @@ void ViewLineMgr::setLineBreak(bool b)
 void ViewLineMgr::doLineBreakAll()
 {
 	qDebug() << "*** doLineBreakAll() ***\n";
-#if	1
-	if( m_lv.isEmpty() ) {
-		const int cnt = m_buffer->lineCount();
-		m_lv.resize(cnt + 1);
+#if	0
+	if( m_lv.isEmpty() ) {	//	行情報が生成されていない場合
+		const int cnt = m_buffer->lineCount();		//	論理行数
+		m_lv.resize(cnt + 1);		//	先頭行～最終行・EOF行
 		for(int dln = 0; dln <= cnt; ++dln) {
-			m_lv[dln].m_docLine = dln;
+			m_lv[dln].m_docLine = dln;		//	表示行先頭位置の論理行番号
 			m_lv[dln].m_offset = -1;
 		}
 	} else {
@@ -332,7 +332,7 @@ void ViewLineMgr::doLineBreakAll()
 		}
 	}
 #else
-#if	1
+#if	0
 	//qDebug() << "m_buffer->lineCount() = " << m_buffer->lineCount();
 	const int cnt = m_buffer->lineCount();
 	m_lv.resize(cnt + 1);
@@ -357,6 +357,7 @@ void ViewLineMgr::doLineBreakAll()
 	}
 #endif
 #endif
+	m_lineBreak = true;		//	折返し状態
 }
 void ViewLineMgr::doLineBreak(int dln, int &vln)
 {

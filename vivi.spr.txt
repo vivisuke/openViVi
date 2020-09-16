@@ -936,4 +936,15 @@ D393 ◎ C 05/02 05/03 0.008│問題│編集を行っても、ミニマップ�
 0886 ◎ C 09/14 09/16 0.050│問題│ラインブレイクON/OFFを繰り返すと、Buffer::lineFlags(ln) でアサーションが発生する
 0887 ● C 09/15            │ToDo│その他>テスト メニュー追加
 0888 ◎ C 09/16 09/16 0.050│問題│viewLineMgr.h cpp が vivi/buffer, vivi/vivi64 の2箇所にあり混乱している→前者を削除
-0889 ● C 09/16            │ToDo│
+0889 ◎ C 09/16 09/16 0.050│問題│画面リサイズを行っても ViewLineMgr::doLineBreakAll() がコールされない
+									原因：m_viewLineMgr->isLineBreakMode() が false を返している
+0890 ● C 09/16            │ToDo│
+0891 ● C 09/16            │ToDo│
+0892 ● C 09/16            │ToDo│
+0893 ● C 09/16            │ToDo│
+0894 ● C 09/16            │ToDo│
+0895 ● C 09/16            │ToDo│
+0896 ● C 09/16            │ToDo│
+0897 ● C 09/16            │ToDo│
+0898 ● C 09/16            │ToDo│
+0899 ● C 09/16            │ToDo│
