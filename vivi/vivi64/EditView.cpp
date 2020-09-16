@@ -169,6 +169,12 @@ EditView::~EditView()
 	delete m_buffer;
 	//delete m_viewLineMgr;
 }
+void EditView::doTest()
+{
+	qDebug() << "*** doTest() ***\n";
+	qDebug() << "viewLineMgr:\n";
+	qDebug() << "size = " << viewLineMgr()->size();
+}
 bool EditView::isKeisenMode() const
 {
 	return mainWindow()->isKeisenMode();
@@ -1136,7 +1142,7 @@ void EditView::paintLineNumberArea(QPainter& pt)
 			//	論理行番号、行編集・保存済みフラグ表示
 			int offset;
 			int ln = m_viewLineMgr->viewLineToDocLine(vln, offset);
-			uint flags = buffer()->lineFlags(ln-1);
+			uint flags = ln != 0 ? buffer()->lineFlags(ln-1) : 0;
 			if( (flags & Buffer::LINEFLAG_MODIFIED) != 0 ) {
 				if( (flags & Buffer::LINEFLAG_SAVED) != 0 ) {
 					pt.fillRect(QRect(m_lineNumAreaWidth - mg + mg4, py, mg4, lineHeight()),

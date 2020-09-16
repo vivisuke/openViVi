@@ -203,6 +203,8 @@
     <addaction name="separator"/>
     <addaction name="action_Github"/>
     <addaction name="action_About_ViVi"/>
+    <addaction name="separator"/>
+    <addaction name="action_Test"/>
    </widget>
    <widget class="QMenu" name="menu_Search">
     <property name="title">
@@ -935,6 +937,14 @@
    </property>
    <property name="text">
     <string>LineBreak&amp;WinWidth</string>
+   </property>
+  </action>
+  <action name="action_Test">
+   <property name="text">
+    <string>Test(&amp;@)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+@</string>
    </property>
   </action>
  </widget>

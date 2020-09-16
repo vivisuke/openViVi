@@ -2326,6 +2326,12 @@ void MainWindow::on_action_About_ViVi_triggered()
 						+ tr("<br>Copyright (C) 2020 by N.Tsuda")
 						+ tr("<br>Powered by <a href=\"https://www.qt.io/\">Qt</a> ") + QT_VERSION_STR);
 }
+void MainWindow::on_action_Test_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditView(view) )
+		view->doTest();
+}
 #if	0
 bool MainWindow::focusNextPrevChild(bool next)
 {

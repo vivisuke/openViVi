@@ -100,6 +100,7 @@ public:
 	int	lineNumberAreaWidth() const { return m_lineNumAreaWidth; }
 
 public:
+	void	doTest();
 	MainWindow	*mainWindow() { return m_mainWindow; }
 	ViewLineMgr *viewLineMgr() { return &(*m_viewLineMgr); }
 	TextCursor*	textCursor() { return m_textCursor; }

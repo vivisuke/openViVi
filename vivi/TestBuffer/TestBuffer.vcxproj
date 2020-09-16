@@ -87,7 +87,6 @@
     <ClCompile Include="..\buffer\sssearch.cpp" />
     <ClCompile Include="..\buffer\undoMgr.cpp" />
     <ClCompile Include="..\buffer\UTF16.cpp" />
-    <ClCompile Include="..\buffer\viewLineMgr.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -104,7 +103,6 @@
     <ClInclude Include="..\buffer\sssearch.h" />
     <ClInclude Include="..\buffer\undoMgr.h" />
     <ClInclude Include="..\buffer\UTF16.h" />
-    <ClInclude Include="..\buffer\viewLineMgr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

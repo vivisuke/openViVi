@@ -45,9 +45,6 @@
     <ClCompile Include="..\buffer\UTF16.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\buffer\viewLineMgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\buffer\Buffer.h">
@@ -83,9 +80,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\buffer\UTF16.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\buffer\viewLineMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
