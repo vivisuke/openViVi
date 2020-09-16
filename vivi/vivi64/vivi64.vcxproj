@@ -117,6 +117,7 @@
     <ClCompile Include="NamedColorDlg.cpp" />
     <ClCompile Include="OutlineBar.cpp" />
     <ClCompile Include="OutputView.cpp" />
+    <ClCompile Include="paint.cpp" />
     <ClCompile Include="settingsMgr.cpp" />
     <ClCompile Include="singleapplication.cpp" />
     <ClCompile Include="TestViCommands.cpp" />

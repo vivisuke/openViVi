@@ -7,6 +7,13 @@
 #include "../buffer/Buffer.h"
 //#include "typeSettings.h"
 //#include "globalSettings.h"
+
+#define		DRAW_Y_OFFSET		2
+#define		MINMAP_LN_WD		4			//	行番号部分幅
+#define		MINMAP_WIDTH		80
+#define		MAX_MINMAP_HEIGHT	10000		//	ピックスマップ最大高さ
+#define		CURSOR_WD		2
+
 class Buffer;
 class ViewLineMgr;
 class Document;
