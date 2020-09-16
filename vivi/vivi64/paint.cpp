@@ -121,11 +121,12 @@ void EditView::paintLineNumberArea(QPainter& pt)
 		}
 	} else {	//	折返しモード
 		int limit = m_viewLineMgr->size() + (buffer()->isBlankEOFLine() ? 1 : 0);
-		for (int vln = 1 + m_scrollY0; vln <= limit && py < rct.height(); ++vln, py+=m_lineHeight) {
+		for (int vln = m_scrollY0; vln < limit && py < rct.height(); ++vln, py+=m_lineHeight) {
 			//	論理行番号、行編集・保存済みフラグ表示
 			int offset;
 			int ln = m_viewLineMgr->viewLineToDocLine(vln, offset);
-			uint flags = ln != 0 ? buffer()->lineFlags(ln-1) : 0;
+			//uint flags = ln != 0 ? buffer()->lineFlags(ln-1) : 0;
+			uint flags = buffer()->lineFlags(ln);
 			if( (flags & Buffer::LINEFLAG_MODIFIED) != 0 ) {
 				if( (flags & Buffer::LINEFLAG_SAVED) != 0 ) {
 					pt.fillRect(QRect(m_lineNumAreaWidth - mg + mg4, py, mg4, lineHeight()),
@@ -138,8 +139,8 @@ void EditView::paintLineNumberArea(QPainter& pt)
 			//qDebug() << "line flags = " << flags;
 			//
 			if( !offset ) {
-				QString number = QString::number(ln);
-				int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln));
+				QString number = QString::number(ln+1);
+				int px = m_lineNumAreaWidth - m_fontWidth*(3 + (int)log10(ln+1));
 				pt.drawText(px, py+m_baseLineDY, number);
 			}
 		}
