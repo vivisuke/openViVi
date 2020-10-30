@@ -93,6 +93,7 @@ public:
 	//const ViewLineMgr *viewLineMgr() const { return m_viewLineMgr; }
 	const ViewLineMgr *viewLineMgr() const { return &(*m_viewLineMgr); }
 	int		lineStartPosition(int ln) const;
+	int		fontWidth() const { return m_fontWidth; }
 	int		fontHeight() const { return m_fontHeight; }
 	int		lineHeight() const { return m_lineHeight; }
 	int		textWidth(const QString &) const;

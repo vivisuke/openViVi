@@ -383,7 +383,7 @@ void ViewLineMgr::doLineBreak(int dln, int &vln)
 	}
 #else
 #if	1
-	int width = m_view->width() - 64;
+	int width = m_view->width() - MINMAP_WIDTH;
 	QFontMetrics fm = m_view->fontMetrics();
 	QFontMetrics fmBold = m_view->fontBold();
 	int nTab = m_view->typeSettings()->intValue(TypeSettings::TAB_WIDTH);

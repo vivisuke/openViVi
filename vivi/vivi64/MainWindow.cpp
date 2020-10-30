@@ -804,8 +804,20 @@ void MainWindow::dropEvent(QDropEvent* event)
 		QString fileName = QDir::toNativeSeparators(url.toLocalFile());
 		fileName.replace('\\', '/');
 		//qDebug() << fileName;
-		createView(fileName);
-		//openFile(fileName);
+		QFileInfo fi(fileName);
+		if (fi.isDir()) {
+			QDir dir(fileName);
+			auto lst = dir.entryList();
+			//qDebug() << lst.size();
+			for(const auto& name: lst) {
+				if( name == "." || name == ".." ) continue;
+				auto path = fileName + "/" + name;
+				createView(path);
+			}
+		} else {
+			createView(fileName);
+			//openFile(fileName);
+		}
 	}
 }
 bool MainWindow::checkUnSaved()
