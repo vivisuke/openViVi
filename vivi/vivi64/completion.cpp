@@ -841,7 +841,9 @@ void EditView::autoCmplDecided(QString text, bool autoClosed)
 	QString t0 = m_textCursor->selectedText();
 	//if (autoClosed) {
 		qDebug() << "t0 = " << t0;
-		text = text.mid(t0.size());
+		//int sz = t0.size();
+		int sz = qMax(m_autoCmplFilter.size(), t0.size());;
+		text = text.mid(sz);
 		m_textCursor->setPosition(pos0);	//	選択解除
 	//}
 	//viEngine()->removeFromInsertedText(t0);

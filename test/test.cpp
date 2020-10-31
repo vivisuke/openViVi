@@ -1,7 +1,8 @@
 
 main()
 {
-	for
+	f
+		
 	return 0;
 	return;
 	zyx
