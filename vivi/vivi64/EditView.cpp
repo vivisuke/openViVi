@@ -1906,7 +1906,7 @@ void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
 	if( !m_textCursor->hasSelection() ) {
 			m_textCursor->movePosition(TextCursor::LEFT /*, TextCursor::KEEP_ANCHOR*/);
 	}
-	//if( !editForVar(QString()) )
+	if( !editForVar(QString()) )
 		m_textCursor->deleteChar(/*BS=*/true);
 #endif
 }
@@ -1929,7 +1929,7 @@ void EditView::onDelete(bool ctrl, bool shift, bool alt)
 	}
 	if( !m_textCursor->hasSelection() ) return;
 	//setupFallingChars();
-	//##if( !editForVar(QString()) )
+	if( !editForVar(QString()) )
 		m_textCursor->deleteChar();
 	//##emit boxSelectModeChanged(m_textCursor->isBoxSelectMode());
 }
