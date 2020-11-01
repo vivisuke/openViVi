@@ -145,6 +145,8 @@
      <addaction name="separator"/>
      <addaction name="action_TabToSpace"/>
      <addaction name="action_SpaceToTab"/>
+     <addaction name="action_ToUpperCase"/>
+     <addaction name="action_ToLowerCase"/>
     </widget>
     <addaction name="action_Undo"/>
     <addaction name="action_Redo"/>
@@ -929,6 +931,16 @@
   <action name="action_SpaceToTab">
    <property name="text">
     <string>SpaceTo&amp;Tab</string>
+   </property>
+  </action>
+  <action name="action_ToUpperCase">
+   <property name="text">
+    <string>to&amp;UpperCase</string>
+   </property>
+  </action>
+  <action name="action_ToLowerCase">
+   <property name="text">
+    <string>to&amp;LowerCase</string>
    </property>
   </action>
   <action name="action_LineBreakWinWidth">
