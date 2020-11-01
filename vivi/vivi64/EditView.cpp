@@ -1008,7 +1008,8 @@ QVariant EditView::inputMethodQuery( Qt::InputMethodQuery query ) const
 	if( query == Qt::ImMicroFocus ) {
 			pos_t pos = /*m_toDeleteIMEPreeditText ? m_preeditPos :*/ m_textCursor->position();
 			int vln = m_textCursor->viewLine();
-			int x = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) /*- horizontalScrollBar()->value()*/;
+			int x = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) - m_scrollX0 * m_fontWidth;
+						/*- horizontalScrollBar()->value()*/;
 			int y = (vln - m_scrollY0) * lineHeight();
 			return QVariant(QRect(x + m_lineNumAreaWidth, y, 2, lineHeight() + 4));
 	}

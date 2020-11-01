@@ -670,7 +670,7 @@ void EditView::paintPreeditString(QPainter&pt)
 	if( py < 0 || py >= rct.height() )
 		return;		//	画面外の場合
 	int hv = 0;		//horizontalScrollBar()->value();
-	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth;
+	int px = viewLineOffsetToPx(vln, pos - viewLineStartPosition(vln)) + m_lineNumAreaWidth - m_scrollX0 * m_fontWidth;
 	py -= m_scrollX0 * m_fontWidth;
 	int ht = fm.ascent();
 	//const auto descent = fm.descent();
