@@ -14,6 +14,8 @@
 #define		MAX_MINMAP_HEIGHT	10000		//	ピックスマップ最大高さ
 #define		CURSOR_WD		2
 
+typedef QChar (*qcharFunc)(QChar);
+
 class Buffer;
 class ViewLineMgr;
 class Document;
@@ -228,9 +230,12 @@ public:
 	void	sharpIfElseCommentOut();
 	void	appendCut();
 	int		appendCopy();
+	void	convert(qcharFunc);
 	void	convert_to_lt_gt();
 	void	convert_lt_gt_to();
 	void	convert_tabSpace();
+	void	convert_toLowerCase();
+	void	convert_toUpperCase();
 	
 	void	drawKeisen(int, bool=false);		//	罫線モードで罫線を引く
 	void	drawKeisenLeft(bool=false);			//	罫線モードで罫線を引く

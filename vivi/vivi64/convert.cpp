@@ -107,3 +107,43 @@ void EditView::convert_tabSpace()
 	makeCursorInView();
 	update();
 }
+QChar toLower(QChar ch)
+{
+	return ch.toLower();
+}
+QChar toUpper(QChar ch)
+{
+	return ch.toUpper();
+}
+void EditView::convert_toLowerCase()
+{
+	convert(toLower);
+}
+void EditView::convert_toUpperCase()
+{
+	convert(toUpper);
+}
+void EditView::convert(qcharFunc func)
+{
+	int first = m_textCursor->selectionFirst();
+	int last = m_textCursor->selectionLast();
+	if( first == last ) {
+		first = 0;
+		last = bufferSize();
+	}
+	m_textCursor->clearSelection();
+	openUndoBlock();
+	while( first < last ) {
+		QChar ch = charAt(first);
+		QChar ch2 = func(ch);
+		if( ch != ch2 ) {
+			m_textCursor->setPosition(first);
+			m_textCursor->setPosition(first+1, TextCursor::KEEP_ANCHOR);
+			m_textCursor->insertText(QString(ch2));
+		}
+		++first;
+	}
+	closeUndoBlock();
+	makeCursorInView();
+	update();
+}

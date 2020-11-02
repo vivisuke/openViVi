@@ -228,6 +228,8 @@ private slots:
 	void	on_action_to_lt_gt_triggered();
 	void	on_action_lt_gt_to_triggered();
 	void	on_action_TabToSpace_triggered();
+	void	on_action_ToLowerCase_triggered();
+	void	on_action_ToUpperCase_triggered();
 	void	on_action_DynamicCompletion_triggered();
 	void	on_action_ZenCoding_triggered();
 	void	on_action_MoveLineCmntToPrev_triggered();

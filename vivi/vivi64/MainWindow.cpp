@@ -1798,6 +1798,16 @@ void MainWindow::on_action_TabToSpace_triggered()
 	if( isEditViewFocused(view) )
 		view->convert_tabSpace();
 }
+void MainWindow::on_action_ToLowerCase_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_toLowerCase();
+}
+void MainWindow::on_action_ToUpperCase_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_toUpperCase();
+}
 void MainWindow::on_action_DynamicCompletion_triggered()
 {
 	EditView *view = currentWidget();
