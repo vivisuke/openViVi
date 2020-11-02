@@ -165,6 +165,7 @@
     <addaction name="action_ZenCoding"/>
     <addaction name="menuExtendedEdit_1"/>
     <addaction name="menuComment"/>
+    <addaction name="action_Renumber"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -688,6 +689,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="action_Renumber">
+   <property name="text">
+    <string>Renu&amp;mber</string>
    </property>
   </action>
   <action name="action_OpenOpenedFiles">

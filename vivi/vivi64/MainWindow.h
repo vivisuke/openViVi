@@ -234,6 +234,7 @@ private slots:
 	void	on_action_KatakanaToHiragana_triggered();
 	void	on_action_DynamicCompletion_triggered();
 	void	on_action_ZenCoding_triggered();
+	void	on_action_Renumber_triggered();
 	void	on_action_MoveLineCmntToPrev_triggered();
 	void	on_action_ToggleTrueFalse_triggered();
 	void	on_action_SharpIfCommentOut_triggered();

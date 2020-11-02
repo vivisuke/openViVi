@@ -1830,6 +1830,11 @@ void MainWindow::on_action_ZenCoding_triggered()
 	if( isEditViewFocused(view) )
 		view->zenCoding();
 }
+void MainWindow::on_action_Renumber_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->renumber();
+}
 void MainWindow::on_action_MoveLineCmntToPrev_triggered()
 {
 	EditView *view = currentWidget();

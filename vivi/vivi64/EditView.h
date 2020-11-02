@@ -230,6 +230,7 @@ public:
 	void	sharpIfElseCommentOut();
 	void	appendCut();
 	int		appendCopy();
+	void	renumber();
 	void	convert(qcharFunc);
 	void	convert_to_lt_gt();
 	void	convert_lt_gt_to();

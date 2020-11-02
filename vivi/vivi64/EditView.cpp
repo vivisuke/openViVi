@@ -3217,3 +3217,146 @@ void EditView::doKeisenDown(bool erase)
 {
 }
 #endif
+void EditView::renumber()
+{
+	//##if( isBoxSelectionMode() ) return;		//	undone: 矩形選択未対応
+	if( !hasSelection() ) return;
+	//bool fillZero = false;
+	int fillWidth = 0;
+	if( hasSelectionInALine() ) {
+		pos_t first = m_textCursor->selectionFirst();
+		pos_t last = m_textCursor->selectionLast();
+#if		1
+		bool init = true;
+		int value = 0;
+		openUndoBlock();
+		while( first < last ) {
+			if( isDigit(charAt(first)) ) {
+				QString text;
+				pos_t pos = first;
+				wchar_t ch;
+				while( first < last && isDigit(ch = charAt(first)) ) {
+					text += QChar(ch);
+					++first;
+				}
+				if( init ) {
+					init = false;
+					value = text.toInt();
+				} else {
+					QString ntext;
+					if( !fillWidth )
+						ntext = QString::number(++value);
+					else
+						ntext = QString("%1").arg(++value, fillWidth, 10, QChar('0'));
+					m_textCursor->setPosition(pos);
+					m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR, text.size());
+					m_textCursor->insertText(ntext);
+					first += ntext.size() - text.size();
+					last += ntext.size() - text.size();
+				}
+			} else
+				++first;
+		}
+#else
+		Tokenizer tkn(buffer(), first, last, /*bStr*/false);
+		bool init = true;
+		int value = 0;
+		openUndoBlock();
+		while( tkn.tokenType() != Tokenizer::END_OF_FILE ) {
+			if( tkn.tokenType() == Tokenizer::NUMBER ) {
+				QString text = tkn.tokenText();
+				int len = 0;
+				while( len < text.size() && text[len].isNumber() ) ++len;
+				if( init ) {
+					init = false;
+					value = text.left(len).toInt();
+				} else {
+					QString ntext;
+					if( !fillWidth )
+						ntext = QString::number(++value);
+					else
+						ntext = QString("%1").arg(++value, fillWidth, 10, QChar('0'));
+					m_textCursor->setPosition(tkn.tokenPosition());
+					m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR, len);
+					m_textCursor->insertText(ntext);
+					tkn.setPosition(m_textCursor->position());
+					tkn.setLast(last += ntext.size() - len);
+				}
+			}
+			tkn.nextToken();
+		}
+#endif
+		closeUndoBlock();
+		update();
+		return;
+	} 
+	//	行単位のりナンバー
+	int ln1, ln2;
+	getSelectedLineRange(ln1, ln2);
+	//pos_t ls2 = lineStartPosition(ln1);
+	bool init = true;
+	int value = 0;
+	openUndoBlock();
+	for(int ln = ln1; ln <= ln2; ++ln) {
+#if		1
+		pos_t first = lineStartPosition(ln);
+		pos_t last = lineStartPosition(ln + 1);
+		while( first < last ) {
+			if( isDigit(charAt(first)) ) {
+				QString text;
+				pos_t pos = first;
+				wchar_t ch;
+				while( first < last && isDigit(ch = charAt(first)) ) {
+					text += QChar(ch);
+					++first;
+				}
+				if( init ) {
+					init = false;
+					value = text.toInt();
+				} else {
+					QString ntext;
+					if( !fillWidth )
+						ntext = QString::number(++value);
+					else
+						ntext = QString("%1").arg(++value, fillWidth, 10, QChar('0'));
+					m_textCursor->setPosition(pos);
+					m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR, text.size());
+					m_textCursor->insertText(ntext);
+					//last += ntext.size() - text.size();
+				}
+				break;
+			} else
+				++first;
+		}
+#else
+		pos_t ls = lineStartPosition(ln);
+		pos_t ls2 = lineStartPosition(ln + 1);
+		Tokenizer tkn(buffer(), ls, ls2, /*bStr*/false);
+		while( tkn.tokenType() != Tokenizer::END_OF_FILE ) {
+			if( tkn.tokenType() == Tokenizer::NUMBER ) {
+				QString text = tkn.tokenText();
+				int len = 0;
+				while( len < text.size() && text[len].isNumber() )
+					++len;
+				if( init ) {
+					init = false;
+					if( text[0] == '0' ) fillWidth = len;		//	桁数
+					value = text.left(len).toInt();
+				} else {
+					QString ntext;
+					if( !fillWidth )
+						ntext = QString::number(++value);
+					else
+						ntext = QString("%1").arg(++value, fillWidth, 10, QChar('0'));
+					m_textCursor->setPosition(tkn.tokenPosition());
+					m_textCursor->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR, len);
+					m_textCursor->insertText(ntext);
+				}
+				break;
+			}
+			tkn.nextToken();
+		}
+#endif
+	}
+	closeUndoBlock();
+}
