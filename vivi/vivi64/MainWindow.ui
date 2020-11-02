@@ -147,6 +147,8 @@
      <addaction name="action_SpaceToTab"/>
      <addaction name="action_ToUpperCase"/>
      <addaction name="action_ToLowerCase"/>
+     <addaction name="action_HiraganaToKatakana"/>
+     <addaction name="action_KatakanaToHiragana"/>
     </widget>
     <addaction name="action_Undo"/>
     <addaction name="action_Redo"/>
@@ -941,6 +943,16 @@
   <action name="action_ToLowerCase">
    <property name="text">
     <string>to&amp;LowerCase</string>
+   </property>
+  </action>
+  <action name="action_HiraganaToKatakana">
+   <property name="text">
+    <string>Hiragana to &amp;Katakana</string>
+   </property>
+  </action>
+  <action name="action_KatakanaToHiragana">
+   <property name="text">
+    <string>Katakana to Hi&amp;ragana</string>
    </property>
   </action>
   <action name="action_LineBreakWinWidth">
