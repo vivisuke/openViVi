@@ -1808,6 +1808,16 @@ void MainWindow::on_action_ToUpperCase_triggered()
 	EditView *view = currentWidget();
 	if( isEditViewFocused(view) ) view->convert_toUpperCase();
 }
+void MainWindow::on_action_HiraganaToKatakana_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_HiraganaToKatakana();
+}
+void MainWindow::on_action_KatakanaToHiragana_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_KatakanaToHiragana();
+}
 void MainWindow::on_action_DynamicCompletion_triggered()
 {
 	EditView *view = currentWidget();

@@ -236,6 +236,16 @@ public:
 	void	convert_tabSpace();
 	void	convert_toLowerCase();
 	void	convert_toUpperCase();
+	void	convert_HiraganaToKatakana();
+	void	convert_KatakanaToHiragana();
+	void	convert_HanKanaToZenKana();
+	void	convert_ZenKanaToHanKana();
+	void	convert_HanNumberToZenNumber();
+	void	convert_ZenNumberToHanNumber();
+	void	convert_HanAlnumToZenAlnum();
+	void	convert_ZenAlnumToHanAlnum();
+	void	convert_HanCharToZenChar(bool ansi = true);
+	void	convert_ZenCharToHanChar(bool ansi = true);
 	
 	void	drawKeisen(int, bool=false);		//	罫線モードで罫線を引く
 	void	drawKeisenLeft(bool=false);			//	罫線モードで罫線を引く

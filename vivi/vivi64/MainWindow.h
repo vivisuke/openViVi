@@ -230,6 +230,8 @@ private slots:
 	void	on_action_TabToSpace_triggered();
 	void	on_action_ToLowerCase_triggered();
 	void	on_action_ToUpperCase_triggered();
+	void	on_action_HiraganaToKatakana_triggered();
+	void	on_action_KatakanaToHiragana_triggered();
 	void	on_action_DynamicCompletion_triggered();
 	void	on_action_ZenCoding_triggered();
 	void	on_action_MoveLineCmntToPrev_triggered();

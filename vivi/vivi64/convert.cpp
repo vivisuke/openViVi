@@ -1,5 +1,20 @@
 ﻿#include "editView.h"
 
+typedef unsigned short ushort;
+
+//		ぁ U+3041 〜 ヶ（ひらがな）U+3096
+//		ァ U+30a1 〜 ヶ（カタカナ）U+30f6
+#define		HIRA_FIRST		0x3041
+#define		HIRA_END		0x3096
+#define		KANA_FIRST		0x30a1
+#define		KANA_END		0x30f6
+#define		HANKANA_FIRST		0xff61	//	｡
+#define		HANKANA_END			0xff9f	//	ﾟ
+#define		ZEN_EXMARK			0xff01	//	!
+#define		ZEN_TILDE			0xff5e	//	~
+#define		ZENDIGIT_FIRST		0xff10
+#define		ZENDIGIT_END		0xff19
+
 void EditView::convert_to_lt_gt()
 {
 	int first = m_textCursor->selectionFirst();
@@ -122,6 +137,30 @@ void EditView::convert_toLowerCase()
 void EditView::convert_toUpperCase()
 {
 	convert(toUpper);
+}
+QChar hiraganaToKatakana(QChar ch)
+{
+	ushort u = ch.unicode();
+	if( u >= HIRA_FIRST && u <= HIRA_END )
+		return QChar(u + KANA_FIRST - HIRA_FIRST);
+	else
+		return ch;
+}
+QChar katakanaToHiragana(QChar ch)
+{
+	ushort u = ch.unicode();
+	if( u >= KANA_FIRST && u <= KANA_END )
+		return QChar(u + HIRA_FIRST - KANA_FIRST);
+	else
+		return ch;
+}
+void EditView::convert_HiraganaToKatakana()
+{
+	convert(hiraganaToKatakana);
+}
+void EditView::convert_KatakanaToHiragana()
+{
+	convert(katakanaToHiragana);
 }
 void EditView::convert(qcharFunc func)
 {
