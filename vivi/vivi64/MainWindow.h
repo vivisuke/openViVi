@@ -232,6 +232,15 @@ private slots:
 	void	on_action_ToUpperCase_triggered();
 	void	on_action_HiraganaToKatakana_triggered();
 	void	on_action_KatakanaToHiragana_triggered();
+	void	on_action_HanKanaToZenKana_triggered();
+	void	on_action_ZenKanaToHanKana_triggered();
+	void	on_action_HanNumberToZenNumber_triggered();
+	void	on_action_ZenNumberToHanNumber_triggered();
+	void	on_action_HanAlnumToZenAlnum_triggered();
+	void	on_action_ZenAlnumToHanAlnum_triggered();
+	void	on_action_HanCharToZenChar_triggered();
+	void	on_action_ZenCharToHanChar_triggered();
+	
 	void	on_action_DynamicCompletion_triggered();
 	void	on_action_ZenCoding_triggered();
 	void	on_action_Renumber_triggered();

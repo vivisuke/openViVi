@@ -149,6 +149,14 @@
      <addaction name="action_ToLowerCase"/>
      <addaction name="action_HiraganaToKatakana"/>
      <addaction name="action_KatakanaToHiragana"/>
+     <addaction name="action_HanKanaToZenKana"/>
+     <addaction name="action_ZenKanaToHanKana"/>
+     <addaction name="action_HanNumberToZenNumber"/>
+     <addaction name="action_ZenNumberToHanNumber"/>
+     <addaction name="action_HanAlnumToZenAlnum"/>
+     <addaction name="action_ZenAlnumToHanAlnum"/>
+     <addaction name="action_HanCharToZenChar"/>
+     <addaction name="action_ZenCharToHanChar"/>
     </widget>
     <addaction name="action_Undo"/>
     <addaction name="action_Redo"/>
@@ -959,6 +967,46 @@
   <action name="action_KatakanaToHiragana">
    <property name="text">
     <string>Katakana to Hi&amp;ragana</string>
+   </property>
+  </action>
+  <action name="action_HanKanaToZenKana">
+   <property name="text">
+    <string>HanKana to ZenKana(&amp;B)</string>
+   </property>
+  </action>
+  <action name="action_ZenKanaToHanKana">
+   <property name="text">
+    <string>ZenKana to HanKana(&amp;C)</string>
+   </property>
+  </action>
+  <action name="action_HanNumberToZenNumber">
+   <property name="text">
+    <string>HanNumber to ZenNumber(&amp;Q)</string>
+   </property>
+  </action>
+  <action name="action_ZenNumberToHanNumber">
+   <property name="text">
+    <string>ZenNumber to HanNumber(&amp;W)</string>
+   </property>
+  </action>
+  <action name="action_HanAlnumToZenAlnum">
+   <property name="text">
+    <string>HanAlnum to ZenAlnum(&amp;D)</string>
+   </property>
+  </action>
+  <action name="action_ZenAlnumToHanAlnum">
+   <property name="text">
+    <string>ZenAlnum to HanAlnum(&amp;F)</string>
+   </property>
+  </action>
+  <action name="action_HanCharToZenChar">
+   <property name="text">
+    <string>HanChar to ZenChar(&amp;Z)</string>
+   </property>
+  </action>
+  <action name="action_ZenCharToHanChar">
+   <property name="text">
+    <string>ZenChar to HanChar(&amp;H)</string>
    </property>
   </action>
   <action name="action_LineBreakWinWidth">

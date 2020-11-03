@@ -1818,6 +1818,46 @@ void MainWindow::on_action_KatakanaToHiragana_triggered()
 	EditView *view = currentWidget();
 	if( isEditViewFocused(view) ) view->convert_KatakanaToHiragana();
 }
+void MainWindow::on_action_HanKanaToZenKana_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_HanKanaToZenKana();
+}
+void MainWindow::on_action_ZenKanaToHanKana_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_ZenKanaToHanKana();
+}
+void MainWindow::on_action_HanNumberToZenNumber_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_HanNumberToZenNumber();
+}
+void MainWindow::on_action_ZenNumberToHanNumber_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_ZenNumberToHanNumber();
+}
+void MainWindow::on_action_HanAlnumToZenAlnum_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_HanAlnumToZenAlnum();
+}
+void MainWindow::on_action_ZenAlnumToHanAlnum_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_ZenAlnumToHanAlnum();
+}
+void MainWindow::on_action_HanCharToZenChar_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_HanCharToZenChar();
+}
+void MainWindow::on_action_ZenCharToHanChar_triggered()
+{
+	EditView *view = currentWidget();
+	if( isEditViewFocused(view) ) view->convert_ZenCharToHanChar();
+}
 void MainWindow::on_action_DynamicCompletion_triggered()
 {
 	EditView *view = currentWidget();
