@@ -191,6 +191,7 @@ protected slots:
 	void	onDownCmdLineEdit();
     EditView	*openFile(const QString &fileName, bool forced = false);
     void	tagJump(const QString &, int);
+	void	clipboardDataChanged();
 
 private slots:
 	void autoCmplKeyPressed(QString);
@@ -303,6 +304,7 @@ public slots:
 	void	showMessage(const QString&, int timeout = 0);
     void	updateUndoRedoEnabled();
     void	updateClipboardHist(const QString &text);
+    void	updateClipboardHistAct();
     void	modifiedChanged();
     void	onEnterFindCB();
     void	doFindString();

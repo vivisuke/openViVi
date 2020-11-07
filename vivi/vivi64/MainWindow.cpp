@@ -225,6 +225,8 @@ MainWindow::MainWindow(QWidget *parent)
 	//ui.tabWidget->setTabShape(QTabWidget::Triangular);				//	タブ形状指定
 	connect(ui.tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(tabCloseRequested(int)));
 	connect(ui.tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabCurrentChanged(int)));
+	//	for クリップボード履歴
+	connect(qApp->clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardDataChanged()));
 	//
 	//ui.action_New->setIconText(tr("New"));
 	//
@@ -1771,6 +1773,13 @@ void MainWindow::on_action_Paste_triggered()
 		view->paste();
 	}
 }
+void MainWindow::clipboardDataChanged()
+{
+	QClipboard *cb = qApp->clipboard();
+	QString text = cb->text();
+	updateClipboardHist(text);
+	updateClipboardHistAct();
+}
 void MainWindow::updateClipboardHist(const QString &text)
 {
 	if( text.isEmpty() ) return;
@@ -1779,6 +1788,21 @@ void MainWindow::updateClipboardHist(const QString &text)
 	m_clipboardHist.push_front(text);
 	while( m_clipboardHist.size() > MAX_CLIPBOARD_HIST )
 		m_clipboardHist.pop_back();
+}
+void MainWindow::updateClipboardHistAct()
+{
+	m_clipboardHistActs[0]->setEnabled(true);
+    int numClipboardHist = qMin(m_clipboardHist.size(), (int)MaxClipboardHist);
+    for (int i = 0; i < numClipboardHist; ++i) {
+    	QString t = m_clipboardHist[i];
+    	if( t.size() > 64 ) t = t.left(64) + "...";
+    	t.replace("\r\n", " ").replace("\r", " ").replace("\n", " ").replace("\t", " ").replace("&", "&&");
+        m_clipboardHistActs[i]->setText(t);
+        m_clipboardHistActs[i]->setData(m_clipboardHist[i]);
+        m_clipboardHistActs[i]->setVisible(true);
+    }
+    for (int j = numClipboardHist; j < MaxClipboardHist; ++j)
+        m_clipboardHistActs[j]->setVisible(false);
 }
 void MainWindow::on_action_ClipboardHist_triggered()
 {
