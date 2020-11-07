@@ -164,6 +164,7 @@
     <addaction name="action_Cut"/>
     <addaction name="action_Copy"/>
     <addaction name="action_Paste"/>
+    <addaction name="action_ClipboardHist"/>
     <addaction name="menu_ExtendedCopy"/>
     <addaction name="action_SelectAll"/>
     <addaction name="separator"/>
@@ -398,6 +399,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="action_ClipboardHist">
+   <property name="text">
+    <string>Clipboard&amp;Hist</string>
+   </property>
+   <property name="toolTip">
+    <string>Clipboard History</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+H</string>
    </property>
   </action>
   <action name="action_About_ViVi">
