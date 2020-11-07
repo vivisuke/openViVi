@@ -221,6 +221,7 @@ private slots:
 	void	on_action_Cut_triggered();
 	void	on_action_Copy_triggered();
 	void	on_action_Paste_triggered();
+	void	on_action_ClipboardHist_triggered();
 	void	on_action_CopyImplementationCode_triggered();
 	void	on_action_AdditionalCut_triggered();
 	void	on_action_AdditionalCopy_triggered();
@@ -301,6 +302,7 @@ public slots:
     void	onCursorPosChanged(EditView*, int, int);
 	void	showMessage(const QString&, int timeout = 0);
     void	updateUndoRedoEnabled();
+    void	updateClipboardHist(const QString &text);
     void	modifiedChanged();
     void	onEnterFindCB();
     void	doFindString();

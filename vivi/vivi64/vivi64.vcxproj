@@ -95,6 +95,7 @@
     <ClCompile Include="AutoCompletionDlg.cpp" />
     <ClCompile Include="autoIndent.cpp" />
     <ClCompile Include="charEncoding.cpp" />
+    <ClCompile Include="ClipboardHistDlg.cpp" />
     <ClCompile Include="CommandLine.cpp" />
     <ClCompile Include="completion.cpp" />
     <ClCompile Include="CompletionWidget.cpp" />
@@ -135,6 +136,7 @@
     <QtMoc Include="MainWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="ClipboardHistDlg.ui" />
     <QtUic Include="GlobalStgDlg.ui" />
     <QtUic Include="GrepDlg.ui" />
     <QtUic Include="GreppingDlg.ui" />
@@ -151,6 +153,7 @@
     <QtMoc Include="GreppingDlg.h" />
     <QtMoc Include="OutputView.h" />
     <QtMoc Include="singleapplication.h" />
+    <QtMoc Include="ClipboardHistDlg.h" />
     <ClInclude Include="zenCoding.h" />
     <QtMoc Include="NamedColorDlg.h" />
     <ClInclude Include="assocParen.h" />

@@ -6,6 +6,7 @@
 #include <QComboBox>
 #include <QMessageBox>
 #include <QDesktopServices>
+#include <QClipboard>
 #include <QDebug>
 #include "version.h"
 #include "singleapplication.h"
@@ -24,6 +25,7 @@
 #include "TextCursor.h"
 #include "ViEngine.h"
 #include "OutputView.h"
+#include "ClipboardHistDlg.h"
 #include "../buffer/sssearch.h"
 
 #ifdef		WIN32
@@ -1767,6 +1769,30 @@ void MainWindow::on_action_Paste_triggered()
 	EditView *view = currentWidget();
 	if( isEditView(view) ) {
 		view->paste();
+	}
+}
+void MainWindow::updateClipboardHist(const QString &text)
+{
+	if( text.isEmpty() ) return;
+	int ix = m_clipboardHist.indexOf(text);
+	if( ix >= 0 ) m_clipboardHist.removeAt(ix);
+	m_clipboardHist.push_front(text);
+	while( m_clipboardHist.size() > MAX_CLIPBOARD_HIST )
+		m_clipboardHist.pop_back();
+}
+void MainWindow::on_action_ClipboardHist_triggered()
+{
+	ClipboardHistDlg aDlg(m_clipboardHist);
+	auto rc = aDlg.exec();
+	int ix = aDlg.index();
+	if( QDialog::Accepted == rc && ix >= 0 ) {
+		const QString text = m_clipboardHist[ix];
+		updateClipboardHist(text);
+		QClipboard *cb = qApp->clipboard();
+		cb->setText(text);
+		EditView *view = currentWidget();
+		if( isEditView(view) )
+			view->paste(text);
 	}
 }
 void MainWindow::on_action_CopyImplementationCode_triggered()
