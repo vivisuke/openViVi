@@ -194,6 +194,7 @@ protected slots:
     EditView	*openFile(const QString &fileName, bool forced = false);
     void	tagJump(const QString &, int);
 	void	clipboardDataChanged();
+	void	fileSystemViewDoubleClicked(const QModelIndex &index);
 
 private slots:
 	void autoCmplKeyPressed(QString);

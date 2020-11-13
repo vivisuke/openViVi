@@ -322,6 +322,14 @@ void MainWindow::createDockWindows()
 
 	tabifyDockWidget(m_outputDock, m_outlineDock);
 }
+void MainWindow::fileSystemViewDoubleClicked(const QModelIndex &index)
+{
+	QString path = m_fileSystemModel->filePath(index);
+	QFileInfo fi(path);
+	if( fi.isFile() ) {
+		createView(path);
+	}
+}
 void MainWindow::createActions()
 {
     //	RecentFilesMenu のための初期化
