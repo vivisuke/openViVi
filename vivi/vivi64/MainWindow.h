@@ -11,6 +11,8 @@
 #include <QThread>
 #include <QProcess>
 #include <QDir>
+#include <QFileSystemModel>
+#include <QHeaderView>
 //#include <qnetwork.h>
 #include "ui_MainWindow.h"
 #include "EditView.h"
@@ -415,6 +417,9 @@ private:
 	//QTreeWidget		*m_outlineWidget;
 	OutlineBar		*m_outlineBar;
 	QDockWidget		*m_outputDock;
+	QDockWidget		*m_fileSystemDock;
+	QTreeView		*m_fileSystemView;
+	QFileSystemModel	*m_fileSystemModel;
 	//QPlainTextEdit	*m_outputWidget;
 	OutputView	*m_outputWidget;
 	

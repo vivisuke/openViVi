@@ -304,6 +304,23 @@ void MainWindow::createDockWindows()
 	m_outputDock->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::BottomDockWidgetArea, m_outputDock);
 	m_outputDock->hide();		//	undone: 状態保存・復帰
+	
+	//	ファイルシステムバー
+	m_fileSystemDock = new QDockWidget(tr("FileSystem"));
+	m_fileSystemDock->setObjectName("FileSystem");
+	m_fileSystemDock->setWidget(m_fileSystemView = new QTreeView());
+	m_fileSystemView->setModel(m_fileSystemModel = new QFileSystemModel());
+    QHeaderView *header = m_fileSystemView->header();
+    header->hideSection(1);
+    header->hideSection(2);
+    header->hideSection(3);
+	m_fileSystemModel->setRootPath(QDir::currentPath());
+	m_fileSystemDock->setAllowedAreas(Qt::AllDockWidgetAreas);
+	addDockWidget(Qt::RightDockWidgetArea, m_fileSystemDock);
+    connect(m_fileSystemView, SIGNAL(doubleClicked ( QModelIndex )),
+    				this, SLOT(fileSystemViewDoubleClicked ( QModelIndex )));
+
+	tabifyDockWidget(m_outputDock, m_outlineDock);
 }
 void MainWindow::createActions()
 {
