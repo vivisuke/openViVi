@@ -1173,9 +1173,18 @@ void MainWindow::removeFromOutlineBar(EditView* view)
 }
 void MainWindow::onOutlineItemDblClicked(QTreeWidgetItem*item)
 {
-	auto* view = (EditView*)item->data(1, 0).toULongLong();
-	if( view != nullptr )
-		setCurrentView(view);
+	auto fileName = item->text(0);
+	QFileInfo fi(fileName);
+	if (fi.isDir()) {
+		QDir dir(fileName);
+		m_fileSystemDock->show();
+		//auto act = m_fileSystemDock->toggleViewAction();
+		//act->setVisible(true);
+	} else {
+		auto* view = (EditView*)item->data(1, 0).toULongLong();
+		if( view != nullptr )
+			setCurrentView(view);
+	}
 }
 void MainWindow::onOutlineBarEnterPressed()
 {
