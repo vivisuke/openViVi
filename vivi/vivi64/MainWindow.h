@@ -420,6 +420,7 @@ private:
 	QDockWidget		*m_outputDock;
 	QDockWidget		*m_fileSystemDock;
 	QTreeView		*m_fileSystemView;
+	QTreeWidget		*m_fileSystemWidget;
 	QFileSystemModel	*m_fileSystemModel;
 	//QPlainTextEdit	*m_outputWidget;
 	OutputView	*m_outputWidget;

@@ -308,9 +308,11 @@ void MainWindow::createDockWindows()
 	//	ファイルシステムバー
 	m_fileSystemDock = new QDockWidget(tr("FileSystem"));
 	m_fileSystemDock->setObjectName("FileSystem");
+	//m_fileSystemDock->setWidget(m_fileSystemView = new QTreeWidget());
 	m_fileSystemDock->setWidget(m_fileSystemView = new QTreeView());
 	m_fileSystemView->setModel(m_fileSystemModel = new QFileSystemModel());
     QHeaderView *header = m_fileSystemView->header();
+    //QHeaderView *header = m_fileSystemView->header();
     header->hideSection(1);
     header->hideSection(2);
     header->hideSection(3);
@@ -1176,10 +1178,13 @@ void MainWindow::onOutlineItemDblClicked(QTreeWidgetItem*item)
 	auto fileName = item->text(0);
 	QFileInfo fi(fileName);
 	if (fi.isDir()) {
-		QDir dir(fileName);
+		//QDir dir(fileName);
 		m_fileSystemDock->show();
 		//auto act = m_fileSystemDock->toggleViewAction();
 		//act->setVisible(true);
+		auto mix = m_fileSystemModel->index(fileName);
+		m_fileSystemView->setCurrentIndex(mix);
+		m_fileSystemView->setExpanded(mix, true);
 	} else {
 		auto* view = (EditView*)item->data(1, 0).toULongLong();
 		if( view != nullptr )
