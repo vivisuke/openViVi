@@ -50,5 +50,6 @@
         <file>Resources/crop_portrait_gray.png</file>
         <file>Resources/JAVA.png</file>
         <file>Resources/TS.png</file>
+        <file>Resources/access_time.png</file>
     </qresource>
 </RCC>

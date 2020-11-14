@@ -60,6 +60,10 @@
      <property name="title">
       <string>RecentFiles(&amp;1)</string>
      </property>
+     <property name="icon">
+      <iconset resource="MainWindow.qrc">
+       <normaloff>:/MainWindow/Resources/access_time.png</normaloff>:/MainWindow/Resources/access_time.png</iconset>
+     </property>
      <addaction name="separator"/>
     </widget>
     <widget class="QMenu" name="menu_FavoriteFiles">
