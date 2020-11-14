@@ -1195,9 +1195,12 @@ void MainWindow::onOutlineBarEnterPressed()
 {
 	auto* item = m_outlineBar->currentItem();
 	if( item != nullptr ) {
+		onOutlineItemDblClicked(item);
+#if	0
 		auto* view = (EditView*)item->data(1, 0).toULongLong();
 		if( view != nullptr )
 			setCurrentView(view);
+#endif
 	}
 }
 void MainWindow::onOutlineBarColonPressed()
