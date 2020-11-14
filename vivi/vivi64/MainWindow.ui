@@ -70,6 +70,10 @@
      <property name="title">
       <string>&amp;FavoriteFiles</string>
      </property>
+     <property name="icon">
+      <iconset resource="MainWindow.qrc">
+       <normaloff>:/MainWindow/Resources/star_border.png</normaloff>:/MainWindow/Resources/star_border.png</iconset>
+     </property>
      <addaction name="action_AddCurrentFile"/>
      <addaction name="action_RemoveFile"/>
      <addaction name="separator"/>

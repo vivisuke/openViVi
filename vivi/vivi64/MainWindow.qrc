@@ -51,5 +51,6 @@
         <file>Resources/JAVA.png</file>
         <file>Resources/TS.png</file>
         <file>Resources/access_time.png</file>
+        <file>Resources/star_border.png</file>
     </qresource>
 </RCC>
