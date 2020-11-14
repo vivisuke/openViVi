@@ -1180,6 +1180,7 @@ void MainWindow::onOutlineItemDblClicked(QTreeWidgetItem*item)
 	if (fi.isDir()) {
 		//QDir dir(fileName);
 		m_fileSystemDock->show();
+		m_fileSystemView->setFocus();
 		//auto act = m_fileSystemDock->toggleViewAction();
 		//act->setVisible(true);
 		auto mix = m_fileSystemModel->index(fileName);
