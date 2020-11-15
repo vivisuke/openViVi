@@ -304,7 +304,10 @@ void EditView::drawKeisenRight(bool erase)		//	罫線モードで罫線を引く
 	if( !erase || !atNewLine )		//	改行位置以外の場合
 		kstr += kstr2;
 	if( !atNewLine ) {	//	改行位置でない場合
+		//	undone: 半角文字上の場合
 		textCursor()->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);		//	暫定コード
+		if( !textCursor()->isAtNewLine() )
+			textCursor()->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);		//	暫定コード
 	}
 	textCursor()->insertText(kstr);
 	textCursor()->movePosition(TextCursor::LEFT);

@@ -73,6 +73,7 @@ public:
 	void	movePosition(int op, int mode = MOVE_ANCHOR, int n = 1, bool vi = false);
 	wchar_t	charAt() const;
 	wchar_t	charAt(int pos) const;
+	bool	isAtNewLine() const;
 	int		selectionSize() const;
 	int		selectionFirst() const;
 	int		selectionLast() const;

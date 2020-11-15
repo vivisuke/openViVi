@@ -97,6 +97,10 @@ wchar_t TextCursor::charAt(int pos) const
 {
 	return m_view->charAt(pos);
 }
+bool TextCursor::isAtNewLine() const
+{
+	return charAt() == '\r' || charAt() == '\n';
+}
 int TextCursor::viewLineStartPosition(int vln) const
 {
 	return m_view->viewLineMgr()->viewLineStartPosition(vln);
