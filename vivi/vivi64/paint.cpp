@@ -281,7 +281,7 @@ void EditView::paintTextArea(QPainter& pt)
 	//pt.drawText(100, 100, "Hello");
 	int px, py = 0 /*DRAW_Y_OFFSET*2*/;
 	//bool inBlockComment = false;
-	bool inBlockComment = (document()->lineFlags(m_scrollY0) & Buffer::LINEFLAG_IN_BLOCK_COMMENT) != 0;
+	bool inBlockComment = !document()->isEmpty() && (document()->lineFlags(m_scrollY0) & Buffer::LINEFLAG_IN_BLOCK_COMMENT) != 0;
 	//bool inLineComment = false;
 	QString quotedText;
 	for (int vln = m_scrollY0; vln < buffer()->lineCount() && py < rct.height(); ++vln, py+=m_lineHeight) {
