@@ -104,7 +104,7 @@ uchar keisenTable[] = {
 	/*	U+254b	╋	*/	KT_UP_THICK | KT_DOWN_THICK | KT_LEFT_THICK | KT_RIGHT_THICK,
 };
 
-static void toKeisenString(QString &str, uchar state, int hankakuSpace)
+static void toKeisenString(QString &str, uchar state, bool hankakuSpace)
 {
 	if( !state ) {
 		str = hankakuSpace ? "  " : "　";
@@ -128,7 +128,7 @@ static void toKeisenString(QString &str, uchar state, int hankakuSpace)
 //
 static void toKeisenString(QString &str, uchar state,
 								uchar dir, uchar type,
-								int destArraw, int hankakuSpace)
+								bool destArraw, bool hankakuSpace)
 {
 	uchar opdir, optype;		//	反対側のマスクと線種
 	uchar dir2, type2;			//	dir から９０度ずらしたマスクと線種
@@ -145,10 +145,17 @@ static void toKeisenString(QString &str, uchar state,
 			destArraw )								//	罫線矢印モード
 		{
 			switch( dir ) {
-			case KT_LEFT_MASK:		str = QString("→"); break;
-			case KT_RIGHT_MASK:		str = QString("←"); break;
-			case KT_DOWN_MASK:		str = QString("↑"); break;
-			case KT_UP_MASK:		str = QString("↓"); break;
+#if	0
+			case KT_LEFT_MASK:		str = QChar(L'→');	break;	//	→
+			case KT_RIGHT_MASK:		str = QChar(L'←');	break;	//	←
+			case KT_DOWN_MASK:		str = QChar(L'↑');	break;	//	↑
+			case KT_UP_MASK:		str = QChar(L'↓');	break;	//	↓
+#else
+			case KT_LEFT_MASK:		str = QString((const QChar*)L"→"); break;
+			case KT_RIGHT_MASK:		str = QString((const QChar*)L"←"); break;
+			case KT_DOWN_MASK:		str = QString((const QChar*)L"↑"); break;
+			case KT_UP_MASK:		str = QString((const QChar*)L"↓"); break;
+#endif
 			}
 			return;
 		}
@@ -276,18 +283,32 @@ void EditView::drawKeisenLeft(bool erase)			//	罫線モードで罫線を引く
 }
 void EditView::drawKeisenRight(bool erase)		//	罫線モードで罫線を引く
 {
-		uchar type;
-		if( erase )
-			type = 0;
-		else {
-			switch( mainWindow()->keisenType() ) {
-			case KEISEN_THIN:		type = KT_RIGHT_THIN;	break;
-			case KEISEN_THICK:		type = KT_RIGHT_THICK;	break;
-			//case KEISEN_HANKAKU:	type = KT_RIGHT_THIN;	break;
-			}
+	uchar type;
+	if( erase )
+		type = 0;
+	else {
+		switch( mainWindow()->keisenType() ) {
+		case KEISEN_THIN:		type = KT_RIGHT_THIN;	break;
+		case KEISEN_THICK:		type = KT_RIGHT_THICK;	break;
+		//case KEISEN_HANKAKU:	type = KT_RIGHT_THIN;	break;
 		}
-		uchar state, up, down, left, right;
-		getAroundKeisenState(state, up, down, left, right);
+	}
+	uchar state, up, down, left, right;
+	getAroundKeisenState(state, up, down, left, right);
+	QString kstr, kstr2;
+	toKeisenString(kstr, state, KT_RIGHT_MASK, type, false, true /*theApp.m_padHankakuSpc*/);
+	toKeisenString(kstr2, right, KT_LEFT_MASK, type<<4,
+				!erase && true /*m_option->isValid(VWOPT_KEISEN_ARRAW) ? 1 : 0*/,
+				true /*theApp.m_padHankakuSpc*/);
+	const bool atNewLine = textCursor()->charAt() == L'\n' || textCursor()->charAt() == L'\r';
+	if( !erase || !atNewLine )		//	改行位置以外の場合
+		kstr += kstr2;
+	if( !atNewLine ) {	//	改行位置でない場合
+		textCursor()->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);		//	暫定コード
+	}
+	textCursor()->insertText(kstr);
+	textCursor()->movePosition(TextCursor::LEFT);
+
 }
 void EditView::drawKeisenUp(bool erase, bool bUndoBlock)			//	罫線モードで罫線を引く
 {
