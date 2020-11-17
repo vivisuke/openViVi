@@ -2223,7 +2223,7 @@ void EditView::scrollDownPage(bool shift)
 	const int nLines = rect().height() / lineHeight();
 	int v = m_scrollY0;
 	m_scrollY0 = (v + nLines);
-	int vln = qMin(m_textCursor->viewLine() + nLines, viewLineCount());
+	int vln = qMin((size_t)m_textCursor->viewLine() + nLines, (size_t)viewLineCount());
 	pos_t pos = viewLineStartPosition(vln);
 	int mode = shift ? TextCursor::KEEP_ANCHOR : TextCursor::MOVE_ANCHOR;
 	m_textCursor->setPosition(pos, mode);

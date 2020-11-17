@@ -217,6 +217,7 @@ void EditView::drawKeisen(int key, bool erase)		//	罫線モードで罫線を�
 }
 void EditView::drawKeisenLeft(bool erase)			//	罫線モードで罫線を引く
 {
+	if( textCursor()->positionInLine() == 0 ) return;		//	行頭の場合
 	int length = 0, eolOffset = 0 /*, indent*/;
 #if	0	//##
 	ctchar *ptr = NULL;
@@ -227,23 +228,39 @@ void EditView::drawKeisenLeft(bool erase)			//	罫線モードで罫線を引く
 #endif
 	QString kstr1, kstr2;
 	//{
-		uchar type = 0;
-		if( !erase ) {
-			switch( mainWindow()->keisenType() ) {
-			case KEISEN_THIN:		type = KT_LEFT_THIN;	break;
-			case KEISEN_THICK:		type = KT_LEFT_THICK;	break;
-			//case KEISEN_HANKAKU:	type = KT_LEFT_THIN;	break;
-			}
+	uchar type = 0;
+	if( !erase ) {
+		switch( mainWindow()->keisenType() ) {
+		case KEISEN_THIN:		type = KT_LEFT_THIN;	break;
+		case KEISEN_THICK:		type = KT_LEFT_THICK;	break;
+		//case KEISEN_HANKAKU:	type = KT_LEFT_THIN;	break;
 		}
-		uchar state, up, down, left, right;
-		getAroundKeisenState(state, up, down, left, right);
+	}
+	uchar state, up, down, left, right;
+	getAroundKeisenState(state, up, down, left, right);
+	toKeisenString(kstr2, state, KT_LEFT_MASK, type, false, true);
+	toKeisenString(kstr1, left, KT_RIGHT_MASK, type>>4,
+						!erase && true /*m_option->isValid(VWOPT_KEISEN_ARRAW) ? 1 : 0*/,
+						true);
+	if( !erase || !textCursor()->isAtNewLine() )		//	改行位置以外の場合
+		kstr1 += kstr2;
+	pos_t pos = textCursor()->position();
+	if( !textCursor()->isAtNewLine() ) {
+		auto ch = textCursor()->charAt();
+		textCursor()->movePosition(TextCursor::RIGHT);
+		if( ch < 0x80 && textCursor()->charAt() < 0x80 && !textCursor()->isAtNewLine() )
+			textCursor()->movePosition(TextCursor::RIGHT);
+		textCursor()->setPosition(pos, TextCursor::KEEP_ANCHOR);
+	}
+	if( textCursor()->positionInLine() > 0 ) {
+		textCursor()->movePosition(TextCursor::LEFT, TextCursor::KEEP_ANCHOR);
+		if( textCursor()->positionInLine() > 0 && textCursor()->charAt() < 0x80 )
+			textCursor()->movePosition(TextCursor::LEFT, TextCursor::KEEP_ANCHOR);
+	}
+	pos = textCursor()->position();
+	textCursor()->insertText(kstr1);
+	textCursor()->setPosition(pos);
 #if	0	//##
-		toKeisenString(kstr2, state, KT_LEFT_MASK, type, 0, theApp.m_padHankakuSpc);
-		toKeisenString(kstr1, left, KT_RIGHT_MASK, type>>4,
-							!erase && true /*m_option->isValid(VWOPT_KEISEN_ARRAW) ? 1 : 0*/,
-							theApp.m_padHankakuSpc);
-		if( !erase || getViewCursor()->getOffset() < eolOffset )		//	改行位置以外の場合
-			kstr1 += kstr2;
 	//}
 	int c1 = getViewCursor()->getColumn() - 2;
 	int line = getViewCursor()->getLine();
@@ -307,14 +324,14 @@ void EditView::drawKeisenRight(bool erase)		//	罫線モードで罫線を引く
 	if( !atNewLine ) {	//	改行位置でない場合
 		//	undone: 半角文字上の場合
 		unsigned short ch = textCursor()->charAt();
-		textCursor()->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);		//	暫定コード
+		textCursor()->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);
 		if( ch < 0x80 && textCursor()->charAt() < 0x80 && !textCursor()->isAtNewLine() )
-			textCursor()->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);		//	暫定コード
+			textCursor()->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);
 		if( !textCursor()->isAtNewLine() ) {
 			unsigned short ch = textCursor()->charAt();
-			textCursor()->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);		//	暫定コード
+			textCursor()->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);
 			if( ch < 0x80 && textCursor()->charAt() < 0x80 && !textCursor()->isAtNewLine() )
-				textCursor()->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);		//	暫定コード
+				textCursor()->movePosition(TextCursor::RIGHT, TextCursor::KEEP_ANCHOR);
 		}
 	}
 	textCursor()->insertText(kstr);

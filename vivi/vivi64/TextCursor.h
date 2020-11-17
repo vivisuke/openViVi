@@ -62,21 +62,21 @@ public:
 	};
 
 public:
-	TextCursor(EditView *view, pos_t pos = 0, int anchor= 0);
+	TextCursor(EditView *view, pos_t pos = 0, pos_t anchor= 0);
 	TextCursor(const TextCursor &x);
 public:
 	byte_t		mode() const { return m_mode; }
-	int		position() const { return m_pos; }
-	int		positionInLine() const;	//	行内オフセットを返す
-	int		anchor() const { return m_anchor; }
+	pos_t		position() const { return m_pos; }
+	pos_t		positionInLine() const;	//	行内オフセットを返す
+	pos_t		anchor() const { return m_anchor; }
 	int		viewLine() const { return m_viewLine; }
 	void	movePosition(int op, int mode = MOVE_ANCHOR, int n = 1, bool vi = false);
 	wchar_t	charAt() const;
-	wchar_t	charAt(int pos) const;
+	wchar_t	charAt(pos_t pos) const;
 	bool	isAtNewLine() const;
-	int		selectionSize() const;
-	int		selectionFirst() const;
-	int		selectionLast() const;
+	pos_t		selectionSize() const;
+	pos_t		selectionFirst() const;
+	pos_t		selectionLast() const;
 	int		selectionFirstLine() const;
 	int		selectionLastLine() const;
 	bool	hasSelection() const { return m_mode != NOMAL_MODE || m_anchor != m_pos; }
@@ -111,10 +111,10 @@ protected:
 private:
 	EditView	*m_view;
 	byte_t		m_mode;
-	int		m_pos;
-	int		m_anchor;
-	int		m_wordBegPos;			//	単語先頭位置 for マウスダブルクリック単語単位選択
-	int		m_wordEndPos;			//	単語末尾位置 for マウスダブルクリック単語単位選択
+	pos_t		m_pos;
+	pos_t		m_anchor;
+	pos_t		m_wordBegPos;			//	単語先頭位置 for マウスダブルクリック単語単位選択
+	pos_t		m_wordEndPos;			//	単語末尾位置 for マウスダブルクリック単語単位選択
 	int		m_viewLine;			//	表示行番号 [0, viewLineCount())
 	int		m_anchorViewLine;			//	表示行番号 [0, viewLineCount())
 	int		m_px;			//	保存位置

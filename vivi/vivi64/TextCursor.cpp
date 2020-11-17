@@ -61,7 +61,7 @@ inline bool isAlpha(wchar_t ch)
 	return ch < 0x100 && isalpha(ch);
 }
 
-TextCursor::TextCursor(EditView *view, pos_t pos, int anchor)
+TextCursor::TextCursor(EditView *view, pos_t pos, pos_t anchor)
 	: m_view(view)
 	//, m_boxSelectionMode(false)
 	, m_mode(NOMAL_MODE)
@@ -93,7 +93,7 @@ wchar_t TextCursor::charAt() const
 {
 	return m_view->charAt(position());
 }
-wchar_t TextCursor::charAt(int pos) const
+wchar_t TextCursor::charAt(pos_t pos) const
 {
 	return m_view->charAt(pos);
 }
@@ -105,7 +105,7 @@ int TextCursor::viewLineStartPosition(int vln) const
 {
 	return m_view->viewLineMgr()->viewLineStartPosition(vln);
 }
-int TextCursor::positionInLine() const
+pos_t TextCursor::positionInLine() const
 {
 	int ln = m_view->positionToLine(m_pos);
 	return m_pos - m_view->lineStartPosition(ln);
@@ -856,13 +856,20 @@ void TextCursor::setPosition(pos_t pos, int mode)
 #endif
 	}
 }
-int TextCursor::selectionSize() const
+pos_t TextCursor::selectionSize() const
 {
+#if	1
+	if( m_pos >= m_anchor )
+		return m_pos - m_anchor;
+	else
+		return m_anchor - m_pos;
+#else
 	int sz = m_pos - m_anchor;
 	if( sz < 0 ) sz = -sz;
 	return sz;
+#endif
 }
-int TextCursor::selectionFirst() const
+pos_t TextCursor::selectionFirst() const
 {
 	if( m_mode != VI_LINE_SEL_MODE )
 		return qMin(m_pos, m_anchor);
@@ -872,7 +879,7 @@ int TextCursor::selectionFirst() const
 	int dln = m_view->viewLineToDocLine(vln);
 	return m_view->lineStartPosition(dln);
 }
-int TextCursor::selectionLast() const
+pos_t TextCursor::selectionLast() const
 {
 	if( m_mode == VI_CHAR_SEL_MODE )
 		return qMax(m_pos, m_anchor) + 1;
