@@ -427,6 +427,14 @@ void EditView::getAroundKeisenState(uchar &state,
 	}
 #endif
 #endif
+	//	左方向
+	if( textCursor()->positionInLine() > 0 ) {
+		auto cur = TextCursor(*textCursor());
+		cur.movePosition(TextCursor::LEFT);
+		auto code = cur.charAt();
+		if( code >= KT_CODE_BEG && code <= KT_CODE_END )
+			state |= ((left = keisenTable[code - KT_CODE_BEG]) & KT_RIGHT_MASK) << 4;
+	}
 }
 
 ///////
