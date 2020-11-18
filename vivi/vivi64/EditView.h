@@ -161,7 +161,7 @@ public:
 	void	begOfCurSection();		//	[[
 	void	begOfNextSction();		//	]]
 	void	jumpToLastModifiedPos();
-	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false);
+	void	deleteText(pos_t pos, ssize_t sz = 1, bool BS = false, bool fall=false);
 	void	onCursorPosChanged();
 	void	doInsertText(const QString &, bool, bool, bool);
 	void	insertText(const QString &);

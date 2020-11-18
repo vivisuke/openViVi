@@ -93,7 +93,7 @@ public:
 	void	setAnchorWordBeg() { m_anchor = m_wordBegPos; }
 	void	setAnchorWordEnd() { m_anchor = m_wordEndPos; }
 	void	setPX(int px) { m_px = px; }
-	void	deleteChar(bool BS = false, bool vi = false);
+	void	deleteChar(bool BS = false, bool vi = false, bool fall=false);
 	void	deletePrevChar(bool vi = false);
 	void	insertText(const QString &);
 protected:

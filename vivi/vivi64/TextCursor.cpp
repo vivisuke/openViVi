@@ -914,7 +914,7 @@ bool TextCursor::getSelectedLineRange(int &dln1, int &dln2) const
 		--dln2;
 	return true;
 }
-void TextCursor::deleteChar(bool isBS, bool vi)
+void TextCursor::deleteChar(bool isBS, bool vi, bool fall)
 {
 #if	0
 	if( isBoxSelectionMode() ) {
@@ -931,7 +931,7 @@ void TextCursor::deleteChar(bool isBS, bool vi)
 		m_view->mainWindow()->viEngine()->setYankText(txt, /*bLine:*/false);
 	}
 	pos_t pos = selectionFirst();
-	m_view->deleteText(pos, selectionLast() - pos, isBS);
+	m_view->deleteText(pos, selectionLast() - pos, isBS, fall);
 	setPosition(pos);
 	clearSelection();
 	m_viewLine = m_view->viewLineMgr()->positionToViewLine(pos);

@@ -1891,7 +1891,7 @@ void EditView::onBackSpace(bool ctrl, bool shift, bool alt)
 	//##if( !isBoxSelectMode() )
 		//setupFallingChars();
 	if( !editForVar(QString()) )
-		m_textCursor->deleteChar(/*BS=*/true);
+		m_textCursor->deleteChar(/*BS=*/true, /*vi:*/false, /*fall=*/true);
 #if	1
 	if( m_autoCompletionDlg != 0 ) {
 		if( m_textCursor->position() <= m_autoCmplPos )
@@ -1931,12 +1931,13 @@ void EditView::onDelete(bool ctrl, bool shift, bool alt)
 	if( !m_textCursor->hasSelection() ) return;
 	//setupFallingChars();
 	if( !editForVar(QString()) )
-		m_textCursor->deleteChar();
+		m_textCursor->deleteChar(/*BS=*/false, /*vi:*/false, /*fall=*/true);
 	//##emit boxSelectModeChanged(m_textCursor->isBoxSelectMode());
 }
-void EditView::deleteText(pos_t pos, ssize_t sz, bool BS)
+void EditView::deleteText(pos_t pos, ssize_t sz, bool BS, bool fall)
 {
-	setupFallingChars();
+	if( fall )
+		setupFallingChars();
 	document()->deleteText(pos, sz, BS);
 	update();
 	emit updateUndoRedoEnabled();
@@ -1993,7 +1994,7 @@ void EditView::cut(bool append)
 	}
 	if( !m_textCursor->hasSelection() ) return;
 	setupFallingChars();
-	m_textCursor->deleteChar();
+	m_textCursor->deleteChar(/*BS=*/false, /*vi:*/false, /*fall=*/true);
 	if( !im )
 		emit modifiedChanged();
 	updateScrollBarInfo();
