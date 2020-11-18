@@ -435,6 +435,11 @@ void EditView::getAroundKeisenState(uchar &state,
 		if( code >= KT_CODE_BEG && code <= KT_CODE_END )
 			state |= ((left = keisenTable[code - KT_CODE_BEG]) & KT_RIGHT_MASK) << 4;
 	}
+	if( !textCursor()->isAtNewLine() ) {
+		auto code = textCursor()->charAt();
+		if( code >= KT_CODE_BEG && code <= KT_CODE_END )
+			state |= ((right = keisenTable[code - KT_CODE_BEG]) & KT_LEFT_MASK) >> 4;
+	}
 }
 
 ///////
