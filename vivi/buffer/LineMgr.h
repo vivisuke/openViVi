@@ -52,7 +52,7 @@ public:
 	bool	isEmpty() const { return m_lv.isEmpty(); }
 	int		lineCount() const { return m_lv.size(); }
 	int		lineStartRaw(int ln) const { return m_lv[ln].m_lineStart; }
-	uint	lineFlags(int ln) const { return ln < m_lv.size() ? m_lv[ln].m_flags : 0; }
+	uint	lineFlags(int ln) const { return (size_t)ln < m_lv.size() ? m_lv[ln].m_flags : 0; }
 	//	ポジション → （ポジションを含む行の）行インデックス変換
 	int	positionToLine(int pos) const	//	0 org
 	{

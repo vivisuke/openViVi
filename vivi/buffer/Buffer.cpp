@@ -118,7 +118,7 @@ wchar_t Buffer::charAt(pos_t ix) const
 }
 uint Buffer::lineFlags(line_t ln) const
 {
-	assert(ln >= 0 && (!ln || ln < size()));
+	//assert(ln >= 0 && (!ln || ln < size()));
 	return m_lineMgr->lineFlags(ln);
 }
 void Buffer::setLineFlag(line_t ln, uint flag)
