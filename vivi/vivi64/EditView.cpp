@@ -1024,6 +1024,7 @@ void EditView::inputMethodEvent(QInputMethodEvent * event)
 	if( !text.isEmpty() ) {		//	■ IME入力が確定した場合
 		m_preeditString.clear();
 		m_textCursor->insertText(text);
+		makeCursorInView();
 		checkAssocParen();
 		emit textInserted(text);
 	}
