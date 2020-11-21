@@ -340,6 +340,58 @@ void EditView::drawKeisenRight(bool erase)		//	罫線モードで罫線を引く
 }
 void EditView::drawKeisenUp(bool erase, bool bUndoBlock)			//	罫線モードで罫線を引く
 {
+	if( textCursor()->viewLine() == 0 ) return;
+	
+	if( bUndoBlock)
+		openUndoBlock();
+
+	QString kstr1, kstr2;
+	uchar type;
+	if( erase )
+		type = 0;
+	else {
+		switch( mainWindow()->keisenType() ) {
+		case KEISEN_THIN:		type = KT_DOWN_THIN;	break;
+		case KEISEN_THICK:		type = KT_DOWN_THICK;	break;
+		//case KEISEN_HANKAKU:	type = KT_DOWN_THIN;	break;
+		}
+	}
+	uchar state, up, down, left, right;
+	getAroundKeisenState(state, up, down, left, right);
+	toKeisenString(kstr1, state, KT_UP_MASK, type, 0, true /*theApp.m_padHankakuSpc*/);
+	toKeisenString(kstr2, up, KT_DOWN_MASK, type>>4,
+						!erase && true /*m_option->isValid(VWOPT_KEISEN_ARRAW) ? 1 : 0*/,
+						true /*theApp.m_padHankakuSpc*/);
+	
+	pos_t pos = m_textCursor->position();
+	if( !textCursor()->isAtNewLine() ) {
+		auto ch = textCursor()->charAt();
+		textCursor()->movePosition(TextCursor::RIGHT);
+		if( ch < 0x80 && textCursor()->charAt() < 0x80 && !textCursor()->isAtNewLine() )
+			textCursor()->movePosition(TextCursor::RIGHT);
+		textCursor()->setPosition(pos, TextCursor::KEEP_ANCHOR);
+	}
+	textCursor()->insertText(kstr1);
+	textCursor()->movePosition(TextCursor::LEFT);
+	//
+	int px1 = viewLineOffsetToPx(textCursor()->viewLine(), textCursor()->positionInLine());
+	textCursor()->movePosition(TextCursor::UP);
+	int px2 = viewLineOffsetToPx(textCursor()->viewLine(), textCursor()->positionInLine());
+	if( px2 < px1 )
+		textCursor()->insertText(QString((px1 - px2)/m_fontWidth, ' '));
+	pos = m_textCursor->position();
+	if( !textCursor()->isAtNewLine() ) {
+		auto ch = textCursor()->charAt();
+		textCursor()->movePosition(TextCursor::RIGHT);
+		if( ch < 0x80 && textCursor()->charAt() < 0x80 && !textCursor()->isAtNewLine() )
+			textCursor()->movePosition(TextCursor::RIGHT);
+		textCursor()->setPosition(pos, TextCursor::KEEP_ANCHOR);
+	}
+	textCursor()->insertText(kstr2);
+	textCursor()->movePosition(TextCursor::LEFT);
+
+	if( bUndoBlock)
+		closeUndoBlock();
 }
 void EditView::drawKeisenDown(bool erase, bool bUndoBlock)			//	罫線モードで罫線を引く
 {
