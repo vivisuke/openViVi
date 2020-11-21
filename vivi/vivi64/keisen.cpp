@@ -378,7 +378,7 @@ void EditView::getAroundKeisenState(uchar &state,
 		cur.movePosition(TextCursor::DOWN);
 			code = buffer()->charAt(cur.position());
 			if( code >= KT_CODE_BEG && code <= KT_CODE_END )
-				state = ((down = keisenTable[code - KT_CODE_BEG]) & KT_DOWN_MASK) << 4;
+				state |= ((down = keisenTable[code - KT_CODE_BEG]) & KT_UP_MASK) >> 4;
 	}
 #if	0	//##
 	if( getViewCursor()->getLine() < getViewLineMgr()->getLineCount() ) {		//	ひとつ下の状態

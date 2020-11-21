@@ -1036,6 +1036,7 @@ void EditView::inputMethodEvent(QInputMethodEvent * event)
 		if( m_textCursor->hasSelection() )
 			m_textCursor->deleteChar();
 		resetCursorBlinking();
+		makeCursorInView();
 		update();
 	}
 	QWidget::inputMethodEvent( event );
