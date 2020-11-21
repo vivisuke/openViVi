@@ -377,7 +377,9 @@ void EditView::drawKeisenDown(bool erase, bool bUndoBlock)			//	罫線モード�
 	}
 	textCursor()->insertText(kstr1);
 	textCursor()->movePosition(TextCursor::LEFT);
-	//	undone: 行・文字が無い場合
+	//
+	if( textCursor()->viewLine() == viewLineMgr()->EOFLine() )		//	カーソルがEOF行にある場合
+		openNextLine();
 	textCursor()->movePosition(TextCursor::DOWN);
 	pos = m_textCursor->position();
 	if( !textCursor()->isAtNewLine() ) {
