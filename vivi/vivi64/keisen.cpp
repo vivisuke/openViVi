@@ -378,9 +378,13 @@ void EditView::drawKeisenDown(bool erase, bool bUndoBlock)			//	罫線モード�
 	textCursor()->insertText(kstr1);
 	textCursor()->movePosition(TextCursor::LEFT);
 	//
+	int px1 = viewLineOffsetToPx(textCursor()->viewLine(), textCursor()->positionInLine());
 	if( textCursor()->viewLine() == viewLineMgr()->EOFLine() )		//	カーソルがEOF行にある場合
 		openNextLine();
 	textCursor()->movePosition(TextCursor::DOWN);
+	int px2 = viewLineOffsetToPx(textCursor()->viewLine(), textCursor()->positionInLine());
+	if( px2 < px1 )
+		textCursor()->insertText(QString((px1 - px2)/m_fontWidth, ' '));
 	pos = m_textCursor->position();
 	if( !textCursor()->isAtNewLine() ) {
 		auto ch = textCursor()->charAt();
