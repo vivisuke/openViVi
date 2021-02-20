@@ -20,6 +20,7 @@
 #include "../buffer/Buffer.h"
 class FindLineEdit;
 
+
 //typedef QPlainTextEdit	EditView;
 
 typedef const char cchar;
@@ -47,6 +48,8 @@ class OutputView;
 
 extern GlobalSettings	g_globSettings;
 GlobalSettings *globSettings();
+
+#define	FILE_SYSTEM			0
 
 #define	KEISEN_THIN			0
 #define	KEISEN_THICK		10
@@ -418,10 +421,12 @@ private:
 	//QTreeWidget		*m_outlineWidget;
 	OutlineBar		*m_outlineBar;
 	QDockWidget		*m_outputDock;
+#if	FILE_SYSTEM
 	QDockWidget		*m_fileSystemDock;
 	QTreeView		*m_fileSystemView;
 	QTreeWidget		*m_fileSystemWidget;
 	QFileSystemModel	*m_fileSystemModel;
+#endif
 	//QPlainTextEdit	*m_outputWidget;
 	OutputView	*m_outputWidget;
 	

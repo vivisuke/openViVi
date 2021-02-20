@@ -305,6 +305,7 @@ void MainWindow::createDockWindows()
 	addDockWidget(Qt::BottomDockWidgetArea, m_outputDock);
 	m_outputDock->hide();		//	undone: 状態保存・復帰
 	
+#if	FILE_SYSTEM
 	//	ファイルシステムバー
 	m_fileSystemDock = new QDockWidget(tr("FileSystem"));
 	m_fileSystemDock->setObjectName("FileSystem");
@@ -321,16 +322,19 @@ void MainWindow::createDockWindows()
 	addDockWidget(Qt::RightDockWidgetArea, m_fileSystemDock);
     connect(m_fileSystemView, SIGNAL(doubleClicked ( QModelIndex )),
     				this, SLOT(fileSystemViewDoubleClicked ( QModelIndex )));
+#endif
 
 	tabifyDockWidget(m_outputDock, m_outlineDock);
 }
 void MainWindow::fileSystemViewDoubleClicked(const QModelIndex &index)
 {
+#if	FILE_SYSTEM
 	QString path = m_fileSystemModel->filePath(index);
 	QFileInfo fi(path);
 	if( fi.isFile() ) {
 		createView(path);
 	}
+#endif
 }
 void MainWindow::createActions()
 {
@@ -1179,6 +1183,7 @@ void MainWindow::onOutlineItemDblClicked(QTreeWidgetItem*item)
 	QFileInfo fi(fileName);
 	if (fi.isDir()) {
 		//QDir dir(fileName);
+#if	FILE_SYSTEM
 		m_fileSystemDock->show();
 		m_fileSystemView->setFocus();
 		//auto act = m_fileSystemDock->toggleViewAction();
@@ -1186,6 +1191,7 @@ void MainWindow::onOutlineItemDblClicked(QTreeWidgetItem*item)
 		auto mix = m_fileSystemModel->index(fileName);
 		m_fileSystemView->setCurrentIndex(mix);
 		m_fileSystemView->setExpanded(mix, true);
+#endif
 	} else {
 		auto* view = (EditView*)item->data(1, 0).toULongLong();
 		if( view != nullptr )

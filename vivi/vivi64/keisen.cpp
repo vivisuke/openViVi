@@ -12,6 +12,7 @@
 #include "viewLineMgr.h"
 #include "textCursor.h"
 #include "document.h"
+#include <QDebug>
 
 typedef unsigned char uint8;
 
@@ -34,7 +35,7 @@ typedef unsigned char uint8;
 #define		KT_RIGHT_MASK		0x03
 
 //
-//		ＳＪＩＳの各文字の上下左右のつながり状態を示すテーブル
+//		各文字の上下左右のつながり状態を示すテーブル
 //
 //		各値は以下の定数の組み合わせ
 //
@@ -549,6 +550,9 @@ void EditView::getAroundKeisenState(uchar &state,
 		if( code >= KT_CODE_BEG && code <= KT_CODE_END )
 			state |= ((right = keisenTable[code - KT_CODE_BEG]) & KT_LEFT_MASK) >> 4;
 	}
+	qDebug() << "state = " << QString::number(state, 16) <<
+				", up = " << QString::number(up, 16) <<
+				", down = " << QString::number(down, 16);
 }
 
 ///////
