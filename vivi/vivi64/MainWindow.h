@@ -451,6 +451,7 @@ private:
 	QIcon	*m_iconPERL;
 	QIcon	*m_iconPHP;
 	QIcon	*m_iconPYTHON;
+	QIcon	*m_iconGDSCRIPT;
 	QIcon	*m_iconRUBY;
 	QIcon	*m_iconSQL;
 	QIcon	*m_iconLOG;

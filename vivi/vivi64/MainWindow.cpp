@@ -477,6 +477,8 @@ void MainWindow::setIcon(const QString &fileName, QAction *action)
     	action->setIcon(*m_iconPHP);
     else if( typeName == "PYTHON" )
     	action->setIcon(*m_iconPYTHON);
+    else if( typeName == "GDSCRIPT" )
+    	action->setIcon(*m_iconGDSCRIPT);
     else if( typeName == "RUBY" )
     	action->setIcon(*m_iconRUBY);
     else if( typeName == "SQL" )
@@ -505,6 +507,7 @@ void MainWindow::setupIcons()
 	m_iconPERL = new QIcon(":/MainWindow/Resources/PERL.png");
 	m_iconPHP = new QIcon(":/MainWindow/Resources/PHP.png");
 	m_iconPYTHON = new QIcon(":/MainWindow/Resources/PYTHON.png");
+	m_iconGDSCRIPT = new QIcon(":/MainWindow/Resources/GDSCRIPT.png");
 	m_iconRUBY = new QIcon(":/MainWindow/Resources/RUBY.png");
 	m_iconSQL = new QIcon(":/MainWindow/Resources/SQL.png");
 	m_iconSPR = new QIcon(":/MainWindow/Resources/SPR.png");
@@ -547,6 +550,7 @@ void MainWindow::setupStatusBar()
 	m_typeCB->addItem(*m_iconPERL, "PERL");
 	m_typeCB->addItem(*m_iconPHP, "PHP");
 	m_typeCB->addItem(*m_iconPYTHON, "PYTHON");
+	m_typeCB->addItem(*m_iconGDSCRIPT, "GDSCRIPT");
 	m_typeCB->addItem(*m_iconRUBY, "RUBY");
 	m_typeCB->addItem(*m_iconSQL, "SQL");
 	m_typeCB->addItem(*m_iconSPR, "SPR");
@@ -1285,6 +1289,8 @@ QIcon *MainWindow::typeNameToIcon(const QString& typeName)
     	return m_iconPHP;
     else if( typeName == "PYTHON" )
     	return m_iconPYTHON;
+    else if( typeName == "GDSCRIPT" )
+    	return m_iconGDSCRIPT;
     else if( typeName == "RUBY" )
     	return m_iconRUBY;
     else if( typeName == "SQL" )
