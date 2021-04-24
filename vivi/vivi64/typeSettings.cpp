@@ -329,6 +329,36 @@ struct KeyTextItem keyTextTablePYTHON[] = {
 	{"ShortTextSel9",	L""},
 	{0, false}
 };
+struct KeyTextItem keyTextTableGDSCRIPT[] = {
+	{"FontName",	L"Courier New"},
+	{"LineComment",	L"#"},
+	{"BlockCommentBeg",	L"\"\"\""},
+	{"BlockCommentEnd",	L"\"\"\""},
+	{"KeyWord1File",	L"GDScript.txt"},
+	{"KeyWord2File",	L""},
+	{"KeyWord3File",	L""},
+	{"ShortText0",		L""},
+	{"ShortText1",		L""},
+	{"ShortText2",		L""},
+	{"ShortText3",		L""},
+	{"ShortText4",		L""},
+	{"ShortText5",		L""},
+	{"ShortText6",		L""},
+	{"ShortText7",		L""},
+	{"ShortText8",		L""},
+	{"ShortText9",		L""},
+	{"ShortTextSel0",	L""},
+	{"ShortTextSel1",	L""},
+	{"ShortTextSel2",	L""},
+	{"ShortTextSel3",	L""},
+	{"ShortTextSel4",	L""},
+	{"ShortTextSel5",	L""},
+	{"ShortTextSel6",	L""},
+	{"ShortTextSel7",	L""},
+	{"ShortTextSel8",	L""},
+	{"ShortTextSel9",	L""},
+	{0, false}
+};
 struct KeyTextItem keyTextTableJS[] = {
 	{"FontName",	L"Courier New"},
 	{"LineComment",	L"//"},
@@ -656,6 +686,8 @@ const KeyTextItem *tableForType(const QString &typeName)
 		return keyTextTablePHP;
 	else if( typeName == "PYTHON" )
 		return keyTextTablePYTHON;
+	else if( typeName == "GDSCRIPT" )
+		return keyTextTableGDSCRIPT;
 	else if( typeName == "SQL" ) {
 		//m_boolValues[IGNORE_CASE_KW1] = true;
 		//m_boolValues[IGNORE_CASE_KW2] = true;
