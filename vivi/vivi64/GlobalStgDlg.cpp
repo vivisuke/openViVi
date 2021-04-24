@@ -16,7 +16,7 @@ GlobalStgDlg::GlobalStgDlg(GlobalSettings *globSettings, QWidget *parent)
 	lst.clear();
 	lst << "Default" << "CPP" << "C#" << "CSS" << "F#" << "HLSL" << "HTML"
 			<< "JAVA" << "JS" << "TS" << "LOG" << "MARKDN" << "PASCAL" << "PERL" << "PHP"
-			<< "PYTHON" << "RUBY" << "SQL" << "TXT";
+			<< "PYTHON" << "GDSCRIPT" << "RUBY" << "SQL" << "TXT";
 	ui.docTypeCB->addItems(lst);
 	ui.docTypeCB->setCurrentIndex(m_globSettings->enumValue(GlobalSettings::DOC_TYPE));
 	ui.docTypeCB->setMaxVisibleItems(ui.docTypeCB->count());

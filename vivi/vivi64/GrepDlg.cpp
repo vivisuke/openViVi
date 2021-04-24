@@ -74,20 +74,22 @@ void GrepDlg::setTypeName(const QString &typeName)
 		ui.extensions->setCurrentIndex(6);
 	else if( typeName == "PYTHON" )
 		ui.extensions->setCurrentIndex(7);
-	else if( typeName == "HTML" || typeName == "PHP" )
+	else if( typeName == "GDSCRIPT" )
 		ui.extensions->setCurrentIndex(8);
-	else if( typeName == "JS" || typeName == "TS" )
+	else if( typeName == "HTML" || typeName == "PHP" )
 		ui.extensions->setCurrentIndex(9);
-	else if( typeName == "CSS" )
+	else if( typeName == "JS" || typeName == "TS" )
 		ui.extensions->setCurrentIndex(10);
-	else if( typeName == "F#" )
+	else if( typeName == "CSS" )
 		ui.extensions->setCurrentIndex(11);
-	else if( typeName == "LOG" )
+	else if( typeName == "F#" )
 		ui.extensions->setCurrentIndex(12);
-	else if( typeName == "SQL" )
+	else if( typeName == "LOG" )
 		ui.extensions->setCurrentIndex(13);
-	else if( typeName == "TXT" )
+	else if( typeName == "SQL" )
 		ui.extensions->setCurrentIndex(14);
+	else if( typeName == "TXT" )
+		ui.extensions->setCurrentIndex(15);
 }
 
 GrepDlg::~GrepDlg()

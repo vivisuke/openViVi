@@ -44,6 +44,7 @@ TypeSettings *SettingsMgr::typeSettings(int type)
 		case GlobalSettings::DOC_TYPE_PERL:	typeName = "PERL";	break;
 		case GlobalSettings::DOC_TYPE_PHP:	typeName = "PHP";	break;
 		case GlobalSettings::DOC_TYPE_PYTHON:	typeName = "PYTHON";	break;
+		case GlobalSettings::DOC_TYPE_GDSCRIPT:	typeName = "GDSCRIPT";	break;
 		case GlobalSettings::DOC_TYPE_RUBY:	typeName = "RUBY";	break;
 		case GlobalSettings::DOC_TYPE_SQL:	typeName = "SQL";	break;
 		case GlobalSettings::DOC_TYPE_TXT:	typeName = "TXT";	break;
@@ -67,6 +68,7 @@ int SettingsMgr::typeNameToType(const QString &name) const
 	if( name == "PERL") return GlobalSettings::DOC_TYPE_PERL;
 	if( name == "PHP") return GlobalSettings::DOC_TYPE_PHP;
 	if( name == "PYTHON") return GlobalSettings::DOC_TYPE_PYTHON;
+	if( name == "GDSCRIPT") return GlobalSettings::DOC_TYPE_GDSCRIPT;
 	if( name == "RUBY") return GlobalSettings::DOC_TYPE_RUBY;
 	if( name == "SQL") return GlobalSettings::DOC_TYPE_SQL;
 	//if( name == "TXT")
@@ -90,6 +92,7 @@ QString SettingsMgr::defaultExt(int type)
 		case GlobalSettings::DOC_TYPE_PERL:	return"pl";
 		case GlobalSettings::DOC_TYPE_PHP:	return"php";
 		case GlobalSettings::DOC_TYPE_PYTHON:	return"py";
+		case GlobalSettings::DOC_TYPE_GDSCRIPT:	return"gd";
 		case GlobalSettings::DOC_TYPE_RUBY:	return"rb";
 		case GlobalSettings::DOC_TYPE_SQL:	return"sql";
 		default:
@@ -140,6 +143,7 @@ void SettingsMgr::readSettings()
 			<< "RUBY = rb"
 			//<< "PHP = php,phtml"
 			<< "PYTHON = py"
+			<< "GDSCRIPT = gd"
 			<< "F# = fs,fsi,fsx,fsscript,ml,mli"
 			<< "SQL = sql"
 			<< "HLSL = fx"
